@@ -101,12 +101,13 @@ footer {
 }
 
 #sidebar {
-	width: 18em;
+	width: 17em;
 	position: absolute;
 	left: 2em;
 	top: 8em;
 	border-right: 1px solid #999;
 	padding-bottom: 2em;
+	padding-right: 1em;
 }
 
 #sidebar-top {
@@ -127,6 +128,11 @@ aside {
 
 aside h1 {
 	font-size: 125%;
+}
+
+aside h1 img {
+	vertical-align: middle;
+	float: right;
 }
 
 aside ul {
