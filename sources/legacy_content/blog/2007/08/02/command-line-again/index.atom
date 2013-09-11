@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/02/command-line-again/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/02/command-line-again/"/>
+  <title>Command Line Interfaces, Again</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I posted a couple of years ago that <a href="http://tobyinkster.co.uk/blog/2005/06/08/command-line-interfaces/">the command line is the interface of the future</a>. Today I stumbled on a couple of articles that seem to agree with me:</p>
+
+<ul>
+<li><a href="http://www.humanized.com/weblog/2007/02/24/your_grandmothers_command_line_the_command_line_co/">Command Line for the Common Man: Command Line Comeback</a></li>
+<li><a href="http://icr.vox.com/library/post/the-power-of-command-lines.html">The Power of Command Lines</a></li>
+</ul>
+
+<p><a href="http://quicksilver.blacktree.com/">Quicksilver</a> blows away both Apple's <a href="http://www.asktog.com/columns/044top10docksucks.html">Dock</a> and Microsoft Windows' <a href="http://en.wikipedia.org/wiki/Windows_Taskbar">Taskbar</a> in terms of speed and usability. And what is it? A command-line interface with a bit of eye-candy.</p>
+
+<p>Command-line really is the way to go.</p></div>
+  </content>
+  <published>2007-08-02T20:15:55+01:00</published>
+  <updated>2007-08-02T20:15:55+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="command-line"/>
+  <category term="usability"/>
+</entry>

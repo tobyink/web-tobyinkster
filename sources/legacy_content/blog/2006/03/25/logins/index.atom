@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2006/03/25/logins/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2006/03/25/logins/"/>
+  <title>Sample PHP Source for Non-Interrupting Logins</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Noozer wrote:</p>
+
+<blockquote><p>User opens a page. A session starts and they are asked to log in. They spend  30 minutes reading the page, then clicks a link. Since they were on the page for 20+ minutes their session ended. At that point they are asked to log in, and then taken to their chosen page as if never interrupted.</p></blockquote>
+
+<p>Reasonably easy, yes. This example is in <span class="caps">PHP, </span>but the same idea should work for other languages. At the top of every page that requires authorisation:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b> <span class="hl_Operator">require_once</span> <span class="hl_String">"checkauth.php"</span><span class="hl_Others">;</span> 1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>In checkauth.php, do this:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Keyword">function</b> check_is_logged_in <span class="hl_Others">()</span>
+{
+	<i class="hl_Comment">// Write this function yourself.</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// Return TRUE if logged in.</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// FALSE otherwise.</i><i class="hl_Comment">
+</i>}
+
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!check_is_logged_in<span class="hl_Others">())</span>
+{
+	<b class="hl_Variable">$me</b> = <b class="hl_Variable">$_SERVER</b><span class="hl_Others">[</span><span class="hl_String">'REQUEST_URI'</span><span class="hl_Others">];</span>
+	<b class="hl_Variable">$script</b> = <span class="hl_String">"http://</span><b class="hl_Variable">{$_SERVER['HTTP_HOST']}</b><span class="hl_String">/login.php"</span><span class="hl_Others">;</span>
+	<b class="hl_Variable">$url</b> = <span class="hl_String">"</span><b class="hl_Variable">{$script}</b><span class="hl_String">?referer="</span>.<span class="hl_Function">urlencode</span><span class="hl_Others">(</span><b class="hl_Variable">$me</b><span class="hl_Others">);</span>
+	<span class="hl_Function">header</span><span class="hl_Others">(</span><span class="hl_String">"HTTP/1.1 303 See Other"</span><span class="hl_Others">);</span>
+	<span class="hl_Function">header</span><span class="hl_Others">(</span><span class="hl_String">"Location: </span><b class="hl_Variable">{$url}</b><span class="hl_String">"</span><span class="hl_Others">);</span>
+}	
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>In login.php, do this:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$error_msg</b> = <span class="hl_String">''</span><span class="hl_Others">;</span>
+<b class="hl_Variable">$u</b> = <span class="hl_Function">stripslashes</span><span class="hl_Others">(</span><b class="hl_Variable">$_POST</b><span class="hl_Others">[</span><span class="hl_String">'username'</span><span class="hl_Others">]);</span>
+<b class="hl_Variable">$p</b> = <span class="hl_Function">stripslashes</span><span class="hl_Others">(</span><b class="hl_Variable">$_POST</b><span class="hl_Others">[</span><span class="hl_String">'password'</span><span class="hl_Others">]);</span>
+<b class="hl_Variable">$r</b> = <span class="hl_Function">stripslashes</span><span class="hl_Others">(</span><b class="hl_Variable">$_POST</b><span class="hl_Others">[</span><span class="hl_String">'referer'</span><span class="hl_Others">]);</span>
+
+<b class="hl_Keyword">function</b> check_pass <span class="hl_Others">(</span><b class="hl_Variable">$username</b><span class="hl_Others">,</span> <b class="hl_Variable">$password</b><span class="hl_Others">)</span>
+{
+	<i class="hl_Comment">// Write this function yourself.</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// Return TRUE if password is ok.</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// FALSE otherwise.</i><i class="hl_Comment">
+</i>
+	<i class="hl_Comment">// Set a cookie or something that can</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// be checked by the check_is_logged_in()</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">// function.</i><i class="hl_Comment">
+</i>}
+
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">isset</span><span class="hl_Others">(</span><b class="hl_Variable">$u</b><span class="hl_Others">))</span>
+{
+	<span class="hl_Operator">if</span> <span class="hl_Others">(</span>check_pass<span class="hl_Others">(</span><b class="hl_Variable">$u</b><span class="hl_Others">,</span> <b class="hl_Variable">$p</b><span class="hl_Others">))</span>
+	{
+		<b class="hl_Variable">$url</b> = <span class="hl_String">"http://</span><b class="hl_Variable">{$_SERVER['HTTP_HOST']}</b><span class="hl_String">/</span><b class="hl_Variable">{$r}</b><span class="hl_String">"</span><span class="hl_Others">;</span>
+		<span class="hl_Function">header</span><span class="hl_Others">(</span><span class="hl_String">"HTTP/1.1 303 See Other"</span><span class="hl_Others">);</span>
+		<span class="hl_Function">header</span><span class="hl_Others">(</span><span class="hl_String">"Location: </span><b class="hl_Variable">{$url}</b><span class="hl_String">"</span><span class="hl_Others">);</span>
+		<span class="hl_Function">exit</span><span class="hl_Others">();</span>
+	}
+
+	<span class="hl_Operator">else</span>
+		<b class="hl_Variable">$error_msg</b> = <span class="hl_String">'&lt;p&gt;Password wrong.&lt;/p&gt;'</span><span class="hl_Others">;</span>
+}
+489<b class="hl_Keyword">?&gt;</b></code></pre></div>
+  </content>
+  <published>2006-03-25T14:46:58Z</published>
+  <updated>2007-04-08T22:39:52+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-2.0.html"/>
+  <category term="php"/>
+  <category term="web"/>
+  <category term="usability"/>
+</entry>

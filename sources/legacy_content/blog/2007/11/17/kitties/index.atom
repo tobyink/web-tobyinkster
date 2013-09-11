@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/11/17/kitties/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/11/17/kitties/"/>
+  <title>Kitties!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I'm told that the only thing that will bring me more traffic than pirated <span class="caps">MP3</span>s and hardcore porn is photos of kitties...</p>
+
+<p><img src="files/kitties1" alt="Photo of cats in basket"/>
+<img src="files/kitties2" alt="Photo of cats in basket"/></p>
+
+<p>The gorgeous models are our 15-month-old cats Chairman Meow and Mr d'Silva. Picture quality is awful as they're from my phone. We really need to invest in a new digital camera, as the old one has been broken for months.</p></div>
+  </content>
+  <published>2007-11-17T15:48:00Z</published>
+  <updated>2007-11-17T15:55:00Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="NokiaPics"/>
+  <category term="cute"/>
+  <category term="kitties"/>
+</entry>

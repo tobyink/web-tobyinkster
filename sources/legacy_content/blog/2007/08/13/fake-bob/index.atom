@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/13/fake-bob/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/13/fake-bob/"/>
+  <title>Fake Steve is Dead; Long Live Fake Bob!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Now that <a href="http://fakesteve.blogspot.com/">fake Steve</a> has <a href="http://www.nytimes.com/2007/08/06/technology/06steve.html">been outed</a>, I'm sure everyone is looking for the next fake blog.</p>
+
+<p>Well... <a href="http://fakebobkeefe.blogspot.com/">Fake Bob Keefe</a></p>
+
+<p>(<a href="http://www.crazyapplerumors.com/?p=907">Who is</a> <a href="http://www.macuser.com/steve-jobs/world_exclusive_bob_keefe_is_n_1.php">Bob</a> <a href="http://www.statesman.com/blogs/content/shared-blogs/washington/plugged/entries/2007/08/10/and_they_call_it_the_cult_of_m.html">Keefe</a> ?)</p></div>
+  </content>
+  <published>2007-08-13T14:54:08+01:00</published>
+  <updated>2007-08-13T14:54:08+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="apple"/>
+  <category term="mac"/>
+  <category term="bob-keefe"/>
+  <category term="fake-steve"/>
+  <category term="blogging"/>
+</entry>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2003/04/27/hummous/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2003/04/27/hummous/"/>
+  <title>Hummous</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><h2>Ingredients</h2>
+
+<ul>
+<li>250g boiled (and cooled) chick peas</li>
+<li>75g olive oil</li>
+<li>50g lemon juice</li>
+<li>50g brine (this can be obtained from a tin of "cooked chickpeas in brine"! Alternatively, just mix some salt and water)</li>
+<li>50g Tahini (pulped roasted seseme seeds)</li>
+<li>1 small clove of garlic</li>
+</ul>
+
+<h2>Method<br/>
+ <br/>
+Blend all ingredients in an electric blender. Done.</h2>
+
+<h2>Variations</h2>
+
+<p>Try adding a roasted red pepper, a little corriander and a little cumin. If you're feeling dangerous, add a little chilli too.</p></div>
+  </content>
+  <published>2005-02-09T19:46:37Z</published>
+  <updated>2008-01-03T17:18:19Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="recipes"/>
+  <category term="chickpeas"/>
+  <category term="arab"/>
+</entry>

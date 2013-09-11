@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/06/dhyana/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/06/dhyana/"/>
+  <title>dhyana.pl/0.3</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's my latest update to <a href="/tag/dhyana/">dhyana.pl</a>...</p>
+
+<h2>Change Log</h2>
+
+<ul>
+<li>Added a title to the output image, which can be in a different font and colour from the rest of the text.</li>
+<li>Use Getopt to parse command line, and accept more options.</li>
+<li>Improved handling of certain dodgy <span class="caps">WMV </span>files, mostly thanks to Matt Pinkham.</li>
+<li>Improved use of <span class="caps">FFMPEG</span></li>
+<li>Code straightened out to use functions -- it used to be one big long mess.</li>
+<li>Added a help function -- just run the program with the <tt>--help</tt> paramater.</li>
+</ul>
+
+<h2>Requirements</h2>
+
+<ul>
+<li>Perl Getopt::ArgvFile</li>
+<li>Perl Getopt::Long â¥ 2.33</li>
+<li>Perl Pod::Usage;</li>
+<li>mplayer</li>
+<li>ImageMagick</li>
+</ul>
+
+<h3>Optional</h3>
+
+<ul>
+<li>Perl File::chdir</li>
+<li>Perl File::Spec</li>
+<li>Perl Cwd</li>
+<li><span class="caps">FFMPEG</span></li>
+</ul>
+
+<p>All of the Perl modules can be found in <a href="http://www.cpan.org"><span class="caps">CPAN</span></a>, here is the <a href="http://ffmpeg.mplayerhq.hu/"><span class="caps">FFMPEG</span></a> site and here is <a href="http://mplayerhq.hu/">mplayer</a>. And don't forget <a href="http://imagemagick.org">ImageMagick</a>.</p>
+
+<h2>Download</h2>
+
+<ul>
+<li><a href="/blog/2008/01/06/dhyana/files/dhyana.pl">Perl script</a></li>
+<li><a href="/blog/2008/01/06/dhyana/files/dhyana.pl.html" title="for viewing online">Source code</a></li>
+</ul></div>
+  </content>
+  <published>2008-01-06T02:36:00Z</published>
+  <updated>2008-01-06T02:36:00Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dhyana"/>
+  <category term="update"/>
+  <category term="programming"/>
+  <category term="video"/>
+  <category term="linux"/>
+  <category term="perl"/>
+</entry>

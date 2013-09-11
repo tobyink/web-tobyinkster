@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/10/parsers/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/10/parsers/"/>
+  <title>Re: Parsing Question...</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>cjl wrote:</p>
+
+<blockquote><p>Short of writing a parser, which is clearly beyond me, what are some reasonable approaches to handling user input that will be executed?</p></blockquote>
+
+<p>Writing a parser is the best option in the long-run. If you were to attempt to interpret the user input some other way, like pure regular expressions, then you would fall into a lot of traps, and your interpreter would behave oddly in many cases.</p>
+
+<p>A full parser is a much better option: it will behave far more reliably and would be a lot easier to extend, should you feel the need to add extra features to the language at a later date.</p>
+
+<p>Although it's a lot of work, there are some fairly well established methods on writing them. What you basically need to write is three fairly independent components: a tokeniser, a parser and an interpreter. None of these share any code in common, except for the definitions of a few constants and classes.</p>
+
+<p>Firstly, a tokeniser, which reads the user input and splits it into a long list of tokens. Each token should have the form:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+    <b class="hl_Keyword">class</b> Token
+    {
+        <b class="hl_Keyword">var</b> <b class="hl_Variable">$token_type</b><span class="hl_Others">;</span>     <i class="hl_Comment">// integer</i><i class="hl_Comment">
+</i>        <b class="hl_Keyword">var</b> <b class="hl_Variable">$token_value</b><span class="hl_Others">;</span>    <i class="hl_Comment">// mixed</i><i class="hl_Comment">
+</i>        <b class="hl_Keyword">var</b> <b class="hl_Variable">$line</b><span class="hl_Others">;</span>           <i class="hl_Comment">// integer</i><i class="hl_Comment">
+</i>        <b class="hl_Keyword">var</b> <b class="hl_Variable">$char</b><span class="hl_Others">;</span>           <i class="hl_Comment">// integer</i><i class="hl_Comment">
+</i>    }
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Such that when you tokenize the following code:</p>
+
+
+
+
+<pre>echo "Foo";</pre>
+
+
+
+
+<p>You end up with something like this (though imagine the inner arrays are actually Token objects!):</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+    <span class="hl_Function">array</span><span class="hl_Others">(</span>
+        <span class="hl_Function">array</span><span class="hl_Others">(</span>TOKEN_BUILTIN<span class="hl_Others">,</span> <span class="hl_String">"echo"</span><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">),</span>
+        <span class="hl_Function">array</span><span class="hl_Others">(</span>TOKEN_STRING_DQUOTED<span class="hl_Others">,</span> <span class="hl_String">"Foo"</span><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">,</span> <span class="hl_Float">6</span><span class="hl_Others">),</span>
+        <span class="hl_Function">array</span><span class="hl_Others">(</span>TOKEN_TERMINATOR<span class="hl_Others">,</span> <b class="hl_Keyword">NULL</b><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">,</span> <span class="hl_Float">11</span><span class="hl_Others">)</span>
+    <span class="hl_Others">);</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Note the <code class="php">$line</code> and <code class="php">$char</code> which contain the line number and character number where this token was found? That helps when a later stage of your program needs to print an error message -- it can inform the user of the exact location where the error occurred.</p>
+
+<p>Writing a tokeniser is probably the easiest step. The only slightly difficult bits are things like \"dealing with strings that contain \\\"special\\\" characters\", but even they are not too difficult!</p>
+
+<p>Your tokeniser then passes this list over to the parser. The parser is probably the hardest part you have to write. You have to convert the stream of tokens into an "abstract syntax tree".</p>
+
+<p>First you need to define the classes you'll build the <span class="caps">AST </span>out of. <span class="caps">PHP</span> 5's object oriented features will be very useful here. </p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+    <b class="hl_Keyword">abstract</b> <b class="hl_Keyword">class</b> AstNode
+    {
+        <b class="hl_Keyword">public</b> <b class="hl_Variable">$token</b><span class="hl_Others">;</span>
+        <b class="hl_Keyword">final</b> <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> <b class="hl_Keyword">__construct</b><span class="hl_Others">(</span><b class="hl_Variable">$t</b><span class="hl_Others">)</span>
+        {
+            <b class="hl_Variable">$this</b>-&gt;token = <b class="hl_Variable">$t</b><span class="hl_Others">;</span>
+        }
+        <b class="hl_Keyword">abstract</b> <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">);</span>
+    }
+
+    <b class="hl_Keyword">class</b> AstNode_Script extents AstNode
+    {
+        <b class="hl_Keyword">public</b> <b class="hl_Variable">$statements</b><span class="hl_Others">;</span>
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">)</span>
+        {
+            <span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;statements <span class="hl_Operator">as</span> <b class="hl_Variable">$s</b><span class="hl_Others">)</span>
+                <b class="hl_Variable">$s</b>-&gt;evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">);</span>
+        }
+    }
+
+    <b class="hl_Keyword">class</b> AstNode_If <b class="hl_Keyword">extends</b> AstNode
+    {
+        <b class="hl_Keyword">public</b> <b class="hl_Variable">$condition_expression</b><span class="hl_Others">;</span>
+        <b class="hl_Keyword">public</b> <b class="hl_Variable">$execution_block</b><span class="hl_Others">;</span>
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> evaluate<span class="hl_Others">()</span>
+        {
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;condition_expression-&gt;evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">))</span>
+                <b class="hl_Variable">$this</b>-&gt;execution_block-&gt;evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">);</span>
+        }
+    }
+
+    <b class="hl_Keyword">class</b> AstNode_Constant_False <b class="hl_Keyword">extends</b> AstNode
+    {
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">)</span> { <span class="hl_Operator">return</span> <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span> }
+    }
+    <i class="hl_Comment">// etc</i><i class="hl_Comment">
+</i>1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Then write the parser itself, which takes the form:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+    <b class="hl_Keyword">class</b> Parser
+    {
+        <b class="hl_Keyword">private</b> <b class="hl_Variable">$tokens</b><span class="hl_Others">;</span>
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> <b class="hl_Keyword">__construct</b><span class="hl_Others">(</span><b class="hl_Variable">$T</b><span class="hl_Others">)</span>
+        {
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">is_array</span><span class="hl_Others">(</span><b class="hl_Variable">$T</b><span class="hl_Others">))</span>
+                <b class="hl_Variable">$this</b>-&gt;tokens = <b class="hl_Variable">$T</b><span class="hl_Others">;</span>
+            <span class="hl_Operator">else</span>
+                throw <b class="hl_Keyword">new</b> Exception<span class="hl_Others">(</span><span class="hl_String">'Argh!'</span><span class="hl_Others">);</span>
+        }
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> <span class="hl_Function">next</span><span class="hl_Others">()</span>
+        {
+            <span class="hl_Operator">return</span> <span class="hl_Function">array_shift</span><span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;tokens<span class="hl_Others">);</span>
+        }
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> peek<span class="hl_Others">()</span>
+        {
+            <span class="hl_Operator">return</span> <b class="hl_Variable">$this</b>-&gt;tokens<span class="hl_Others">[</span>0<span class="hl_Others">];</span>
+        }
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> get<span class="hl_Others">(</span><b class="hl_Variable">$type</b><span class="hl_Others">,</span> <b class="hl_Variable">$hissy_fit</b>=<b class="hl_Keyword">FALSE</b><span class="hl_Others">)</span>
+        {
+            <b class="hl_Variable">$next</b> = <b class="hl_Variable">$this</b>-&gt;peek<span class="hl_Others">;</span>
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$next</b>-&gt;token_type==<b class="hl_Variable">$type</b><span class="hl_Others">)</span>
+                <span class="hl_Operator">return</span> <b class="hl_Variable">$this</b>-&gt;<span class="hl_Function">next</span><span class="hl_Others">();</span>
+            <span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$hissy_fit</b><span class="hl_Others">)</span>
+                throw <b class="hl_Keyword">new</b> Exception<span class="hl_Others">(</span><span class="hl_String">'hissy fit'</span><span class="hl_Others">);</span>
+            <span class="hl_Operator">else</span>
+                <span class="hl_Operator">return</span> <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+        }
+
+        <b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> parseScript<span class="hl_Others">()</span>
+        {
+            <b class="hl_Variable">$ast</b> = <b class="hl_Keyword">new</b> AstNode_Script<span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;peek<span class="hl_Others">());</span>
+            <b class="hl_Variable">$ast</b>-&gt;statements = <b class="hl_Variable">$this</b>-&gt;parseCommand<span class="hl_Others">();</span>
+            <span class="hl_Operator">while</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;peek<span class="hl_Others">())</span>
+            {
+                <b class="hl_Variable">$ast</b>-&gt;statements = <b class="hl_Variable">$this</b>-&gt;parseCommand<span class="hl_Others">();</span>
+            }
+            <span class="hl_Operator">return</span> <b class="hl_Variable">$ast</b><span class="hl_Others">;</span>
+        }
+
+        <i class="hl_Comment">// And then you write parseCommand, which in turn probably</i><i class="hl_Comment">
+</i>        <i class="hl_Comment">// calls things like parseConditional, parseExpression,</i><i class="hl_Comment">
+</i>        <i class="hl_Comment">// parseFunctionCall and so forth.</i><i class="hl_Comment">
+</i>    }
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>The third part of the job is interpreting the <span class="caps">AST, </span>but if you look at my AstNode_* classes above, you'll see they have the logic built into them. All you then need to do is:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b> <b class="hl_Variable">$ast</b>-&gt;evaluate<span class="hl_Others">(</span><b class="hl_Variable">$machine</b><span class="hl_Others">);</span> 1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Where machine is an object capable of keeping track of things like variable values, function definitions and so forth.</p>
+
+<p>It's quite a bit of work, but it's certainly do-able. It helps if you have a good book on compilers -- I'd recommend Watt &amp; Brown "Programming Language Processors in Java". As you might guess from the title, it teaches you to write parsers, compilers and interpreters in Java, but the same techniques can easily be applied to any object-oriented language, and with a little more imagination, to non-OO languages too.</p>
+
+<p>A few months back, partly as an experiment, but partly because I thought it would be useful for a project of mine, I designed my own scripting language and wrote a tokeniser, parser and machine for it in <span class="caps">PHP.</span> It supports variables (numeric, string and multi-dimensional arrays), functions, comments, and has all the normal numeric, string and array operators built-in. Scalar (non-array) variables, are automatically typecast as arrays (such that they become single-element arrays) and array variables are automatically typecast as scalars (the first value in the array is used, the rest are discarded). </p>
+
+<p>The reason I wrote it is that it would allow user-supplied code to run in a "sandbox" environment, so that if it crashed, or tampered with variables, or whatever, it wouldn't cause any problems for the rest of the site.</p>
+
+<p>It's half-finished, the syntax is sort of crazy and it needs improving, which is why I've not foisted it upon the general public. But if you want a copy, I'd be happy to send you one, licensed under the <span class="caps">GPL.</span></p>
+
+<p>Here's an example of using it:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$p</b> = <span class="hl_BString">&lt;&lt;&lt;PROG</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">/* Function names can be arbitrary strings. No parentheses used. */</span><span class="hl_String">
+</span><span class="hl_String">function "my concatenation function", </span><b class="hl_Variable">$a</b><span class="hl_String">, </span><b class="hl_Variable">$b</b><span class="hl_String">
+</span><span class="hl_String">{</span><span class="hl_String">
+</span><span class="hl_String">	/* Uses "let VAR := EXPR" for assignment. A bit like Turing. */</span><span class="hl_String">
+</span><span class="hl_String">	let </span><b class="hl_Variable">$result</b><span class="hl_String"> := </span><b class="hl_Variable">$a</b><span class="hl_String"> . </span><b class="hl_Variable">$b</b><span class="hl_String">;</span><span class="hl_String">
+</span><span class="hl_String">	</span><span class="hl_String">
+</span><span class="hl_String">	/* Perlish syntax for returning function results. */</span><span class="hl_String">
+</span><span class="hl_String">	</span><b class="hl_Variable">$result</b><span class="hl_String">;</span><span class="hl_String">
+</span><span class="hl_String">}</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">let </span><b class="hl_Variable">$quux</b><span class="hl_String"> = call "my concatenation function", "foo", "bar";</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">/* Print automatically appends a new line, a la Python */</span><span class="hl_String">
+</span><span class="hl_String">print </span><b class="hl_Variable">$quux</b><span class="hl_String">;</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">PROG;</span><span class="hl_String">
+</span><span class="hl_String">
+</span><b class="hl_Variable">$r</b><span class="hl_String"> = eval_programme(</span><b class="hl_Variable">$p</b><span class="hl_String">);</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">?&gt;</span><span class="hl_String">
+</span></code></pre></div>
+  </content>
+  <published>2007-02-10T14:14:28Z</published>
+  <updated>2007-04-08T17:55:47+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-2.0.html"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="parsers"/>
+</entry>

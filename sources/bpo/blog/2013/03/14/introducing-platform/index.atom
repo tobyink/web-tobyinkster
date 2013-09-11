@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Introducing Platform</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/03/introducing-platform.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4431</id>
+
+    <published>2013-03-14T16:30:16Z</published>
+    <updated>2013-03-14T16:09:49Z</updated>
+
+    <summary> So, what's the big idea? Perl projects have all manner of ways of declaring their dependencies. CPAN releases usually include a file called META.yml or META.json listing their dependencies (though Makefile.PL or Build.PL is also supposed to generate a...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<h2><span id="So,_what's_the_big_idea?">So, what's the big idea?</span></h2>
+		<p>Perl projects have all manner of ways of declaring their dependencies. CPAN releases usually include a file called META.yml or META.json listing their dependencies (though Makefile.PL or Build.PL is also supposed to generate a list of dependencies when it runs; this allows the release to dynamically decide on different dependencies based on the machine it's running on). Non-CPAN projects can declare their CPAN dependencies using <a class="podlinkpod" href="https://metacpan.org/module/Module::CPANfile">cpanfile</a> too.</p>
+		<p>Once the dependencies are declared, this information is used by CPAN clients, by metacpan.org (to show the list of a release's dependencies), by <a class="podlinkurl" href="http://deps.cpantesters.org/">http://deps.cpantesters.org/</a> and so on.</p>
+		<p>However, this only works where you want to declare dependencies on CPAN modules, or on a minimum version of Perl itself.</p>
+]]>
+        <![CDATA[		<p>There's another few important types of dependency - your project may depend on external libraries or binaries, or may depend on a particular platform (e.g. code that only works, or only makes sense to use on Windows).</p>
+		<p>For external libraries, there is good work going on in the Alien namespace on CPAN. And it seems reasonable to extend this approach to binaries.</p>
+		<p>For platforms, the solution to this has often been to include code in Makefile.PL to check <code>$^O</code> looks OK and die otherwise:</p>
+		<pre>        <span class="word">die</span> <span class="double" style="color:#909">"Windows only!"</span> <span class="word">unless</span> <span class="magic" style="color:#900;font-weight:bold">$^O</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"MSWin32"</span><span class="structure">;</span></pre>
+		<p>However, this approach doesn't leave any indication of the required platform in META.yml; it's invisible to services performing automated analysis of CPAN; metacpan.org's dependency listings won't show it.</p>
+		<p>The Platform namespace is designed as a solution to these issues.</p>
+		<h2><span id="What_is_in_the_Platform_namespace?">What is in the Platform namespace?</span></h2>
+		<p>Initially three releases. The first is <a class="podlinkpod" href="https://metacpan.org/module/Platform">Platform</a> itself - a documentation-only release explaining the concept.</p>
+		<p>The next is <a class="podlinkpod" href="https://metacpan.org/module/Platform%3A%3AUnix">Platform::Unix</a>. This is a module that doesn't "do" anything, but will only install and only run on Unix-like platforms. So if your Perl project requires a Unix-like OS, just add a dependency on Platform::Unix, and Bob's your uncle. Having Platform::Unix listed in your META.yml and on your metacpan.org page makes it really explicit to your users that your release requires a Unix-like operating system.</p>
+		<p>The third release is <a class="podlinkpod" href="https://metacpan.org/module/Platform%3A%3AWindows">Platform::Windows</a> which is much the same thing for Windows.</p>
+		<h2><span id="Any_more_planned?">Any more planned?</span></h2>
+		<p>No, but if you have any requests, let me know. I've got a template for building new Platform releases in <a class="podlinkurl" href="https://bitbucket.org/tobyink/p5-platform">the Platform repository</a>.</p>
+]]>
+    </content>
+</entry>

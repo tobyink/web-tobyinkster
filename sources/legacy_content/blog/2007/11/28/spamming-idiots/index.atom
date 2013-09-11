@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/11/28/spamming-idiots/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/11/28/spamming-idiots/"/>
+  <title>Attention Spammers!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I get probably about 10 to 20 spam comments left on this blog every day. However, nobody ever sees them because, firstly, the most obvious spams are automatically filtered out using content scanning and IP blacklists, and secondly, the remaining messages are checked by a human moderator (i.e. me) before they appear on the site.</p>
+
+<p>So spammers, your comment spam will never be seen. It's a waste of your time and mine.</p></div>
+  </content>
+  <published>2007-11-28T18:32:41Z</published>
+  <updated>2007-11-28T18:32:41Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="spam"/>
+  <category term="colophon"/>
+  <category term="demiblog"/>
+</entry>

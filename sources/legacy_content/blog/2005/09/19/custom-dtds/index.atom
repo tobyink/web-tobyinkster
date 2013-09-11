@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2005/09/19/custom-dtds/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2005/09/19/custom-dtds/"/>
+  <title>On Custom DTDs</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Dylan Parry wrote:</p>
+
+<blockquote><p>Of course, but validating against a custom, non-standards controlled <span class="caps">DTD </span>is a complete waste of time for <span class="caps">HTML.</span> That would be validation for validation's sake. If you can't validate against a recognised doctype then there is truly no point in attempting to create your own to cover your problems </p></blockquote>
+
+<p>Using a custom <span class="caps">DTD </span>can be very useful.</p>
+
+<p>To use your own example, say you are working on a site that includes a lot of legal documents. You would like to mark up the clauses of each contract as an ordered list.</p>
+
+<p>Occasionally, notes are interspersed between list items, interrupting the follow of the list. Example:</p>
+
+
+
+
+<pre>
+DRAFT CONTRACT
+Acme corp will supply the following:
+a. those that belong to the Emperor
+b. embalmed ones
+c. those that are trained
+d. suckling pigs
+e. mermaids
+f. fabulous ones
+g. stray dogs
+h. those that are included in this classification
+Note: Category h seems a little vague. Needs clarification.
+i. those that tremble as if they were mad
+j. innumerable ones
+Note: How many of these should be supplied?
+k. those drawn with a very fine camel's hair brush
+l. others
+Note: Also seems too vague. This should be removed from the
+contract or clarified.
+m. those that have just broken a flower vase
+n. those that resemble flies from a distance.
+</pre>
+
+
+
+
+<p>A good way to mark this up might be:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;h1&gt;</b>Draft Contract<b class="hl_Keyword">&lt;/h1&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Acme corp will supply the following:<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;ol</b><span class="hl_Others"> type=</span><span class="hl_String">"a"</span><span class="hl_Others"> start=</span><span class="hl_String">"1"</span><b class="hl_Keyword">&gt;</b>
+<b class="hl_Keyword">&lt;li&gt;</b>those that belong to the Emperor
+<b class="hl_Keyword">&lt;li&gt;</b>embalmed ones
+<b class="hl_Keyword">&lt;li&gt;</b>those that are trained
+<b class="hl_Keyword">&lt;li&gt;</b>suckling pigs
+<b class="hl_Keyword">&lt;li&gt;</b>mermaids
+<b class="hl_Keyword">&lt;li&gt;</b>fabulous ones
+<b class="hl_Keyword">&lt;li&gt;</b>stray dogs
+<b class="hl_Keyword">&lt;li&gt;</b>those that are included in this classification
+<b class="hl_Keyword">&lt;/ol&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Note: Category h seems a little vague. Needs clarification.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;ol</b><span class="hl_Others"> type=</span><span class="hl_String">"a"</span><span class="hl_Others"> start=</span><span class="hl_String">"9"</span><b class="hl_Keyword">&gt;</b>
+<b class="hl_Keyword">&lt;li&gt;</b>those that tremble as if they were mad
+<b class="hl_Keyword">&lt;li&gt;</b>innumerable ones
+<b class="hl_Keyword">&lt;/ol&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Note: How many of these should be supplied?<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;ol</b><span class="hl_Others"> type=</span><span class="hl_String">"a"</span><span class="hl_Others"> start=</span><span class="hl_String">"11"</span><b class="hl_Keyword">&gt;</b>
+<b class="hl_Keyword">&lt;li&gt;</b>those drawn with a very fine camel's hair brush
+<b class="hl_Keyword">&lt;li&gt;</b>others
+<b class="hl_Keyword">&lt;/ol&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Note: Also seems too vague. This should be removed from the
+contract or clarified. See also item h.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;ol</b><span class="hl_Others"> type=</span><span class="hl_String">"a"</span><span class="hl_Others"> start=</span><span class="hl_String">"13"</span><b class="hl_Keyword">&gt;</b>
+<b class="hl_Keyword">&lt;li&gt;</b>those that have just broken a flower vase
+<b class="hl_Keyword">&lt;li&gt;</b>those that resemble flies from a distance.
+<b class="hl_Keyword">&lt;/ol&gt;</b>
+</code></pre>
+
+
+
+<p>Although the item markers could theoretically be inserted with <span class="caps">CSS </span>(only Opera 5.1+ would be able to cope with the required styles -- no other rendering engine has deemed <span class="caps">CSS </span>counters important enough to implement), it would be inappropriate -- they are content, not style; they are referred to in the paragraphs.</p>
+
+<p>So the "type" and "start" attributes here are required.</p>
+
+<p>Validation is a useful tool. It provides us with an automated way of spotting code slip-ups. If we write <code class="html">&lt;ol type="a start="13"&gt;&lt;li&gt;</code> the validator will notice the missing quote mark and tell us. A visual check in one or two browser might not reveal this error. So we want to validate our pages.</p>
+
+<p>One option is to simply use the Transitional <span class="caps">DOCTYPE.</span> Then our deprecated attributes will be allowed through. However, this won't flag up "iffy" presentational markup, such as <code class="html">&lt;p align="right"&gt;</code> which could be better handled in <span class="caps">CSS. </span>(Note this is no use if you want to use attributes and elements that have never been in the real <span class="caps">HTML </span>specs, but are widely supported anyway, such as <code class="html">&lt;NOBR&gt;</code>.)</p>
+
+<p>Another option is to use a Strict <span class="caps">DOCTYPE </span>but make a mental note to ignore errors about the particular Transitional attributes and elements you've decided to use. However, it you're using these attibutes a lot, you may find a lot of these errors popping up in validation reports, which might hide the "real errors".</p>
+
+<p>The third option is to create a custom <span class="caps">DTD </span>based on Strict, but with just the extra attributes and elements you need. That way, any errors that the validator flags up will be "real errors", and anything that it allows will come up to your standards.</p></div>
+  </content>
+  <published>2005-09-19T19:49:43+01:00</published>
+  <updated>2008-04-12T19:42:27+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="html"/>
+  <category term="web"/>
+  <category term="validation"/>
+</entry>

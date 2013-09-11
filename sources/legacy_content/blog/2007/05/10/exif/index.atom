@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/05/10/exif/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/05/10/exif/"/>
+  <title>EXIF is Cool</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>If you're not aware of <a href="http://exif.org/"><span class="caps">EXIF</span></a>, here's what it is:</p>
+
+<blockquote><p><span class="caps">EXIF </span>stands for Exchangeable Image File Format, and is a standard for storing interchange information in image files, especially those using <span class="caps">JPEG </span>compression. Most digital cameras now use the <span class="caps">EXIF </span>format.</p></blockquote>
+
+<p>That is, many images, including most of the <span class="caps">JPEG</span>s you get off modern digital cameras include a huge barrage of interesting information about the picture, such as:</p>
+
+<ul>
+<li>the date and time the photo was taken;</li>
+<li>the longitude and latitude where it was taken;</li>
+<li>whether or not the flash was fired; and </li>
+<li>what model of camera was used.</li>
+</ul>
+
+<p>Pretty nifty, eh? But how to get all this information out? Well, <span class="caps">PHP </span>offers some fairly good <a href="http://www.php.net/exif"><span class="caps">EXIF </span>functions</a>. I rather like <a href="http://www.kanzaki.com/test/exif2rdf">Masahide Kanzaki's <span class="caps">EXIF2RDF </span>tool</a> and am happy to announce that version 0.2.0 of demiblog will include a version of this for its <a href="http://en.wikipedia.org/wiki/Photoblog">photoblogging</a> functionality. demiblog is very focused on providing good metadata, and <span class="caps">EXIF2RDF </span>will help the photoblogging parts to keep their end of the bargain!</p></div>
+  </content>
+  <published>2007-05-10T00:17:10+01:00</published>
+  <updated>2007-05-10T00:17:10+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="metadata"/>
+  <category term="rdf"/>
+  <category term="exif"/>
+  <category term="demiblog"/>
+</entry>

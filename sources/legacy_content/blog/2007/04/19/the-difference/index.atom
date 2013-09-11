@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/19/the-difference/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/19/the-difference/"/>
+  <title>The Difference</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>
+        <a href="http://xkcd.com/c242.html"><br/>
+<img alt="Person pulls lever and gets zapped by bolt of lightening; normal person thinks &amp;quot;I guess I shouldn't do that&amp;quot;; scientist thinks &amp;quot;I wonder if that happend every time&amp;quot;. It's funnier in comic form." src="http://imgs.xkcd.com/comics/the_difference.png"/>
+</a>
+      </p>
+    </div>
+  </content>
+  <published>2007-04-19T11:00:57+01:00</published>
+  <updated>2007-04-19T11:00:57+01:00</updated>
+  <link rel="license" href=""/>
+  <category term="comics"/>
+  <category term="humour"/>
+  <category term="science"/>
+  <category term="xkcd"/>
+</entry>

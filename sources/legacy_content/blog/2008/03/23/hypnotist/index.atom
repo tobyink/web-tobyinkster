@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/03/23/hypnotist/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/03/23/hypnotist/"/>
+  <title>Best... News... Story... Ever!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><blockquote><p>Police in Italy have issued footage of a man who is suspected of hypnotising supermarket checkout staff to hand over money from their cash registers.</p></blockquote>
+
+<ul>
+<li><a href="http://news.bbc.co.uk/1/hi/world/europe/7309947.stm"><span class="caps">BBC</span> News</a></li>
+<li><a href="http://www.smh.com.au/news/unusual-tales/hypnotist-in-supermarket-cash-smash/2008/03/24/1206206966887.html?s_cid=rss_news">Sydney Morning Herald</a></li>
+<li><a href="http://www.timesonline.co.uk/tol/news/world/europe/article3606461.ece">The Times</a></li>
+</ul></div>
+  </content>
+  <published>2008-03-23T22:36:13Z</published>
+  <updated>2008-03-23T22:36:13Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="hypnotism"/>
+  <category term="news"/>
+  <category term="italy"/>
+  <category term="bbc-news"/>
+</entry>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/15/privacy/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/15/privacy/"/>
+  <title>Privacy</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://locusmeus.com/">Els</a> despairs about some high-profile privacy and data protection gaffs in 2007 and asks <a href="http://blog.locusmeus.com/index.php?itemid=68">can we still get some privacy in 2008?</a>. Her use of the word "get" rather than "retain" is very telling -- it's not just a matter of retaining our current level of privacy, but of trying to claw back what we've already lost.</p>
+
+<p>And it seems that privacy is one of those assets which is even harder to win back than it is to keep hold of in the first place. It's pretty easy to, say, end up on some spam mailing list, but just you try getting your e-mail address <strong>off</strong>. Off <strong>all</strong> of them. Because once that information's out there, it's out there for good. <a href="http://en.wikipedia.org/wiki/Information_wants_to_be_free">Information wants to be free</a>. But it works both ways you know.</p></div>
+  </content>
+  <published>2008-01-15T22:52:45Z</published>
+  <updated>2008-01-15T22:52:45Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="security"/>
+  <category term="no2id"/>
+  <category term="rights"/>
+  <category term="politics"/>
+  <category term="privacy"/>
+</entry>

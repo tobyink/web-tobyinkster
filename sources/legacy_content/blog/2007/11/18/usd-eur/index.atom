@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/11/18/usd-eur/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/11/18/usd-eur/"/>
+  <title>USD/EUR Exchange Rate Graph</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><img src="/blog/2007/11/18/usd-eur/files/usd-eur-small.png" alt="Chart showing fall of US dollar against Euro from 1999 until today"/></p>
+
+<p>The chart above shows the fall of the US dollar against the Euro over the last eight years, with some key events in American politics and economics noted, which may or may not be seen as causes or effects of the falling dollar.</p>
+
+<!--@SUMMARY@-->
+
+<ul>
+<li><a href="/blog/2007/11/18/usd-eur/files/usd-eur.png">Larger version - <span class="caps">PNG</span></a></li>
+<li><a href="/blog/2007/11/18/usd-eur/files/usd-eur.xcf">Larger version - Gimp <span class="caps">XCF</span></a></li>
+<li>Source: <a href="http://www.ecb.int/stats/eurofxref/">European Central Bank: Euro foreign exchange reference rates</a></li>
+</ul></div>
+  </content>
+  <published>2007-11-18T16:55:21Z</published>
+  <updated>2007-11-18T17:01:08Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="america"/>
+  <category term="politics"/>
+  <category term="europe"/>
+</entry>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/07/16/hcard-rdfa/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/07/16/hcard-rdfa/"/>
+  <title>Extending hCard with RDFa</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://microformats.org/wiki/hcard">hCard</a> is an <span class="caps">HTML</span>-based format for describing contacts (people, organisations, etc) on web pages. It allows you to mark up which elements represent their name, their address, their birthday and so forth. Here's an example:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>While hCard offers many useful properties that can be used to describe contacts, some are considered beyond the scope of the hCard specification. For example, there is no hCard property to mark up somebody's height, or shoe size.</p>
+
+<p>This is where <a href="http://www.w3.org/TR/xhtml-rdfa-primer/"><span class="caps">RDF</span>a</a> comes in. <span class="caps">RDF</span>a is not a specialist format for describing people or organisations, but a more general format for describing anything. We can use <span class="caps">RDF</span>a to add in the extra information we want.</p>
+
+<p>Now, one of the features of <span class="caps">RDF</span>a is that it's difficult (not impossible though) to describe anything that doesn't have a <span class="caps">URL.</span> So let's give our example hCard a <span class="caps">URL</span>:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>Now, if this hCard resided on <tt>http://example.com/page</tt> then the <span class="caps">URL </span>for the hCard itself would be: <tt>http://example.com/page#hcard_toby</tt>. Now that the hCard has a <span class="caps">URL, </span>we can use <span class="caps">RDF</span>a to add further information.</p>
+
+<p>In our <span class="caps">RDF</span>a, firstly we need to state what thing we will be describing:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"http://example.com/page#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    <i class="hl_Comment">&lt;!-- Our RDFa will go here. --&gt;</i>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>Now let's add some information on my height. Firstly we need to find an "RDF vocabulary" that covers people's heights. An <span class="caps">RDF </span>vocabulary is a set of terms like "height", "weight", "shoe size" with corresponding <span class="caps">URL</span>s, so that if somebody doesn't know exactly what "height" means (it could mean how tall a person is, or the altitude they're standing at above sea level), they can look up the <span class="caps">URL </span>and find out exactly what we mean by "height".</p>
+
+<p>Say, for example, that we find a vocabulary at <tt>http://example.net/people</tt>, such that <tt>http://example.net/people#height</tt> represents a person's height, measured in metres. Also, <tt>http://example.net/people#shoes</tt> will represent a person's shoe size, in UK sizes.</p>
+
+<p>Now we can add this information to our hCard -- notice the new <code>property</code> attribute:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b> <i class="hl_Comment">&lt;!-- I've reduced this to a relative URL --&gt;</i>
+    My height is
+    <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"http://example.net/people#height"</span><b class="hl_Keyword">&gt;</b>1.75<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+    My shoe size is
+    <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"http://example.net/people#shoes"</span><b class="hl_Keyword">&gt;</b>10<b class="hl_Keyword">&lt;/span&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>Let's introduce a bit of syntactic sugar. You'll notice we're repeating that <tt>http://example.net/people#</tt> already -- if we were to add a few more properties, this could become tiresome. <span class="caps">RDF</span>a allows us to use <a href="http://en.wikipedia.org/wiki/CURIE"><span class="caps">CURIE</span>s</a> to create abbreviated <span class="caps">URL</span>s -- <code>xmlns</code> attributes are used to define short codes for <span class="caps">URL </span>prefixes, and then they can be used more freely. Using <span class="caps">CURIE</span>s we get:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span>
+<span class="hl_Others">xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><b class="hl_Keyword">&gt;</b>1.75<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+    My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><b class="hl_Keyword">&gt;</b>10<b class="hl_Keyword">&lt;/span&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>Now, although to <span class="caps">RDF</span>a parsers this is unambiguous information -- an <span class="caps">RDF </span>parser that understands <tt>ex:height</tt> will also understand that it is measured in metres -- a human reader will probably need a bit more information to be displayed on the page. This is where the <code>content</code> attribute comes in:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span>
+<span class="hl_Others">xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h1</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b> <i class="hl_Comment">&lt;!-- I've reduced this to a relative URL --&gt;</i>
+    My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><span class="hl_Others"> content=</span><span class="hl_String">"1.75"</span><b class="hl_Keyword">&gt;</b>175 cm<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+    My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><span class="hl_Others"> content=</span><span class="hl_String">"10"</span><b class="hl_Keyword">&gt;</b>10 (UK)<b class="hl_Keyword">&lt;/span&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p><span class="caps">OK, </span>we've looked at how <span class="caps">RDF</span>a can be used to add additional pieces of information to an hCard. Now we'll look at <span class="caps">RDF</span>a's use of the <code>rel</code> and <code>rev</code> attributes to indicate relationships between things. In this case, we'll look at the relationship between a person and a document. We want to say that the person made the document.</p>
+
+<p>Here's my document now:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><b class="hl_Keyword">&gt;</b>
+  <i class="hl_Comment">&lt;!-- </i><span class="hl_Alert">Note</span><i class="hl_Comment"> that I've moved the xmlns attribute up to the top. It's generally</i><i class="hl_Comment">
+</i><i class="hl_Comment">       useful to keep them all together up here - you'll often want to use</i><i class="hl_Comment">
+</i><i class="hl_Comment">       more than one! --&gt;</i>
+  ...
+  <b class="hl_Keyword">&lt;h1&gt;</b>My Document<b class="hl_Keyword">&lt;/h1&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    <b class="hl_Keyword">&lt;h2</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h2&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+      My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><span class="hl_Others"> content=</span><span class="hl_String">"1.75"</span><b class="hl_Keyword">&gt;</b>175 cm<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><span class="hl_Others"> content=</span><span class="hl_String">"10"</span><b class="hl_Keyword">&gt;</b>10 (UK)<b class="hl_Keyword">&lt;/span&gt;</b>
+    <b class="hl_Keyword">&lt;/div&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+  ...
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>Now, we can add a <code>&lt;link&gt;</code> element to link down to my hCard at the bottom of the page, so that we have a link <strong>from</strong> the document <strong>to</strong> its author:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"author"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;h1&gt;</b>My Document<b class="hl_Keyword">&lt;/h1&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    <b class="hl_Keyword">&lt;h2</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h2&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+      My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><span class="hl_Others"> content=</span><span class="hl_String">"1.75"</span><b class="hl_Keyword">&gt;</b>175 cm<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><span class="hl_Others"> content=</span><span class="hl_String">"10"</span><b class="hl_Keyword">&gt;</b>10 (UK)<b class="hl_Keyword">&lt;/span&gt;</b>
+    <b class="hl_Keyword">&lt;/div&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+  ...
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>Actually, that's all that's required, because <span class="caps">RDF</span>a includes <code>author</code> in its list of predefined relationships which it understands, but for the purposes of this example, we'll also introduce a vocabulary called <span class="caps">FOAF </span>which includes two useful terms, <code>foaf:maker</code> and <code>foaf:made</code>. </p>
+
+<p>Let's add <code>foaf:maker</code> which has almost exactly the same meaning as <code>author</code>, so can be added in the same way:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><span class="hl_Others"> xmlns:foaf=</span><span class="hl_String">"http://xmlns.com/foaf/0.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"author"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"foaf:maker"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  ...
+</code></pre>
+
+
+
+<p>But wait! <span class="caps">HTML </span>actually allows us to use an abbreviated format for listing multiple <code>&lt;link&gt;</code> elements where the link target is the same:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><span class="hl_Others"> xmlns:foaf=</span><span class="hl_String">"http://xmlns.com/foaf/0.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"author foaf:maker"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  ...
+</code></pre>
+
+
+
+<p>Better. Now let's add the reverse relationship -- if the document's <code>foaf:maker</code> is Toby, then it's equally true that Toby <code>foaf:made</code> the document. Here's two ways of doing that. Firstly, we could add a forward link from my hCard to the document:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><span class="hl_Others"> xmlns:foaf=</span><span class="hl_String">"http://xmlns.com/foaf/0.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"author foaf:maker"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;h1&gt;</b>My Document<b class="hl_Keyword">&lt;/h1&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    <b class="hl_Keyword">&lt;h2</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h2&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+      My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><span class="hl_Others"> content=</span><span class="hl_String">"1.75"</span><b class="hl_Keyword">&gt;</b>175 cm<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><span class="hl_Others"> content=</span><span class="hl_String">"10"</span><b class="hl_Keyword">&gt;</b>10 (UK)<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      I made <b class="hl_Keyword">&lt;a</b><span class="hl_Others"> rel=</span><span class="hl_String">"foaf:made"</span><span class="hl_Others"> href=</span><span class="hl_String">"http://example.com/page"</span><b class="hl_Keyword">&gt;</b>this document<b class="hl_Keyword">&lt;/a&gt;</b>
+    <b class="hl_Keyword">&lt;/div&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+  ...
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>As an alternative (or in addition -- it doesn't hurt to state the same thing twice) we could make use of the <code>rev</code> attribute on the <code>&lt;link&gt;</code> tag at the top:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:ex=</span><span class="hl_String">"http://example.net/people#"</span><span class="hl_Others"> xmlns:foaf=</span><span class="hl_String">"http://xmlns.com/foaf/0.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"author foaf:maker"</span><span class="hl_Others"> rev=</span><span class="hl_String">"foaf:made"</span><span class="hl_Others"> href=</span><span class="hl_String">"#hcard_toby"</span> <b class="hl_Keyword">/&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;h1&gt;</b>My Document<b class="hl_Keyword">&lt;/h1&gt;</b>
+  ...
+  <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><span class="hl_Others"> id=</span><span class="hl_String">"hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+    <b class="hl_Keyword">&lt;h2</b><span class="hl_Others"> class=</span><span class="hl_String">"fn"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/h2&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Birthday: <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"bday"</span><b class="hl_Keyword">&gt;</b>1980-06-01<b class="hl_Keyword">&lt;/span&gt;</b>.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;div</b><span class="hl_Others"> about=</span><span class="hl_String">"#hcard_toby"</span><b class="hl_Keyword">&gt;</b>
+      My height is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:height"</span><span class="hl_Others"> content=</span><span class="hl_String">"1.75"</span><b class="hl_Keyword">&gt;</b>175 cm<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      My shoe size is <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"ex:shoes"</span><span class="hl_Others"> content=</span><span class="hl_String">"10"</span><b class="hl_Keyword">&gt;</b>10 (UK)<b class="hl_Keyword">&lt;/span&gt;&lt;br</b> <b class="hl_Keyword">/&gt;</b>
+      I made <b class="hl_Keyword">&lt;a</b><span class="hl_Others"> rel=</span><span class="hl_String">"foaf:made"</span><span class="hl_Others"> href=</span><span class="hl_String">"http://example.com/page"</span><b class="hl_Keyword">&gt;</b>this document<b class="hl_Keyword">&lt;/a&gt;</b>
+    <b class="hl_Keyword">&lt;/div&gt;</b>
+  <b class="hl_Keyword">&lt;/div&gt;</b>
+  ...
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>So there we have it, <span class="caps">RDF</span>a can be used to add extra information to hCards, and also to express relationships between people, organisations, documents and things.</p></div>
+  </content>
+  <published>2008-07-16T20:21:43+01:00</published>
+  <updated>2008-07-17T10:07:47+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="semantic-web"/>
+  <category term="microformats"/>
+  <category term="rdfa"/>
+  <category term="rdf"/>
+</entry>

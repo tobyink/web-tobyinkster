@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/13/bone/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/13/bone/"/>
+  <title>BBC News Roundup</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><h2>Scientists Produce Sperm from Bone</h2>
+
+<p>Excited scientists have announced that they produced sperm from bones. No sniggering at the back. <a href="http://news.bbc.co.uk/1/hi/health/6547675.stm">Sperm made from human bone marrow</a>.</p>
+
+<h2>Teen Trashes House</h2>
+
+<p>In a completely unrelated story, <a href="http://news.bbc.co.uk/1/hi/england/wear/6551589.stm">Police interview web party girl</a>.</p></div>
+  </content>
+  <published>2007-04-13T12:39:00+01:00</published>
+  <updated>2007-04-13T12:39:00+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="medicine"/>
+  <category term="dumb"/>
+  <category term="science"/>
+  <category term="bbc"/>
+  <category term="bbc-news"/>
+</entry>

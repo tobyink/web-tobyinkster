@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/19/php-domain-class/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/19/php-domain-class/"/>
+  <title>PHP Domain Class</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>On Usenet an often-asked question is how to programmatically determine the "domain" of a particular hostname. That is, excluding the components traditionally thought of as subdomains. As an example, <tt>groups.google.com</tt> and <tt>www.google.com</tt> both have a domain of <tt>google.com</tt>.</p>
+
+<p>Invariably, one answer comes back stating that you just need to chop off everything from the front, leaving only the last two components. But then someone will chime in pointing out that <tt>groups.google.co.uk</tt> would be left as just <tt>co.uk</tt> that way, when what is really wanted is <tt>google.co.uk</tt>. And the eventual resolution of the argument will be "it just can't be done".</p>
+
+<p>The problem is that there's technically no difference between a domain and a subdomain: it's simply a matter of convention. Fortunately, this issue is actually quite important to browser programmers, as it's a key issue in cookie security: browsers must allow subdomains within a domain to share cookie data, but not allow cookies to be passed from one domain to another. And so, the Mozilla project has created the <a href="http://publicsuffix.org/list/">Public Suffix List</a>, a codified list of convention.</p>
+
+<p>The following <span class="caps">PHP </span>class can be used to download the latest Public Suffix List and store it in your temp directory, and then find the domain name for a particular host. You may use it as follows:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+  <span class="hl_Operator">include</span> <span class="hl_String">"Domain.class.php"</span><span class="hl_Others">;</span>
+
+  <b class="hl_Variable">$url</b> = <span class="hl_String">"http://ophelia.goddamn.co.uk/?foo=bar"</span><span class="hl_Others">;</span>
+  <b class="hl_Variable">$domain</b> = Domain<span class="hl_Others">::</span>from_url<span class="hl_Others">(</span><b class="hl_Variable">$url</b><span class="hl_Others">);</span>
+  <span class="hl_Function">echo</span> <b class="hl_Variable">$domain</b>-&gt;get_reg_domain<span class="hl_Others">();</span>  <i class="hl_Comment">// goddamn.co.uk.</i><i class="hl_Comment">
+</i>  
+  <b class="hl_Variable">$domain2</b> = <b class="hl_Keyword">new</b> Domain<span class="hl_Others">(</span><span class="hl_String">"british-library.uk"</span><span class="hl_Others">);</span>
+  <span class="hl_Function">echo</span> <b class="hl_Variable">$domain</b>-&gt;get_etld<span class="hl_Others">();</span> <i class="hl_Comment">// uk.</i><i class="hl_Comment">
+</i>1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Download <a href="./files/Domain.class.php">Domain.class.php</a>.</p></div>
+  </content>
+  <published>2007-07-19T10:17:19+01:00</published>
+  <updated>2007-07-19T10:24:59+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-2.0.html"/>
+  <category term="domains"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="oop"/>
+</entry>

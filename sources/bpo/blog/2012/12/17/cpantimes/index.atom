@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>cpantimes</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/12/cpantimes.html"/>
+    <id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.4135</id>
+
+    <published>2012-12-17T09:43:40Z</published>
+    <updated>2012-12-17T10:05:24Z</updated>
+
+    <summary>OK, so I decided to hack in support for submitting CPAN testers reports into cpanminus. I've uploaded the result to CPAN in case anybody else wants to use it. After CPANPLUS and cpanminus, the logical name for it was cpantimes....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="cpan" label="CPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="testing" label="Testing" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p><span class="caps">OK, </span>so I decided to hack in support for submitting <span class="caps">CPAN </span>testers reports into cpanminus. I've uploaded the result to <span class="caps">CPAN </span>in case anybody else wants to use it. After <span class="caps">CPANPLUS </span>and cpanminus, the logical name for it was <a href="https://metacpan.org/release/TOBYINK/App-cpantimes-1.501803">cpantimes</a>.</p>
+
+<p>Here's how to use it...</p>]]>
+        <![CDATA[
+<ol>
+<li>Install <a href="https://metacpan.org/release/TOBYINK/App-cpantimes-1.501803">cpantimes</a> using your current <span class="caps">CPAN </span>client. You will also want <a href="https://metacpan.org/module/Test::Reporter">Test::Reporter</a> and <a href="https://metacpan.org/module/Test::Reporter::Transport::Metabase">Test::Reporter::Transport::Metabase</a>.<br />
+<samp>$ </samp><kbd>cpanm App::cpantimes Test::Reporter Test::Reporter::Transport::Metabase</kbd></li>
+<li>Set up a Metabase profile. You will need this in order for your reports to be accepted by <span class="caps">CPAN </span>testers.<br />
+<samp>$ </samp><kbd>metabase-profile</kbd><br />
+<samp>...</samp><br />
+<samp>$ </samp><kbd>mkdir $HOME/.cpantesters</kbd><br />
+<samp>$ </samp><kbd>mv metabase_id.json $HOME/.cpantesters</kbd><br />
+<samp>$ </samp><kbd>chmod 400 $HOME/.cpantesters/metabase_id.json</kbd></li>
+<li>Now just use <kbd>cpant</kbd> whenever you'd normally use <kbd>cpanm</kbd>. Test reports will be silently submitted every time you install a distribution. You can even set up a shell alias so that when you type <kbd>cpanm</kbd> you get cpantimes.</li>
+</ol>
+
+
+
+<p>cpantimes is still at a very early stage of development. I literally started it yesterday evening. But have a play and let me know if you discover any bugs.</p>]]>
+    </content>
+</entry>

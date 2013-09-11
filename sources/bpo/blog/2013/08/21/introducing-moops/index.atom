@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Introducing Moops</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/08/introducing-moops.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5038</id>
+
+    <published>2013-08-21T23:18:17Z</published>
+    <updated>2013-08-21T23:19:12Z</updated>
+
+    <summary> Moops is sugar for writing object-oriented Perl. It provides similar syntax to MooseX::Declare and Stevan Little's p5-mop-redux. It's some glue between Moo, Type::Tiny, Function::Parameters and Try::Tiny, but for those occasions when you want the backing of a meta object...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moops" label="Moops" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="syntax" label="syntax" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a> is sugar for writing object-oriented Perl. It provides similar syntax to <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ADeclare">MooseX::Declare</a> and <a class="podlinkurl" href="https://github.com/stevan/p5-mop-redux">Stevan Little's p5-mop-redux</a>. It's some glue between <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a>, <a class="podlinkpod" href="https://metacpan.org/module/Type%3A%3ATiny">Type::Tiny</a>, <a class="podlinkpod" href="https://metacpan.org/module/Function%3A%3AParameters">Function::Parameters</a> and <a class="podlinkpod" href="https://metacpan.org/module/Try%3A%3ATiny">Try::Tiny</a>, but for those occasions when you want the backing of a meta object protocol, allows you to easily swap <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> (or even <a class="podlinkpod" href="https://metacpan.org/module/Mouse">Mouse</a>) in place of Moo with very minimal changes.</p>
+		<p>Here's an example of a complete, usable class definition in Moops:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moops</span><span class="structure">;</span>
+   
+   <span class="word">class</span> <span class="label">Person :</span><span class="word">ro</span> <span class="structure">{</span>
+      <span class="word">has</span> <span class="word">first_name</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Str</span><span class="structure">);</span>
+      <span class="word">has</span> <span class="word">last_name</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Str</span><span class="structure">);</span>
+   <span class="structure">}</span></pre>
+]]>
+        <![CDATA[			<p>Note the <code>:ro</code> shortcut, to make attributes default to being read-only. Boilerplate code like <code>use namespace::sweep</code> and <code>__PACKAGE__-&gt;meta-&gt;make_immutable</code> can be omitted because Moops does that all for you.</p>
+		<p>Here's a more extensive example, showing off some other Moops features.</p>
+		<pre class="highlighting-perl">   <span class="word">class</span> <span class="word">User</span> <span class="word">extends</span> <span class="word">Person</span> <span class="word">using</span> <span class="label">Moose :</span><span class="word">ro</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">DateTime</span> <span class="structure">();</span>
+      
+      <span class="word">has</span> <span class="word">password</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Str</span><span class="structure">);</span>
+      <span class="word">has</span> <span class="word">last_login</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'rwp'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">InstanceOf</span><span class="structure">[</span><span class="single" style="color:#909">'DateTime'</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">handles</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="single" style="color:#909">'date_of_last_login'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'date'</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      
+      <span class="word">method</span> <span class="word">login</span> <span class="structure">(</span> <span class="word">Str</span> <span class="symbol" style="color:#333;background-color:#fcc">$pw</span> <span class="structure">)</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">return</span> <span class="number" style="color:#39C">0</span> <span class="word">if</span> <span class="symbol" style="color:#333;background-color:#fcc">$pw</span> <span class="operator" style="color:#000;font-weight:bold">ne</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">password</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_set_last_login</span><span class="structure">(</span> <span class="word">DateTime</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">now</span> <span class="structure">);</span>
+         <span class="keyword" style="color:#009;font-weight:bold">return</span> <span class="number" style="color:#39C">1</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span></pre>
+		<p>Moops goes to great lengths to smooth over the differences between Moo and Moose. Type constraints are taken from <a class="podlinkpod" href="https://metacpan.org/module/Types%3A%3AStandard">Types::Standard</a>, so the same types will be available for attribute declarations and method signatures, no matter whether you're using Moo, Moose or Mouse. The Moo-specific <code>is =&gt; 'rwp'</code> is munged by <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AMungeHas">MooseX::MungeHas</a> into something Moose is capable of understanding.</p>
+		<p>Roles can be declared and used just as easily:</p>
+		<pre class="highlighting-perl">   <span class="word">role</span> <span class="label">Breakable :</span><span class="word">rwp</span> <span class="structure">{</span>
+      <span class="word">has</span> <span class="word">is_broken</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Bool</span><span class="structure">);</span>
+      <span class="word">after</span> <span class="word">break</span> <span class="structure">()</span> <span class="structure">{</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_set_is_broken</span><span class="structure">(</span><span class="number" style="color:#39C">1</span><span class="structure">);</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span>
+   
+   <span class="word">class</span> <span class="word">Engine</span><span class="structure">;</span>
+   
+   <span class="word">class</span> <span class="word">Car</span> <span class="word">with</span> <span class="word">Breakable</span> <span class="structure">{</span>
+      
+      <span class="word">has</span> <span class="word">engine</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">InstanceOf</span><span class="structure">[</span><span class="single" style="color:#909">'Engine'</span><span class="structure">]);</span>
+      <span class="word">has</span> <span class="word">is_moving</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'rw'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Bool</span><span class="structure">);</span>
+      
+      <span class="word">method</span> <span class="word">start</span> <span class="structure">()</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">return</span> <span class="word">if</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">is_broken</span><span class="structure">;</span>
+         <span class="word">say</span> <span class="double" style="color:#909">"Starting car"</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">is_moving</span><span class="structure">(</span><span class="number" style="color:#39C">1</span><span class="structure">);</span>
+      <span class="structure">}</span>
+      
+      <span class="word">method</span> <span class="word">stop</span> <span class="structure">()</span> <span class="structure">{</span>
+         <span class="word">say</span> <span class="double" style="color:#909">"Stopping car"</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">is_moving</span><span class="structure">(</span><span class="number" style="color:#39C">0</span><span class="structure">);</span>
+      <span class="structure">}</span>
+      
+      <span class="word">method</span> <span class="word">break</span> <span class="structure">()</span> <span class="structure">{</span>
+         <span class="word">say</span> <span class="double" style="color:#909">"Car broke"</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">stop</span> <span class="word">if</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">is_moving</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span></pre>
+		<p>Moops is still in an early stage of development, but <a class="podlinkurl" href="https://metacpan.org/module/TOBYINK/Moops-0.014/examples/bench.pl">loads and runs significantly faster than MooseX::Declare</a> and <a class="podlinkurl" href="http://stackoverflow.com/questions/8819183">doesn't seem to suffer from as many parsing oddities</a>. If you've got a few spare minutes, and a relatively up-to-date Perl installation (Perl 5.14 is required), please download it and give it a go, and let me know how it went for you.</p>
+]]>
+    </content>
+</entry>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Who's relying on that CPAN release?</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/07/whos-relying-on-that-cpan-release.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4969</id>
+
+    <published>2013-07-29T14:37:31Z</published>
+    <updated>2013-07-29T14:43:23Z</updated>
+
+    <summary> Sometimes it's useful to know who exactly is relying on your CPAN distribution - for example, if you're planning an incompatible API change for a module, and wish to contact people using it to give them advance notice. MetaCPAN...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="cpan" label="CPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="metacpan" label="MetaCPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>Sometimes it's useful to know who exactly is relying on your CPAN distribution - for example, if you're planning an incompatible API change for a module, and wish to contact people using it to give them advance notice. <a class="podlinkurl" href="https://metacpan.org/">MetaCPAN</a> handily includes a "reverse dependencies" link for every distribution. However, sometimes that might not be enough; you may want recursive results. In which case you need to dig around in the MetaCPAN API.</p>
+		<p>Thankfully there's a little module called <a href="https://metacpan.org/module/MetaCPAN%3A%3AAPI" class="podlinkpod">MetaCPAN::API</a> that helps you do just that. Here's how I've used it (plus <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a>) to retrieve recursive dependencies starting at a seed...</p>
+]]>
+        <![CDATA[		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.14</span><span class="structure">;</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MetaCPANx::RevDeps</span>
+  <span class="structure">{</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">List::MoreUtils</span> <span class="words" style="color:#333;background-color:#ffc">qw(part)</span><span class="structure">;</span>
+    
+    <span class="word">has</span> <span class="word">seed</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span>
+        <span class="word">ref</span><span class="structure">(</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">0</span><span class="structure">])</span>
+          <span class="operator" style="color:#000;font-weight:bold">?</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">0</span><span class="structure">]</span>
+          <span class="operator" style="color:#000;font-weight:bold">:</span> <span class="single" style="color:#909">'MetaCPANx::RevDeps::Release'</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span><span class="word">distribution</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">0</span><span class="structure">])</span><span class="operator" style="color:#000;font-weight:bold">;</span>
+      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="word">has</span> <span class="word">dependents</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">builder</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="operator" style="color:#000;font-weight:bold">+</span><span class="structure">{}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">add</span>
+    <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$hash</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">dependents</span><span class="structure">;</span>
+      
+<span class="comment" style="color:#060;font-style:italic">      # prioritise higher version numbers; non-developer releases
+</span>      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@all</span> <span class="operator" style="color:#000;font-weight:bold">=</span>
+        <span class="word">map</span>  <span class="structure">{</span> <span class="word">sort</span> <span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$b</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">version_numified</span> <span class="operator" style="color:#000;font-weight:bold">&lt;=&gt;</span> <span class="symbol" style="color:#333;background-color:#fcc">$a</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">version_numified</span> <span class="structure">}</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="structure">}</span>
+        <span class="word">part</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">maturity</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="single" style="color:#909">'developer'</span> <span class="structure">}</span> <span class="magic" style="color:#900;font-weight:bold">@_</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@to_crawl</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">for</span> <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span> <span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">@all</span><span class="structure">)</span>
+      <span class="structure">{</span>
+        <span class="keyword" style="color:#009;font-weight:bold">unless</span> <span class="structure">(</span><span class="word">exists</span> <span class="symbol" style="color:#333;background-color:#fcc">$hash</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">distribution</span> <span class="structure">})</span>
+        <span class="structure">{</span>
+          <span class="symbol" style="color:#333;background-color:#fcc">$hash</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">distribution</span> <span class="structure">}</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="structure">;</span>
+          <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@to_crawl</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="structure">;</span>
+        <span class="structure">}</span>
+      <span class="structure">}</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">for</span> <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span> <span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">@to_crawl</span><span class="structure">)</span>
+      <span class="structure">{</span>
+        <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">fetch_direct_dependents</span> <span class="structure">);</span>
+      <span class="structure">}</span>
+    <span class="structure">}</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">BUILD</span>
+    <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">seed</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">fetch_direct_dependents</span> <span class="structure">);</span>
+    <span class="structure">}</span>
+  <span class="structure">};</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MetaCPANx::RevDeps::Release</span>
+  <span class="structure">{</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">overload</span> <span class="literal" style="color:#909">q[""]</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span class="word">join</span> <span class="literal" style="color:#909">q[ ]</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">grep</span> <span class="core" style="color:#009;font-weight:bold">defined</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">distribution</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">version</span><span class="structure">;</span>
+    <span class="structure">};</span>
+    
+    <span class="word">has</span> <span class="word">distribution</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="word">has</span> <span class="word">abstract</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">0</span><span class="structure">]</span> <span class="operator" style="color:#000;font-weight:bold">=~</span> <span class="substitute" style="color:#333;background-color:#f90">s/\s+/ /rsmg</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="word">has</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ author date maturity version version_numified /</span><span class="structure">]</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="word">has</span> <span class="word">_metacpan</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'lazy'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">builder</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span>
+        <span class="word">require</span> <span class="word">MetaCPAN::API</span><span class="structure">;</span>
+        <span class="single" style="color:#909">'MetaCPAN::API'</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">;</span>
+      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">TO_JSON</span>
+    <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">%hash</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="cast" style="color:#f00;font-weight:bold">%</span><span class="structure">{</span><span class="operator" style="color:#000;font-weight:bold">+</span><span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">};</span>
+      <span class="word">delete</span> <span class="symbol" style="color:#333;background-color:#fcc">$hash</span><span class="structure">{</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">}</span> <span class="word">for</span> <span class="words" style="color:#333;background-color:#ffc">qw/ _metacpan /</span><span class="structure">;</span>
+      <span class="cast" style="color:#f00;font-weight:bold">\</span><span class="symbol" style="color:#333;background-color:#fcc">%hash</span><span class="structure">;</span>
+    <span class="structure">}</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">fetch_direct_dependents</span>
+    <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span>  <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$class</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">ref</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="structure">);</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$data</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_metacpan</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">post</span><span class="structure">(</span>
+        <span class="single" style="color:#909">'/search/reverse_dependencies/'</span> <span class="operator" style="color:#000;font-weight:bold">.</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">distribution</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="structure">{</span>
+          <span class="word">query</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+            <span class="word">filtered</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+              <span class="word">query</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="single" style="color:#909">'match_all'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+              <span class="word">filter</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+                <span class="word">and</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+                  <span class="structure">{</span> <span class="word">term</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="single" style="color:#909">'release.status'</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'latest'</span> <span class="structure">}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+                  <span class="structure">{</span> <span class="word">term</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="single" style="color:#909">'release.authorized'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="cast" style="color:#f00;font-weight:bold">\</span><span class="number" style="color:#39C">1</span> <span class="structure">}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+                <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+              <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+            <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">5000</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="word">from</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">0</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">or</span> <span class="keyword" style="color:#009;font-weight:bold">return</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">return</span> <span class="word">map</span> <span class="structure">{</span>
+        <span class="symbol" style="color:#333;background-color:#fcc">$class</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span>
+          <span class="cast" style="color:#f00;font-weight:bold">%</span><span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">_source</span><span class="structure">}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="word">_metacpan</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_metacpan</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="structure">)</span>
+      <span class="structure">}</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$data</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">hits</span><span class="structure">}{</span><span class="word">hits</span><span class="structure">}</span> <span class="structure">};</span>
+    <span class="structure">}</span>
+  <span class="structure">};</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$collection</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="single" style="color:#909">'MetaCPANx::RevDeps'</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span><span class="word">seed</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'MooX-late'</span><span class="structure">);</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">for</span> <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$key</span> <span class="structure">(</span><span class="word">sort</span> <span class="word">keys</span> <span class="cast" style="color:#f00;font-weight:bold">%</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$collection</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">dependents</span> <span class="structure">})</span>
+  <span class="structure">{</span>
+    <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol" style="color:#333;background-color:#fcc">$collection</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">dependents</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="symbol" style="color:#333;background-color:#fcc">$key</span><span class="structure">};</span>
+    <span class="word">printf</span><span class="structure">(</span><span class="double" style="color:#909">"%s (%s) - %s\n"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">author</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">abstract</span><span class="structure">);</span>
+  <span class="structure">}</span></pre>
+		<p>Caveats:</p>
+		<ul>
+			<li>MetaCPAN includes build-time and testing dependencies, as well as optional dependencies in its data.</li>
+			<li>If you run this script on one of Moose's dependencies (including its optional dependencies), prepare to wait a very long time for results!</li>
+		</ul>
+]]>
+    </content>
+</entry>

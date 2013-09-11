@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/18/dict-thes-ency/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/18/dict-thes-ency/"/>
+  <title>dict, thes &amp; ency</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><tt><a href="http://www.dict.org">dict</a></tt> is a command that is supplied with most Linux and <span class="caps">BSD </span>distributions. If you enter <tt>dict foo</tt> at the command-line, you get back the dictionary definition of "foo". Normally several different dictionaries are supplied, including some dictionaries of translation, and it's possible to look up the word on various online dictionaries too.</p>
+
+<p>As counterparts to <tt>dict</tt> I've created <tt>thes</tt> for looking stuff up in <em>Moby's Thesaurus</em> and <tt>ency</tt> for online encyclopaedia <a href="http://en.wikipedia.org"><em>Wikipedia</em></a>.</p>
+
+<h2>thes</h2>
+
+<p><tt>thes</tt> requires <tt>dict</tt> to be installed and working correctly.</p>
+
+
+
+<pre><code class="bash">
+<i class="hl_Comment">#!/bin/sh</i><i class="hl_Comment">
+</i>/usr/bin/dict -d moby-thes -h dict.org <span class="hl_String">"</span><span class="hl_Others">$1</span><span class="hl_String">"</span>
+</code></pre>
+
+
+
+<p>OK -- maybe it's a little over-simplistic, but it does the job.</p>
+
+<h2>ency</h2>
+
+<p><tt>ency</tt> requires Lynx, Perl and a working Internet connection.</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">#!/usr/bin/perl</b>
+
+<b class="hl_Variable">$_</b> = <span class="hl_Function">shift</span> <b class="hl_Variable">@ARGV</b> || <span class="hl_Function">die</span> <span class="hl_Operator">"</span><span class="hl_String">Need to supply an argument.</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+<span class="hl_Operator">s/</span><span class="hl_BaseN">\s</span><span class="hl_Char">+</span><span class="hl_Operator">/</span><span class="hl_String">_</span><span class="hl_Operator">/g</span>;
+<b class="hl_Variable">$_</b> = URLEncode(<span class="hl_Function">ucfirst</span>(<b class="hl_Variable">$_</b>));
+<span class="hl_Operator">s/</span><span class="hl_Others">\'</span><span class="hl_Operator">/</span><span class="hl_String">\\\'</span><span class="hl_Operator">/g</span>;  <i class="hl_Comment"># Fix syntax highlighting: '</i><i class="hl_Comment">
+</i><span class="hl_DataType">$url</span> = <span class="hl_Operator">'</span><span class="hl_String">http://en.wikipedia.org/wiki/</span><span class="hl_Operator">'</span>.<b class="hl_Variable">$_</b>;
+<span class="hl_DataType">$page</span> = <span class="hl_Operator">`</span><span class="hl_String">lynx -nolist -dump -justify=0 '</span><span class="hl_DataType">$url</span><span class="hl_Operator">'`</span>;
+
+<b class="hl_Keyword">if</b> (<span class="hl_DataType">$page</span> =~ <span class="hl_Operator">/</span><span class="hl_Others">Wikipedia does not have an article with this exact name\.</span><span class="hl_Operator">/</span>)
+{
+        <span class="hl_Function">print</span> <span class="hl_Operator">"</span><span class="hl_String">Article not found.</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+        <span class="hl_Function">exit</span>;
+}
+
+(<span class="hl_DataType">$page</span>, <span class="hl_DataType">$dummy</span>) = <span class="hl_Function">split</span> <span class="hl_Operator">/</span><span class="hl_BaseN">\n</span><span class="hl_Others">Views</span><span class="hl_BaseN">\n</span><span class="hl_Operator">/</span>, <span class="hl_DataType">$page</span>;
+<span class="hl_DataType">@lines</span> = <span class="hl_Function">split</span> <span class="hl_Operator">/</span><span class="hl_BaseN">\n</span><span class="hl_Operator">/</span>, <span class="hl_DataType">$page</span>;
+<span class="hl_Function">shift</span> <span class="hl_DataType">@lines</span>;
+<span class="hl_Function">shift</span> <span class="hl_DataType">@lines</span>;
+
+<b class="hl_Keyword">foreach</b> (<span class="hl_DataType">@lines</span>)
+{
+        <span class="hl_Operator">s/</span><span class="hl_Char">^</span><span class="hl_Others">\[edit\]</span><span class="hl_BaseN">\s</span><span class="hl_Char">+?</span><span class="hl_Operator">//</span>;
+        <span class="hl_Function">print</span> <span class="hl_Operator">"</span><b class="hl_Variable">$_</b><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">URLEncode</span> {
+        <b class="hl_Variable">$_</b> = <span class="hl_Function">shift</span>;
+        <span class="hl_Operator">s/</span><span class="hl_Char">([</span><span class="hl_BaseN">\W</span><span class="hl_Char">])</span><span class="hl_Operator">/</span><span class="hl_String">"%" . uc(sprintf("</span><span class="hl_DataType">%2</span><span class="hl_String">.2x",ord(</span><b class="hl_Variable">$1</b><span class="hl_String">)))</span><span class="hl_Operator">/eg</span>;
+        <b class="hl_Keyword">return</b> <b class="hl_Variable">$_</b>;
+}
+</code></pre>
+
+
+
+<p>I hope someone finds these useful.</p></div>
+  </content>
+  <published>2007-06-18T16:15:58+01:00</published>
+  <updated>2007-06-18T16:15:58+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="wikipedia"/>
+  <category term="command-line"/>
+  <category term="linux"/>
+  <category term="perl"/>
+</entry>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Perl 10</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/02/perl-10.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4289</id>
+
+    <published>2013-02-08T22:44:04Z</published>
+    <updated>2013-02-08T23:01:55Z</updated>
+
+    <summary>This is my take on the version debate. Bear in mind that I'm not a p5p nor a Perl 6 developer, so I don't get a vote. I can still have an opinion though... Perl 6 represents the future of...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>This is my take on the version debate. Bear in mind that I'm not a p5p nor a Perl 6 developer, so I don't get a vote. I can still have an opinion though...</p>
+
+<p>Perl 6 represents the future of Perl. But given the amount of time taken to get to where it is today, and the amount of work still needed before it can be put forward as a serious replacement for Perl 5, it realistically represents the <strong>distant</strong> future of Perl.</p>]]>
+        <![CDATA[<p>Perl 6 should stop squatting on the major version "6" until it gets its act together, and rebrand as something funky and mystical sounding like "Black Perl".</p>
+
+<p>Once what is now known as Perl 6 has a different name, it gives p5p the freedom to release Perl 6, Perl 7, Perl 8, etc. They don't have to - and none of the stuff coming up in 5.18 would justify a major version bump - but they'd have the choice.</p>
+
+<p><span class="caps">P5P </span>should cautiously adopt features from Black Perl (or whatever it's called) where they can be done without disrupting existing Perl 5 syntax too much, much like has already happened with <code>say</code>, the defined-or operator, etc.</p>
+
+<p>Once Black Perl is a serious contender to replace p5p's Perls in terms of performance, stability and the ability to run the majority of <span class="caps">CPAN </span>code (which would be helped by the p5p Perls adopting Black Perl features, and thus <span class="caps">CPAN </span>slowly becoming more Black Perlish), then it would replace the existing codebase and become the official Perl 9 or Perl 10 or whatever.</p>]]>
+    </content>
+</entry>

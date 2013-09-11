@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/09/time-out/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/09/time-out/"/>
+  <title>The Dan Brown Generator</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>My famous <a href="/Software/dan_brown/gen.cgi">Dan Brown generator</a> was apparently mentioned in <i><a href="http://www.timeout.com">Time Out</a></i> last month.</p>
+    </div>
+  </content>
+  <published>2008-01-09T14:42:04Z</published>
+  <updated>2008-01-09T14:42:04Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dan-brown"/>
+  <category term="david-gibbins"/>
+  <category term="atlantis"/>
+</entry>

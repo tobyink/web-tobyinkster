@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/05/01/london-elections/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/05/01/london-elections/"/>
+  <title>May Day</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Today is <a href="http://en.wikipedia.org/wiki/May_Day">May Day</a> and also <a href="http://en.wikipedia.org/wiki/London_mayoral_election%2C_2008">election day</a> in London. Recent polls have shown alarmingly high support for <a href="http://www.backboris.com/">Boris Johnson</a> (or Alexander Boris de Pfeffel Johnson to use his full name -- yes, really!). Much as I enjoy Johnson's <a href="http://en.wikipedia.org/wiki/Boris_Johnson#Have_I_Got_News_for_You">antics</a> on <em>Have I Got News For You</em>, I ask how someone who could barely be trusted to competently run a <em>bath</em>, could soon be running a <em>city</em>? </p>
+
+<p>And not just any city, but one of the world's major financial hubs. London, although just a city, has a <abbr title="gross domestic product"><span class="caps">GDP</span></abbr> of <span class="hmoney"><span class="value" title="data:800000000000">800 billion</span> <span class="unit"><span class="caps">USD</span></span></span>; an economy roughly the size of, say, the Netherlands, or Mexico. Or to put it another way, two Taiwans, or three Irelands, or six New Zealands, or the entire Spanish-speaking part of South America.</p>
+
+<p>I don't live in London anymore, but if I did, my vote would be for <a href="http://www.brianpaddick.org/">Brian Paddick</a> with a <a href="http://en.wikipedia.org/wiki/London_mayoral_election%2C_2008#Voting_system">second preference vote</a> for <a href="http://www.kenlivingstone.com/">red Ken</a>.</p></div>
+  </content>
+  <published>2008-05-01T14:26:19+01:00</published>
+  <updated>2008-05-01T14:26:19+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="politics"/>
+  <category term="london"/>
+</entry>

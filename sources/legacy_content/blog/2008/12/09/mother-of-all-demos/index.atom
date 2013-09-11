@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/12/09/mother-of-all-demos/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/12/09/mother-of-all-demos/"/>
+  <title>The Mother of All Demos</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>It was 40 years ago today that Douglas Engelbart gave a demonstration that introduced the public to an impressive list of technologies which would in the following years become established in the mainstream. On the 9th of December, 1968, he demonstrated:</p>
+
+<ul>
+<li>a mouse;</li>
+<li>hypertext (i.e. text with links that can be followed -- a precursor to the Web);</li>
+<li>e-mail; and</li>
+<li>video conferencing.</li>
+</ul>
+
+<p>It also demonstrates copy and paste, which although not completely new at the time, was still not especially common. A <a href="http://video.google.com/videoplay?docid=-8734787622017763097">video of the demonstration</a> can be seen on Google Video.</p></div>
+  </content>
+  <published>2008-12-09T08:45:37Z</published>
+  <updated>2008-12-09T08:45:37Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="computers"/>
+  <category term="history"/>
+  <category term="hypertext"/>
+  <category term="mouse"/>
+</entry>

@@ -1,0 +1,305 @@
+<title>Curriculum Vitae &#8212; Toby Inkster</title>
+
+<article id="document_main"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:doac="http://ramonantonio.net/doac/0.1/#"
+	xmlns:v="http://www.w3.org/2006/vcard/ns#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	about="http://tobyinkster.co.uk/#i"
+	typeof="foaf:Person">
+	
+	<header role="heading">
+		<h1>Curriculum Vitae</h1>
+		<p property="doac:summary" datatype=""><i>I am currently <a href="http://hire.tobyinkster.co.uk/">available for hire</a>.</i></p>
+		<h2 property="v:fn foaf:name">Toby Inkster</h2>
+	</header>
+
+	<div><strong class="inline-heading">Email:</strong> <a href="mailto:mail@tobyinkster.co.uk" rel="foaf:mbox v:email">mail@tobyinkster.co.uk</a>.</div>
+
+	<div><strong class="inline-heading">Phone:</strong> <span rel="v:tel" resource="tel:+447855833657">+44 (0)7855 833 657</span>.</div>
+
+	<div rel="v:adr foaf:based_near">
+		<strong class="inline-heading">Postal Address:</strong>
+		<span about="http://tobyinkster.co.uk/#home_lewes" typeof="v:Address">
+			<span property="v:street-address">87 Western Road</span>,
+			<span property="v:locality">Lewes</span>,
+			<span property="v:region">East Sussex</span>,
+			<span property="v:country-name">England</span>.
+		</span>
+	</div>
+
+	<section rel="doac:experience">
+
+		<h3>Experience</h3>
+
+		<div about="#experience-8" typeof="doac:Experience">
+			<h4>
+				<strong property="doac:position">Freelance Developer</strong>
+				(<span property="doac:date-starts" content="2011-09" datatype="xsd:gYearMonth">September 2011</span>, ongoing)
+			</h4>
+			
+			<p property="doac:activity">See <a href="http://hire.tobyinkster.co.uk/">hire.tobyinkster.co.uk</a> for details.</p>
+		</div>
+		
+		<div about="#experience-7" typeof="doac:Experience">
+			<h4>
+				<strong property="doac:position">Database Developer</strong>
+				(<span property="doac:date-starts" content="2006-08" datatype="xsd:gYearMonth">August 2006</span>&#8211;<span property="doac:date-ends" content="2011-08" datatype="xsd:gYearMonth">August 2011</span>)
+			</h4>
+			
+			<p rel="doac:organization">
+				<span about="http://thing-described-by.org/?http://www.nct.org.uk/" typeof="foaf:Organization" property="foaf:nick" content="NCT">
+					<span property="v:fn foaf:name">The National Childbirth Trust</span>,
+					<span rel="foaf:based_near v:adr">
+						<span about="#address_nct" typeof="v:Address">
+							<span property="v:locality">Acton</span>,
+							<span property="v:locality">London</span>.
+						</span>
+					</span>
+				</span>
+			</p>
+
+			<p property="doac:activity">Having moved from London, the NCT offered me a job which would allow me to work mostly from home, with IT support and management being outsourced. I am responsible for developing additional database structures and interfaces for the NCT's contact management software, and integrating it with other systems such as the NCT website and third-party software. Since January 2010, this has been part-time.</p>
+
+		</div>
+
+		<div about="#experience-6" typeof="doac:Experience">
+			<h4>
+				<strong property="doac:position">IT &#38; Telecommunications Co-ordinator</strong>
+				(<span property="doac:date-starts" content="2004-07" datatype="xsd:gYearMonth">July 2004</span>&#8211;<span property="doac:date-ends" content="2006-08" datatype="xsd:gYearMonth">August 2006</span>)
+			</h4>
+			
+			<p rel="doac:organization">
+				<span about="http://thing-described-by.org/?http://www.nct.org.uk/" typeof="foaf:Organization" property="foaf:nick" content="NCT">
+					<span property="v:fn foaf:name">The National Childbirth Trust</span>,
+					<span rel="foaf:based_near v:adr">
+						<span about="#address_nct" typeof="v:Address">
+							<span property="v:locality">Acton</span>,
+							<span property="v:locality">London</span>.
+						</span>
+					</span>
+				</span>
+			</p>
+
+			<p property="doac:activity">Reporting directly to the Chief Executive, I provided IT support, administered the office computer network, servers and VOIP telephone system, procured new equipment, assisted with developing and maintaining the NCT's popular website and related micro-sites and developed new network-based systems to support the work of the Trust.</p>
+
+		</div>
+
+		<div about="#experience-5" typeof="doac:Experience">
+			<h4>
+				<strong property="doac:position">Administrative Assistant &#38; IT Support Officer</strong>
+				(<span property="doac:date-starts" content="2003-02" datatype="xsd:gYearMonth">Feb 2003</span>&#8211;<span property="doac:date-ends" content="2004-07" datatype="xsd:gYearMonth">July 2004</span>)
+			</h4>
+			
+			<p rel="doac:organization">
+				<span about="http://thing-described-by.org/?http://www.nct.org.uk/" typeof="foaf:Organization" property="foaf:nick" content="NCT">
+					<span property="v:fn foaf:name">The National Childbirth Trust</span>,
+					<span rel="foaf:based_near v:adr">
+						<span about="#address_nct" typeof="v:Address">
+							<span property="v:locality">Acton</span>,
+							<span property="v:locality">London</span>.
+						</span>
+					</span>
+				</span>
+			</p>
+
+			<p property="doac:activity">Provided administrative support for the Fundraising department, IT support for the whole staff and some system administration.</p>
+
+		</div>
+
+		<div>
+			<h4>Earlier Experience</h4>
+			<ul>
+				<li about="#experience-4" typeof="doac:Experience">
+					<strong property="doac:position">Temporary Staff</strong>,
+					<span rel="doac:organization"><span typeof="foaf:Organization"><span property="foaf:name">Reed Employment</span>, West Ealing, London</span></span>: <span property="doac:activity">including three and a half months as an administrative assistant at the National Childbirth Trust, after which I was taken on as permanent staff.</span>
+				</li>
+				<li about="#experience-3" typeof="doac:Experience">
+					<strong property="doac:position">Web Programmer</strong>,
+					<span rel="doac:organization"><span about="http://thing-described-by.org/?http://www.doc.ic.ac.uk/" typeof="foaf:Organization"><span property="foaf:name">Department of Computing, Imperial College of Science, Technology and Medicine</span>, South Kensington, London</span></span>: <span property="doac:activity">I was employed by Imperial College's Department of Computing to refine and build upon the system I had built as part of a team of five as a final year group project.</span>
+				</li>
+				<li about="#experience-2" typeof="doac:Experience">
+					<strong property="doac:position">Bar Tender</strong>,
+					<span rel="doac:organization"><span about="http://dbpedia.org/resource/Nottinghamshire_County_Cricket_Club" typeof="foaf:Organization"><span property="foaf:name">Nottinghamshire County Cricket Club</span>, Trent Bridge, Nottingham</span></span>.
+				</li>
+				<li about="#experience-1" typeof="doac:Experience">
+					<strong property="doac:position">Commis Chef</strong>,
+					<span rel="doac:organization"><span typeof="foaf:Organization"><span property="foaf:name">The Chateau</span>, Wilford Lane, West Bridgford, Nottingham</span></span>.
+				</li>
+			</ul>
+		</div>
+
+	</section>
+
+	<section rel="doac:education">
+
+		<h3>Education</h3>
+
+		<div about="#degree-1" typeof="doac:Education">
+			<h4>
+				<strong property="doac:title" datatype=""><span property="doac:level">BSc</span> (Hons), <span property="doac:subject">Joint Mathematics and Computer Science</span></strong>
+				(<span property="doac:date-starts" content="1999-10" datatype="xsd:gYearMonth">Oct 1999</span>&#8211;<span property="doac:date-ends" content="2002-06" datatype="xsd:gYearMonth">Jun 2002</span>)
+			</h4>
+			
+			<p rel="doac:organization">
+				<span about="http://thing-described-by.org/?http://www.doc.ic.ac.uk/" typeof="foaf:Organization">
+					<span property="foaf:name">Department of Computing, Imperial College of Science, Technology and Medicine</span>, South Kensington, London
+				</span>.
+			</p>
+
+			<p property="doac:activity">I studied a broad spectrum of topics such as web design, database theory, artificial intelligence, 2D&#38;3D graphics, human-computer interaction and program design theory, including a variety of programming languages (Java, C, Haskell, Intel Assembly, others).</p>
+
+		</div>
+
+		<div>
+			<h4>Earlier Education</h4>
+			<ul>
+				<li about="#alevel-maths" typeof="doac:Education">
+					<strong property="doac:subject">Mathematics</strong>
+					<span property="doac:level">A-Level</span>:
+					<span property="doac:grade" content="A">grade A</span>.
+				</li>
+				<li about="#alevel-physics" typeof="doac:Education">
+					<strong property="doac:subject">Physics</strong>
+					<span property="doac:level">A-Level</span>:
+					<span property="doac:grade" content="A">grade A</span>.
+				</li>
+				<li about="#alevel-chemistry" typeof="doac:Education">
+					<strong property="doac:subject">Chemistry</strong>
+					<span property="doac:level">A-Level</span>:
+					<span property="doac:grade" content="A">grade A</span>.
+				</li>
+				<li about="#alevel-genstud" typeof="doac:Education">
+					<strong property="doac:subject">General Studies</strong>
+					<span property="doac:level">A-Level</span>:
+					<span property="doac:grade" content="A">grade A</span>.
+				</li>
+				<li about="#alevel-fmaths" typeof="doac:Education">
+					<strong property="doac:subject">Further Mathematics</strong>
+					<span property="doac:level">AS-Level</span>:
+					<span property="doac:grade" content="A">grade A</span>.
+				</li>
+				<li>GCSEs: ten passes at grades A* to C.</li>
+			</ul>
+		</div>
+		
+	</section>
+
+	<section rel="doac:skill">
+
+		<h3>Skills</h3>
+		
+		<ul>
+
+			<li><strong typeof="doac:SocialSkill doac:ComputerSkill" property="rdfs:label">Communicating technical ideas</strong> to those without a technical background.</li>
+			<li>
+				<strong>Programming:</strong>
+				<ul>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Perl</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">PHP</li>
+					<li><span typeof="doac:ComputerSkill" property="rdfs:label">SQL</span> (Microsoft, PostgreSQL, MySQL)</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Javascript</li>
+					<li>Some experience in <span typeof="doac:ComputerSkill" property="rdfs:label">Java</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Python</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Intel Assembly</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Haskell</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Prolog</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">C</span>/<span typeof="doac:ComputerSkill" property="rdfs:label">C++</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">shell script</span>, and <span typeof="doac:ComputerSkill" property="rdfs:label">KiXtart</span>.</li>
+				</ul>
+			</li>
+			<li>
+				<strong>Network Administration:</strong>
+				<ul>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft Windows</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Linux</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Cisco</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Mitel voice-over-IP (including 3300 ICP)</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft Exchange Server</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft SQL Server</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Apache HTTP Server</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">PostgreSQL</li>
+				</ul>
+			</li>
+			<li>
+				<strong>Web:</strong>
+				<ul>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">HTML</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">CSS</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Server-side programming</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Client-side programming</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Accessibility and usability</li>
+				</ul>
+			</li>
+			<li>
+				<strong>Semantic Web:</strong>
+				<ul>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">RDF</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">RDFa</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">Microformats</li>
+					<li typeof="doac:ComputerSkill" property="rdfs:label">SPARQL</li>
+				</ul>
+			</li>
+		</ul>
+		
+	</section>
+
+	<section>
+
+		<h3>Publications</h3>
+
+		<p>Publications include:</p>
+
+		<ul rel="doac:publication foaf:made :made" rev="foaf:maker dc:creator">
+			<li typeof="foaf:Document doac:Publication" about="http://buzzword.org.uk/2009/cheese/paper.html">
+				<cite property="dc:title">Creating Distributed Social Networks with Linked Open Data and FOAF+SSL</cite> (<span property="dc:created" datatype="xsd:gYear">2009</span>) by Toby Inkster &#8212; <span property="dc:description">demonstration paper for Trust and Privacy on the Social and Semantic Web 2009 Workshop</span>.
+			</li>
+			<li typeof="foaf:Document doac:Publication" about="http://www.w3.org/2008/09/msnws/papers/foaf+ssl.html">
+				<cite property="dc:title">FOAF&SSL: Creating a Global Decentralised Authentication Protocol</cite> (<span property="dc:created" datatype="xsd:gYear">2008</span>) by Henry Story, Toby Inkster, Bruno Harbulot, Ian Jacobi and Melvin Carvalho -- <span property="dc:description">position paper for the W3C Workshop on the Future of Social Networking</span>.
+			</li>
+
+	</section>		
+
+	<section>
+
+		<h3>Affiliations</h3>
+		
+		<p>Membership of an organisation does not imply their endorsement of me (nor necessarily mine of them).</p>
+
+		<h4>Current</h4>
+		<ul rev="foaf:member">
+			<li typeof="foaf:Group" about="http://dbpedia.org/resource/Internet_Society">
+				Member, <a rel="foaf:homepage" href="http://www.isoc.org/"><span about="http://dbpedia.org/resource/Internet_Society" property="foaf:name">The Internet Society</span> <small>(<span about="http://dbpedia.org/resource/Internet_Society" property="foaf:nick">ISOC</span>)</small></a>.
+			</li>
+			<li typeof="foaf:Group" about="http://thing-described-by.org/?http://www.w3.org/2001/sw/interest/">Member, <a property="foaf:name" rel="foaf:homepage" href="http://www.w3.org/2001/sw/interest/">W3C Semantic Web Interest Group</a>.</li>
+			<li typeof="foaf:Group" about="http://thing-described-by.org/?http://www.w3.org/html/wg/">Invited expert, <a property="foaf:name" rel="foaf:homepage" href="http://www.w3.org/html/wg/">W3C HTML Working Group</a>.</li>
+		</ul>
+		
+		<h4>Former</h4>
+		<ul>
+			<li typeof="foaf:Group" about="http://thing-described-by.org/?http://www.w3.org/2005/Incubator/socialweb/">Invited expert, <a property="foaf:name" rel="foaf:homepage" href="http://www.w3.org/2005/Incubator/socialweb/">W3C Social Web Incubator Group</a>.</li>
+			<li typeof="foaf:Group" about="http://thing-described-by.org/?http://www.w3.org/2010/02/rdfa/">Invited expert, <a property="foaf:name" rel="foaf:homepage" href="http://www.w3.org/2010/02/rdfa/">W3C RDFa Working Group</a>.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h3>Interests</h3>
+		<ul>
+			<li>I have strong interest in the Semantic Web (SemWeb), a set of technologies designed to allow the data on the World Wide Web (WWW) to be "understood" and "reasoned with" by computers. (But only to the extent that a computer can actually "understand" anything!) In particular I'm interested in looking at the cross-over between the SemWeb and human WWW -- using rich semantics to make the web more usable, making documents designed for humans available to machines, and documents designed for machines more accessible to humans. Details of my SemWeb activities can be found on tobyinkster.co.uk.</li>
+			<li>
+				Cookery and food:
+				<ul>
+					<li>The <a rel="foaf:interest" href="http://www.slowfood.com/">slow food</a> movement</li>
+					<li>Locally (Sussex) sourced food</li>
+					<li>Italian cookery</li>
+					<li><a rel="foaf:interest" href="http://en.wikipedia.org/wiki/Molecular_gastronomy">Molecular gastronomy</a></li>
+					<li>I publish occasional recipes on my <a href="/blog/" rel="foaf:weblog">blog</a></li>
+				</ul>
+			</li>
+			<li>Home wine and cider making</li>
+			<li>Guitar</li>
+		</ul>
+	</section>
+
+	<section>
+		<h3>References</h3>
+		<p>Can be provided on request.</p>
+	</section>
+
+</div>

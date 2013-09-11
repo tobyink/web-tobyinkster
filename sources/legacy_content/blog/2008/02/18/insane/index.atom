@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/02/18/insane/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/02/18/insane/"/>
+  <title>Insane</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>Mohamed Al Fayed has gone beyond the improbable to the truly <a href="http://news.bbc.co.uk/1/hi/uk/7250002.stm">insane</a>.</p>
+    </div>
+  </content>
+  <published>2008-02-18T21:23:52Z</published>
+  <updated>2008-02-18T21:25:48Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dumb"/>
+  <category term="bbc"/>
+  <category term="conspiracy"/>
+  <category term="bbc-news"/>
+</entry>

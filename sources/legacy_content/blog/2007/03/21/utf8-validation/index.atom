@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/03/21/utf8-validation/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/03/21/utf8-validation/"/>
+  <title>PHP UTF-8 Validation Library</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>lawrence k wrote:</p>
+
+<blockquote><p>What <span class="caps">PHP </span>code would give me this kind of 100% certainty?</p></blockquote>
+
+<p>I was bored so wrote this. I'm quite proud of myself, as I wrote it and ran it and it worked first time! :-)</p>
+
+<p>It not only <strong>checks</strong> that the <span class="caps">UTF</span>-8 is valid, it <strong>forces</strong> it to be valid.</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<b class="hl_Reserved">/**
+ * PHP UTF-8 Validation Library</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * Copyright (C) 2007 Toby Inkster</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * This library is free software; you can redistribute it and/or</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * modify it under the terms of the GNU Lesser General Public</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * License as published by the Free Software Foundation; either</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * version 2.1 of the License, or (at your option) any later version.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * This library is distributed in the hope that it will be useful,</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * Lesser General Public License for more details.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * You should have received a copy of the GNU Lesser General Public</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * License along with this library; if not, write to the Free Software</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@author</b><b class="hl_Reserved"> Toby Inkster </b><b class="hl_Keyword">&lt;URL:http:</b><span class="hl_Others">//tobyinkster.co.uk</span><b class="hl_Keyword">/&gt;</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * @copyright Copyright (C) 2007 Toby Inkster</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public Licence</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> */</b>
+
+<b class="hl_Reserved">/**
+ * Utlity function to retrieve the first byte from a string.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><span class="hl_Alert">Note</span><b class="hl_Reserved"> this function has a side-effect. As well as returning the</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * first byte of the string, it also modifies the string passed</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * as a parameter to remove the initial byte.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@param</b><b class="hl_Reserved"> </b><span class="hl_Operator">s</span><b class="hl_Reserved">t</b><span class="hl_Operator">ring </span><b class="hl_Reserved">$string String to shift.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@return</b><b class="hl_Reserved"> string First byte of string.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> */</b>
+<b class="hl_Keyword">function</b> shift_byte <span class="hl_Others">(</span>&amp;<b class="hl_Variable">$string</b><span class="hl_Others">)</span>
+{
+        <span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">strlen</span><span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">)</span>&lt;<span class="hl_Float">1</span><span class="hl_Others">)</span>
+                <span class="hl_Operator">return</span> <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+
+        <b class="hl_Variable">$byte</b> = <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">,</span> 0<span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">);</span>
+        <b class="hl_Variable">$string</b> = <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">);</span>
+        <span class="hl_Operator">return</span> <b class="hl_Variable">$byte</b><span class="hl_Others">;</span>
+}
+
+<b class="hl_Reserved">/**
+ * Validate a string as UTF-8, and modify the string to remove nasties.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><span class="hl_Alert">Note</span><b class="hl_Reserved"> this function has a side-effect. As well as returning a</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * boolean to indicate whether the given string was valid, it also</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * modifies the string replacing any invalid characters with a</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * replacement character. (The replacement character is a question</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * mark, but you can change this if you like.)</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><span class="hl_Alert">Note</span><b class="hl_Reserved"> that in UTF-8, most characters have several alternative</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * representations. RFC 3629 says that the shortest representation</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * is the correct one. Other representations ("overlong forms")</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * are not valid. Earlier UTF-8 specifications did not prohibit</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * overlong forms, though suggest emitting a warning when one is</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * encountered. This function DOES NOT CHECK FOR OVERLONG FORMS!</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@param</b><b class="hl_Reserved"> </b><span class="hl_Operator">s</span><b class="hl_Reserved">t</b><span class="hl_Operator">ring </span><b class="hl_Reserved">$string String to validate.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@return</b><b class="hl_Reserved"> boolean Was the string valid or not?</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> */</b>
+<b class="hl_Keyword">function</b> validate_utf8 <span class="hl_Others">(</span>&amp;<b class="hl_Variable">$string</b><span class="hl_Others">)</span>
+{
+        <b class="hl_Variable">$new</b>            = <span class="hl_String">''</span><span class="hl_Others">;</span>
+        <b class="hl_Variable">$valid</b>          = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+        <b class="hl_Variable">$replacement</b>    = <span class="hl_String">'?'</span><span class="hl_Others">;</span>
+
+        <i class="hl_Comment">/* Loop through each UTF-8 character. */</i>
+        <span class="hl_Operator">while</span> <span class="hl_Others">(</span><span class="hl_Function">strlen</span><span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">))</span>
+        {
+                <i class="hl_Comment">/* Array of bytes to store this character. */</i>
+                <b class="hl_Variable">$c</b> = <span class="hl_Function">array</span><span class="hl_Others">();</span>
+
+                <i class="hl_Comment">/* Firstly, assume that a character is a single byte. */</i>
+                <b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+
+                <i class="hl_Comment">/* "Seven Z" notation. */</i>
+                <span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &lt;= 0x7F<span class="hl_Others">)</span>
+                {
+                        <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">];</span>
+                }
+
+                <i class="hl_Comment">/* "Five Y, Six Z" notation. */</i>
+                <span class="hl_Operator">elseif</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &gt;= 0xC2<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &lt;= 0xDF<span class="hl_Others">))</span>
+                {
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+
+                        <span class="hl_Operator">if</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">))</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">];</span>
+                        }
+                        <span class="hl_Operator">else</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$replacement</b><span class="hl_Others">;</span>
+                                <b class="hl_Variable">$valid</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+                        }
+                }
+
+                <i class="hl_Comment">/* "Four X, Six Y, Six Z" notation. */</i>
+                <span class="hl_Operator">elseif</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &gt;= 0xE0<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &lt;= 0xEF<span class="hl_Others">))</span>
+                {
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+
+                        <span class="hl_Operator">if</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">)</span>
+                        &amp;&amp;  <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">))</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">];</span>
+                        }
+                        <span class="hl_Operator">else</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$replacement</b><span class="hl_Others">;</span>
+                                <b class="hl_Variable">$valid</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+                        }
+                }
+
+                <i class="hl_Comment">/* "Three W, Six X, Six Y, Six Z" notation. */</i>
+                <span class="hl_Operator">elseif</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &gt;= 0xF0<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">])</span> &lt;= 0xF4<span class="hl_Others">))</span>
+                {
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+                        <b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">3</span><span class="hl_Others">]</span> = shift_byte<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">);</span>
+
+                        <span class="hl_Operator">if</span> <span class="hl_Others">((</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">)</span>
+                        &amp;&amp;  <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">)</span>
+                        &amp;&amp;  <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">3</span><span class="hl_Others">])</span> &gt;= 0x80<span class="hl_Others">)</span> &amp;&amp; <span class="hl_Others">(</span><span class="hl_Function">ord</span><span class="hl_Others">(</span><b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">3</span><span class="hl_Others">])</span> &lt;= 0xBF<span class="hl_Others">))</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$c</b><span class="hl_Others">[</span>0<span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">]</span>.<b class="hl_Variable">$c</b><span class="hl_Others">[</span><span class="hl_Float">3</span><span class="hl_Others">];</span>
+                        }
+                        <span class="hl_Operator">else</span>
+                        {
+                                <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$replacement</b><span class="hl_Others">;</span>
+                                <b class="hl_Variable">$valid</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+                        }
+                }
+
+                <span class="hl_Operator">else</span>
+                {
+                        <b class="hl_Variable">$new</b> .= <b class="hl_Variable">$replacement</b><span class="hl_Others">;</span>
+                        <b class="hl_Variable">$valid</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+                }
+
+        }
+
+        <b class="hl_Variable">$string</b> = <b class="hl_Variable">$new</b><span class="hl_Others">;</span>
+        <span class="hl_Operator">return</span> <b class="hl_Variable">$valid</b><span class="hl_Others">;</span>
+}
+
+1<b class="hl_Keyword">?&gt;</b></code></pre></div>
+  </content>
+  <published>2007-03-21T13:46:20Z</published>
+  <updated>2007-04-24T09:25:00+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/lgpl-2.1.html"/>
+  <category term="php"/>
+  <category term="unicode"/>
+</entry>

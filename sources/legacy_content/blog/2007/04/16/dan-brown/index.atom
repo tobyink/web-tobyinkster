@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/16/dan-brown/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/16/dan-brown/"/>
+  <title>Create Your Own Dan Brown Novel</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I put this together back in January 2006, but never mentioned it on my website -- I just posted it on a couple of newsgroups. It's pretty good fun and rather realistic.</p>
+
+<p><a href="/Software/dan_brown/">Create your own Dan Brown novel</a></p></div>
+  </content>
+  <published>2007-04-16T21:58:31+01:00</published>
+  <updated>2007-04-16T21:58:31+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dan-brown"/>
+  <category term="programming"/>
+  <category term="perl"/>
+</entry>

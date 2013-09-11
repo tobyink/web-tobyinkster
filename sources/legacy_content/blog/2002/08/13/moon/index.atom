@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2002/08/13/moon/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2002/08/13/moon/"/>
+  <title>Moon</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+<p>
+    This is an odd question about the moon. Here is a picture of the earth-moon system.
+    As you can see, there is a new moon.
+  </p>
+  
+  <img src="/Images/astro/earth&amp;moon.png" alt="earth and moon" height="120" width="270"/>
+  
+  <p>
+    My question: where is the sun???
+  </p>
+  
+  <p>
+    If it's on the left, then why is the Earth dark on the left? The Moon can't
+    be blocking the light, because that would be an eclipse.
+  </p>
+  
+  <p>
+    If the sun is on the right, then why is the Moon dark on the right? The Earth
+    can't be blocking the light, because that would be an eclipse as well!
+  </p>
+  
+  <p>
+    One of my girlfriend's friends is an astrophysics student, but she didn't know
+    the answer. No-one I know can tell me the answer!
+  </p>
+  
+  <h2>Update!</h2>
+  
+  <p>After asking the <cite>good people of <a href="news:sci.space.science">sci.space.science</a></cite>,
+  this is an answer I received:</p>
+  
+  <blockquote><p>We don't [see the new moon at night]. A New Moon is only visible at Dusk â as
+  again should be obvious from the fact that a New Moon (taken to be no more than two
+  days after minimum illumination) must be within 24 degrees of the Sun (360 degrees
+  divided by the 29.5 day lunar month means the Moon moves about 12 degrees per day
+  across the sky.)</p></blockquote>
+  
+  <p>That of course, makes perfect sense. Now my brain can have a rest! This is the
+  correct diagram, with the Sun included.</p>
+  
+ <img src="/Images/astro/earth,moon&amp;sun.png" alt="earth, moon and sun" height="260" width="200"/>
+
+</div>
+  </content>
+  <published>2002-08-13T01:44:43+01:00</published>
+  <updated>2007-04-06T17:13:52+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="physics"/>
+  <category term="science"/>
+  <category term="astronomy"/>
+</entry>

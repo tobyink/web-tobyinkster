@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/16/us-embassy/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/16/us-embassy/"/>
+  <title>You're Not Allowed to Take Pictures of the US Embassy in Rome</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>So I only managed to take two...</p>
+
+<p><img src="files/embassy1-small" alt="Front of building"/></p>
+
+<p><a href="./files/embassy1">Front of building -- full size</a></p>
+
+<p><img src="files/embassy2-small" alt="Side of building"/></p>
+
+<p><a href="./files/embassy2">Side of building -- full size</a></p></div>
+  </content>
+  <published>2007-06-01T17:48:00+01:00</published>
+  <updated>2007-06-01T17:50:00+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="NokiaPics"/>
+  <category term="Rome"/>
+  <category term="america"/>
+</entry>

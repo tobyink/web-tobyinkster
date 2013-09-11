@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/16/myspace/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/16/myspace/"/>
+  <title>BoJo on MySpace</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://news.bbc.co.uk/1/hi/uk_politics/6551689.stm">The <span class="caps">BBC </span>on Politicians with MySpace pages</a>:</p>
+
+<blockquote><p>In the <span class="caps">UK,</span> Liberal Democrat leader Sir Menzies Campbell has registered on MySpace -- and has an unofficial fan club page, "Proud to be a Minger", with 161 members.</p>
+
+<p>Meanwhile, the Boris Johnson Appreciation Society, which recognises the shadow higher education minister as "the vital free agent of British politics", has stacked up a very respectable 7,751 members.</p></blockquote></div>
+  </content>
+  <published>2007-04-16T22:13:56+01:00</published>
+  <updated>2007-04-16T22:13:56+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="bbc"/>
+  <category term="bojo"/>
+  <category term="politics"/>
+  <category term="blogging"/>
+  <category term="bbc-news"/>
+  <category term="myspace"/>
+</entry>

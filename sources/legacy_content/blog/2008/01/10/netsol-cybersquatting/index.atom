@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/10/netsol-cybersquatting/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/10/netsol-cybersquatting/"/>
+  <title>NetSol Cybersquatting</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Over the last couple of days I've read a few stories about <a href="http://www.networksolutions.com/">Network Solutions</a> pulling a <a href="http://en.wikipedia.org/wiki/Site_Finder">Site Finder</a> by stealing unregistered domain names on which people have run a <a href="http://en.wikipedia.org/wiki/Whois">whois</a> query.</p>
+
+<p>They wait for people to whois query a domain (commonly done as a first step to registering a domain -- to check that nobody already owns it), and if nobody owns it, they temporarily register it for five days (after which they'd have to pay for it themselves!) and thus prevent anyone from registering the domain name using a competing registrar. <a href="http://commandline.org.uk/more/squat-for-the-win-2008-01-09-03-36">More details here</a>.</p>
+
+<p>According to <span class="caps">CNET, </span>they've <a href="http://www.news.com/8301-10784_3-9847684-7.html?tag=nefd.blgs">already started backpeddling</a> on this.</p></div>
+  </content>
+  <published>2008-01-10T12:13:53Z</published>
+  <updated>2008-01-10T12:13:53Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="netsol"/>
+  <category term="domains"/>
+  <category term="monopoly"/>
+</entry>

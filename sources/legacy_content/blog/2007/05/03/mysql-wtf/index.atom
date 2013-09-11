@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/05/03/mysql-wtf/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/05/03/mysql-wtf/"/>
+  <title>MySQL WTF?!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I'm currently in the process of extending <a href="http://demiblog.org">demiblog's</a> database support. Version 0.1.0 only supports <a href="http://www.postgresql.org">PostgreSQL</a>, but I plan on also supporting <a href="http://www.mysql.com">MySQL</a> in the next release, and a few other databases further down the line.</p>
+
+<p>Because this cross-database support had always been planned, I've been very careful in writing my <acronym title="Structured Query Language">SQL</acronym> to make sure that only standards-compliant syntax is used, and there are no proprietary PostgreSQL extensions.</p>
+
+<p>I always knew that I'd have to adjust my <span class="caps">SQL </span>slightly to get it to run on other databases, but the amount of changes needed to port a seemingly simple <span class="caps">SQL </span>script with less than 300 lines to MySQL was astounding! Although a few of the adjustments were needed to account for <span class="caps">SQL </span>features that MySQL simply doesn't yet support, the majority were to take into account several of MySQL's seemingly-gratuitous bastardisations of the standard <span class="caps">SQL </span>syntax.</p>
+
+<p>MySQL, how do I hate you, let me count the ways...</p>
+
+<ol>
+<li><span class="caps">SQL</span>-standard double-quotes used to quote identifiers, must be replaces with non-standard backticks.</li>
+<li>The <code class="sql">varchar</code> datatype <strong>requires</strong> a maximum length to be specified. If you do not want to specify a length, then you must instead use MySQL's <code class="sql">text</code> datatype, however...</li>
+<li><code class="sql">text</code> cannot be used as a primary key column; and</li>
+<li><code class="sql">text</code> cannot take a default value.</li>
+<li>Seemingly, only one <code class="sql">timestamp</code> column in any given table may take a default of <code class="sql">CURRENT_TIMESTAMP(0)</code>. Who, in God's name, thought this was a good idea?!</li>
+<li>Oh, and <span class="caps">SQL</span>-standard <code class="sql">CURRENT_TIMESTAMP(0)</code> cannot be used -- <code class="sql">NOW()</code> must be used instead.</li>
+<li>Oh, and the <code class="sql">with time zone</code> modifier for <code class="sql">timestamp</code> columns cannot be used.</li>
+</ol>
+
+<p>Seven, only seven? Oh well, I'm sure there will be many more to come -- this is only the very early stages of the work -- it's the script used to create the various tables and indexes used by the software, and populate some of the tables with standard data, such as the list of article statuses. (Draft, Standard, Historical, Obsolete, Hidden, Deleted, etc. <em>Why keep this information in the database?</em> So that you can add to them with your own extra statuses. I don't recommend removing the default statuses though, as some parts of demiblog infer special meanings to them -- off the top of my head, the iCalendar and hCalendar feeds are the only parts to do so so far.)</p>
+
+<p>Anyway, the <span class="caps">SQL </span>should now be checked in to demiblog's subversion repository, so you can see for yourself the differences from the standard version. </p>
+
+<p>And if in the future, anyone's wondering why in MySQL the length of a user's postal address is limited to 200 characters, whereas in other databases it's unlimited, now they shall know why. (It's part of a primary key field.)</p></div>
+  </content>
+  <published>2007-05-03T21:00:15+01:00</published>
+  <updated>2007-05-03T21:00:15+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="sql"/>
+  <category term="mysql"/>
+  <category term="demiblog"/>
+</entry>

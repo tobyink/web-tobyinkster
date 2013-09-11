@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2012/05/12/byo-big-brother/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2012/05/12/byo-big-brother/"/>
+  <title>Be Your Own Big Brother</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Many modern browsers (including recent versions of Firefox and Opera) support the <a href="http://enwp.org/W3C_Geolocation_API"><span class="caps">W3C</span>'s geolocation <span class="caps">API</span></a>. This is a standardised mechanism for Javascript to ask your browser where it geographically is in the world. Typically the browser will then pop up a message asking you if you wish to reveal this information, giving you the opportunity to opt out.</p>
+
+<p>But how does your browser know where it is? The method that Firefox and Opera both seem to use is this:</p>
+
+<ol>
+<li>They sniff data on your Wifi to figure out the local hotspots;</li>
+<li>They submit the details of these hotspots to a web service run by Google;</li>
+<li>Google tells them where you are.</li>
+</ol>
+
+<p>How is Google able to figure out where you are based on local wifi hotspots? The answer is their Street View cars. At the same time that they drive around photographing streets for Street View, they also take a survey of wifi hot spots.</p>
+
+<p>Sounds cool, albeit a little scary, right? Well, if you're afraid of living under such surveillance, here's something that might comfort you: in my case at least, Google tends to be off by around 80 kilometres.</p>
+
+<p>But that's a problem, because I actually <strong>want</strong> certain websites to know where I am. So how can I customize my browser's response when a website asks where I am?</p>
+
+<p>Firefox has a setting "geo.wifi.uri" which allows you to customise the web service they call for the data. The default is Google's at https://www.google.com/loc/json. In Opera, there's a "Location Provider <span class="caps">URL</span>" setting listed in opera:config. So, what other web services are available that I can plug in there? Here's a list:</p>
+
+<p>*</p>
+
+<p>That was a short list, wasn't it?</p>
+
+<p>But let's think about it another way. Whenever I'm using my computer, there's always something sitting right beside my computer... me. And what's in my pocket? An Android phone with access to the <span class="caps">GPS.</span> If I could query my phone, problem solved.</p>
+
+<p>Step one, <a href="http://bk.gnarf.org/creativity/bigbrothergps/">Big Brother <span class="caps">GPS</span></a> is an open source (GPL 2) Android app which allows you to regularly post (15 minute updates, or any other interval you choose) your phone's location (and speed and bearing if you're travelling) to a web service of your choice. <span class="caps">OK, </span>so we'll point it to a <span class="caps">URL </span>on my server.</p>
+
+<p>The app has the ability to configure a shared secret (i.e. password) to pass to the server. We'll do that, and call it "s3cr3t".</p>
+
+<p>Step two, on the server, we'll create a little <span class="caps">SQL</span>ite database to log each ping:</p>
+
+
+
+<pre>
+  $ sqlite3 pings.sqlite
+  sqlite&gt; CREATE TABLE pings (
+     ...&gt; time INTEGER,
+     ...&gt; latitude REAL,
+     ...&gt; longitude REAL,
+     ...&gt; altitude REAL,
+     ...&gt; accuracy REAL,
+     ...&gt; bearing REAL,
+     ...&gt; speed REAL,
+     ...&gt; );
+  sqlite&gt; .quit
+</pre>
+
+
+
+<p>Step three, we need to create a little Perl script to receive data from Big Brother <span class="caps">GPS </span>and log it to the database. For this we'll be using:</p>
+
+<ul>
+<li>DateTimeX::Auto</li>
+<li><span class="caps">DBD</span>::SQLite</li>
+<li><span class="caps">DBI</span></li>
+<li><span class="caps">JSON</span></li>
+<li><span class="caps">LWP</span>::Simple</li>
+<li>Plack::Request</li>
+</ul>
+
+<p>So we need to install them from <span class="caps">CPAN </span>if we don't already have them. Now, here's our basic script, which I'll call app.psgi.</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">use</b> <span class="hl_Float">5.010</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">DateTimeX::Auto</span> <span class="hl_Operator">qw[</span>dt<span class="hl_Operator">]</span>;
+<b class="hl_Keyword">use</b> DBI;
+<b class="hl_Keyword">use</b> JSON <span class="hl_Operator">qw[</span>from_json to_json<span class="hl_Operator">]</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">LWP::Simple</span> <span class="hl_Operator">qw[</span>get<span class="hl_Operator">]</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Plack::Request</span>;
+
+(<b class="hl_Keyword">my</b> <span class="hl_DataType">$dbfile</span> = <b class="hl_Keyword">__FILE__</b>) =~ <span class="hl_Operator">s/</span><span class="hl_Others">app.psgi</span><span class="hl_Char">$</span><span class="hl_Operator">/</span><span class="hl_String">pings.sqlite</span><span class="hl_Operator">/</span>;
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$dbh</span> = DBI-&gt;<span class="hl_Function">connect</span>(<span class="hl_Operator">"</span><span class="hl_String">dbi:SQLite:dbname=</span><span class="hl_DataType">$dbfile</span><span class="hl_Operator">"</span>);
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$sth</span> = <span class="hl_DataType">$dbh</span>-&gt;<span class="hl_DataType">prepare</span>(<span class="hl_Operator">&lt;&lt;</span><b class="hl_Keyword">GO</b><span class="hl_String">);</span><span class="hl_String">
+</span><span class="hl_String">INSERT INTO pings (time, latitude, longitude, altitude, accuracy, bearing, speed)</span><span class="hl_String">
+</span><span class="hl_String">VALUES (?, ?, ?, ?, ?, ?, ?);</span><span class="hl_String">
+</span><b class="hl_Keyword">GO</b>
+
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$app</span> = <b class="hl_Keyword">sub
+</b>{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$req</span> = <span class="hl_Function">Plack::Request</span>-&gt;new(<span class="hl_Function">shift</span>);
+	
+	<b class="hl_Keyword">if</b> (<span class="hl_Function">uc</span> <span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">method</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">POST</span><span class="hl_Operator">'</span> <span class="hl_Operator">and</span> <span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">param</span>(<span class="hl_Operator">'</span><span class="hl_String">secret</span><span class="hl_Operator">'</span>) <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">s3cr3t</span><span class="hl_Operator">'</span>)
+	{
+		<span class="hl_DataType">$sth</span>-&gt;<span class="hl_DataType">execute</span>(
+			dt(<span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">param</span>(<span class="hl_Operator">'</span><span class="hl_String">time</span><span class="hl_Operator">'</span>))<span class="hl_Operator">-</span>&gt;epoch,
+			<span class="hl_Function">map</span> {
+				<span class="hl_Function">eval</span> ~~ <span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">param</span>(<b class="hl_Variable">$_</b>)
+			} <span class="hl_Operator">qw(</span>latitude longitude altitude accuracy bearing speed<span class="hl_Operator">)</span>
+		) <span class="hl_Operator">or</span> <b class="hl_Keyword">return</b> [
+			400,
+			[ <span class="hl_Operator">'</span><span class="hl_String">Content-Type</span><span class="hl_Operator">'</span> =&gt; <span class="hl_Operator">'</span><span class="hl_String">text/plain</span><span class="hl_Operator">'</span> ],
+			[ <span class="hl_DataType">$dbh</span>-&gt;<span class="hl_DataType">errstr</span> ],
+		];
+		
+		<b class="hl_Keyword">return</b> [
+			<span class="hl_Float">200</span>,
+			[ <span class="hl_Operator">'</span><span class="hl_String">Content-Type</span><span class="hl_Operator">'</span> =&gt; <span class="hl_Operator">'</span><span class="hl_String">text/plain</span><span class="hl_Operator">'</span> ],
+			[ <span class="hl_DataType">$sql</span> ],
+		];
+	}
+	
+	<i class="hl_Comment"># We'll add some more stuff here soon...</i><i class="hl_Comment">
+</i>};
+</code></pre>
+
+
+
+<p>That should mostly be self-explanatory with one possible exception: <code>dt($req-&gt;param('time'))-&gt;epoch</code> converts the incoming <span class="caps">ISO</span> 8601 formatted datetime into a Unix timestamp. <span class="caps">SQL</span>ite doesn't have a datetime data type, so we're storing the time as an integer.</p>
+
+<p>Now, configure your web server to run that <span class="caps">PSGI.</span> Make sure Big Brother <span class="caps">GPS </span>is pointing at the right <span class="caps">URL </span>and watch the data come in.</p>
+
+
+
+<pre>
+echo "SELECT datetime(time, 'unixepoch'), latitude, longitude FROM pings ORDER BY time DESC LIMIT 5;" | sqlite3 pings.sqlite
+</pre>
+
+
+
+<p>Once you have a few data points, it's time to move onto step four: hooking your browser up to the service. Your browser is going to <span class="caps">HTTP POST </span>a bunch of <span class="caps">JSON </span>to that <span class="caps">URL </span>(which is why it's useful to have that Big Brother <span class="caps">GPS </span>secret set up, to help distinguish between <span class="caps">POST</span>s from it, and <span class="caps">POST</span>s from your browser - yes, there are other ways) but we can actually just ignore that and give it a canned response. The <a href="http://code.google.com/p/gears/wiki/GeolocationAPI#Response_Format">response format</a> is actually pretty simple. We just need to grab the latest row from the database and serve it up as <span class="caps">JSON.</span></p>
+
+<p>We'll add this to our app.psgi...</p>
+
+
+
+<pre><code class="perl">
+<i class="hl_Comment"># ... start is unchanged</i><i class="hl_Comment">
+</i><b class="hl_Keyword">my</b> <span class="hl_DataType">$app</span> = <b class="hl_Keyword">sub
+</b>{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$req</span> = <span class="hl_Function">Plack::Request</span>-&gt;new(<span class="hl_Function">shift</span>);
+	
+	<b class="hl_Keyword">if</b> (<span class="hl_Function">uc</span> <span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">method</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">POST</span><span class="hl_Operator">'</span> <span class="hl_Operator">and</span> <span class="hl_DataType">$req</span>-&gt;<span class="hl_DataType">param</span>(<span class="hl_Operator">'</span><span class="hl_String">secret</span><span class="hl_Operator">'</span>) <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">s3cr3t</span><span class="hl_Operator">'</span>)
+	{
+		<i class="hl_Comment"># this is unchanged too</i><i class="hl_Comment">
+</i>	}
+	
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$sth</span> = <span class="hl_DataType">$dbh</span>-&gt;<span class="hl_DataType">prepare</span>(<span class="hl_Operator">'</span><span class="hl_String">SELECT * FROM pings ORDER BY time DESC LIMIT 1</span><span class="hl_Operator">'</span>);
+	<span class="hl_DataType">$sth</span>-&gt;<span class="hl_DataType">execute</span>;
+	<b class="hl_Keyword">if</b> (<b class="hl_Keyword">my</b> <span class="hl_DataType">$result</span> = <span class="hl_DataType">$sth</span>-&gt;<span class="hl_DataType">fetchrow_hashref</span>)
+	{
+		<b class="hl_Keyword">return</b> [
+			<span class="hl_Float">200</span>,
+			[ <span class="hl_Operator">'</span><span class="hl_String">Content-Type</span><span class="hl_Operator">'</span> =&gt; <span class="hl_Operator">'</span><span class="hl_String">application/json</span><span class="hl_Operator">'</span> ],
+			[ to_json({
+				location =&gt; {
+					(<span class="hl_Function">map</span> { <b class="hl_Variable">$_</b> =&gt; <span class="hl_DataType">$result</span>-&gt;{<b class="hl_Variable">$_</b>} }
+					<span class="hl_Operator">qw(</span>latitude longitude altitude accuracy bearing speed<span class="hl_Operator">)</span>),
+				},
+			}, { pretty =&gt; <span class="hl_Float">1</span>, canonical =&gt; <span class="hl_Float">1</span> })],
+		];
+	}
+};
+</code></pre>
+
+
+
+<p>Our response is missing the 'address' structure that Google's <span class="caps">API </span>provides. As far as I can tell, the browser doesn't use this information, but it's not actually especially difficult to add. I leave this as an exercise for the reader, but I'll give you a clue... 'http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&amp;sensor=false'</p></div>
+  </content>
+  <published>2012-05-12T14:09:31+01:00</published>
+  <updated>2012-05-12T15:22:42+01:00</updated>
+  <link rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/uk/"/>
+  <category term="geo"/>
+  <category term="perl"/>
+</entry>

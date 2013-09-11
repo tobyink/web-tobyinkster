@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2005/08/22/table-functions/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2005/08/22/table-functions/"/>
+  <title>Reusable Table Functions</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Ross wrote:</p>
+
+<blockquote><p>I am seeking your advice on the programming language for such an action. i prefer a web table capable of sorting by size, length and so on, therefore built-in function for sorting is appreciated.</p></blockquote>
+
+<p>Down below are a couple of nice <span class="caps">PHP </span>functions that may be of use. I've taken them from my <span class="caps">CMS </span>at work and munged them a little to make them independent of it. I've not tested these munged ones, so they may need a little adjusting.</p>
+
+<p>Below the <span class="caps">PHP </span>code are some instructions on how they should be used.</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Keyword">function</b> insert_datatable_cmp <span class="hl_Others">(</span><b class="hl_Variable">$a</b><span class="hl_Others">,</span> <b class="hl_Variable">$b</b><span class="hl_Others">)</span> {
+    <span class="hl_Operator">return</span> <span class="hl_Others">(</span><b class="hl_Variable">$a</b><span class="hl_Others">[</span><b class="hl_Variable">$_GET</b><span class="hl_Others">[</span><span class="hl_String">'sort'</span><span class="hl_Others">]]</span>&lt;<b class="hl_Variable">$b</b><span class="hl_Others">[</span><b class="hl_Variable">$_GET</b><span class="hl_Others">[</span><span class="hl_String">'sort'</span><span class="hl_Others">]])</span> ? <span class="hl_DecVal">-1</span> <span class="hl_Others">:</span> <span class="hl_Float">1</span><span class="hl_Others">;</span>
+}
+	
+<b class="hl_Keyword">function</b> insert_datatable <span class="hl_Others">(</span><b class="hl_Variable">$data</b><span class="hl_Others">,</span> <b class="hl_Variable">$headings</b><span class="hl_Others">,</span> <b class="hl_Variable">$options</b>=<span class="hl_Function">array</span><span class="hl_Others">(),</span> <b class="hl_Variable">$caption</b>=<span class="hl_String">''</span><span class="hl_Others">)</span>
+{
+    <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$caption</b>!=<span class="hl_String">''</span> &amp;&amp; <b class="hl_Variable">$options</b><span class="hl_Others">[</span><span class="hl_String">'h2'</span><span class="hl_Others">]</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span> <span class="hl_Function">print</span> <span class="hl_String">"&lt;h2&gt;</span><b class="hl_Variable">$caption</b><span class="hl_String">&lt;/h2&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+    <span class="hl_Function">print</span> <span class="hl_String">"&lt;table&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+    <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$caption</b>!=<span class="hl_String">''</span> &amp;&amp; <b class="hl_Variable">$options</b><span class="hl_Others">[</span><span class="hl_String">'h2'</span><span class="hl_Others">]</span>!=<span class="hl_Float">1</span><span class="hl_Others">)</span> <span class="hl_Function">print</span> <span class="hl_String">"&lt;caption&gt;</span><b class="hl_Variable">$caption</b><span class="hl_String">&lt;/caption&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+    <span class="hl_Function">print</span> <span class="hl_String">"&lt;thead&gt;&lt;tr&gt;"</span><span class="hl_Others">;</span>
+    <b class="hl_Variable">$i</b> = 0<span class="hl_Others">;</span>
+    <span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$headings</b> <span class="hl_Operator">as</span> <b class="hl_Variable">$h</b><span class="hl_Others">)</span>
+    {
+        <span class="hl_Function">print</span> <span class="hl_String">"&lt;th scope=</span><span class="hl_BString">\"</span><span class="hl_String">col</span><span class="hl_BString">\"</span><span class="hl_String">&gt;&lt;a href=</span><span class="hl_BString">\"</span><span class="hl_String">${_SERVER['PHP_SELF']}?sort=</span><b class="hl_Variable">$i</b><span class="hl_BString">\"</span><span class="hl_String">&gt;</span><b class="hl_Variable">$h</b><span class="hl_String">&lt;/a&gt;&lt;/th&gt;"</span><span class="hl_Others">;</span>
+        <b class="hl_Variable">$i</b>++<span class="hl_Others">;</span>
+    }
+    <span class="hl_Function">print</span> <span class="hl_String">"&lt;/tr&gt;&lt;/thead&gt;</span><span class="hl_BString">\n</span><span class="hl_String">&lt;tbody&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+                
+        <b class="hl_Variable">$lines</b> = <span class="hl_Function">explode</span><span class="hl_Others">(</span><span class="hl_String">"</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">,</span><b class="hl_Variable">$data</b><span class="hl_Others">);</span>
+        <b class="hl_Variable">$i</b> = 0<span class="hl_Others">;</span>         
+        <span class="hl_Operator">while</span> <span class="hl_Others">(</span><b class="hl_Variable">$l</b> = <span class="hl_Function">array_shift</span><span class="hl_Others">(</span><b class="hl_Variable">$lines</b><span class="hl_Others">))</span>
+            <b class="hl_Variable">$s</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b>++<span class="hl_Others">]</span> = <span class="hl_Function">explode</span><span class="hl_Others">(</span><span class="hl_String">"|"</span><span class="hl_Others">,</span><b class="hl_Variable">$l</b><span class="hl_Others">);</span>
+                
+    <span class="hl_Operator">if</span><span class="hl_Others">(</span><span class="hl_Function">isset</span><span class="hl_Others">(</span><b class="hl_Variable">$_GET</b><span class="hl_Others">[</span><span class="hl_String">'sort'</span><span class="hl_Others">]))</span>
+        <span class="hl_Function">usort</span><span class="hl_Others">(</span><b class="hl_Variable">$s</b><span class="hl_Others">,</span><span class="hl_String">"insert_datatable_cmp"</span><span class="hl_Others">);</span>
+                
+    <span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$s</b> <span class="hl_Operator">as</span> <b class="hl_Variable">$S</b><span class="hl_Others">)</span>
+    {
+        <span class="hl_Function">print</span> <span class="hl_String">"&lt;tr&gt;"</span><span class="hl_Others">;</span>
+        <span class="hl_Operator">for</span><span class="hl_Others">(</span><b class="hl_Variable">$i</b>=0<span class="hl_Others">;</span><b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">];</span><b class="hl_Variable">$i</b>++<span class="hl_Others">)</span>
+        {
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$options</b><span class="hl_Others">[</span><span class="hl_String">'email:'</span>.<b class="hl_Variable">$i</b><span class="hl_Others">]</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span> 
+            {
+                <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> = <span class="hl_String">'&lt;a href="mailto:'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">'"&gt;'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">'&lt;/a&gt;'</span><span class="hl_Others">;</span>
+            }
+            <span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$options</b><span class="hl_Others">[</span><span class="hl_String">'web:'</span>.<b class="hl_Variable">$i</b><span class="hl_Others">]</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span> 
+            {
+                <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> = <span class="hl_String">'&lt;a href="'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">'"&gt;'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">'&lt;/a&gt;'</span><span class="hl_Others">;</span>
+            }
+
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$options</b><span class="hl_Others">[</span><span class="hl_String">'join:'</span>.<b class="hl_Variable">$i</b>.<span class="hl_String">':'</span>.<span class="hl_Others">(</span><b class="hl_Variable">$i</b>+<span class="hl_Float">1</span><span class="hl_Others">)]</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span>
+            {
+                <span class="hl_Function">print</span> <span class="hl_String">'&lt;td colspan="2"&gt;'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">' '</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b>+<span class="hl_Float">1</span><span class="hl_Others">]</span> . <span class="hl_String">'&lt;/td&gt;'</span><span class="hl_Others">;</span>
+                <b class="hl_Variable">$i</b>++<span class="hl_Others">;</span>
+            }
+            <span class="hl_Operator">else</span>
+            {
+                <span class="hl_Function">print</span> <span class="hl_String">'&lt;td&gt;'</span> . <b class="hl_Variable">$S</b><span class="hl_Others">[</span><b class="hl_Variable">$i</b><span class="hl_Others">]</span> . <span class="hl_String">'&lt;/td&gt;'</span><span class="hl_Others">;</span>
+            }
+        }
+        <span class="hl_Function">print</span> <span class="hl_String">"&lt;/tr&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+    }
+
+    <span class="hl_Function">print</span> <span class="hl_String">"&lt;/tbody&gt;&lt;/table&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+}
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>To create the table you posted, you would do this:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$d</b> = <span class="hl_String">"A|3|5|1|10|3|figA.gif</span><span class="hl_String">
+</span><span class="hl_String">B|5|2|2|4|3|figB.gif</span><span class="hl_String">
+</span><span class="hl_String">C|4|3|3|9|6|figC.gif"</span><span class="hl_Others">;</span>
+
+<b class="hl_Variable">$h</b> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'name'</span><span class="hl_Others">,</span><span class="hl_String">'size'</span><span class="hl_Others">,</span><span class="hl_String">'length'</span><span class="hl_Others">,</span><span class="hl_String">'0min'</span><span class="hl_Others">,</span><span class="hl_String">'3min'</span><span class="hl_Others">,</span><span class="hl_String">'10min'</span><span class="hl_Others">,</span><span class="hl_String">'chart'</span><span class="hl_Others">);</span>
+<b class="hl_Variable">$o</b> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'web:6'</span>=&gt;<span class="hl_Float">1</span><span class="hl_Others">);</span>
+<b class="hl_Variable">$c</b> = <span class="hl_String">'My Caption'</span><span class="hl_Others">;</span>
+
+insert_datatable<span class="hl_Others">(</span><b class="hl_Variable">$d</b><span class="hl_Others">,</span> <b class="hl_Variable">$h</b><span class="hl_Others">,</span> <b class="hl_Variable">$o</b><span class="hl_Others">,</span> <b class="hl_Variable">$c</b><span class="hl_Others">);</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>As you can see, the first argument for the <code class="php">insert_datatable()</code> function is a pipe-seperated table of data. The second argument is a <span class="caps">PHP </span>array of headings. The third argument is an array of "options" (explained later). The last argument is a caption for the table. The first two arguments are required. The last two are optional. (But if you include a caption, you must also include the options array!)</p>
+
+<p>The options are set like this:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$o</b> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'option1'</span>=&gt;<span class="hl_Float">1</span><span class="hl_Others">,</span> <span class="hl_String">'option2'</span>=&gt;<span class="hl_Float">1</span><span class="hl_Others">,</span> <span class="hl_String">'option3'</span>=&gt;<span class="hl_Float">1</span><span class="hl_Others">);</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>so that the "=&gt;1" means "switch this option on".</p>
+
+<p>What options can be used? "web:X" means that column number X is a web link. "email:X" means that column X is an e-mail address. "join:X:Y" means that columns X and Y should be joined (useful if X is a person's first name and Y is their surname!). Column numbers start from 0, not 1.</p>
+
+<p>That's about it!</p></div>
+  </content>
+  <published>2005-08-22T18:48:51+01:00</published>
+  <updated>2007-04-08T20:30:24+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-2.0.html"/>
+  <category term="php"/>
+  <category term="web"/>
+</entry>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/13/opera-9-point-2/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/13/opera-9-point-2/"/>
+  <title>Opera 9.2</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>It seems that a couple of days ago <a href="http://www.opera.com">Opera 9.2</a> <a href="http://my.opera.com/desktopteam/blog/">was released</a>. That one passed me by -- I must start reading the opera.* newsgroups again.</p>
+
+<p>The big new change is <a href="http://www.opera.com/img/products/desktop/screenshots/speeddial.jpg">Speed Dial</a> giving you even faster access to your nine favourite websites and one favourite search engine when you open a new (blank) tab. This is somewhat a replacement for the crappy old "Start Bar". Also, you get <kbd>Ctrl + 0</kbd> to <kbd>9</kbd> as hotkeys for the Speed Dial entries. Personally, I have found that Speed Dial slows things down a little, so I've turned it off. But if I had a faster computer (and I will soon, when my two new Intel 5060 Dual-Core Xeon processors get delivered) then I'd probably use it. Luckily, as with most things in Opera, there's a way to turn it off.</p>
+
+<p>The screenshots-in-tooltips have improved somewhat and there are numerous security and bug fixes, including the annoying problem where the typed <span class="caps">URL </span>"foobar:1234" would be interpreted as "connect to server '1234' using protocol 'foobar'" instead of "connect to server 'foobar' on port '1234' using protocol 'HTTP'".</p>
+
+<p><a href="http://www.opera.com/download/">Opera Download</a></p></div>
+  </content>
+  <published>2007-04-13T12:36:34+01:00</published>
+  <updated>2007-04-13T12:36:34+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="opera"/>
+</entry>

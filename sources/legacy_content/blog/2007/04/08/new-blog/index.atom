@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/08/new-blog/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/08/new-blog/"/>
+  <title>Hurrah! A Blog for Toby!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>At last, my new <span class="caps">CMS </span>is at a stage when I'm able to actually start publishing with it. Now that I have an easy-ish tool to publish with, you can expect that this website will be updated more frequently and with more and better content.</p>
+
+<p>Updating this website in the past has been a major pain. I took a look at installing an off-the-shelf blogging engine to help me run the site, and after much research decided that <a href="http://wordpress.org/">Wordpress</a> was the best of breed. After two days playing with it, I abandoned it -- it didn't do everything I wanted out of a blogging engine, and the mess of <span class="caps">PHP </span>code would have made modifications to Wordpress painful.</p>
+
+<p>And so in early 2006, I decided to embark upon my own blogging engine. I posted my <a href="http://groups.google.com/group/alt.www.webmaster/msg/5218faa47068013a?dmode=source">initial ideas</a> to Usenet in February 2006 and asked for feedback. I got a few useful suggestions and started development later that month, calling the project <a href="http://demiblog.org/">demiblog</a>.</p>
+
+<p>Anyway, in March/April, things got a bit hectic at work, so work on demiblog ground to a halt at a very early stage. Nothing more happened to it until the beginning of 2007.</p>
+
+<p>After several months hiatus, I reassessed demiblog with a view to picking up working on it again. There were certain early decisions I regretted, so I took the decision to start it yet again from scratch. I kept very little code from the 2006 effort, except for some <span class="caps">HTML </span>formatting code, some <span class="caps">RSS</span>/Atom generating code and the basic database design. Of course, all these were modified in the 2007 version, but the basic ideas are there.</p>
+
+<p>This new version of demiblog is written with the following ideals in mind:</p>
+
+<ul>
+<li>It is a content/blogging/calendar/photo management tool;</li>
+<li>It is written in <span class="caps">PHP</span> 5;</li>
+<li>It supports a variety of backend databases including PostgreSQL, MySQL, Firebird, Microsoft <span class="caps">SQL</span> Server Express Edition and Oracle Express Edition;</li>
+<li>It uses established web standards wherever possible;</li>
+<li>Virtually everything is available as a feed, and feeds are available in several formats;</li>
+<li>Tagging is used to organise content;</li>
+<li>Written content is input in the Textile markup language, <strong>not <span class="caps">HTML</span></strong>;</li>
+<li>The engine is output-agnostic, capable of producing standards-compliant <span class="caps">HTML</span> 4.x or <span class="caps">XHTML</span> 1.x, with some experimental support for <span class="caps">ISO HTML, </span>(X)HTML 5 and <span class="caps">XHTML</span> 2;</li>
+<li>It should support beautiful typography (proper curly quotes, dashes, ellipses, etc);</li>
+<li>It should have powerful plugin capabilities; and</li>
+<li>It should be Ã¼ber-secure.</li>
+</ul>
+
+<p>After three months of fairly intensive work, and nearly 10 000 lines of code written, I'm proud to say that I'm nearing the release of a preview version. Indeed, I'm near enough to start moving my own website over onto it. This is my first blog entry written using demiblog... it brings a tear to my eye.</p></div>
+  </content>
+  <published>2007-04-08T16:46:29+01:00</published>
+  <updated>2007-06-28T16:46:29+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="web"/>
+  <category term="blogging"/>
+  <category term="toby-inkster"/>
+  <category term="demiblog"/>
+</entry>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/03/09/ie-8-meta-tag/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/03/09/ie-8-meta-tag/"/>
+  <title>The Great IE8 Meta Tag Climb Down</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Yeah, so I know I'm about a week late in mentioning this (I've been busy -- let's hope nobody is using this blog as their primary source of news), but the Microsoft Internet Explorer team have backed down on their <a href="http://tobyinkster.co.uk/blog/2008/02/06/ie-8-meta-tag/">ridiculous <span class="caps">META </span>tag idea</a>.</p>
+
+<p>Read about it on <a href="http://blogs.msdn.com/ie/archive/2008/03/03/microsoft-s-interoperability-principles-and-ie8.aspx">IEblog</a>.</p></div>
+  </content>
+  <published>2008-03-09T16:08:57Z</published>
+  <updated>2008-03-09T16:09:02Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="future"/>
+</entry>

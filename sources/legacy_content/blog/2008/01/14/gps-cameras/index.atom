@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/14/gps-cameras/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/14/gps-cameras/"/>
+  <title>GPS &amp; Cameras</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>We are now starting to see the arrival of <acronym title="Global Positioning System">GPS</acronym> chips in cameras. Why? Well, so that photos can be <a href="/blog/2007/05/10/exif/">tagged</a> with their latitude and longitude. Then when you upload your photos to a computer, they can be plonked onto a map -- nifty little trick, and I'm sure people will come up with plenty of other neat ways of using this extra data.</p>
+
+<p>But just wait until <a href="http://en.wikipedia.org/wiki/Galileo_positioning_system">Galileo</a> (the European Space Agency's rival to US-based <span class="caps">GPS</span>) goes live. Galileo will provide far higher resolution co-ordinates, potentially narrowing your position down to within a few inches. Combine that with the <a href="http://en.wikipedia.org/wiki/Gyroscope">gyroscopes</a> already build into many higher end digital cameras, which are able to determine the orientation of the camera, and online <a href="http://en.wikipedia.org/wiki/Geotagging">geotagging</a> -- the practice of marking up information on the web with geographic co-ordinates -- and you end up with a camera which doesn't just take pictures, but knows which famous landmark you've decided to take a snap of!</p></div>
+  </content>
+  <published>2008-01-14T18:43:19Z</published>
+  <updated>2008-01-14T18:43:19Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="photography"/>
+  <category term="technology"/>
+  <category term="metadata"/>
+  <category term="geotagging"/>
+  <category term="gps"/>
+  <category term="exif"/>
+</entry>

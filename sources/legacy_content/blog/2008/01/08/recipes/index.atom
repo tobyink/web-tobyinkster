@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/08/recipes/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/08/recipes/"/>
+  <title>Recipes</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>I spent a while the other day re-arranging the old <a href="/tag/recipes/">recipes</a> on this site and moving them into the "blog" bit rather than the "articles" bit. Hopefully they'll now be a bit easier to find. Sorry for breaking their <span class="caps">URL</span>s.</p>
+    </div>
+  </content>
+  <published>2008-01-08T23:12:45Z</published>
+  <updated>2008-01-08T23:12:45Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="colophon"/>
+  <category term="recipes"/>
+</entry>

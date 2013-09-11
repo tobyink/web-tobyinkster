@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/09/x-blog-name/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/09/x-blog-name/"/>
+  <title>X-Blog-Name</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><span class="caps">OK, </span>so the <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> <a href="http://www.sixapart.com/pronet/docs/trackback_spec">specification</a> includes the ability for a pinging page to specify its article title and blog name when it sends a trackback ping. However, these fields are optional. When not present, typically the recipient of the ping will then make an <span class="caps">HTTP </span>request back to the pinger to determine the article title from the page's <code class="html">&lt;title&gt;</code> element. But there is no standardised way of determining the blog name -- or more generically, because Trackback can be used by sites other than blogs -- the name of the "collection of web pages". </p>
+
+<p>The following informal specification suggests a method of determining the name of the collection of documents to which a given <span class="caps">HTML </span>document belongs. It also provides a clear way for you to mark your own <span class="caps">HTML </span>documents as being part of a particular collection.</p>
+
+<h2>Determining the Collection for a Given Document</h2>
+
+<p>Attempt to find the name of the collection in the following places. The first successful result should be considered the name of the collection.</p>
+
+<ol>
+<li>Check for the presence of an <span class="caps">HTTP</span> Header 'X-Blog-Name'. If this exists, the value of the header is the name of the collection.</li>
+<li>Check for the presence of an <span class="caps">HTTP</span> Header 'Link', formatted to the specification for <a href="http://www.w3.org/Protocols/9707-link-header.html"><span class="caps">HTTP </span>link headers</a>, with a rel value of "blog-name" and with a non-empty "title" value. The name of the collection is the "title" value. Additionally the <span class="caps">URL </span>of the main page of the collection can be found in the "href" value.</li>
+<li>Check for the presence of an <span class="caps">HTML </span><code>&lt;meta&gt;</code> element with the value of the "name" element of 'Blog-Name'. If found, the name of the collection can be found in the "content" attribute.</li>
+<li>Treating <span class="caps">HTML </span><code>&lt;meta&gt;</code> elements with an "http-equiv" attribute as being equivalent to real <span class="caps">HTTP </span>headers, repeat steps #1 and #2.</li>
+<li>Check for the presence of an <span class="caps">HTML </span><code>&lt;link&gt;</code> element with a "rel" value of "blog-name" and if found, use the same semantics as #2.</li>
+<li>Repeat steps #1 to #5 looking for 'index' instead of 'blog-name'. 'x-index' <strong><span class="caps">SHOULD NOT</span></strong> be accepted.</li>
+<li>Repeat steps #1 to #5 looking for 'top' instead of 'blog-name'. 'x-top' <strong><span class="caps">SHOULD NOT</span></strong> be accepted.</li>
+</ol>
+
+<p>String comparisons for <span class="caps">HTTP </span>header names, <span class="caps">HTML </span><code>&lt;meta&gt;</code> name and http-equiv values and Link rel values <strong><span class="caps">MUST</span></strong> be case-insensitive.</p>
+
+<h2>Marking the Collection on your Documents</h2>
+
+<p>Mark your document with the collection in a manner that can be found using the algorithm described above. Multiple methods <strong><span class="caps">MAY</span></strong> be employed, but in this case, note that only the first matching collection name will be used.</p>
+
+<p>It is advised that producers take advantage of the <span class="caps">HTTP </span>header methods to reduce bandwidth and parsing requirements on the part of the client.</p>
+
+<p>Although implementations are required to make string comparisons case-insensitive, producers <strong><span class="caps">SHOULD</span></strong> use the case specified in this document for output.</p></div>
+  </content>
+  <published>2008-01-09T08:16:09Z</published>
+  <updated>2008-01-09T08:16:09Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="trackback"/>
+  <category term="metadata"/>
+  <category term="web"/>
+  <category term="demiblog"/>
+</entry>

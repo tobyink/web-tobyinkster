@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/22/css-compile/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/22/css-compile/"/>
+  <title>CSS to HTML Compiler</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>I've searched around the 'Net for something like this before, but without success, so decided to write my own. The basic idea is this: there are certain circumstances in which you need to write some styled <acronym title="Hypertext Markup Language">HTML</acronym> without access to the document's header. For example, when composing <span class="caps">HTML</span>-formatted e-mails, which may be displayed in a web-based e-mail client; when adding content to limited content-management system; or in an <a href="http://www.ebay.co.uk">eBay</a> auction description. In such a situation, you can't (validly) include a <code class="html">&lt;link rel="stylesheet"&gt;</code> element, nor a <code class="html"><style>...</style></code> block (if you <strong>do</strong> include such a construct it may just about work, but the document will not be valid), so instead you are reduced to using <span class="caps">HTML </span><code class="html">style</code> attributes all over the place.</p>
+
+<p>However, it is slow work using <code class="html">style</code> attributes as you can't take advantage of <acronym title="Cascading Style Sheet">CSS</acronym> selectors. Instead of writing the following <span class="caps">CSS </span>once:</p>
+
+
+
+<pre><code class="css">
+p
+<b class="hl_Keyword">{</b>
+	<b class="hl_Keyword">font-weight:</b> <span class="hl_DataType">normal</span><b class="hl_Keyword">;</b>
+	<b class="hl_Keyword">font-size:</b> <span class="hl_DataType">100</span>%<b class="hl_Keyword">;</b>
+	<b class="hl_Keyword">margin:</b> <span class="hl_DataType">0.33em</span> <span class="hl_DataType">0</span> <span class="hl_DataType">0.67em</span><b class="hl_Keyword">;</b>
+<b class="hl_Keyword">}</b>
+</code></pre>
+
+
+
+<p>You need to insert those styles into the <code class="html">style</code> attribute of each paragraph. If you decide to, say, adjust the margin, you'll need to go through each paragraph changing it. Without <span class="caps">CSS, </span>styling is a drudgery. </p>
+
+<p>That is where my "CSS Compiler" comes in. You write your <span class="caps">HTML </span>without style attributes, using an external <span class="caps">CSS </span>file. Then pass both through the compiler to produce an output <span class="caps">HTML </span>with all the <span class="caps">CSS </span>rules transferred into <code class="html">style</code> attributes. Magic! As an added bonus, the output file is produced as well-formed (though not necessarily valid, unless the input is valid), properly indented <span class="caps">XHTML. </span>(If you want <span class="caps">HTML </span>instead of <span class="caps">XHTML, </span>as I normally do, just search and replace "/&gt;" with "&gt;".)</p>
+
+<h2>Usage</h2>
+
+<p><samp>css-compile.pl --css=STYLESHEET <span class="caps">INFILE OUTFILE</span></samp></p>
+
+<p><var><span class="caps">INFILE</span></var> and <var><span class="caps">OUTFILE</span></var> may be given as "-" to refer to <acronym title="the standard input stream">STDIN</acronym> and <acronym title="the standard output stream">STDOUT</acronym> respectively.</p>
+
+<h2><span class="caps">CSS</span> Support</h2>
+
+<p>Supports the following selectors:</p>
+
+<ul>
+<li>Element selector (e.g. <code class="css">div {...}</code>)</li>
+<li>Class selector (e.g. <code class="css">.warning {...}</code>)</li>
+<li>ID selector (e.g. <code class="css">#header {...}</code>)</li>
+<li>Descendent selector (e.g. <code class="css">div p {...}</code>)</li>
+</ul>
+
+<p>The following selectors should work, but may be buggy:</p>
+
+<ul>
+<li>Child selector (e.g. <code class="css">div&gt;p {...}</code>)</li>
+<li>Sibling selector (e.g. <code class="css">p+p {...}</code>)</li>
+</ul>
+
+<p>Pseudo-class selectors such as <code class="css">:hover</code> and <code class="css">:visited</code> do not work of course and cannot work; <strong>they may cause the script to hang or crash!</strong> The <code class="css">:first-line</code> pseudo-element similarly cannot be implemented; <code class="css">:first-letter</code> is feasible I suppose, but not currently implemented. Attribute-based selectors are not yet supported.</p>
+
+<p>Specificity and the <span class="caps">CSS </span>cascade are (mostly) respected. So a rule that already appears in a <code class="html">style</code> attribute will not be overridden by one being compiled in from the <span class="caps">CSS </span>file; ID-selector rules will override class-selector rules which will override element-selector rules; deeply nested descendent selectors will override shallow ones; etc. All things being equal, rules later in the stylesheet override rules earlier in the file.</p>
+
+<h3><span class="caps">CSS</span> Shorthand Properties</h3>
+
+<p><span class="caps">CSS </span>properties are not interpreted in any way, so for example, the following rules:</p>
+
+
+
+<pre><code class="css">
+<span class="hl_Float">.col</span> <b class="hl_Keyword">{</b> <b class="hl_Keyword">margin:</b> <span class="hl_DataType">1em</span> <span class="hl_DataType">2em</span> <span class="hl_DataType">1em</span> <span class="hl_DataType">2em</span><b class="hl_Keyword">;</b> <b class="hl_Keyword">}</b>
+<span class="hl_Float">.col</span> <b class="hl_Keyword">{</b> <b class="hl_Keyword">margin-bottom:</b> <span class="hl_DataType">3em</span><b class="hl_Keyword">;</b> <b class="hl_Keyword">}</b>
+</code></pre>
+
+
+
+<p>will not be "rationalised" to </p>
+
+
+
+<pre><code class="html">
+style="margin: 1em 2em 3em 2em;"
+</code></pre>
+
+
+
+<p>To avoid conflict between <span class="caps">CSS </span>shorthand and longhand properties, it is recommended you either <strong>always</strong> use the shorthand form, or <strong>never</strong> use the shorthand form, and not to attempt mixed usage in the same document.</p>
+
+<h2>Requirements</h2>
+
+<ul>
+<li>Perl 5</li>
+<li><span class="caps">CSS</span>::Tiny</li>
+<li><span class="caps">CSS</span>::Tiny::Style</li>
+<li>Getopt::ArgvFile</li>
+<li>Getopt::Long</li>
+<li><span class="caps">HTML</span>::Element</li>
+<li><span class="caps">HTML</span>::TreeBuilder</li>
+<li><span class="caps">HTTP</span>::Cookies</li>
+<li>Pod::Usage</li>
+<li><span class="caps">URI</span>::Escape</li>
+</ul>
+
+<p>The script has only been tested on Linux, but I imagine it will work on any supported Perl platform, provided the above requirements are met.</p>
+
+<h2>Download</h2>
+
+<ul>
+<li><a href="/blog/2008/01/22/css-compile/files/css-compile.pl">Perl script</a></li>
+<li><a href="/blog/2008/01/22/css-compile/files/css-compile.pl.html">Highlighted source code</a></li>
+</ul></div>
+  </content>
+  <published>2008-01-22T23:26:48Z</published>
+  <updated>2008-01-22T23:34:11Z</updated>
+  <link rel="license" href="http://www.perlfoundation.org/artistic_license_1_0"/>
+  <category term="html"/>
+  <category term="programming"/>
+  <category term="web"/>
+  <category term="css-compile"/>
+  <category term="css"/>
+  <category term="perl"/>
+</entry>

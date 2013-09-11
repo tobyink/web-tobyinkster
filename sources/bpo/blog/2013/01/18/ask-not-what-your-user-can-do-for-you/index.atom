@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Ask not what your user can do for you...</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/01/ask-not-what-your-user-can-do-for-you.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4214</id>
+
+    <published>2013-01-18T20:49:48Z</published>
+    <updated>2013-01-18T21:31:31Z</updated>
+
+    <summary>In many scripts, we need to prompt the end user for information - this could be a prompt for a file name, a selection from a list of options, or an answer to a yes/no question. The traditional approach to...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="ask" label="Ask" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="gui" label="GUI" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>In many scripts,
+we need to prompt the end user for information - this could be a prompt for a file name,
+a selection from a list of options,
+or an answer to a yes/no question.</p>
+
+<p>The traditional approach to this sort of question is to print your question to STDOUT,
+read a line from STDIN,
+and apply some sort of parsing to the answer...</p>
+
+<pre>   <b>use</b> <span style="color:#00007f">5.010</span>;
+   <b>use</b> <b>strict</b>;
+   <b>use</b> <b>warnings</b>;
+   
+   <b>my</b> <span style="color:#0000ff">$answer</span>;
+   <b>until</b> (<span style="color:#007f00">defined</span> <span style="color:#0000ff">$answer</span>) {
+      <span style="color:#007f00">print</span> <span style="color:#ffa500">"</span><span style="color:#ff0000">Would you like fries with that?</span><span style="color:#ff00ff">\n</span><span style="color:#ffa500">"</span>;
+      <span style="color:#0000ff"><b>$_</b></span> = &lt;&gt;;
+      <span style="color:#0000ff">$answer</span> = <span style="color:#00007f">1</span> <b>if</b> <span style="color:#ffa500">/</span><span style="color:#ff00ff">^</span><span style="color:#b03060">Y</span><span style="color:#ffa500">/i</span>;
+      <span style="color:#0000ff">$answer</span> = 0 <b>if</b> <span style="color:#ffa500">/</span><span style="color:#ff00ff">^</span><span style="color:#b03060">N</span><span style="color:#ffa500">/i</span>;
+   }
+   
+   <b>say</b> <span style="color:#ffa500">"</span><span style="color:#ff0000">Adding fries!</span><span style="color:#ffa500">"</span> <b>if</b> <span style="color:#0000ff">$answer</span>;</pre>
+
+<p>One issue with this approach is: what happens when your script is not running in a terminal?</p>
+]]>
+        <![CDATA[<p>One attempt at solving this problem is <a href="https://metacpan.org/module/IO::Prompt::Tiny" class="podlinkpod">IO::Prompt::Tiny</a> and its ilk. This performs a simple test to determine if the script is running on an interactive terminal and only prompts the user if the terminal is interactive. When the script is being run non-interactively (or if the <code>PERL_MM_USE_DEFAULT</code> environment variable is set), then it returns a default answer instead.</p>
+
+<pre>   <b>use</b> <span style="color:#00007f">5.010</span>;
+   <b>use</b> <b>strict</b>;
+   <b>use</b> <b>warnings</b>;
+   <b>use</b> <span style="color:#007f00">IO::Prompt</span>::<span style="color:#007f00">Tiny</span> <span style="color:#ffa500">qw(</span>prompt<span style="color:#ffa500">)</span>;
+   
+   <b>my</b> <span style="color:#0000ff">$answer</span>;
+   <b>until</b> (<span style="color:#007f00">defined</span> <span style="color:#0000ff">$answer</span>) {
+      <span style="color:#7f7f7f"><i># In non-interactive mode, assume they want no fries...</i></span><span style="color:#7f7f7f"><i>
+</i></span>      <span style="color:#0000ff"><b>$_</b></span> = prompt(<span style="color:#ffa500">"</span><span style="color:#ff0000">Would you like fries with that?</span><span style="color:#ffa500">"</span>, <span style="color:#ffa500">"</span><span style="color:#ff0000">No</span><span style="color:#ffa500">"</span>);
+      <span style="color:#0000ff">$answer</span> = <span style="color:#00007f">1</span> <b>if</b> <span style="color:#ffa500">/</span><span style="color:#ff00ff">^</span><span style="color:#b03060">Y</span><span style="color:#ffa500">/i</span>;
+      <span style="color:#0000ff">$answer</span> = 0 <b>if</b> <span style="color:#ffa500">/</span><span style="color:#ff00ff">^</span><span style="color:#b03060">N</span><span style="color:#ffa500">/i</span>;
+   }
+   
+   <b>say</b> <span style="color:#ffa500">"</span><span style="color:#ff0000">Adding fries!</span><span style="color:#ffa500">"</span> <b>if</b> <span style="color:#0000ff">$answer</span>;</pre>
+
+<p>The problem with this is that it makes the assumption that when the terminal is non-interactive, there is absolutely no other way to prompt the user, and you should be happy with the default answer. This is not always a good assumption.</p>
+
+<h2><span>Opening up a dialogue</span></h2>
+
+<p>On some operating systems, double-clicking a Perl file will launch it without a terminal. In these cases, you can probably interact with the user by launching a dialog box. But how to do that? Doesn't that require complex programming in <a href="https://metacpan.org/module/Tk" class="podlinkpod">Tk</a> or <a href="https://metacpan.org/module/Wx" class="podlinkpod">Wx</a> (modules which are not in core, and not always straightforward to build)?</p>
+
+<p>Enter <a href="https://metacpan.org/module/Ask" class="podlinkpod">Ask</a>. Ask abstracts away the details of interacting with your user. It will do the terminal interaction test; it will check <code>PERL_MM_USE_DEFAULT</code>; it will see if the <a href="https://metacpan.org/module/Wx" class="podlinkpod">Wx</a>, <a href="https://metacpan.org/module/Gtk2" class="podlinkpod">Gtk2</a> or <a href="https://metacpan.org/module/Tk" class="podlinkpod">Tk</a> modules are installed and usable; it will even use <code>/usr/bin/zenity</code> (a GNOME component for adding GUI dialog boxes to shell scripts) if it has to.</p>
+
+<p>It will only resort to using the default answer if there's no other possibility of interacting with the user. Here's our fast food worker using Ask:</p>
+
+<pre>   <b>use</b> <span style="color:#00007f">5.010</span>;
+   <b>use</b> <b>strict</b>;
+   <b>use</b> <b>warnings</b>;
+   <b>use</b> Ask <span style="color:#ffa500">qw(</span>question<span style="color:#ffa500">)</span>;
+   
+   <b>my</b> <span style="color:#0000ff">$answer</span> = question(<span style="color:#ffa500">"</span><span style="color:#ff0000">Would you like fries with that?</span><span style="color:#ffa500">"</span>, default =&gt; 0);
+   <b>say</b> <span style="color:#ffa500">"</span><span style="color:#ff0000">Adding fries!</span><span style="color:#ffa500">"</span> <b>if</b> <span style="color:#0000ff">$answer</span>;</pre>
+
+<h2><span>That is the question</span></h2>
+
+<p>In the previous example, we saw a yes-no question. How about something a bit harder?</p>
+
+<pre>   <b>use</b> Ask <span style="color:#ffa500">qw(</span> multiple_choice <span style="color:#ffa500">)</span>;
+   
+   <b>my</b> <span style="color:#0000ff">@answers</span> = multiple_choice(
+      <span style="color:#ffa500">"</span><span style="color:#ff0000">Please choose some pizza toppings...</span><span style="color:#ffa500">"</span>,
+      choices =&gt; [
+         [ sauce        =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Our famous pizza sauce</span><span style="color:#ffa500">'</span> ],
+         [ cheese       =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Oozing Mozzarella cheese</span><span style="color:#ffa500">'</span> ],
+         [ ham          =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Finest Bavarian ham</span><span style="color:#ffa500">'</span> ],
+         [ pepperoni    =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Spicy pepperoni</span><span style="color:#ffa500">'</span> ],
+         [ onion        =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Onion slices</span><span style="color:#ffa500">'</span> ],
+         [ tinned_fruit =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">Chunky cuts of fresh pineapple</span><span style="color:#ffa500">'</span> ],
+      ],
+   );
+   <b>say</b> <span style="color:#ffa500">"</span><span style="color:#ff0000">Adding </span><span style="color:#0000ff"><b>$_</b></span><span style="color:#ffa500">"</span> <b>for</b> <span style="color:#0000ff">@answers</span>;</pre>
+
+<p>Or if you just wish them to choose a single option from a list:</p>
+
+<pre>   <b>use</b> Ask <span style="color:#ffa500">qw(</span> single_choice <span style="color:#ffa500">)</span>;
+   
+   <b>my</b> <span style="color:#0000ff">$existance</span> = single_choice(
+      <span style="color:#ffa500">"</span><span style="color:#ff0000">To be, or not to be; that is the question.</span><span style="color:#ffa500">"</span>,
+      choices =&gt; [
+         [ be     =&gt; <span style="color:#ffa500">"</span><span style="color:#ff0000">Be</span><span style="color:#ffa500">"</span> ],
+         [ not_be =&gt; <span style="color:#ffa500">"</span><span style="color:#ff0000">Don't be</span><span style="color:#ffa500">"</span> ],
+      ],
+   );</pre>
+
+<p>Ask also has functions for file selection, text entry (including hidden text - passwords) and displaying information, warnings and errors.</p>
+
+<h2><span>I object!</span></h2>
+
+<p>If you object to using the functional interface, you can get an object using the <code>Ask-&gt;detect</code> method and call <code>question</code>, <code>single_choice</code> and friends as object methods.</p>
+
+<pre>   <b>use</b> <span style="color:#00007f">5.010</span>;
+   <b>use</b> <b>strict</b>;
+   <b>use</b> <b>warnings</b>;
+   <b>use</b> Ask;
+   
+   <b>my</b> <span style="color:#0000ff">$interface</span> = Ask-&gt;detect;
+   
+   <b>my</b> <span style="color:#0000ff">$answer</span> = <span style="color:#0000ff">$interface</span>-&gt;<span style="color:#0000ff">question</span>(
+      text      =&gt; <span style="color:#ffa500">"</span><span style="color:#ff0000">Would you like fries with that?</span><span style="color:#ffa500">"</span>,
+      default   =&gt; 0,
+   );
+   <b>say</b> <span style="color:#ffa500">"</span><span style="color:#ff0000">Adding fries!</span><span style="color:#ffa500">"</span> <b>if</b> <span style="color:#0000ff">$answer</span>;</pre>
+
+<p>The functional interface is just a friendly wrapper around Ask's object-oriented core.</p>
+
+<h2><span>Boldly go</span></h2>
+
+<p>Let's say that you want to hook up your script to your drive-through restaurant's voice recognition system. Ask's backends are all <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a> classes performing the <a href="https://metacpan.org/module/Ask::API" class="podlinkpod">Ask::API</a> role. It's really easy to write your own:</p>
+
+<pre>   <b>package</b> <span style="color:#007f00">Ask::VoiceRecognition</span> {
+      
+      <b>use</b> <span style="color:#007f00">MyApp::Voice</span>::<span style="color:#007f00">Generator</span> ();
+      <b>use</b> <span style="color:#007f00">MyApp::Voice</span>::<span style="color:#007f00">Recognition</span> ();
+      
+      <b>use</b> Moo;
+      with <span style="color:#ffa500">'</span><span style="color:#ff0000">Ask::API</span><span style="color:#ffa500">'</span>;
+      
+      has generator =&gt; (
+         is      =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">lazy</span><span style="color:#ffa500">'</span>,
+         default =&gt; <b>sub </b>{ <span style="color:#007f00">MyApp::Voice</span>::<span style="color:#007f00">Generator</span>-&gt;new },
+      );
+      
+      has recognition =&gt; (
+         is      =&gt; <span style="color:#ffa500">'</span><span style="color:#ff0000">lazy</span><span style="color:#ffa500">'</span>,
+         default =&gt; <b>sub </b>{ <span style="color:#007f00">MyApp::Voice</span>::<span style="color:#007f00">Recognition</span>-&gt;new },
+      );
+      
+      <b>sub </b><span style="color:#007f00">info</span> {
+         <b>my</b> <span style="color:#0000ff">$self</span> = <span style="color:#007f00">shift</span>;
+         <b>my</b> <span style="color:#0000ff">%args</span> = <span style="color:#0000ff">@_</span>;
+         <span style="color:#0000ff">$self</span>-&gt;<span style="color:#0000ff">generator</span>-&gt;<span style="color:#0000ff"><span>say</span></span>(<span style="color:#0000ff">$args</span>{text});
+      }
+      
+      <b>sub </b><span style="color:#007f00">entry</span> {
+         <b>my</b> <span style="color:#0000ff">$self</span> = <span style="color:#007f00">shift</span>;
+         <b>my</b> <span style="color:#0000ff">%args</span> = <span style="color:#0000ff">@_</span>;
+         <span style="color:#0000ff">$self</span>-&gt;<span style="color:#0000ff">info</span>(<span style="color:#0000ff">$args</span>{text}) <b>if</b> <span style="color:#007f00">exists</span> <span style="color:#0000ff">$args</span>{text};
+         <b>return</b> <span style="color:#0000ff">$self</span>-&gt;<span style="color:#0000ff">recognition</span>-&gt;<span style="color:#0000ff">listen</span>(seconds =&gt; <span style="color:#00007f">30</span>);
+      }
+   }</pre>
+
+<p>That's all there is to it!</p>
+
+<p>The Ask::API provides default implementations of <code>question</code>, <code>file_selection</code>, <code>multiple_choice</code>, etc, which you can override if you choose to, but that is optional.</p>
+
+<p>To force Ask to use your backend rather than the built-in ones, just set the <code>PERL_ASK_BACKEND</code> environment variable to the name of your module.</p>
+
+<h2><span>Ask the future</span></h2>
+
+<p>Ask is a young module and still needs some work. In particular:</p>
+
+<ul>
+<li>Detection of the best module for interacting with the user is naive. It can end up selecting, say, Gtk2 on a headless Linux box.</li>
+
+<li>A native Windows GUI backend is planned. The Gtk2, Wx and Tk backends should all theoretically work on Windows, but rely on various library files being present.</li>
+</ul>
+
+<p>Ask is <a href="https://github.com/tobyink/p5-ask" class="podlinkpod">on GitHub</a> and <a href="https://bitbucket.org/tobyink/p5-ask" class="podlinkpod">on Bitbucket</a> so feel free to contribute improvements!</p>
+]]>
+    </content>
+</entry>

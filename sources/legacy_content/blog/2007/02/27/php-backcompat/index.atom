@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/27/php-backcompat/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/27/php-backcompat/"/>
+  <title>PHP4 vs PHP5 [was Re: Extending the mysqli class]</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Michael Fesser wrote:</p>
+
+<blockquote><p>My scripts make use of many of the new <span class="caps">OOP </span>features in <span class="caps">PHP</span> 5, so they won't run at all on <span class="caps">PHP</span> 4.</p></blockquote>
+
+<p>Ditto.</p>
+
+<p>My current big pet project is http://demiblog.org/. This is <span class="caps">PHP</span> 5+ only and supports MySQL 5+ and PostgreSQL 8+. Although I do realise that earlier versions of these packages are still quite widely used out there, this project probably won't hit the big 1.0 for another year or two, by which time, the hosting world will have probably moved on a lot. Supporting older versions of <span class="caps">PHP </span>and the database engines will cost development time and push back the project release date even later, by which time <span class="caps">PHP</span> 4 support will be even less relevant.</p>
+
+<p>So although <span class="caps">PHP</span> 4 may still be alive right now, it's counting down the days to his retirement when it can hand over the family business to his son <span class="caps">PHP</span> 5. He's heard the happy news that his dranddaughter <span class="caps">PHP</span> 6 is planning on following in their footsteps too as soon as she graduates. Because of <span class="caps">PHP</span> 4's impending retirements, he's not taking on any more big projects at work, and is letting his son take on most of the new clients.</p>
+
+<p>Analogy over, it would be unwise at this point to look at supporting <span class="caps">PHP</span> 4 for any medium-to-large projects that are starting now or in the future. Existing <span class="caps">PHP</span> 4 projects should probably keep supporting <span class="caps">PHP</span> 4 for a while yet, but should certainly make an effort to support <span class="caps">PHP</span> 5 as well, and should be keeping a close eye on <span class="caps">PHP</span> 6 developments.</p></div>
+  </content>
+  <published>2007-02-27T09:27:50Z</published>
+  <updated>2007-04-08T18:32:45+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="backwards-compatibility"/>
+  <category term="demiblog"/>
+</entry>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/11/28/itunes-sharing/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/11/28/itunes-sharing/"/>
+  <title>Sharing Music with Apple iTunes</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><img src="/blog/2007/11/28/itunes-sharing/files/iTunes-small.jpeg" alt="Screenshot of iTunes connected to Firefly" class="left" style="float:left"/></p>
+
+<p><span class="caps">OK, </span>so a few weeks ago my old G3 iBook broke down. Yesterday I took delivery of a brand new (well, eBay-sourced, but new for me) G4 iBook and was about to start synching my music collection from my Linux desktop when it struck me that that's just a dumb idea. I've got a 54 Mbps wireless network, so why not put it to good use. There must be a way to get iTunes to be able to play my <span class="caps">OGG </span>files directly off the Linux server.</p>
+
+<p>One option is <a href="http://www.gnome.org/projects/rhythmbox/">Rhythmbox</a> which I happened to already use as my main audio player on Linux. It is able to participate in iTune's music sharing function by virtue of its <span class="caps">DAAP </span>plugin. However, this solution relied on me always being logged into the Linux box with Rhythmbox running. What if someone else was logged in?</p>
+
+<p>Then I discovered <a href="http://www.fireflymediaserver.org/">Firefly Media Server</a> a <span class="caps">DAAP </span>daemon capable of sharing a whole directory of music files (including several formats which iTunes doesn't support -- Firefly transcodes them into <span class="caps">WAV </span>on the fly!). This seemed like a great solution, so I installed it.</p>
+
+<p>However, iTunes doesn't have a place to enter the Linux box's IP address to start using the service. iTunes relies on being able to "pluck music servers out of the Ã¦ther" using <a href="http://en.wikipedia.org/wiki/Bonjour_(software)">Zeroconf/mDNS/Rendevous/Bonjour</a>, so I needed to delve into the scary world of <a href="http://avahi.org/">Avahi</a>, a free open-source implementation of Zeroconf, which runs on Linux (amongst many other platforms). This turned out to be much easier than I expected, so I have embarked upon "zeroconfing my server to the max".<br style="clear:both"/></p>
+
+<p>Here are some files which can be installed into <tt>/etc/avahi/services/</tt> to announce various services:</p>
+
+<ul>
+<li><a href="./files/mt-daapd.service">mt-daapd.service</a> (Firefly)</li>
+<li><a href="./files/postgresql.service">postgresql.service</a> (PostgreSQL)</li>
+<li><a href="./files/mail.service">mail.service</a> (IMAP, Postfix, etc)</li>
+</ul></div>
+  </content>
+  <published>2007-11-28T19:20:25Z</published>
+  <updated>2007-11-28T19:39:58Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="apple"/>
+  <category term="zeroconf"/>
+  <category term="itunes"/>
+  <category term="linux"/>
+  <category term="music"/>
+</entry>

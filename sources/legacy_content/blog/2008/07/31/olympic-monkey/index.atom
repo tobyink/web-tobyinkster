@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/07/31/olympic-monkey/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/07/31/olympic-monkey/"/>
+  <title>Olympics Monkey</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Damon Albarn, Jamie Hewlett and the <span class="caps">BBC </span>have reworked 1970s TV classic <a href="http://en.wikipedia.org/wiki/Monkey_%28TV_series%29">Monkey</a> for the Beijing Olympics.</p>
+
+<p><a href="http://news.bbc.co.uk/sport1/hi/olympics/monkey/7521287.stm">Awesome!</a></p></div>
+  </content>
+  <published>2008-07-31T14:22:14+01:00</published>
+  <updated>2008-07-31T14:22:14+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="sport"/>
+  <category term="bbc"/>
+  <category term="telly"/>
+  <category term="olympics"/>
+</entry>

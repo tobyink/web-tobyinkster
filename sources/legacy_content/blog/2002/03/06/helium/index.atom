@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2002/03/06/helium/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2002/03/06/helium/"/>
+  <title>Helium</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+<p>We all know what helium is, don't we? It's the stuff they put in children's balloons to get them
+ to float. It's used in airships too, because hydrogen was too flammable. I'm sure it has 101 other
+ uses as well. My question is... where do they get it???</p>
+ 
+ <p>Helium is the second lightest element (only hydrogen is lighter), which is why it floats upwards -
+ it is lighter than air. This means that we can't get helium from the air (like we do with oxygen and
+ nitrogen) because it's all up hundreds of miles above us!</p>
+ 
+ <p>Helium, is what we call "inert". This means that it doesn't react with other elements to make
+ compounds. One source of hydrogen is water - because water is H<sub>2</sub>O. Helium,
+ being inert, can't be extracted from any compunds.</p>
+ 
+ <p>So where do we get it?</p>
+ 
+ <p>The answer was given to me by my friend Sunil:</p>
+ 
+ <pre>
+ <a href="http://www.ucc.ie/ucc/depts/chem/dolchem/html/elem/elem002.html">http://www.ucc.ie/ucc/depts/chem/dolchem/html/elem/elem002.html</a>
+ 
+ Quote:
+ Extraction
+ Helium is present in the gaseous emissions from natural springs in the USA
+ and it is also present (at 1% level) in natural gas in the USA. 
+ 
+ Helium is obtained from the liquefaction of natural gas. 
+ 
+ Helium is also obtained from monazite sands by heating to 1000 degC.
+ </pre>
+</div>
+  </content>
+  <published>2002-03-06T00:00:00Z</published>
+  <updated>2007-04-06T17:13:52+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="science"/>
+  <category term="chemistry"/>
+</entry>

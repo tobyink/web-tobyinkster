@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/22/politics-map-uk/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/22/politics-map-uk/"/>
+  <title>Political Map of the UK</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;&lt;em&gt;(Requires Javascript.)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;See below for an explanation on how these placements were calculated.&lt;/p&gt;
+
+
+
+
+&lt;div id="partymap" style="background:white url('./files/political-compass'); height:480px; width:480px; position:relative; "&gt;&lt;/div&gt;
+&lt;form action="#" method="GET"&gt;
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;UK-Wide&lt;/th&gt;&lt;th&gt;Country-Specific&lt;/th&gt;&lt;/tr&gt;&lt;/th&gt;&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;
+&lt;div&gt;&lt;input checked type="checkbox" onchange="party_time();" name="party" value="Labour,-3.7037025,44.2622959"&gt;(New) Labour&lt;/div&gt;
+&lt;div&gt;&lt;input checked type="checkbox" onchange="party_time();" name="party" value="Conservative,27.407409,-32.7868862"&gt;Conservative&lt;/div&gt;
+&lt;div&gt;&lt;input checked type="checkbox" onchange="party_time();" name="party" value="LibDem,-15.5555545,85.2459034"&gt;Liberal Democrats&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="Green,-100,100"&gt;Greens&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="Respect,-91.111111,-4.9180331"&gt;Respect Coalition&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="UKIP,100,4.9180327"&gt;UK Independence Party &lt;small&gt;(UKIP)&lt;/small&gt;&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="BNP,3.703705,-100"&gt;British National Party &lt;small&gt;(BNP)&lt;/small&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;td&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="SNP,-3.7037025,63.9344275"&gt;Scottish National Party &lt;small&gt;(SNP)&lt;/small&gt;&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="PCymru,-3.7037025,47.5409845"&gt;Plaid Cymru&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="DUP,62.962965,6.557377"&gt;Democratic Unionist Party &lt;small&gt;(DUP)&lt;/small&gt;&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="SinnFein,-5.185184,0"&gt;Sinn Fein&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="SDLP,-21.4814805,52.4590174"&gt;Social Democratic &amp; Labour Party &lt;small&gt;(SDLP)&lt;/small&gt;&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="UUP,40.7407425,3.2786884"&gt;Ulster Unionist Party &lt;small&gt;(UUP)&lt;/small&gt;&lt;/div&gt;
+&lt;div&gt;&lt;input type="checkbox" onchange="party_time();" name="party" value="Alliance,-11.11111,18.0327871"&gt;Alliance&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/form&gt;
+&lt;script type="text/javascript"&gt;
+var $DudeCollection = Array(12);
+function party_time ()
+{
+	var $inputs = document.getElementsByTagName('INPUT');
+	var $I;
+	for (var $i=0; $I=$inputs[$i]; $i++)
+	{
+		var $Info = Array();
+		if ($I.name=='party')
+		{
+			$Info = $I.value.split(',');
+			if ($I.checked)
+				get_up_and_dance($i, $Info[0], $Info[1], $Info[2]);
+			else
+				take_a_break($i, $Info[0], $Info[1], $Info[2]);
+		}
+	}
+}
+function get_up_and_dance ($InviteNumber, $Dude, $XPlace, $YPlace)
+{
+	var $images = document.getElementById("partymap").getElementsByTagName("IMG");
+	for (var $i=0; $I=$images[$i]; $i++)
+	{
+		if ($I.alt==$Dude)
+		{
+			$I.style.display  = 'inline';
+			return 0;
+		}
+	}
+
+	var $x		  = new Image();
+	$x.src		  = "./files/i"+$Dude;
+	$x.alt		  = $Dude;
+	$x.title	  = $Dude;
+	$x.style.display  = 'inline';
+	$x.style.position = 'absolute';
+	$x.style.top	  = (230 - (2 * $YPlace)) + 'px';
+	$x.style.left	  = (230 + (2 * $XPlace)) + 'px';
+
+	var $map = document.getElementById("partymap");
+	$map.appendChild($x);
+
+	return 1;
+}
+function take_a_break ($InviteNumber, $Dude, $XPlace, $YPlace)
+{
+	var $images = document.getElementById("partymap").getElementsByTagName("IMG");
+	for (var $i=0; $I=$images[$i]; $i++)
+	{
+		if ($I.alt==$Dude)
+		{
+			$I.style.display  = 'none';
+			return 1;
+		}
+	}
+	return 0;
+}
+party_time();
+&lt;/script&gt;
+
+
+
+
+&lt;h2&gt;The Axes&lt;/h2&gt;
+
+&lt;p&gt;A two-dimensional graph requires two axes -- that is, two sets of scales on which the data points must be assessed. In politics there are many candidate axes, some listed below, of which we can only choose two:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Traditional Left---Right division.&lt;/em&gt; Left--- and Right-wing ideologies encompass a whole variety of different policy areas and are the standard method of classifying a political party.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Libertarian---Authoritarian.&lt;/em&gt; This is a method of classifying parties according to how "free" they aim for citizens to be.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Environmentalism.&lt;/em&gt; You could assess a party by how friendly its policies are to the environment.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Euroskepticism.&lt;/em&gt; You could assess a party on whether it is pro--- or anti-EU.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Atlanticism.&lt;/em&gt; You could assess a party on whether it is pro--- or anti-US.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I&amp;#39;ve chosen the first two from that list, as I felt they were likely to provide the most interesting picture of politics in the &lt;span class="caps"&gt;UK.&lt;/span&gt; Although "Left" and "Right" are normally defined fairly loosely, I&amp;#39;ve mainly applied the labels towards economic policy, welfare and sharing/redistribution of wealth.&lt;/p&gt;
+
+&lt;h2&gt;The Scales&lt;/h2&gt;
+
+&lt;p&gt;To measure heights, you can use metres; for volumes, litres; but there are no established "units" for measuring policies. And so I devised a number of criteria for scoring parties in a number of policy areas, which I then normalised to give a Left---Right score of -100 (far Left) to 100 (for Right), and a Libertarian---Autoritarian score of -100 (Libertarian) to 100 (Authoritarian). These could then be plotted onto a graph.&lt;/p&gt;
+
+&lt;h3&gt;Government &amp;amp; Democracy (Libertarianism: 0 to 40)&lt;/h3&gt;
+
+&lt;p&gt;I assessed each party&amp;#39;s policies towards government transparency, devolution and localisation of decision making and voting reform (e.g. proportional representation). Parties could overall score up to 40 (pre-normalised) points towards Libertarianism.&lt;/p&gt;
+
+&lt;h3&gt;Law &amp;amp; Order (Libertarianism: -40 to 30)&lt;/h3&gt;
+
+&lt;p&gt;I looked at different parties views on compulsorary national identity cards and increased police powers, with a view to penalising them up to 40 libertarian points. I also looked at their attitudes towards loosening copyright restrictions and decriminalising recreational drugs to award them up to 30 points.&lt;/p&gt;
+
+&lt;h3&gt;Tax Policy (Right-Wingedness: -30 to 30)&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;ve mostly split this into two smaller areas.&lt;/p&gt;
+
+&lt;h4&gt;Tax Levels (Right-Wingedness: -20 to 10)&lt;/h4&gt;
+
+&lt;p&gt;I&amp;#39;ve gone through the tax policies of each party, looking at their views as to the overall levels of tax: whether they should go up or down. If a party promises tax cuts, it will be awarded up to 10 points for right-wingedness.&lt;/p&gt;
+
+&lt;p&gt;As tax increases are harder to sell to the voting public, a party promising these is eligable for up to -20 right-wingedness deductions.&lt;/p&gt;
+
+&lt;h4&gt;Progressive Taxation (Right-Wingedness: -10 to 20)&lt;/h4&gt;
+
+&lt;p&gt;Progressive taxes are those which effect the rich more than they do the poor. Regressive taxes are the opposite, and also a hard sell, which is why there is a skew in the point-scoring for this subarea as well.&lt;/p&gt;
+
+&lt;h3&gt;The Free Market (Right-Wingedness: -20 to 20; Libertarianism: -10 to 10)&lt;/h3&gt;
+
+&lt;p&gt;Deregulation of markets has been a central tenant of right-wing theory since before anyone can remember. Left-wing parties often seek to regulate markets more, aiming to protect the general public and stabilise the economy -- however, this has an effect on some people&amp;#39;s freedom (i.e. shareholders, company directors, etc). And so we include a libertarian aspect in this assessment as well, though weighted less than the Left---Right aspect.&lt;/p&gt;
+
+&lt;h3&gt;Welfare and Employment Rights (Right-Wingedness: -30 to 20; Libertarianism: 0 to 10)&lt;/h3&gt;
+
+&lt;p&gt;This area includes welfare for the unemployed and disabled; welfare for children and elderly; minimum wages; support of unions and workers&amp;#39; co-operatives; and anti-discrimination laws. I won&amp;#39;t go into the exact details of how these different aspects were weighted within this area of policy, but suffice to say that it caused me the most headaches.&lt;/p&gt;
+
+&lt;h3&gt;Public Services (Right-Wingedness: -30 to 30)&lt;/h3&gt;
+
+&lt;p&gt;I assessed each party for commitment to the &lt;acronym title="National Health Service"&gt;NHS&lt;/acronym&gt; and other public services; plans for providing new public services; and attitudes towards privitisation and &lt;acronym title="Public-Private Partnerships"&gt;PPP&lt;/acronym&gt; and, at the other end of the scale, renationalisation of previously privitised services.&lt;/p&gt;
+
+&lt;h3&gt;Equality &amp;amp; Society (Libertarianism: -70 to 30)&lt;/h3&gt;
+
+&lt;p&gt;The skew in one direction is because I feel that we already live in quite an equitable society, with strong laws to oppose discrimination in most areas of life, so I reasoned that if a party were so inclines, they could do more to damage equality than they could to improve it.&lt;/p&gt;
+
+&lt;p&gt;I assessed gay rights, including gay marriage and adoption policies; and policies on discriminating towards particular races and religions. I also considered each party&amp;#39;s attitudes towards privacy legislation.&lt;/p&gt;
+
+&lt;h4&gt;The Environment&lt;/h4&gt;
+
+&lt;p&gt;More contraversially, as part of Equality &amp;amp; Society I assessed each party&amp;#39;s policies on anti-polution laws. Although I think such laws are a Good Thing, I felt I had to be fair and take away up to ten Libertarian points for them.&lt;/p&gt;
+
+&lt;h3&gt;Transport (Right-Wingedness: -10 to 10)&lt;/h3&gt;
+
+&lt;p&gt;Up to ten right-wingedness points for private-transport---friendly policies, including increased speed limits, road building schemes and reduced petrol tax; swinging back to the left to the same degree for positive policies on public transport, rail improvements or higher fuel duty.&lt;/p&gt;
+
+&lt;h2&gt;The Parties&lt;/h2&gt;
+
+&lt;p&gt;Of course, I could hardly conduct such an assessment without including the UK&amp;#39;s three main political parties: &lt;a href="http://en.wikipedia.org/wiki/Labour_Party_(UK)"&gt;Labour&lt;/a&gt;, the &lt;a href="http://en.wikipedia.org/wiki/Conservative_Party_(UK)"&gt;Conservatives&lt;/a&gt; and the &lt;a href="http://en.wikipedia.org/wiki/Liberal_Democrats"&gt;Liberal Democrats&lt;/a&gt;. But I also decided to include a number of smaller parties (they are marked on the map with a different type of icon). Although these parties do generally have wide-ranging policies, they are mostly seen as single-issue parties. I&amp;#39;ve listed the parties I chose to include below, plus their main campaigning issue.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Green_Party_of_England_and_Wales"&gt;Greens&lt;/a&gt; --- social democratic party with emphasis on the environment. No seats held in House of Commons, but one in the &lt;a href="http://en.wikipedia.org/wiki/British_House_of_Lords"&gt;House of Lords&lt;/a&gt;, a smattering in the devolved parts of the UK and good representation on local councils.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Respect_Party"&gt;Respect Coalition&lt;/a&gt; --- socialist passivist party.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/United_Kingdom_Independence_Party"&gt;UK Independence Party&lt;/a&gt; --- conservative Europskeptic party. No seats held in House of Commons, but some in the House of Lords and (ironically) in the &lt;a href="http://en.wikipedia.org/wiki/European_Parliament"&gt;European Parliament&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/British_National_Party"&gt;British National Party&lt;/a&gt; --- brutish nationalist party. No seats held in House of Commons, but some in local councils.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Scottish_National_Party"&gt;Scottish National Party&lt;/a&gt; --- centre-left party in favour of &lt;a href="http://en.wikipedia.org/wiki/Scotland"&gt;Scottish&lt;/a&gt; independence.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Plaid_Cymru"&gt;Plaid Cymru&lt;/a&gt; --- centrist party in favour of &lt;a href="http://en.wikipedia.org/wiki/Wales"&gt;Welsh&lt;/a&gt; independence.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Democratic_Unionist_Party"&gt;Democratic Unionist Party&lt;/a&gt; --- party in favour of retaining &lt;a href="http://en.wikipedia.org/wiki/Northern_Ireland"&gt;Northern Ireland&lt;/a&gt; as part of the &lt;span class="caps"&gt;UK.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Sinn_F&amp;amp;Atilde;&amp;amp;#131;&amp;amp;Acirc;&amp;amp;#131;&amp;amp;Atilde;&amp;amp;#130;&amp;amp;Acirc;&amp;amp;copy;in"&gt;Sinn &lt;span class="caps"&gt;F&amp;amp;A&lt;/span&gt;tilde;&amp;#131;&amp;amp;Acirc;&amp;#131;&amp;amp;Atilde;&amp;#130;&amp;amp;Acirc;&amp;copy;in&lt;/a&gt; (elsewhere in the article referred to as just "Sinn Fein") --- party in favour of Northern Ireland becoming part of &lt;a href="http://en.wikipedia.org/wiki/Ireland"&gt;The Republic of Ireland&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Social_Democratic_and_Labour_Party"&gt;Social Democratic &amp;amp; Labour Party&lt;/a&gt; --- social democratic party in favour of NI becoming part of the republic.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Ulster_Unionist_Party"&gt;Ulster Unionist Party&lt;/a&gt; --- party in favour of retaining NI as part of &lt;span class="caps"&gt;UK.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Alliance_Party_of_Northern_Ireland"&gt;Alliance Party&lt;/a&gt; --- middle-ground NI party. No seats held in House of Commons, but some in NI assembly.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Labour, Conservatives and Liberal Democrats are listed in order of number of seats currently (2007) held in the &lt;a href="http://en.wikipedia.org/wiki/British_House_of_Commons"&gt;House of Commons&lt;/a&gt;. Country-specific parties are grouped together. Other than that, the parties are listed in no particular order -- you should not attempt to read anything else into the order the parties are listed in.&lt;/p&gt;
+
+&lt;h2&gt;The Results&lt;/h2&gt;
+
+&lt;p&gt;You can download the &lt;a href="./files/pparties.ods"&gt;final scores for each party&lt;/a&gt; as an &lt;a href="http://en.wikipedia.org/wiki/OpenDocument"&gt;OpenDocument spreadsheet&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I think the data is better presented as a two-dimensional graph though, which is what can be found above.&lt;/p&gt;</content>
+  <published>2007-06-22T06:41:22+01:00</published>
+  <updated>2007-06-22T06:41:22+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="statistics"/>
+  <category term="british"/>
+  <category term="politics"/>
+  <category term="javascript"/>
+</entry>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/12/php-debugging-with-style/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/12/php-debugging-with-style/"/>
+  <title>PHP Debugging with Style -OR- How I Learned to Stop Worrying and Love the Bug</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><span class="caps">PHP </span>lets you <a href="http://www.php.net/set-error-handler">define your own error handler</a>, so I decided to get a bit fancy. MegaErrorHandler (<a href="http://groups.google.com/groups?q=spacegirl+meh"><span class="caps">MEH</span></a>) outputs its errors as specially-formatted <span class="caps">HTML </span>comments, with the details of the error encoded using <a href="http://json.org/"><span class="caps">JSON</span></a>.</p>
+
+<p>A small client-side script, with an associated stylesheet then pulls this data out of the comments and formats it as a nice little interactive bug-viewing console, allowing you to view a stack trace for each bug, inspect superglobals, view the syntax-highlighted source code for the file where the error occurred, check the list of defined constants and other useful things.</p>
+
+<p>It severely bloats the pages, but then again, you only really only want to use this while your testing a site -- not once it's live, as it reveals too much information about the internals of your server, so could be a security risk. When live, you'd set the output mode to <code class="php">DEBUG_SILENT</code> instead of <code class="php">DEBUG_JSON</code> as in the example.</p>
+
+<p>It requires either <span class="caps">PHP</span> 5.2.x or above; or <span class="caps">PHP</span> 5.0.x/5.1.x with <span class="caps">PEAR</span>'s Services_JSON module.</p>
+
+<p>Example of usage:</p>
+
+
+
+<pre><code class="html">
+<span class="hl_DataType">&lt;!DOCTYPE </span>HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd"<span class="hl_DataType">&gt;</span>
+<b class="hl_Keyword">&lt;title&gt;</b>Example usage<b class="hl_Keyword">&lt;/title&gt;</b>
+<b class="hl_Keyword">&lt;script</b><span class="hl_Others"> type=</span><span class="hl_String">"text/javascript"</span><span class="hl_Others"> src=</span><span class="hl_String">"handler.js"</span><b class="hl_Keyword">&gt;&lt;/script&gt;</b>
+<b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"stylesheet"</span><span class="hl_Others"> type=</span><span class="hl_String">"text/css"</span><span class="hl_Others"> href=</span><span class="hl_String">"handler.css"</span><b class="hl_Keyword">&gt;</b>
+<b class="hl_Keyword">&lt;?php</b>
+
+require 'MegaErrorHandler.class.php';
+MegaErrorHandler::set_error_handler(MegaErrorHandler::DEBUG_JSON);
+error_reporting(E_ALL);
+
+echo "&lt;p&gt;These will cause a few errors!&lt;/p&gt;\n";
+echo $foo;         // error: undefined variable
+echo $_GET[bar];   // error: undefined constant, nonexistant array index
+trigger_error('Test error. 1, 2, 3.'); // error: user triggered
+
+function lalala ()
+{
+        $msg = "Last error message.\n";
+        echo $mgs; // error: undefined variable
+}
+lalala();
+<b class="hl_Keyword">?&gt;</b>
+</code></pre>
+
+
+
+<p><a href="./files/error-handler.html">Output of above example</a></p>
+
+<h2>MegaErrorHandler/0.2.3</h2>
+
+<p><em>Supported browsers:</em> Opera 9.x, Firefox 1.5.x.</p>
+
+<ul>
+<li><a href="./files/MegaErrorHandler.class.php">MegaErrorHandler.class.php</a> (<a href="./files/MegaErrorHandler.class.phps">Highlighted source code</a>)</li>
+<li><a href="./files/handler.js">handler.js</a></li>
+<li><a href="./files/handler.css">handler.css</a></li>
+</ul>
+
+<p>(Why is the version number for the first release 0.2.3? Because <span class="caps">MEH </span>is part of the <a href="http://demiblog.org">demiblog</a> project, so I'm keeping version numbers pegged with that. <span class="caps">MEH </span>doesn't require any other parts of demiblog to work though -- you can use it in your own projects with no extra dependencies.)</p></div>
+  </content>
+  <published>2007-08-12T08:57:09+01:00</published>
+  <updated>2007-08-12T09:38:31+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="debugging"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="css"/>
+  <category term="bugs"/>
+  <category term="javascript"/>
+  <category term="demiblog"/>
+</entry>

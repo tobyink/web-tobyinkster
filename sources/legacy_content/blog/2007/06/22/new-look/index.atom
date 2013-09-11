@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/22/new-look/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/22/new-look/"/>
+  <title>A New Look for TobyInkster.co.uk</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>This site has had a few facelifts recently. Hopefully this one will stick. It's based on two main principles:</p>
+
+<ol>
+<li>Use <em>Hoefler Text</em> for copy. It's an absolutely gorgeous font which comes with Mac OS X that I was recently using on a printed document. Hoefler has a delicious set of italic glyphs -- they were properly designed in their own right -- they're not just sloping versions of the roman (non-italic) glyphs. It also uses ascending/descending numerals, which look a lot nicer in the normal flow of text than block numerals do. Garamond and Georgia are reasonable substitutes when it's not available. </li>
+<li><em>The Guardian</em> (newspaper, not website) looks good; copy it! That's where I got the idea for the small blue "TobyInkster.co.uk" heading at the top of each page.</li>
+</ol>
+
+<p>I've combined this with a few other minor ideas:</p>
+
+<ul>
+<li>Numbers and bullet points from lists hang into the margin. The last couple of versions of my site did that too.</li>
+<li>Use classical ratios for font sizes. Assuming your browser default text is 12pt, then the main heading for each page is 36pt, sub-headings 24pt, sub-subheadings 18pt, and sub-sub-subheadings 14pt. Small text is 9pt, 10pt or 11pt. Headings on the side column are 14pt. Of course, if you've changed you have a different text size for your browser, then all these should scale accordingly.</li>
+</ul>
+
+<p>I'll probably make a few changes to the comments form, but I do rather like this look, so hopefully no big changes for a while now.</p></div>
+  </content>
+  <published>2007-06-22T13:34:18+01:00</published>
+  <updated>2007-06-22T13:34:18+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="typography"/>
+  <category term="colophon"/>
+</entry>

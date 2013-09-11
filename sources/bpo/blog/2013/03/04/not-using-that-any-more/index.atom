@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Not using that any more...</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/03/not-using-that-any-more.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4394</id>
+
+    <published>2013-03-04T22:26:33Z</published>
+    <updated>2013-03-04T22:41:30Z</updated>
+
+    <summary>OK, so sometimes you decide you're going to stop using some module X, maybe because something better has come along. Let's say I want to track down all my CPAN modules that use Any::Moose because my goal is to port...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="cpan" label="CPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="metacpan" label="MetaCPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>OK,
+so sometimes you decide you're going to stop using some module X,
+maybe because something better has come along.
+Let's say I want to track down all my CPAN modules that use <a href="https://metacpan.org/module/Any%3A%3AMoose" class="podlinkpod">Any::Moose</a> because my goal is to port each of them to either <a href="https://metacpan.org/module/Moose" class="podlinkpod">Moose</a> or <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a>.</p>
+
+<p>MetaCPAN has all the dependency information,
+but I don't want to click through each of my distributions.
+Enter the MetaCPAN API...</p>
+]]>
+        <![CDATA[<pre><span class="line_number" style="color:#666"> 1: </span><span class="comment" style="color:#060;font-style:italic">   #!/usr/bin/env perl
+</span><span class="line_number" style="color:#666"> 2: </span>   
+<span class="line_number" style="color:#666"> 3: </span>   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.10</span><span class="structure">;</span>
+<span class="line_number" style="color:#666"> 4: </span>   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">strict</span><span class="structure">;</span>
+<span class="line_number" style="color:#666"> 5: </span>   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">warnings</span><span class="structure">;</span>
+<span class="line_number" style="color:#666"> 6: </span>   
+<span class="line_number" style="color:#666"> 7: </span>   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">HTTP::Tiny</span><span class="structure">;</span>
+<span class="line_number" style="color:#666"> 8: </span>   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">JSON</span><span class="structure">;</span>
+<span class="line_number" style="color:#666"> 9: </span>   
+<span class="line_number" style="color:#666">10: </span>   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol">@fields</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="words" style="color:#333;background-color:#ffc">qw&lt; distribution version date &gt;</span><span class="structure">;</span>
+<span class="line_number" style="color:#666">11: </span>   
+<span class="line_number" style="color:#666">12: </span>   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="structure">(</span><span class="symbol">$module</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol">$author</span><span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol">@ARGV</span><span class="structure">;</span>
+<span class="line_number" style="color:#666">13: </span>   <span class="symbol">$module</span> <span class="operator" style="color:#000;font-weight:bold">or</span> <span class="word">die</span> <span class="double" style="color:#909">"usage: $0 MODULE [AUTHOR]\n"</span><span class="structure">;</span>
+<span class="line_number" style="color:#666">14: </span>   
+<span class="line_number" style="color:#666">15: </span>   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol">$query</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="structure">{</span>
+<span class="line_number" style="color:#666">16: </span>      <span class="word">size</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">5000</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">17: </span>      <span class="word">fields</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="cast" style="color:#f00;font-weight:bold">\</span><span class="symbol">@fields</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">18: </span>      <span class="word">query</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="word">match_all</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">19: </span>      <span class="word">filter</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+<span class="line_number" style="color:#666">20: </span>         <span class="word">and</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+<span class="line_number" style="color:#666">21: </span>            <span class="structure">{</span> <span class="word">term</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="double" style="color:#909">"release.dependency.module"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="symbol">$module</span> <span class="structure">}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">22: </span>            <span class="structure">{</span> <span class="word">term</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="double" style="color:#909">"release.status"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="double" style="color:#909">"latest"</span><span class="structure">}</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">23: </span>         <span class="structure">]</span>
+<span class="line_number" style="color:#666">24: </span>      <span class="structure">}</span>
+<span class="line_number" style="color:#666">25: </span>   <span class="structure">};</span>
+<span class="line_number" style="color:#666">26: </span>   
+<span class="line_number" style="color:#666">27: </span>   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span><span class="symbol">$query</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">filter</span><span class="structure">}{</span><span class="word">and</span><span class="structure">}}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="structure">{</span> <span class="word">term</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="double" style="color:#909">"release.author"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="symbol">$author</span> <span class="structure">}</span> <span class="structure">}</span>
+<span class="line_number" style="color:#666">28: </span>      <span class="word">if</span> <span class="symbol">$author</span><span class="structure">;</span>
+<span class="line_number" style="color:#666">29: </span>   
+<span class="line_number" style="color:#666">30: </span>   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol">$response</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="double" style="color:#909">"HTTP::Tiny"</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">post</span><span class="structure">(</span>
+<span class="line_number" style="color:#666">31: </span>      <span class="double" style="color:#909">"http://api.metacpan.org/v0/release/_search"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+<span class="line_number" style="color:#666">32: </span>         <span class="word">content</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">to_json</span><span class="structure">(</span><span class="symbol">$query</span><span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">33: </span>         <span class="word">headers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+<span class="line_number" style="color:#666">34: </span>            <span class="double" style="color:#909">"Content-Type"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="double" style="color:#909">"application/json"</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">35: </span>         <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">36: </span>      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+<span class="line_number" style="color:#666">37: </span>   <span class="structure">);</span>
+<span class="line_number" style="color:#666">38: </span>   
+<span class="line_number" style="color:#666">39: </span>   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol">$result</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">from_json</span><span class="structure">(</span><span class="symbol">$response</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">content</span><span class="structure">});</span>
+<span class="line_number" style="color:#666">40: </span>   
+<span class="line_number" style="color:#666">41: </span>   <span class="keyword" style="color:#009;font-weight:bold">for</span> <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol">$dist</span> <span class="structure">(</span><span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol">$result</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">hits</span><span class="structure">}{</span><span class="word">hits</span><span class="structure">}</span> <span class="structure">})</span> <span class="structure">{</span>
+<span class="line_number" style="color:#666">42: </span>      <span class="word">printf</span><span class="structure">(</span><span class="double" style="color:#909">"%s\t%s\t%s\n"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">map</span> <span class="symbol">$dist</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">fields</span><span class="structure">}{</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol">@fields</span><span class="structure">);</span>
+<span class="line_number" style="color:#666">43: </span>   <span class="structure">}</span></pre>
+
+]]>
+    </content>
+</entry>

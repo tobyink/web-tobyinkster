@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/16/elvis/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/16/elvis/"/>
+  <title>Elvis</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>Today marks the 30th anniversary of the day Elvis Presley faked his own death.</p>
+    </div>
+  </content>
+  <published>2007-08-16T22:27:05+01:00</published>
+  <updated>2007-08-16T22:27:05+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="elvis-presley"/>
+  <category term="music"/>
+</entry>

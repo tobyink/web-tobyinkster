@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2006/12/19/php-legibility/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2006/12/19/php-legibility/"/>
+  <title>On The Legibility of PHP</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>David Segall wrote:</p>
+
+<blockquote><p>I do not deny that the programmer is the most significant factor in the readability of a program but would you really promote <span class="caps">PHP </span>as a language because it is easy to read?</p></blockquote>
+
+<p>I certainly wouldn't advise <strong>against</strong> it because of legibility concerns.</p>
+
+<p>Any language that supports comments (not all do) and allows the programmer to choose variable and function identifiers using arbitrary alphanumeric names (again, not all do) can be made very readable simply by using these facilities. With most common programming languages, you can easily clarify your code by having a policy that includes choosing sensible, readable function and variable names, using indentation and plenty of white space, adding liberal comments, keeping line lengths down to a reasonable length, keeping function sizes down to 20 or so lines (longer functions can often be split into two or more functions). Yes, even Perl!</p>
+
+<!--@SUMMARY-->
+
+<p>For example, consider the following two (untested) <span class="caps">PHP </span>objects which are exactly equivalent except identifier names, comments and formatting.</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<i class="hl_Comment">/* Person class, which stores customer data. */</i>
+<b class="hl_Keyword">class</b> Person
+{
+	<i class="hl_Comment">/* Variables to store saved data. */</i>
+	<b class="hl_Keyword">var</b> <b class="hl_Variable">$data</b> = <span class="hl_Function">array</span><span class="hl_Others">();</span>	<i class="hl_Comment">// Data from database.</i><i class="hl_Comment">
+</i>	<b class="hl_Keyword">var</b> <b class="hl_Variable">$dirty</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>	<i class="hl_Comment">// Dirty flag.</i><i class="hl_Comment">
+</i>	<b class="hl_Keyword">var</b> <b class="hl_Variable">$id</b> = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>		<i class="hl_Comment">// Customer ID</i><i class="hl_Comment">
+</i>
+	<i class="hl_Comment">/* [Person] = new Person ([mixed optional] customer)</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * Takes a customer ID number as an argument. If ID is</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * not supplied, or customer ID is 'NEW', then creates</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * a new person.</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 */</i>
+	<b class="hl_Keyword">function</b> Person <span class="hl_Others">(</span><b class="hl_Variable">$customer</b>=<span class="hl_String">'NEW'</span><span class="hl_Others">)</span>
+	{
+		<i class="hl_Comment">// We need the database connection.</i><i class="hl_Comment">
+</i>		<span class="hl_Function">global</span> <b class="hl_Variable">$db_connection</b><span class="hl_Others">;</span>
+
+		<i class="hl_Comment">// For existing customers with a valid-looking ID...</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$customer</b> != <span class="hl_String">'NEW'</span> &amp;&amp; <span class="hl_Function">is_integer</span><span class="hl_Others">(</span><b class="hl_Variable">$customer</b><span class="hl_Others">))</span>
+		{
+			<i class="hl_Comment">// Construct the correct query and run it</i><i class="hl_Comment">
+</i>			<b class="hl_Variable">$select</b> = <span class="hl_String">"SELECT customer_id, name, address, postcode "</span>
+				. <span class="hl_String">"FROM customers "</span>
+				. <span class="hl_String">"WHERE customer_id=</span><b class="hl_Variable">{$customer}</b><span class="hl_String">;"</span><span class="hl_Others">;</span>
+			<b class="hl_Variable">$resultset</b> = <span class="hl_Function">pg_query</span><span class="hl_Others">(</span><b class="hl_Variable">$db_connection</b><span class="hl_Others">,</span> <b class="hl_Variable">$select</b><span class="hl_Others">);</span>
+			
+			<i class="hl_Comment">// Check we have a result and store it.</i><i class="hl_Comment">
+</i>			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$row</b> = <span class="hl_Function">pg_fetch_assoc</span><span class="hl_Others">(</span><b class="hl_Variable">$resultset</b><span class="hl_Others">))</span>
+			{
+				<b class="hl_Variable">$this</b>-&gt;id    = <b class="hl_Variable">$customer</b><span class="hl_Others">;</span>
+				<b class="hl_Variable">$this</b>-&gt;dirty = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+
+				<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'name'</span><span class="hl_Others">]</span>     = <b class="hl_Variable">$row</b><span class="hl_Others">[</span><span class="hl_String">'name'</span><span class="hl_Others">];</span>
+				<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'address'</span><span class="hl_Others">]</span>  = <b class="hl_Variable">$row</b><span class="hl_Others">[</span><span class="hl_String">'address'</span><span class="hl_Others">];</span>
+				<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'postcode'</span><span class="hl_Others">]</span> = <b class="hl_Variable">$row</b><span class="hl_Others">[</span><span class="hl_String">'postcode'</span><span class="hl_Others">];</span>
+			}
+		} <i class="hl_Comment">// end if ($customer != 'NEW' &amp;&amp; is_integer($customer))</i><i class="hl_Comment">
+</i>
+		<i class="hl_Comment">// Check to see if we've actually (by now) managed to read</i><i class="hl_Comment">
+</i>		<i class="hl_Comment">// an existing customer. If we haven't then this is a new</i><i class="hl_Comment">
+</i>		<i class="hl_Comment">// customer, so data cannot already be in database. Thus</i><i class="hl_Comment">
+</i>		<i class="hl_Comment">// data is by definition "dirty".</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;id == <span class="hl_DecVal">-1</span><span class="hl_Others">)</span>
+			<b class="hl_Variable">$this</b>-&gt;dirty = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+
+		<span class="hl_Operator">return</span> <b class="hl_Variable">$this</b><span class="hl_Others">;</span>
+	}
+
+	<i class="hl_Comment">/* [boolean] = save ([void])</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * Saves data into the database. Takes no parameters,</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * returns TRUE iff successful.</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 */</i>
+	<b class="hl_Keyword">function</b> save <span class="hl_Others">()</span>
+	{
+		<i class="hl_Comment">// Firstly check to make sure we actually have anything</i><i class="hl_Comment">
+</i>		<i class="hl_Comment">// worth saving. If not, then bail out and pretend that</i><i class="hl_Comment">
+</i>		<i class="hl_Comment">// we actually saved the data by returning TRUE.</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!<b class="hl_Variable">$this</b>-&gt;dirty<span class="hl_Others">)</span>
+			<span class="hl_Operator">return</span> <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+
+		<i class="hl_Comment">// We will certainly need this then!</i><i class="hl_Comment">
+</i>		<span class="hl_Function">global</span> <b class="hl_Variable">$db_connection</b><span class="hl_Others">;</span>
+
+		<i class="hl_Comment">// Which data do we want to save?</i><i class="hl_Comment">
+</i>		<b class="hl_Variable">$save_data</b> = <span class="hl_Function">array</span><span class="hl_Others">(</span>
+			<span class="hl_String">'name'</span>       =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'name'</span><span class="hl_Others">],</span>
+			<span class="hl_String">'address'</span>    =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'address'</span><span class="hl_Others">],</span>
+			<span class="hl_String">'postcode'</span>   =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'postcode'</span><span class="hl_Others">]</span>
+		<span class="hl_Others">);</span>
+
+		<i class="hl_Comment">// If the customer is new (customer ID will be -1)</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;id == <span class="hl_DecVal">-1</span><span class="hl_Others">)</span>
+		{
+			<i class="hl_Comment">// We'll need to insert into the database.</i><i class="hl_Comment">
+</i>			<i class="hl_Comment">// The customer ID will be filled in by the DB engine.</i><i class="hl_Comment">
+</i>			<b class="hl_Variable">$result</b> = <span class="hl_Function">pg_insert</span><span class="hl_Others">(</span><b class="hl_Variable">$db_connection</b><span class="hl_Others">,</span> <span class="hl_String">'customers'</span><span class="hl_Others">,</span> <b class="hl_Variable">$save_data</b><span class="hl_Others">);</span>
+		}
+
+		<i class="hl_Comment">// Otherwise the customer must be an existing one</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">else</span>
+		{
+			<i class="hl_Comment">// Update database with new data. </i><i class="hl_Comment">
+</i>			<b class="hl_Variable">$result</b> = <span class="hl_Function">pg_update</span><span class="hl_Others">(</span><b class="hl_Variable">$db_connection</b><span class="hl_Others">,</span> <span class="hl_String">'customers'</span><span class="hl_Others">,</span> <b class="hl_Variable">$save_data</b><span class="hl_Others">,</span>
+						<span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'id'</span>=&gt;<b class="hl_Variable">$this</b>-&gt;id<span class="hl_Others">));</span>
+		}
+
+		<i class="hl_Comment">// Return success</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">return</span> <b class="hl_Variable">$result</b><span class="hl_Others">;</span>
+	}
+
+	<i class="hl_Comment">/* [mixed] = attribute ([string] attribute, [mixed, optional] value)</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * Gets or sets the attribute named in the first parameter.</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * If a second parameter is provided, will set the attribute to</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 * that value. Will always return the value of the attribute.</i><i class="hl_Comment">
+</i><i class="hl_Comment">	 */</i>
+	<b class="hl_Keyword">function</b> attribute <span class="hl_Others">(</span><b class="hl_Variable">$attribute</b><span class="hl_Others">,</span> <b class="hl_Variable">$value</b>=<b class="hl_Keyword">NULL</b><span class="hl_Others">)</span>
+	{
+		<i class="hl_Comment">// If the value is not NULL, then set the attribute</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$value</b>===<b class="hl_Keyword">NULL</b><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$attribute</b><span class="hl_Others">]</span> = <b class="hl_Variable">$value</b><span class="hl_Others">;</span> <i class="hl_Comment">// change attribute</i><i class="hl_Comment">
+</i>			<b class="hl_Variable">$this</b>-&gt;dirty = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span> <i class="hl_Comment">// and mark object as dirty</i><i class="hl_Comment">
+</i>		}
+
+		<i class="hl_Comment">// Always return the value</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">return</span> <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$attribute</b><span class="hl_Others">];</span>
+	}
+}
+
+2<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>and now the unreadable version:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<b class="hl_Keyword">class</b> Person
+{
+	<b class="hl_Keyword">var</b> <b class="hl_Variable">$data</b> = <span class="hl_Function">array</span><span class="hl_Others">();</span>
+	<b class="hl_Keyword">var</b> <b class="hl_Variable">$dirty</b> = 0<span class="hl_Others">;</span>
+	<b class="hl_Keyword">var</b> <b class="hl_Variable">$id</b> = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>
+	<b class="hl_Keyword">function</b> Person <span class="hl_Others">(</span><b class="hl_Variable">$cid</b>=<span class="hl_String">'NEW'</span><span class="hl_Others">)</span>
+	{
+		<span class="hl_Function">global</span> <b class="hl_Variable">$DB</b><span class="hl_Others">;</span>
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$cid</b> != <span class="hl_String">'NEW'</span> &amp;&amp; <span class="hl_Function">is_integer</span><span class="hl_Others">(</span><b class="hl_Variable">$cid</b><span class="hl_Others">))</span> {
+			<b class="hl_Variable">$q</b>= <span class="hl_String">"SELECT customer_id, name, address, postcode FROM customers WHERE customer_id=</span><b class="hl_Variable">{$cid}</b><span class="hl_String">;"</span><span class="hl_Others">;</span>
+			<b class="hl_Variable">$r</b> = <span class="hl_Function">pg_query</span><span class="hl_Others">(</span><b class="hl_Variable">$DB</b><span class="hl_Others">,</span> <b class="hl_Variable">$q</b><span class="hl_Others">);</span>
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$X</b> = <span class="hl_Function">pg_fetch_array</span><span class="hl_Others">(</span><b class="hl_Variable">$r</b><span class="hl_Others">))</span> {
+			<b class="hl_Variable">$this</b>-&gt;id = <b class="hl_Variable">$cid</b><span class="hl_Others">;</span>
+			<b class="hl_Variable">$this</b>-&gt;dirty = 0<span class="hl_Others">;</span>
+			<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'name'</span><span class="hl_Others">]</span>= <b class="hl_Variable">$X</b><span class="hl_Others">[</span><span class="hl_Float">1</span><span class="hl_Others">];</span>
+			<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'address'</span><span class="hl_Others">]</span>=<b class="hl_Variable">$X</b><span class="hl_Others">[</span><span class="hl_Float">2</span><span class="hl_Others">];</span>
+			<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'postcode'</span><span class="hl_Others">]</span> = <b class="hl_Variable">$X</b><span class="hl_Others">[</span><span class="hl_Float">3</span><span class="hl_Others">];</span>
+			}
+		}
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;id == <span class="hl_DecVal">-1</span><span class="hl_Others">)</span> <b class="hl_Variable">$this</b>-&gt;dirty = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+		<span class="hl_Operator">return</span> <b class="hl_Variable">$this</b><span class="hl_Others">;</span>
+	}
+	<b class="hl_Keyword">function</b> save_customer_2_database<span class="hl_Others">()</span>{
+		<span class="hl_Operator">if</span><span class="hl_Others">(</span>!<b class="hl_Variable">$this</b>-&gt;dirty<span class="hl_Others">)</span>{<span class="hl_Operator">return</span> <span class="hl_Float">1</span><span class="hl_Others">;</span>}
+		<span class="hl_Function">global</span> <b class="hl_Variable">$DB</b><span class="hl_Others">;</span>
+		<b class="hl_Variable">$myarray</b>= <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'name'</span> =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'name'</span><span class="hl_Others">],</span>
+		<span class="hl_String">'address'</span>    =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'address'</span><span class="hl_Others">],</span>
+		<span class="hl_String">'postcode'</span>   =&gt; <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_String">'postcode'</span><span class="hl_Others">]);</span>
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;id == <span class="hl_DecVal">-1</span><span class="hl_Others">)</span>
+		<span class="hl_Operator">return</span> <span class="hl_Function">pg_insert</span><span class="hl_Others">(</span><b class="hl_Variable">$DB</b><span class="hl_Others">,</span> <span class="hl_String">'customers'</span><span class="hl_Others">,</span> <b class="hl_Variable">$myarray</b><span class="hl_Others">);</span>
+		<span class="hl_Operator">return</span> <span class="hl_Function">pg_update</span><span class="hl_Others">(</span><b class="hl_Variable">$DB</b><span class="hl_Others">,</span> <span class="hl_String">'customers'</span><span class="hl_Others">,</span> <b class="hl_Variable">$myarray</b><span class="hl_Others">,</span> <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'id'</span>=&gt;<b class="hl_Variable">$this</b>-&gt;id<span class="hl_Others">));</span>
+	}
+	<b class="hl_Keyword">function</b> GetAttribute <span class="hl_Others">(</span><b class="hl_Variable">$a</b><span class="hl_Others">,</span> <b class="hl_Variable">$v</b>=<b class="hl_Keyword">NULL</b><span class="hl_Others">)</span> {
+	<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$v</b>===<b class="hl_Keyword">NULL</b><span class="hl_Others">)</span>
+	{
+	<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$a</b><span class="hl_Others">]</span> = <b class="hl_Variable">$v</b><span class="hl_Others">;</span> 
+	<b class="hl_Variable">$this</b>-&gt;dirty =<span class="hl_Float">1</span><span class="hl_Others">;</span>}
+	<span class="hl_Operator">return</span> <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$a</b><span class="hl_Others">];</span>
+}
+}
+2<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>What a difference!</p></div>
+  </content>
+  <published>2006-12-19T20:49:49Z</published>
+  <updated>2007-04-08T19:12:35+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="php"/>
+  <category term="web"/>
+  <category term="oop"/>
+</entry>

@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/15/html5/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/15/html5/"/>
+  <title>The Tao of HTML 5</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>On the 10th of June 1215, the a group of English barons invaded London and five days later forced <a href="http://en.wikipedia.org/wiki/John_of_England">King John</a> to attach his seal to the <a href="http://en.wikipedia.org/wiki/Magna_Carta">Magna Carta</a> in Runnymede, on the border of modern-day Sussex and Berkshire. (In those days it was customary to attach ones seal to an agreement rather than sign it. However the fact that it was not signed has led to a popular misconception that <a href="http://en.wikipedia.org/wiki/John_of_England#Alleged_illiteracy">King John was illiterate</a>, when in fact he was not.)</p>
+
+<p>The Magna Carta was a key document in English constitutional law, establishing certain rights (such as <a href="http://news.bbc.co.uk/1/hi/magazine/4329839.stm">habeas corpus</a>) for the King's subjects, and limiting the rights of the King; importantly, requiring the King to obey "the law of the land". The Magna Carta is widely regarded as a major influence on world constitutional law, and in particular greatly influenced the <a href="http://www.law.cornell.edu/constitution/constitution.overview.html">United States constitution</a> and <a href="http://www.law.cornell.edu/constitution/constitution.billofrights.html">Bill of Rights</a>. Three clauses of the Magna Carta <a href="http://www.statutelaw.gov.uk/legResults.aspx?activeTextDocId=1517519">remain in force</a> in English law today:</p>
+
+<ol>
+<li>the freedom of the Church of England;</li>
+<li>the "ancient liberties" of the City of London; and</li>
+<li>the right to due process.</li>
+</ol>
+
+<p>Although the other clauses have been repealed, they have strongly influenced the Acts of Parliament that replaced them.</p>
+
+<p>(It having been signed under duress, Pope Innocent <span class="caps">III </span>gave his blessing for King John to renounce the Magna Carta. King John's successor, Henry <span class="caps">III, </span>reaffirmed it.)</p>
+
+<p>Fast-forward nearly 800 years, and we see that <a href="http://www.apple.com">Apple</a>, <a href="http://www.mozilla.org">Mozilla</a> and <a href="http://www.opera.com">Opera</a>, key members of <a href="http://www.whatwg.org"><span class="caps">WHATWG</span></a> are <a href="http://lists.w3.org/Archives/Public/public-html/2007Apr/0429.html">pressuring the <span class="caps">W3C</span></a> to bless <a href="http://www.whatwg.org/specs/web-apps/current-work/"><span class="caps">HTML5</span></a> as the successor to current versions of (X)HTML. I've been watching the development of <a href="http://www.w3.org/TR/xhtml2/">the <span class="caps">W3C</span>'s <span class="caps">XHTML</span> 2.0</a> and <span class="caps">WHATWG</span>'s alternative markup format for several years, and thought I'd share my thoughts on them.</p>
+
+<h2><span class="caps">XHTML</span> 2.0</h2>
+
+<p>When the <span class="caps">W3C </span>commenced work on this standard, it decided that it would allow itself to significantly backwards compatibility in a way that previous (X)HTML standards hadn't. In a way, this was needed. There are many aspects of the current standards that are regarded by many as flawed. Examples include:</p>
+
+<ul>
+<li>too much use of empty elements such as <code class="html">&lt;hr&gt;</code> and <code class="html">&lt;br&gt;</code> to specify divisions in content;</li>
+<li>remaining legacy presentational elements, such as <code class="html">&lt;b&gt;</code>, <code class="html">&lt;i&gt;</code>, <code class="html">&lt;tt&gt;</code>, <code class="html">&lt;small&gt;</code> and <code class="html">&lt;big&gt;</code>; and</li>
+<li>lack of a method to specify metadata which applies to <strong>part of</strong> a document as against the whole document.</li>
+</ul>
+
+<p>Early drafts included several big wins.</p>
+
+<h3>New <code class="html">&lt;quote&gt;</code> Element</h3>
+
+<p>The <code class="html">&lt;q&gt;</code> element in earlier versions of (X)HTML was a source of frustration to many authors. Although the standards said that authors should not include quote marks around the quoted portions of text, and that user-agents should add them automatically, in a manner fitting with the surrounding text's locale, in practice, many agents did not insert quote marks, and when they did, often inserted the wrong type. To make matters worse, many user-agents also lacked support for the parts of <span class="caps">CSS </span>that effect quoting.</p>
+
+<p>Using a complicated system of hacks, it was possible to use <code class="html">&lt;q&gt;</code> in a manner that worked in most browsers, but due to the difficulty, most authors did not use it.</p>
+
+<p>The new draft swept these problems aside, by <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-inline-text.html#sec_9.8.">replacing the element</a> and specifying that user agents <strong>must not</strong> automatically quote its contents, and that it was the responsibility of authors to do so, either directly, or via stylesheets. This would enable the <code class="html">&lt;quote&gt;</code> element to be handled correctly by an <span class="caps">XML</span>+stylesheets user-agent without even having to know anything in particular about <span class="caps">XHTML.</span></p>
+
+<h3>Removal of <code class="html">&lt;b&gt;</code> and <code class="html">&lt;i&gt;</code></h3>
+
+<p>This was easily predicted. Although neither of these elements was formally deprecated in previous specifications, they were widely considered to be throw-backs to <span class="caps">HTML</span>'s distant past, having no place in a fully-semantic markup language.</p>
+
+<p>On the <span class="caps">W3C</span>'s <span class="caps">HTML </span>mailing list, numerous edge cases were proposed where they (and <code class="html">&lt;i&gt;</code> in particular) could be considered justified. Ships' names, words written in foreign languages and <a href="http://en.wikipedia.org/wiki/Linnaean_taxonomy">Linnean taxonomy</a> terms. However, at least in my own opinion, these are not valid arguments to keep <code class="html">&lt;i&gt;</code>, but rather arguments in favour of elements to mark up Linnean taxonomy, <abbr lang="la" title="et cetera">&amp;c</abbr>.</p>
+
+<p>Early drafts of <span class="caps">XHTML</span> 2.0 removed these elements, along with <code class="html">&lt;big&gt;</code> and <code class="html">&lt;small&gt;</code>.</p>
+
+<h3>An Improved Mechanism for Markup up Line Breaks</h3>
+
+<p>The <code class="html">&lt;br&gt;</code> element was replaced with <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-inline-text.html#sec_9.7.">an <code class="html">&lt;l&gt;</code> element</a>. While <code class="html">&lt;br&gt;</code> is an empty element sitting between two lines of text, <code class="html">&lt;l&gt;</code> instead surrounds a line. Compare:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;p</b><span class="hl_Others"> class=</span><span class="hl_String">"poem"</span><b class="hl_Keyword">&gt;</b>
+  I think that I shall never see<b class="hl_Keyword">&lt;br&gt;</b>
+  A poem as lovely as a tree.
+<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;p</b><span class="hl_Others"> class=</span><span class="hl_String">"poem"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;l&gt;</b>I think that I shall never see<b class="hl_Keyword">&lt;/l&gt;</b>
+  <b class="hl_Keyword">&lt;l&gt;</b>A poem as lovely as a tree.<b class="hl_Keyword">&lt;/l&gt;</b>
+<b class="hl_Keyword">&lt;/p&gt;</b>
+</code></pre>
+
+
+
+<p>There is something wonderfully symmetrical about the proposed new method.</p>
+
+<h3>A Whole New Paradigm for Headings</h3>
+
+<p>In one of the more radical changes, a new paradigm was introduced for headings. What would in <span class="caps">HTML</span> 4 have been:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;h1&gt;</b>Main Heading<b class="hl_Keyword">&lt;/h1&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Foo.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;h2&gt;</b>Subheading<b class="hl_Keyword">&lt;/h2&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Bar.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;h3&gt;</b>Third Level Heading<b class="hl_Keyword">&lt;/h3&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Baz.<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;h2&gt;</b>Another Subheading<b class="hl_Keyword">&lt;/h2&gt;</b>
+<b class="hl_Keyword">&lt;p&gt;</b>Quux.<b class="hl_Keyword">&lt;/p&gt;</b>
+</code></pre>
+
+
+
+<p>became the following under the new system:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;section&gt;</b>
+  <b class="hl_Keyword">&lt;h&gt;</b>Main Heading<b class="hl_Keyword">&lt;/h&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Foo.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;section&gt;</b>
+    <b class="hl_Keyword">&lt;h&gt;</b>Subheading<b class="hl_Keyword">&lt;/h&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Bar.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;section&gt;</b>
+      <b class="hl_Keyword">&lt;h&gt;</b>Third Level Heading<b class="hl_Keyword">&lt;/h&gt;</b>
+      <b class="hl_Keyword">&lt;p&gt;</b>Baz.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;/section&gt;</b>
+  <b class="hl_Keyword">&lt;/section&gt;</b>
+  <b class="hl_Keyword">&lt;section&gt;</b>
+    <b class="hl_Keyword">&lt;h&gt;</b>Another Subheading<b class="hl_Keyword">&lt;/h&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Quux.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;/section&gt;</b>
+<b class="hl_Keyword">&lt;/section&gt;</b>
+</code></pre>
+
+
+
+<p>or maybe:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;h&gt;</b>Main Heading<b class="hl_Keyword">&lt;/h&gt;</b>
+<b class="hl_Keyword">&lt;section&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Foo.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;h&gt;</b>Subheading<b class="hl_Keyword">&lt;/h&gt;</b>
+  <b class="hl_Keyword">&lt;section&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Bar.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;h&gt;</b>Third Level Heading<b class="hl_Keyword">&lt;/h&gt;</b>
+    <b class="hl_Keyword">&lt;section&gt;</b>
+      <b class="hl_Keyword">&lt;p&gt;</b>Baz.<b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;/section&gt;</b>
+  <b class="hl_Keyword">&lt;/section&gt;</b>
+  <b class="hl_Keyword">&lt;h&gt;</b>Another Subheading<b class="hl_Keyword">&lt;/h&gt;</b>
+  <b class="hl_Keyword">&lt;section&gt;</b>
+    <b class="hl_Keyword">&lt;p&gt;</b>Quux.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;/section&gt;</b>
+<b class="hl_Keyword">&lt;/section&gt;</b>
+</code></pre>
+
+
+
+<p>The <span class="caps">W3C </span>was never really clear on whether a heading should be <strong>inside</strong> its section or <strong>outside</strong>. Consistancy with <code class="html">&lt;nl&gt;</code> and <code class="html">&lt;fieldset&gt;</code> would lead one to assume that it should be inside, but the examples given in the drafts seemed to suggest that the reverse might be the case.</p>
+
+<p>Either behaviour has advantages over the older system:</p>
+
+<ul>
+<li>Allows more than six levels of heading; and</li>
+<li>Makes it easier to transclude a document or section of a document into another file without having to manually adjust heading levels.</li>
+</ul>
+
+<p>However, for "backwards compatibility" (despite the fact that <span class="caps">XHTML</span> 2 isn't <strong>supposed</strong> to be backwards compatible), the <code class="html">&lt;h1&gt;</code> to <code class="html">&lt;h6&gt;</code> elements are kept. Their exact relation to <code class="html">&lt;h&gt;</code> is never explained.</p>
+
+<h3>Navigation Lists</h3>
+
+<p>In addition to the unordered, ordered and definition lists of previous specifications, <span class="caps">XHTML</span> 2.0 introduced a method for <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-list.html#sec_11.2">nested navigation menus</a>., with a suggestion that user agents implement them as a drop-down menu. As drop-down nested menus are a common navigation feature on websites, often involving convoluted <span class="caps">CSS </span>and Javascript, it is immediately clear why this would be a popular suggestion. An example of their use follows:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;nl&gt;</b>
+   <b class="hl_Keyword">&lt;label&gt;</b>Contents<b class="hl_Keyword">&lt;/label&gt;</b>
+   <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#introduction"</span><b class="hl_Keyword">&gt;</b>Introduction<b class="hl_Keyword">&lt;/li&gt;</b>
+   <b class="hl_Keyword">&lt;li&gt;</b>
+      <b class="hl_Keyword">&lt;nl&gt;</b>
+          <b class="hl_Keyword">&lt;label&gt;</b>Terms<b class="hl_Keyword">&lt;/label&gt;</b>
+          <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#may"</span><b class="hl_Keyword">&gt;</b>May<b class="hl_Keyword">&lt;/li&gt;</b>
+          <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#must"</span><b class="hl_Keyword">&gt;</b>Must<b class="hl_Keyword">&lt;/li&gt;</b>
+          <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#should"</span><b class="hl_Keyword">&gt;</b>Should<b class="hl_Keyword">&lt;/li&gt;</b>
+      <b class="hl_Keyword">&lt;/nl&gt;</b>
+   <b class="hl_Keyword">&lt;/li&gt;</b>
+   <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#conformance"</span><b class="hl_Keyword">&gt;</b>Conformance<b class="hl_Keyword">&lt;/li&gt;</b>
+   <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"#references"</span><b class="hl_Keyword">&gt;</b>References<b class="hl_Keyword">&lt;/li&gt;</b>
+   ...
+<b class="hl_Keyword">&lt;/nl&gt;</b>
+</code></pre>
+
+
+
+<p>Notice in the above example, that the <code class="html">href</code> attribute is applied directly to the <code class="html">&lt;li&gt;</code> element, and no <code class="html">&lt;a&gt;</code> element is needed. That's because...</p>
+
+<h3>Everything's a Link!</h3>
+
+<p>Well, not everything. Your mouse wouldn't have a place to rest. But virtually every element is allowed to take an <code class="html">href</code> attribute and become <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-attribute-collections.html#adef_attribute-collections_href">linkified</a>. <code class="html">&lt;a&gt;</code> still exists, but there's nothing special about it anymore.</p>
+
+<p>With <code class="html">href</code> inevitably comes <code class="html">type</code> to specify what sort of thing is at the other end of the link. (Is it a <span class="caps">JPEG </span>image? An <span class="caps">MP3 </span>audio file?)</p>
+
+<p>And that's not all...</p>
+
+<h3>Everything's an Image... err... Object.</h3>
+
+<p>Having distributed the special powers of the <code class="html">&lt;a&gt;</code> element, in the next draft, the <span class="caps">W3C </span>did the same to <code class="html">&lt;img&gt;</code> and <code class="html">&lt;object&gt;</code>. Suddenly every element could take a <code class="html">src</code> attribute and <a href="http://www.w3.org/TR/2004/WD-xhtml2-20040722/mod-embedding.html">become an embedded image or file</a>.</p>
+
+<p>Example:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;p</b><span class="hl_Others"> src=</span><span class="hl_String">"holiday.png"</span><span class="hl_Others"> type=</span><span class="hl_String">"image/png"</span><b class="hl_Keyword">&gt;</b>
+  We had a wonderful time on holiday.
+<b class="hl_Keyword">&lt;/p&gt;</b>
+</code></pre>
+
+
+
+<p>User-agents that supported embedded <span class="caps">PNG </span>images would show the picture <strong>instead</strong> of the text. Other agents would gracefully fall back to displaying the content of the paragraph.</p>
+
+<p>This left the issue where an element could be both a link and an embedded image. In which case, did the <code class="html">type</code> attribute refer to the <span class="caps">MIME </span>type of the linked file or the embeded one? Both?</p>
+
+<h3>The <code class="html">&lt;meta&gt;</code> Element</h3>
+
+<p>The last change I'll mention is the change to metadata which removed the <code class="html">content</code> attribute in favour of putting <a href="http://www.w3.org/TR/2003/WD-xhtml2-20030506/mod-meta.html">content inside the element itself</a></p>
+
+
+
+<pre><code class="html">
+HTML 4:     <b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> name=</span><span class="hl_String">"author"</span><span class="hl_Others"> content=</span><span class="hl_String">"Toby Inkster"</span><b class="hl_Keyword">&gt;</b>
+XHTML 1:    <b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> name=</span><span class="hl_String">"author"</span><span class="hl_Others"> content=</span><span class="hl_String">"Toby Inkster"</span><b class="hl_Keyword">/&gt;</b>
+XHTML 2:    <b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> name=</span><span class="hl_String">"author"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/meta&gt;</b>
+</code></pre>
+
+
+
+<p>The drafts did also remove the <code class="html">scheme</code> attribute. I have no idea why.</p>
+
+<p>In later drafts, the <code class="html">&lt;meta&gt;</code> element was allowed to break free of the <code class="html">&lt;head&gt;</code> element and be placed inside any other part of the document, providing element-level metadata. This would allow you to specify, say, that a particular section of a document had a different author.</p>
+
+<p>***</p>
+
+<p>It was after this work though, that the <span class="caps">W3C HTML</span> Working Group lost the plot.</p>
+
+<h3>Supplanting Semantics and Functionality into Attributes</h3>
+
+<p>In <span class="caps">HTML</span> 4, you can tell what sort of thing an element represents by looking at what the element name is. If the element is <code class="html">&lt;p&gt;</code>, it's a paragraph; if it's <code class="html">&lt;strong&gt;</code> then it's some very important text.</p>
+
+<p>In later drafts of <span class="caps">XHTML</span> 2, more and more of these kind of functions were moved into attributes. The examples above of <code class="html">&lt;img&gt;</code> and <code class="html">&lt;a&gt;</code> having their special meanings removed were just the tip of the iceburg. </p>
+
+<h4>The <code class="html">role</code> Attribute</h4>
+
+<p>Recent drafts have introduced a <code class="html">role</code> attribute, the function of which seems to be as a generic container for any future semantics.</p>
+
+<p>Rather than introducing a <code class="html">&lt;navigation&gt;</code> element or such, for the large blocks of navigation menus and search forms typically found on web pages, we were given a value for <code class="html">role</code>. So instead of a neat construct like:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;main&gt;</b>
+  <b class="hl_Keyword">&lt;h&gt;</b>About Foo, Bar <span class="hl_DecVal">&amp;amp;</span> Baz<b class="hl_Keyword">&lt;/h&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>...<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/main&gt;</b>
+<b class="hl_Keyword">&lt;navigation&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>
+    If you liked this, you may like<span class="hl_DecVal">&amp;#8230;</span>
+    <b class="hl_Keyword">&lt;nl&gt;</b>
+      <b class="hl_Keyword">&lt;label&gt;</b>Other articles<b class="hl_Keyword">&lt;/label&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/qq"</span><b class="hl_Keyword">&gt;</b>Quux <span class="hl_DecVal">&amp;amp;</span> Quuux<b class="hl_Keyword">&lt;/li&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/xyzzy"</span><b class="hl_Keyword">&gt;</b>The Story of Xyzzy<b class="hl_Keyword">&lt;/li&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/abg"</span><b class="hl_Keyword">&gt;</b>Arfle, Barfle <span class="hl_DecVal">&amp;amp;</span> Gloop<b class="hl_Keyword">&lt;/li&gt;</b>      
+    <b class="hl_Keyword">&lt;/nl&gt;</b>
+  <b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/navigation&gt;</b>
+</code></pre>
+
+
+
+<p>we get:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> role=</span><span class="hl_String">"main"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;h&gt;</b>About Foo, Bar <span class="hl_DecVal">&amp;amp;</span> Baz<b class="hl_Keyword">&lt;/h&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>...<b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> role=</span><span class="hl_String">"navigation"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>
+    If you liked this, you may like<span class="hl_DecVal">&amp;#8230;</span>
+    <b class="hl_Keyword">&lt;nl&gt;</b>
+      <b class="hl_Keyword">&lt;label&gt;</b>Other articles<b class="hl_Keyword">&lt;/label&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/qq"</span><b class="hl_Keyword">&gt;</b>Quux <span class="hl_DecVal">&amp;amp;</span> Quuux<b class="hl_Keyword">&lt;/li&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/xyzzy"</span><b class="hl_Keyword">&gt;</b>The Story of Xyzzy<b class="hl_Keyword">&lt;/li&gt;</b>
+      <b class="hl_Keyword">&lt;li</b><span class="hl_Others"> href=</span><span class="hl_String">"/abg"</span><b class="hl_Keyword">&gt;</b>Arfle, Barfle <span class="hl_DecVal">&amp;amp;</span> Gloop<b class="hl_Keyword">&lt;/li&gt;</b>      
+    <b class="hl_Keyword">&lt;/nl&gt;</b>
+  <b class="hl_Keyword">&lt;/p&gt;</b>
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<p>The <code class="html">role</code> attribute here seems to offer precious little advantage over the existing <code class="html">class</code> attribute. The draft defines a number of pre-specified values for the attribute and recommends that authors use namespaces when defining others. Similar suggestions had originally been made for that <code class="html">rel</code> and <code class="html">rev</code> attributes in <span class="caps">HTML</span> 4, but that never really worked out. How many sites formally define metadata profiles? It's quite clear that <code class="html">role</code> would quickly become a second <code class="html">class</code> attribute, just a little bit more difficult to apply <span class="caps">CSS </span>to.</p>
+
+<h3>The Metadata Platform</h3>
+
+<p>Later drafts of <span class="caps">XHTML</span> 2 introduced the <code class="html">about</code> attribute and the concept of <a href="http://www.w3.org/TR/xhtml2/mod-meta.html#sec_23.6.">metadata chaining</a>, thereby transforing <span class="caps">XHTML</span>'s metadata capabilities from a simple set of tools for providing very basic data regarding a web page to a full metadata platform comparable with <a href="http://www.w3.org/RDF/"><span class="caps">RDF</span></a>.</p>
+
+<h4><code class="html">about</code></h4>
+
+<p>The <code class="html">about</code> attribute allows me to specify to which item a particular piece of metadat refers. An example from the draft is:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:dc=</span><span class="hl_String">"http://purl.org/dc/elements/1.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;head&gt;</b>
+    <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> about=</span><span class="hl_String">"#q1"</span><span class="hl_Others"> rel=</span><span class="hl_String">"dc:source"</span><span class="hl_Others"> href=</span><span class="hl_String">"urn:isbn:0140449132"</span> <b class="hl_Keyword">/&gt;</b>
+  <b class="hl_Keyword">&lt;/head&gt;</b>
+  <b class="hl_Keyword">&lt;body&gt;</b>
+    <b class="hl_Keyword">&lt;blockquote</b><span class="hl_Others"> id=</span><span class="hl_String">"q1"</span><b class="hl_Keyword">&gt;</b>
+      <b class="hl_Keyword">&lt;p&gt;</b>
+        'Rodion Romanovitch! My dear friend! If you go on in this way
+         you will go mad, I am positive! Drink, pray, if only a few drops!'
+      <b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;/blockquote&gt;</b>
+  <b class="hl_Keyword">&lt;/body&gt;</b>
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>Neat, yes, but not really needed, as the following syntax was already OK:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns:dc=</span><span class="hl_String">"http://purl.org/dc/elements/1.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;head&gt;</b>
+  <b class="hl_Keyword">&lt;/head&gt;</b>
+  <b class="hl_Keyword">&lt;body&gt;</b>
+    <b class="hl_Keyword">&lt;blockquote&gt;</b>
+      <b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> property=</span><span class="hl_String">"dc:source"</span><b class="hl_Keyword">&gt;</b>urn:isbn:0140449132<b class="hl_Keyword">&lt;/meta&gt;</b>
+      <b class="hl_Keyword">&lt;p&gt;</b>
+        'Rodion Romanovitch! My dear friend! If you go on in this way
+         you will go mad, I am positive! Drink, pray, if only a few drops!'
+      <b class="hl_Keyword">&lt;/p&gt;</b>
+    <b class="hl_Keyword">&lt;/blockquote&gt;</b>
+  <b class="hl_Keyword">&lt;/body&gt;</b>
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>(Oh yes, it's worth noting that they changed the <code class="html">name</code> attribute to <code class="html">property</code>.)</p>
+
+<p>However, you'll note that the <code class="html">about</code> attribute takes as its value a <span class="caps">URL.</span> This allows me to specify metadata about <strong>anything that has a <span class="caps">URL</span></strong>! For example:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> about=</span><span class="hl_String">"http://www.yahoo.com"</span><span class="hl_Others"> property=</span><span class="hl_String">"dc:title"</span><b class="hl_Keyword">&gt;</b>Yahoo!<b class="hl_Keyword">&lt;/meta&gt;</b>
+<b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> about=</span><span class="hl_String">"http://www.google.co.uk"</span><span class="hl_Others"> property=</span><span class="hl_String">"dc:title"</span><b class="hl_Keyword">&gt;</b>Google<b class="hl_Keyword">&lt;/meta&gt;</b>
+</code></pre>
+
+
+
+<p>Frankly, I don't see what business I have specifying metadata about somebody else's web site. I don't see why the markup language should give me that ability.</p>
+
+<h4>Metadata Chaining</h4>
+
+<p>Example from the most recent draft:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;head</b><span class="hl_Others"> xmlns:dc=</span><span class="hl_String">"http://purl.org/dc/elements/1.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;link</b><span class="hl_Others"> rel=</span><span class="hl_String">"dc:copyright"</span>
+<span class="hl_Others">        href=</span><span class="hl_String">"http://example.com/company/BBC/6"</span><b class="hl_Keyword">&gt;</b>
+    <b class="hl_Keyword">&lt;meta</b><span class="hl_Others"> property=</span><span class="hl_String">"dc:location"</span><b class="hl_Keyword">&gt;</b>London<b class="hl_Keyword">&lt;/meta&gt;</b>
+  <b class="hl_Keyword">&lt;/link&gt;</b>
+<b class="hl_Keyword">&lt;/head&gt;</b>
+</code></pre>
+
+
+
+<p>This metadata states that the article is copyright by the <span class="caps">BBC, </span>and that the <span class="caps">BBC </span>is based in London. (Note for the <span class="caps">W3C</span>: it's moving to Manchester soon.) Again, I'm specifying data about the <span class="caps">BBC, </span>and what business do I have doing that?</p>
+
+<p>(As an aside: does it really say that the <span class="caps">BBC </span>is based in London, or that the particular web page <tt>http://example.com/company/BBC/6</tt> is hosted in London? How can you tell?)</p>
+
+<h4>Metadata within Content</h4>
+
+<p>The same information (e.g. authorship, modified date, title, etc) is often duplicated within a document: it's in the metadata and in the body. Recent <span class="caps">XHTML</span> 2 drafts seek to reduce this duplication:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;html</b><span class="hl_Others"> xmlns=</span><span class="hl_String">"http://www.w3.org/2002/06/xhtml2/"</span>
+<span class="hl_Others">      xmlns:dc=</span><span class="hl_String">"http://purl.org/dc/elements/1.1/"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;head&gt;</b>
+    <b class="hl_Keyword">&lt;title&gt;</b>... title ...<b class="hl_Keyword">&lt;/title&gt;</b>
+  <b class="hl_Keyword">&lt;/head&gt;</b>
+  <b class="hl_Keyword">&lt;body&gt;</b>
+    ...
+    <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"dc:date"</span><span class="hl_Others"> 
+          class=</span><span class="hl_String">"date"</span><b class="hl_Keyword">&gt;</b>
+          2004-03-23
+    <b class="hl_Keyword">&lt;/span&gt;</b>
+    <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"dc:title"</span><span class="hl_Others"> 
+        class=</span><span class="hl_String">"headline"</span><b class="hl_Keyword">&gt;</b>
+        High-tech rollers hit casino for <span class="hl_DecVal">&amp;#163;</span>1.3m
+    <b class="hl_Keyword">&lt;/span&gt;</b>
+    By <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> property=</span><span class="hl_String">"dc:creator"</span><span class="hl_Others"> 
+             class=</span><span class="hl_String">"byline"</span><b class="hl_Keyword">&gt;</b>Steve Bird<b class="hl_Keyword">&lt;/span&gt;</b>
+    <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"standfirst"</span><b class="hl_Keyword">&gt;</b>
+        Word of a hand-held device which can beat the 
+        roulette wheel has gambling bosses quaking
+    <b class="hl_Keyword">&lt;/span&gt;</b>
+    ...
+    <b class="hl_Keyword">&lt;p&gt;</b>...<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;/body&gt;</b>
+<b class="hl_Keyword">&lt;/html&gt;</b>
+</code></pre>
+
+
+
+<p>Seems nice, but... errr... isn't this just the <code class="html">role</code> attribute again with a different name?</p>
+
+<h4><span class="caps">XHTML</span> 2 and its Relationship to <span class="caps">RDF</span></h4>
+
+<p>The latest <span class="caps">XHTML</span> 2 draft has information on a <a href="http://www.w3.org/TR/xhtml2/mod-metaAttributes.html#sec_24.2.">one-to-one mapping between <span class="caps">XHTML</span> 2 and <span class="caps">RDF</span></a>. This alone should be enough to trigger alarm bells, as <span class="caps">RDF </span>is the great, big, hundred tonne juggernaut of metadata.</p>
+
+<h3>Complexity</h3>
+
+<p><span class="caps">HTML </span>was initially popular because it was a "small" markup language that allowed authors to markup documents quickly and easily, with elements that were useful on the Web (e.g. elements that did text, linking and embedding). (HTML 3.2 has 70 elements, and <span class="caps">HTML</span> 4.01 had 77; compare this with the current <span class="caps">XHTML</span> 2 draft which has 89.)</p>
+
+<p><span class="caps">XHTML</span> 2 not only provides a larger set of elements, but the elements themselves are less important -- it is the combination of element and attribute that provides functionality. And the number of possible combinations is huge.</p>
+
+<p>This, together with an <span class="caps">RDF</span>-like metadata platform and the effort of defining and managing namespaces combine to make <span class="caps">XHTML</span> 2 a far more complex markup language to write, and to infer meaning from.</p>
+
+<p>It just doesn't seem "HTML-ish" anymore.</p>
+
+<p>***</p>
+
+<h2><span class="caps">HTML5</span></h2>
+
+<p>The <a href="http://blog.whatwg.org/faq/"><span class="caps">WHATWG FAQ</span></a> <a href="http://blog.whatwg.org/faq/#whattf">states</a>:</p>
+
+<blockquote><p>In 2004, after a <span class="caps">W3C </span>workshop, Apple, Mozilla and Opera were becoming increasingly concerned about the <span class="caps">W3C</span>'s direction with <span class="caps">XHTML, </span>lack of interest in <span class="caps">HTML </span>and apparent disregard for the needs of real-world authors. So, in response, these organisations set out to with a mission to address these concerns and the Web Hypertext Application Technology Working Group was born.</p></blockquote>
+
+<p><span class="caps">WHATWG </span>have approached development rather differently from the <span class="caps">W3C.</span> Rather than starting with <span class="caps">XHTML</span> 1.1 as a base for work, they've taken <span class="caps">HTML</span> 4.01, <code class="html">&lt;font&gt;</code> tag and all! Whatsmore, they've opted to preserve backwards-compatibility as much as possible. Because of this, it's been rather diffcult for them to introduce new ways of doing things, because the old ways need to be preserved too.</p>
+
+<h3><code class="html">&lt;section&gt;</code>, <code class="html">&lt;nav&gt;</code>, <code class="html">&lt;article&gt;</code>, <code class="html">&lt;blockquote&gt;</code> and <code class="html">&lt;aside&gt;</code></h3>
+
+<p>Like <span class="caps">XHTML</span> 2, <span class="caps">HTML5 </span>introduces a <code class="html">&lt;section&gt;</code> element for marking up a section of a document. It also introduces several other elements for marking up particular types of section. These elements would in <span class="caps">XHTML</span> 2 be marked up using the <code class="html">role</code> attribute on a normal <code class="html">&lt;section&gt;</code> element.</p>
+
+<h4>Lack of <code class="html">&lt;h&gt;</code></h4>
+
+<p>However, somewhat bizarrely, <span class="caps">XHTML</span> 2's <code class="html">&lt;h&gt;</code> element is not introduced. I assume that this is because of <span class="caps">WHATWG</span>'s backwards compatibility decision (see above).</p>
+
+<p>This means that authors instead must use <code class="html">&lt;h1&gt;</code> to <code class="html">&lt;h6&gt;</code> elements to mark up headings. However, the standard specifies that all heading elements are considered semantically equivalent, and that heading level should be entirely inferred from its level of nesting with sections. That is, the following two examples are semantically equivalent:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;body&gt;</b>
+ <b class="hl_Keyword">&lt;h4&gt;</b>Apples<b class="hl_Keyword">&lt;/h4&gt;</b>
+ <b class="hl_Keyword">&lt;p&gt;</b>Apples are fruit.<b class="hl_Keyword">&lt;/p&gt;</b>
+ <b class="hl_Keyword">&lt;section&gt;</b>
+  <b class="hl_Keyword">&lt;h2&gt;</b>Taste<b class="hl_Keyword">&lt;/h2&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>They taste lovely.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;h6&gt;</b>Sweet<b class="hl_Keyword">&lt;/h6&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Red apples are sweeter than green ones.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;h1&gt;</b>Color<b class="hl_Keyword">&lt;/h1&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Apples come in various colors.<b class="hl_Keyword">&lt;/p&gt;</b>
+ <b class="hl_Keyword">&lt;/section&gt;</b>
+<b class="hl_Keyword">&lt;/body&gt;</b>
+</code></pre>
+
+
+
+<p>and:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;body&gt;</b>
+ <b class="hl_Keyword">&lt;h1&gt;</b>Apples<b class="hl_Keyword">&lt;/h1&gt;</b>
+ <b class="hl_Keyword">&lt;p&gt;</b>Apples are fruit.<b class="hl_Keyword">&lt;/p&gt;</b>
+ <b class="hl_Keyword">&lt;section&gt;</b>
+  <b class="hl_Keyword">&lt;h2&gt;</b>Taste<b class="hl_Keyword">&lt;/h2&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>They taste lovely.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;section&gt;</b>
+   <b class="hl_Keyword">&lt;h3&gt;</b>Sweet<b class="hl_Keyword">&lt;/h3&gt;</b>
+   <b class="hl_Keyword">&lt;p&gt;</b>Red apples are sweeter than green ones.<b class="hl_Keyword">&lt;/p&gt;</b>
+  <b class="hl_Keyword">&lt;/section&gt;</b>
+ <b class="hl_Keyword">&lt;/section&gt;</b>
+ <b class="hl_Keyword">&lt;section&gt;</b>
+  <b class="hl_Keyword">&lt;h2&gt;</b>Color<b class="hl_Keyword">&lt;/h2&gt;</b>
+  <b class="hl_Keyword">&lt;p&gt;</b>Apples come in various colors.<b class="hl_Keyword">&lt;/p&gt;</b>
+ <b class="hl_Keyword">&lt;/section&gt;</b>
+<b class="hl_Keyword">&lt;/body&gt;</b>
+</code></pre>
+
+
+
+<h3><code class="html">&lt;progress&gt;</code> and <code class="html">&lt;meter&gt;</code></h3>
+
+<p><span class="caps">HTML5 </span>introduces a number of brand new elements, particularly ones that would be useful for web applications, such as progress metres. Here's an example:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;meter</b><span class="hl_Others"> value=</span><span class="hl_String">"0.25"</span><b class="hl_Keyword">&gt;</b>Low activity<b class="hl_Keyword">&lt;/meter&gt;</b>
+</code></pre>
+
+
+
+<p>Others include methods for marking up time, highlighted text and so on. Many of these will see immediate use when browsers support them.</p>
+
+<h3>Scoped <code class="html">&lt;style&gt;</code> Element</h3>
+
+<p>Many content authors have wished for a method of applying a stylesheet to just a particular part of a web page. <span class="caps">HTML5 </span><a href="http://www.whatwg.org/specs/web-apps/current-work/#scoped">allows this</a> via the <code class="html">scoped</code> attribute on the <code class="html">&lt;style&gt;</code> element.</p>
+
+<p>Perhaps a little nicer would be to use the <code class="html">for</code> attribute, which the <code class="html">&lt;label&gt;</code> and <code class="html">&lt;th&gt;</code> elements already have?</p>
+
+<h3>Predefined Classes</h3>
+
+<p>The <span class="caps">HTML5 </span>draft contains a number of predefined values for the <code class="html">class</code> attribute. In effect, this is a bit like <span class="caps">XHTML</span> 2's <code class="html">role</code> or <code class="html">property</code> attribute. Compare:</p>
+
+
+
+<pre><code class="html">
+XHTML 2:  <b class="hl_Keyword">&lt;p</b><span class="hl_Others"> xmlns:dc=</span><span class="hl_String">"http://purl.org/dc/elements/1.1/"</span>
+<span class="hl_Others">             property=</span><span class="hl_String">"dc:copyright"</span><b class="hl_Keyword">&gt;</b><span class="hl_DecVal">&amp;copy;</span> 2007 Toby Inkster<b class="hl_Keyword">&lt;/p&gt;</b>
+          
+HTML5:    <b class="hl_Keyword">&lt;p</b><span class="hl_Others"> class=</span><span class="hl_String">"copyright"</span><b class="hl_Keyword">&gt;</b><span class="hl_DecVal">&amp;copy;</span> 2007 Toby Inkster<b class="hl_Keyword">&lt;/p&gt;</b>
+</code></pre>
+
+
+
+<p>The draft specifies a mechanism for the community to propose new predefined classes too. The <span class="caps">HTML5 </span>mechanism for predefined classes certainly seems a lot easier and cleaner than the <span class="caps">XHTML</span> 2 method, but it does have its disadvantages too:</p>
+
+<ul>
+<li>Dublin Core is cool. <span class="caps">XHTML</span> 2 provides a santioned method for me to use <span class="caps">DCMI </span>metadata in my documents; <span class="caps">HTML5 </span>does not.</li>
+<li>It's not really backwards-compatible. As the <code class="html">class</code> attribute is virtually free-form text in current versions of <span class="caps">HTML, </span>people may be already using the <code class="html">copyright</code> class, and other <span class="caps">HTML5 </span>predefined classes, for purposes other than those that <span class="caps">WHATWG </span>proposes.</li>
+</ul>
+
+<h3>Extended Form Functionality</h3>
+
+<p>This is probably <span class="caps">HTML5</span>'s biggest area of new functionality. Web forms will be allowed to contain a variety of extra widgets now only possible with Javascript hackery and proprietary browser extensions. </p>
+
+<p>These include fancy date pickers, <span class="caps">WYSIWYG </span>rich text editors and e-mail and url input elements. Some client-side validation can be conducted without scripting, such as minimum and maximum values for inputs, marking inputs as "required" and providing regular expressions to validate input.</p>
+
+<p>A full write-up of these new capabilities is beyond the scope of this document, please read the current <a href="http://www.whatwg.org/specs/web-forms/current-work/">Web Forms 2.0 working draft</a> if you wish to find out more.</p>
+
+<h3><code class="html">&lt;event-source&gt;</code></h3>
+
+<p>Server-sent events are cool. <a href="http://labs.opera.com/news/2006/09/01/">Opera 9 supports them.</a> They will probably prove to be a successor/complementary technology to <span class="caps">AJAX.</span></p>
+
+<p>However, not everything in the <span class="caps">WHATWG </span>specification is rosy either. It is lacking in some areas.</p>
+
+<p>***</p>
+
+<h3>Lack of <span class="caps">DOCTYPE</span></h3>
+
+<p>The first line of an <span class="caps">HTML5 </span>document must be:</p>
+
+
+
+<pre><code class="html">
+<span class="hl_DataType">&lt;!DOCTYPE </span>html<span class="hl_DataType">&gt;</span>
+</code></pre>
+
+
+
+<p>The lack of a full <span class="caps">DOCTYPE </span>with a <span class="caps">URL </span>would make <span class="caps">SGML </span>validation of the document impossible, and would make it impossible for a user agent to guess what version of <span class="caps">HTML </span>the document is written in. This is a step towards a world of tag soup.</p>
+
+<h3><span class="caps">DOM</span> Extensions in <span class="caps">HTML</span> Standard</h3>
+
+<p>As well as proposing a new version of <span class="caps">HTML, HTML5 </span>also proposes extensions to the <acronym title="Document Object Model">DOM</acronym>. Although a new version of <span class="caps">HTML </span>probably does need a new version of the <span class="caps">DOM </span>to go along with it, this should probably be kept separate.</p>
+
+<h3>Specifying Behaviour</h3>
+
+<p>Previous <span class="caps">HTML </span>standards have been very clear on the fact that <span class="caps">HTML </span>is a data format. Once a user-agent has parsed the data, it is the agent's choice what to do with it; how to present it.</p>
+
+<p>The <span class="caps">HTML5 </span>standard specifies, in some cases very exactly, how user agents should behave. This reduces the ability of browser makers to introduce innovative new presentation techniques, so I'm surprised that a specification primarily shaped by three browser manufacturers would do this.</p>
+
+<h3>Blessing Current Broken Markup</h3>
+
+<p>In a number of places, the <span class="caps">HTML5 </span>specification gives its blessing to a variety of current practices which many would describe as broken. For example, '/&gt;' endings on empty elements are allowed in <span class="caps">HTML5.</span></p>
+
+<p>This is for "backwards-compatibility" purposes, but note that it is <strong>not</strong> backwards compatible with earlier standards, but is rather backwards compatible with existing error-recovery routines in browsers.</p>
+
+<h4>Content-Type Sniffing</h4>
+
+<p>The <span class="caps">WHATWG </span>standard blesses <a href="http://www.whatwg.org/specs/web-apps/current-work/#content-type-sniffing">content type sniffing</a> despite the fact that Ian Hickson's (editor of the <span class="caps">HTML5 </span>drafts) own website is <a href="http://diveintomark.org/archives/2004/08/13/safari-content-sniffing">butchered by content type sniffing</a>.</p>
+
+<p>As justification, <span class="caps">HTML5 </span>cites "security", stating that if different software uses different mechanisms to determine content type, then a file that might be considered an image by one program might be seen as an executable by another, which would attempt to run it.</p>
+
+<p>Firstly... if only there was an agreed method by which browsers could determine the content type of a resource consistently. Oh yes... there is -- the <span class="caps">HTTP</span> Content-Type header.</p>
+
+<p>Secondly, what in the name of all that is good, is a browser doing running things it just downloaded of the Internet willy-nilly?!</p>
+
+<h4><code class="html">&lt;embed&gt;</code> and <code class="html">&lt;object&gt;</code></h4>
+
+<p>Netscape 4.x had this <code class="html">&lt;embed&gt;</code> tag for embedding objects. Some people for some reason still use it, despite the fact that modern browsers have supported the standards-compliant <code class="html">&lt;object&gt;</code> element for longer than I care to remember.</p>
+
+<p><span class="caps">HTML5 </span>blesses the <code class="html">&lt;embed&gt;</code> element, despite the fact that it does exactly the same thing that <code class="html">&lt;object&gt;</code> already does.</p>
+
+<h3>Complexity</h3>
+
+<p>Again, <span class="caps">HTML5 </span>is more complex than the standard that precedes it. In the current draft, <span class="caps">HTML5 </span>contains 100 different element, compared to 77 in <span class="caps">HTML</span> 4.01 Strict.</p>
+
+<p>***</p>
+
+<p>Much like King John in the 13th century, the <span class="caps">W3C </span>had somewhat lost the plot when it comes to how real people wanted <span class="caps">XHTML </span>to develop. Early drafts looked promising, but as work progressed, the draft recommendation started to look distinctly un-HTML-like. Mozilla, Opera and Apple can be seen as the rebellious barons, and late last year, seemingly under duress, <a href="http://dig.csail.mit.edu/breadcrumbs/node/166">Sir Tim announced the revival of the <span class="caps">W3C HTML</span> Working Group</a> (as distinct from the <span class="caps">XHTML</span> Working Group).</p>
+
+<p>The question remains over how much of <span class="caps">WHATWG</span>'s drafts the new working group will use in the next <span class="caps">W3C </span>recommendation; and how much work (if any) will be carried over from <span class="caps">XHTML</span> 2.</p>
+
+<h2>The Tao of <span class="caps">HTML</span> 5</h2>
+
+<p>"Tao" roughly translates as "the way" or "the path". Here's the path I'd choose...</p>
+
+<h3>Start with <span class="caps">HTML</span> 4.01 Strict</h3>
+
+<p>Can we all at least agree that we don't want to bring <code class="html">&lt;center&gt;</code>, <code class="html">&lt;font&gt;</code> <span lang="la" title="et alia">et al</span> kicking and screaming into the 21st century?</p>
+
+<p><span class="caps">HTML</span> 4.01 Strict is a solid and well-understood standard, one used as a base not only for the <span class="caps">W3C</span>'s <span class="caps">XHTML</span> 1.x work, but also for <a href="http://www.cs.tcd.ie/15445/15445.html"><span class="caps">ISO HTML</span></a>, <a href="http://en.wikipedia.org/wiki/Wireless_Markup_Language"><span class="caps">WML</span></a> and <a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office">OpenDocument</a> </p>
+
+<h3><code class="html">&lt;section&gt;</code>, <code class="html">&lt;nav&gt;</code>, <code class="html">&lt;article&gt;</code> and <code class="html">&lt;aside&gt;</code></h3>
+
+<p>Give us these useful new section elements from <span class="caps">WHATWG</span>'s draft. They help codify personal conventions. (Most authors have particular IDs that we assign to <code class="html">&lt;div&gt;</code> elements to mark up this type of content -- this will help make document markup moe consistent.)</p>
+
+<h4><code class="html">&lt;header&gt;</code> and <code class="html">&lt;footer&gt;</code></h4>
+
+<p><span class="caps">WHATWG </span>defines these elements too. Give us these as well, but make their content model the same as <code class="html">&lt;section&gt;</code> for simplicity's sake.</p>
+
+<h4><code class="html">&lt;h&gt;</code></h4>
+
+<p>And give us <code class="html">&lt;h&gt;</code> from <span class="caps">XHTML</span> 2. It makes for more logical headings.</p>
+
+<p>Keep <code class="html">&lt;h1&gt;</code> to <code class="html">&lt;h6&gt;</code> for backwards compatibility purposes, but deprecate them. They should use <span class="caps">WHATWG</span>'s semantics.</p>
+
+<h3>Classes</h3>
+
+<p>Allow classes to contain a colon. Specify that when a class contains a colon, it should be treated as a semantic class belonging to a particular namespace. This gives us a mechanism that combines <span class="caps">HTML5</span>'s predefined classes and <span class="caps">XHTML</span> 2's  <code class="html">property</code> attribute.</p>
+
+<p>For example:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;div</b><span class="hl_Others"> class=</span><span class="hl_String">"smallprint"</span><b class="hl_Keyword">&gt;</b>
+  This document was last modified on <b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"dc:date.modified"</span><b class="hl_Keyword">&gt;</b>2007-04-15<b class="hl_Keyword">&lt;/span&gt;</b>.
+<b class="hl_Keyword">&lt;/div&gt;</b>
+</code></pre>
+
+
+
+<h3>Forms</h3>
+
+<p>Use <span class="caps">WHATWG</span>'s Web Forms 2.0. You know it makes sense.</p>
+
+<p>Other elements peripherally related to forms that should be taken from <span class="caps">HTML</span> 5 include:</p>
+
+<ul>
+<li><code class="html">&lt;meter&gt;</code></li>
+<li><code class="html">&lt;progress&gt;</code></li>
+<li><code class="html">&lt;event-source&gt;</code></li>
+<li><code class="html">&lt;datalist&gt;</code></li>
+<li><code class="html">&lt;datagrid&gt;</code></li>
+<li><code class="html">&lt;details&gt;</code></li>
+<li><code class="html">&lt;command&gt;</code></li>
+<li><code class="html">&lt;menu&gt;</code></li>
+</ul>
+
+<h4>Non-Form Profile</h4>
+
+<p>Similar to the difference between the Strict and Loose types of <span class="caps">HTML, </span>a non-form flavour of <span class="caps">HTML</span> 5 could be created, without any of the above listed elements, nor <code class="html">&lt;form&gt;</code>, <code class="html">&lt;fieldset&gt;</code>, <code class="html">&lt;input&gt;</code>, <code class="html">&lt;textarea&gt;</code> or <code class="html">&lt;button&gt;</code>.</p>
+
+<h3>Deprecate, Deprecate, Deprecate!</h3>
+
+<p>In with the new, means out with the old. And that includes:</p>
+
+<ul>
+<li><code class="html">&lt;hr&gt;</code></li>
+<li><code class="html">&lt;br&gt;</code></li>
+<li><code class="html">&lt;b&gt;</code></li>
+<li><code class="html">&lt;i&gt;</code></li>
+<li><code class="html">&lt;tt&gt;</code></li>
+<li><code class="html">&lt;big&gt;</code></li>
+<li><code class="html">&lt;small&gt;</code></li>
+<li><code class="html">&lt;bdo&gt;</code></li>
+</ul>
+
+<p>Deprecated elements should be allowed but discouraged. Validators should output a warning when they encounter them, but not an error. Which brings me to...</p>
+
+<h3><span class="caps">DOCTYPE</span>-like Functionality</h3>
+
+<p><span class="caps">HTML</span> 5 documents must have a method of identifying themselves as such. That could be through a particular <span class="caps">DOCTYPE </span>tag, a <code class="html">version</code> attribute to the <code class="html">&lt;html&gt;</code> element, a namespace, or something new altogether. But there has to be a reliable way of identifying an <span class="caps">HTML</span> 5 document. This will help those who draw up standards for <span class="caps">HTML</span> 5.1.</p>
+
+<p>We need validation of some kind. Again, I'm not asking for <span class="caps">SGML</span>-style validation necessarily, but if you take away our functioning <span class="caps">DOCTYPE, </span>you need to provide us with some other method to validate our pages.</p>
+
+<h3>Miscellaneous</h3>
+
+<h4>The <code class="html">for</code> Attribute</h4>
+
+<p>Extend the existing <code class="html">for</code> attribute to apply to the <code class="html">&lt;style&gt;</code> and <code class="html">&lt;meta&gt;</code> elements to supply styling information and metadata for particular parts of a document.</p>
+
+<h4>Navigation Lists</h4>
+
+<p><span class="caps">XHTML</span> 2-style navigation lists would be welcome.</p>
+
+<h4><code class="html">&lt;blockcode&gt;</code></h4>
+
+<p>I'm a little undecided on this one. With <code class="html">&lt;code&gt;</code>, <code class="html">&lt;var&gt;</code>, <code class="html">&lt;kbd&gt;</code> and <code class="html">&lt;samp&gt;</code>, I think <span class="caps">HTML </span>already has too many computer science related elements. But <code class="html">&lt;blockcode&gt;</code> is nice.</p>
+
+<h4>The Opposite of <code class="html">&lt;em&gt;</code></h4>
+
+<p>We need an opposite of <code class="html">&lt;em&gt;</code> for marking up text that should be <strong>de-emphasised</strong>. Some have suggested retasking <code class="html">&lt;small&gt;</code> for this purpose.</p>
+
+<p>Do we really need <code class="html">&lt;strong&gt;</code>? How about this:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;p&gt;</b>Here is some <b class="hl_Keyword">&lt;em&gt;&lt;em&gt;</b>very important<b class="hl_Keyword">&lt;/em&gt;&lt;/em&gt;</b> text.<b class="hl_Keyword">&lt;/p&gt;</b>
+</code></pre>
+
+
+
+<h4>Line Breaks</h4>
+
+<p>Introduce <span class="caps">XHTML</span> 2's <code class="html">&lt;l&gt;</code> element. <code class="html">&lt;br&gt;</code> should be deprecated.</p>
+
+<h3>Style of Standard Document</h3>
+
+<h4>Implementation Details</h4>
+
+<p>The <span class="caps">WHATWG </span>document contains too much implementation-specific information, such as algorithms. While I think that it's important for browser developers to work together to achieve interoperable implementations, this sort of information does not belong in the <span class="caps">HTML</span> 5 standard. It should be on as a separate complementary project.</p>
+
+<h4>Author-Oriented</h4>
+
+<p>The <span class="caps">HTML</span> 5 recommendation should be written as plain language as possible without being ambiguous or overly verbose, in order that it may be easily understood by <span class="caps">HTML </span>authors, as <span class="caps">HTML </span>authors are likely to make up the vast majority of the audience for the recommendation.</p>
+
+<p>Plenty of examples should be included, along with examples of renderings in a variety of different rendering engines, no more than half of which should be "traditional" desktop browsers -- <span class="caps">HTML </span>authors need to be made aware that their markup will be interpreted by a variety of different devices.</p>
+
+<p>***</p>
+
+<p>Hopefully such an approach would provide a good structured, semantic markup language that can shrug off its presentational past, yet still "feels like <span class="caps">HTML</span>". It should provide additional form capabilities for web application developers, and help provide a richer desktop-like experience for web applications.</p>
+
+<p>Remember that despite how the Magna Carta was obtained, it went on to become a key document that has shaped constitutional law worldwide and has protected the rights of British citizens for over three quarters of a millenium.</p></div>
+  </content>
+  <published>2007-04-15T16:07:31+01:00</published>
+  <updated>2007-04-23T22:26:38+01:00</updated>
+  <link rel="license" href="http://creativecommons.org/licenses/by-nd/2.5/"/>
+  <category term="html"/>
+  <category term="w3c"/>
+</entry>

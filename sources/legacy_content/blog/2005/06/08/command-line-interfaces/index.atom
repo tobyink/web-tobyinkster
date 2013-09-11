@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2005/06/08/command-line-interfaces/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2005/06/08/command-line-interfaces/"/>
+  <title>The User Interface of the Future</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>GreyWyvern wrote:</p>
+
+<blockquote><p>Soon (real soon now) we'll be progressing to voice-controlled systems. "Copy Document to desktop", "Empty trash", "Open Slashdot".</p></blockquote>
+
+<p>This is precisely an argument <strong>for</strong> the command-line paradigm! What you are describing <strong>is</strong> a command-line, with the keyboard simply being replaced with a microphone.</p>
+
+<p>Experiment: take someone who is accustomed to using such a voice-driven<br/>
+interface and then put them in front of a command line. In advance, set up<br/>
+a bunch of aliases and wrapper scripts. e.g.:</p>
+
+<h2>/bin/copy</h2>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">#!/usr/bin/perl</b>
+<span class="hl_DataType">$src</span> = <span class="hl_Function">shift</span> <b class="hl_Variable">@ARGV</b> || <span class="hl_Function">die</span> <span class="hl_Operator">"</span><span class="hl_String">Copy what?</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+<span class="hl_DataType">$dest</span> = <span class="hl_Function">shift</span> <b class="hl_Variable">@ARGV</b> || <span class="hl_Function">die</span> <span class="hl_Operator">"</span><span class="hl_String">Where should I copy it?</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+<b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">to</span><span class="hl_Operator">'</span>)
+{
+  <span class="hl_DataType">$dest</span> = <span class="hl_Function">shift</span> <b class="hl_Variable">@ARGV</b> || <span class="hl_Function">die</span> <span class="hl_Operator">"</span><span class="hl_String">Where should I copy it?</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+}
+<span class="hl_DataType">$dest</span> = <span class="hl_Operator">'</span><span class="hl_String">~/Desktop/</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Desktop</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$dest</span> = <span class="hl_Operator">'</span><span class="hl_String">~/.Trash/</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Trash</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$dest</span> = <span class="hl_Operator">'</span><span class="hl_String">~</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Home</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$dest</span> = <span class="hl_Operator">'</span><span class="hl_String">~/public_html/</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Shared</span><span class="hl_Operator">'</span>);
+<span class="hl_Function">system</span>(<span class="hl_Operator">"</span><span class="hl_String">cp '</span><span class="hl_DataType">$src</span><span class="hl_Operator">'</span><span class="hl_String"> '</span><span class="hl_DataType">$dest</span><span class="hl_Operator">'"</span>);
+<i class="hl_Comment"># you'd probably want to do better error handling.</i><i class="hl_Comment">
+</i></code></pre>
+
+
+
+<h2>/bin/open</h2>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">#!/usr/bin/perl</b>
+<span class="hl_Function">die</span> <span class="hl_Operator">"</span><span class="hl_String">Open which site?</span><span class="hl_Char">\n</span><span class="hl_Operator">"</span>;
+<span class="hl_DataType">$url</span> = <span class="hl_Operator">'</span><span class="hl_String">http://www.google.co.uk</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Google</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$url</span> = <span class="hl_Operator">'</span><span class="hl_String">http://www.ebay.com</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">Ebay</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$url</span> = <span class="hl_Operator">'</span><span class="hl_String">http://www.bbc.co.uk</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">BBC</span><span class="hl_Operator">'</span>);
+<span class="hl_DataType">$url</span> = <span class="hl_Operator">'</span><span class="hl_String">http://news.bbc.co.uk</span><span class="hl_Operator">'</span> <b class="hl_Keyword">if</b> (<span class="hl_DataType">$dest</span> <span class="hl_Operator">eq</span> <span class="hl_Operator">'</span><span class="hl_String">News</span><span class="hl_Operator">'</span>);
+<span class="hl_Function">system</span>(<span class="hl_Operator">"</span><span class="hl_String">opera '</span><span class="hl_DataType">$url</span><span class="hl_Operator">'"</span>);
+</code></pre>
+
+
+
+<p>Sit them at this command line and tell them to type everything they'd normally say with their voice-controlled interface.</p>
+
+<p>Straight away they type "Copy document to Desktop" and it would work. Similarly, if you set up the right aliases and scripts, any command they used to use under the voice control would work by keyboard. They'd say "This is great! Now I can give my computer all my usual commands when I'm in a quiet place, like a library!" You can point out <span class="caps">SSH </span>and they'd say "Even better! I can give my computer all my usual commands from anywhere in the world!"</p>
+
+<p>They wouldn't see the command line as being "hard" at all. This is because voice commands and the <span class="caps">CLI </span>share the same paradigm -- you give the computer a command and the computer responds.</p>
+
+<p>Perhaps much of people's disagreement with me in this thread is down to a misunderstanding of what I mean by <span class="caps">CLI </span>and <span class="caps">GUI.</span></p>
+
+<p>I see <span class="caps">CLI </span>as being a mode of interaction with the computer not defined necessarily by use of the keyboard or by display on a 80Ã24-cell 16-colour text terminal, but by the way in which people interact with it -- they give a command, the computer gives a response.</p>
+
+<p>I see <span class="caps">GUI </span>as being nested menus, fill-in forms, toolbars, icons, etc -- not defined in terms of its richer resolution or colour depth, but in the way people interact with it. Such a <span class="caps">GUI </span>could conceivably be implemented in <span class="caps">ASCII </span>art, but still be a <span class="caps">GUI </span>all the same.</p>
+
+<p>The <span class="caps">GUI </span>is the reason most computer users find computing hard. It doesn't feel like we're giving commands and the computer is responding -- instead, we're confronted by rows of buttons, lists, icons and drop down menus, and all we have to tame them with is a single pointer with, generally 2 or 3 buttons on it.</p>
+
+<p>This overwhelms and confuses the newbie. You or I are different -- we are able to abstract the <span class="caps">GUI </span>and think of it in almost command-driven terms. We don't think "I'll put the mouse at the beginning of the text, hold down the left button, move the mouse to the end, release the button, move the mouse over the B button on the toolbar and click the left mouse button". We think "Computer, make this text bold!" -- an abstracted command-driven thought process.</p>
+
+<p>For a newbie, not able to make this abstraction, a command-driven interface is less confusing -- they can focus on one thing at a time. They tell the computer to do something and the computer either says it doesn't understand or needs more information; or the computer does what it was asked and displays some result if appropriate. They feel in control.</p>
+
+<p>That is why I say that the command-line interface still has a future. That's not to say, it doesn't need some improvements. A shell with a slightly nicer and more forgiving syntax could win hearts and minds -- there's no reason not to apply what we've learnt in recent years about natural-language processing to the command line.</p></div>
+  </content>
+  <published>2005-06-08T08:07:49+01:00</published>
+  <updated>2007-04-08T19:20:41+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="technology"/>
+  <category term="command-line"/>
+</entry>

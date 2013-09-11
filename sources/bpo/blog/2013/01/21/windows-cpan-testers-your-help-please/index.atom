@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Windows CPAN Testers, your help please...</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/01/windows-cpan-testers-your-help-please.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4217</id>
+
+    <published>2013-01-21T09:38:06Z</published>
+    <updated>2013-01-21T10:40:43Z</updated>
+
+    <summary>I recently blogged about Ask, my new(ish) module for interacting with users via STDIN/STDOUT, a GUI, or whatever means possible. Writing GUI code in Perl unfortunately requires you to compile non-core modules such as Gtk2, Wx or Tk. There is...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="ask" label="Ask" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="gui" label="GUI" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="testing" label="Testing" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>I recently <a href="http://blogs.perl.org/users/toby_inkster/2013/01/ask-not-what-your-user-can-do-for-you.html">blogged about Ask</a>, my new(ish) module for interacting with users via STDIN/STDOUT, a GUI, or whatever means possible.</p>
+
+<p>Writing GUI code in Perl unfortunately requires you to compile non-core modules such as Gtk2, Wx or Tk. There is an alternative no-compilation-required approach though: most modern Linux and BSD distributions ship with (or at least package for separate download) a program called <a href="http://enwp.org/Zenity">Zenity</a>. Zenity is a tool for adding basic GUI dialogue boxes to shell scripts. You call it like this:</p>
+
+<pre>
+zenity --file-selection
+</pre>
+
+<p>And it will display a standard file chooser. Once a file is chosen, Zenity will print the file path to STDOUT and then exit.</p>
+
+<p>Ask provides Ask::Zenity, a wrapper around Zenity, and will fall back to that if Wx, Gtk2, Tk, etc are not available. However, none of this really addresses Windows...</p>]]>
+        <![CDATA[<p>So I've dug out an old copy of VB.NET and written a Zenity-like tool for Windows, called <a href="https://bitbucket.org/tobyink/vb-wenity">Wenity</a> (I know, great name). Its functionality is mostly a subset of Zenity.</p>
+
+<p>Wenity is now on CPAN as <a href="http://search.cpan.org/~tobyink/Alien-Wenity-0.000_01/">Alien-Wenity 0.000_01</a>. I'd appreciate some Windows users testing this distribution to see how easy/successful it is to install.</p>]]>
+    </content>
+</entry>

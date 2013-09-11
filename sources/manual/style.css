@@ -1,0 +1,146 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic);
+
+html {
+	font-family: "PT Sans", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 2em 0 3em;
+}
+
+article {
+	margin: 0 6em;
+}
+
+article.feed ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+article.feed li {
+	margin: 0;
+	padding: 0 0 0.33em;
+}
+
+article.feed cite {
+	font-style: normal;
+	padding: 0 0 0 0.67em;
+}
+
+nav {
+	padding: 0 0 0;
+	margin: 0;
+	border-bottom: 1px solid #999;
+	background: #eee;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+}
+
+nav ul {
+	list-style: none;
+	margin: 0.5em 6em 0.5em;
+	padding: 0;
+}
+
+nav li {
+	list-style: none;
+	display: inline;
+	margin: 0;
+	padding: 0 2em 0 0;
+	font-weight: bold;
+}
+
+nav a:link, nav a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+nav b {
+	color: blue;
+}
+
+nav a:hover {
+	color: blue;
+}
+
+dl[role="contentinfo"] {
+	width: 16em;
+	float: right;
+	margin: 0 0 0.67em 1em;
+	padding: 0.67em;
+	background: #eee;
+}
+
+dl[role="contentinfo"] dt {
+	font-weight: bold;
+}
+
+dl[role="contentinfo"] dd {
+	margin: 0;
+	padding: 0 0 0 1.33em;
+}
+
+footer {
+	padding: 0.33em 0 0.67em;
+	margin: 0;
+	border-top: 1px solid #999;
+	background: #eee;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	z-index: 100;
+}
+
+#sidebar {
+	width: 18em;
+	position: absolute;
+	left: 2em;
+	top: 8em;
+	border-right: 1px solid #999;
+	padding-bottom: 2em;
+}
+
+#sidebar-top {
+	text-align: center;
+}
+
+#sidebar-top img {
+	border: 1px solid #999;
+}
+
+article.with-sidebar {
+	margin: 0 2em 0 22em;
+}
+
+aside {
+	font-size: 80%;
+}
+
+aside h1 {
+	font-size: 125%;
+}
+
+aside ul {
+	margin: 0;
+	padding: 0;
+}
+
+aside li {
+	margin: 0;
+	padding: 0 0 0.33em;
+}
+
+aside li small {
+	font-size: normal;
+	display: block;
+	color: #999;
+}

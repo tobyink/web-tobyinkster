@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/17/php-vs-perl/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/17/php-vs-perl/"/>
+  <title>PHP vs Perl</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;Here&amp;#39;s a simple program which calculates, to eight decimal places, the value of &lt;a href="http://en.wikipedia.org/wiki/Golden_ratio"&gt;the Golden Ratio &amp;phi;&lt;/a&gt; implemented in both &lt;span class="caps"&gt;PHP &lt;/span&gt;and Perl, to demonstrate their similarities.&lt;/p&gt;
+
+&lt;h2&gt;Perl&lt;/h2&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;#!/usr/bin/perl&lt;/b&gt;
+
+&lt;span class="hl_DataType"&gt;$a&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;;
+&lt;span class="hl_DataType"&gt;$b&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;;
+&lt;span class="hl_DataType"&gt;$c&lt;/span&gt; = &lt;span class="hl_Function"&gt;undef&lt;/span&gt;;
+&lt;span class="hl_DataType"&gt;$psi_old&lt;/span&gt; = &lt;span class="hl_Function"&gt;undef&lt;/span&gt;;
+
+&lt;span class="hl_Function"&gt;print&lt;/span&gt; &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Approximating psi...&lt;/span&gt;&lt;span class="hl_Char"&gt;\n&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;;
+&lt;b class="hl_Keyword"&gt;while&lt;/b&gt; (&lt;span class="hl_Float"&gt;1&lt;/span&gt;)
+{
+	&lt;span class="hl_DataType"&gt;$psi&lt;/span&gt; = &lt;span class="hl_Function"&gt;sprintf&lt;/span&gt;(&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;%.08f&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;, &lt;span class="hl_DataType"&gt;$b&lt;/span&gt;/&lt;span class="hl_DataType"&gt;$a&lt;/span&gt;);
+	&lt;b class="hl_Keyword"&gt;last&lt;/b&gt; &lt;b class="hl_Keyword"&gt;if&lt;/b&gt; (&lt;span class="hl_DataType"&gt;$psi_old&lt;/span&gt; &lt;span class="hl_Operator"&gt;eq&lt;/span&gt; &lt;span class="hl_DataType"&gt;$psi&lt;/span&gt;);
+	&lt;span class="hl_DataType"&gt;$psi_old&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$psi&lt;/span&gt;;
+	&lt;span class="hl_Function"&gt;print&lt;/span&gt; &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_DataType"&gt;$psi&lt;/span&gt;&lt;span class="hl_Char"&gt;\n&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;;
+
+	&lt;span class="hl_DataType"&gt;$c&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$a&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$b&lt;/span&gt;;
+	&lt;span class="hl_DataType"&gt;$a&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$b&lt;/span&gt;;
+	&lt;span class="hl_DataType"&gt;$b&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$c&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h2&gt;&lt;span class="caps"&gt;PHP&lt;/span&gt;&lt;/h2&gt;
+
+
+
+&lt;pre&gt;&lt;code class="php"&gt;
+&lt;b class="hl_Keyword"&gt;&amp;lt;?php&lt;/b&gt;
+
+&lt;b class="hl_Variable"&gt;$a&lt;/b&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$b&lt;/b&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$c&lt;/b&gt; = &lt;b class="hl_Keyword"&gt;NULL&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$psi_old&lt;/b&gt; = &lt;b class="hl_Keyword"&gt;NULL&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+
+&lt;span class="hl_Function"&gt;print&lt;/span&gt; &lt;span class="hl_String"&gt;"Approximating psi...&lt;/span&gt;&lt;span class="hl_BString"&gt;\n&lt;/span&gt;&lt;span class="hl_String"&gt;"&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;span class="hl_Operator"&gt;while&lt;/span&gt; &lt;span class="hl_Others"&gt;(&lt;/span&gt;&lt;span class="hl_Float"&gt;1&lt;/span&gt;&lt;span class="hl_Others"&gt;)&lt;/span&gt;
+{
+	&lt;b class="hl_Variable"&gt;$psi&lt;/b&gt; = &lt;span class="hl_Function"&gt;sprintf&lt;/span&gt;&lt;span class="hl_Others"&gt;(&lt;/span&gt;&lt;span class="hl_String"&gt;'%.08f'&lt;/span&gt;&lt;span class="hl_Others"&gt;,&lt;/span&gt; &lt;b class="hl_Variable"&gt;$b&lt;/b&gt;/&lt;b class="hl_Variable"&gt;$a&lt;/b&gt;&lt;span class="hl_Others"&gt;);&lt;/span&gt;
+	&lt;span class="hl_Operator"&gt;if&lt;/span&gt; &lt;span class="hl_Others"&gt;(&lt;/span&gt;&lt;b class="hl_Variable"&gt;$psi_old&lt;/b&gt; == &lt;b class="hl_Variable"&gt;$psi&lt;/b&gt;&lt;span class="hl_Others"&gt;)&lt;/span&gt; &lt;span class="hl_Operator"&gt;break&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+	&lt;b class="hl_Variable"&gt;$psi_old&lt;/b&gt; = &lt;b class="hl_Variable"&gt;$psi&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+	&lt;span class="hl_Function"&gt;print&lt;/span&gt; &lt;span class="hl_String"&gt;"&lt;/span&gt;&lt;b class="hl_Variable"&gt;$psi&lt;/b&gt;&lt;span class="hl_BString"&gt;\n&lt;/span&gt;&lt;span class="hl_String"&gt;"&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+
+	&lt;b class="hl_Variable"&gt;$c&lt;/b&gt; = &lt;b class="hl_Variable"&gt;$a&lt;/b&gt; + &lt;b class="hl_Variable"&gt;$b&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+	&lt;b class="hl_Variable"&gt;$a&lt;/b&gt; = &lt;b class="hl_Variable"&gt;$b&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+	&lt;b class="hl_Variable"&gt;$b&lt;/b&gt; = &lt;b class="hl_Variable"&gt;$c&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+}
+
+1&lt;b class="hl_Keyword"&gt;?&gt;&lt;/b&gt;&lt;/code&gt;&lt;/pre&gt;</content>
+  <published>2007-07-17T23:44:50+01:00</published>
+  <updated>2007-07-17T23:44:50+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="maths"/>
+  <category term="perl"/>
+</entry>

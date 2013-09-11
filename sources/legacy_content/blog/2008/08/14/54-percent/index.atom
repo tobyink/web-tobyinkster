@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/08/14/54-percent/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/08/14/54-percent/"/>
+  <title>54 Percent</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><span class="caps">BBC</span> News has an article claiming that:</p>
+
+<blockquote><p>The new projections suggestion that by 2050, minorities will account for 54% of the [US] population.</p></blockquote>
+
+<p>Ummm... wouldn't that be 100% then?</p>
+
+<p><a href="http://news.bbc.co.uk/1/hi/world/americas/7559996.stm">Minorities set to be US majority</a></p></div>
+  </content>
+  <published>2008-08-14T15:43:52+01:00</published>
+  <updated>2008-08-14T15:43:52+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="statistics"/>
+  <category term="america"/>
+  <category term="bbc-news"/>
+</entry>

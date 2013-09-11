@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/20/opera-ogg-theora/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/20/opera-ogg-theora/"/>
+  <title>Ogg Theora Support in Opera 9.5</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>In HÃ¢kon Wium Lie's latest missive on <a href="http://labs.opera.com/">Opera Labs</a> he details Opera's upcoming support for the <code class="html">&lt;video&gt;</code> element in <a href="http://www.whatwg.org/"><span class="caps">HTML</span> 5</a>. He points out that it's not much use without at least one defacto standard web video format (much like <span class="caps">JPEG, GIF </span>and <span class="caps">PNG </span>have become for the <code class="html">&lt;img&gt;</code> element.</p>
+
+<p>A preview release of Opera 9.5 includes native support for <a href="http://www.theora.org">Ogg Theora</a> (the free video format from the people that brought you <a href="http://www.vorbis.com">Ogg Vorbis</a> and <a href="http://flac.sourceforge.com">Ogg <span class="caps">FLAC</span></a>) -- which to me seems to be a step in the right direction. The current preview is Windows-only, but Theora's <span class="caps">LGPL </span>library is widely supported cross-platform, so Linux and Mac previews are surely not too far away.</p>
+
+<p><span class="caps">HTML</span> 5 similarly includes a <code class="html">&lt;audio&gt;</code> element. Will the other Ogg formats see native support in Opera?</p>
+
+<p>In other news, Opera's internal builds implement <span class="caps">CSS </span><code class="css">text-shadow</code>. See <a href="http://my.opera.com/Rijk/blog/2007/01/22/text-shadow-support">Rijk's blog</a>.</p></div>
+  </content>
+  <published>2007-04-20T15:04:21+01:00</published>
+  <updated>2007-04-20T15:04:21+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="opera"/>
+</entry>

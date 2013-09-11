@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/02/06/ie-8-meta-tag/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/02/06/ie-8-meta-tag/"/>
+  <title>The Great IE8 Meta Tag Debacle</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>So Microsoft, in conjunction with some of the folk at <a href="http://www.webstandards.org/">WaSP</a>, has announced its intention to include the <a href="http://en.wikipedia.org/wiki/Quirks_mode">quirks mode</a> that beats all quirks modes in the forthcoming <a href="http://blogs.msdn.com/ie/archive/2007/12/05/internet-explorer-8.aspx">Internet Explorer 8</a> in an article on <em>A List Apart</em>: <a href="http://alistapart.com/articles/beyonddoctype">Beyond <span class="caps">DOCTYPE</span>: Web Standards, Forward Compatibility, and <span class="caps">IE8</span></a>. </p>
+
+<p>This has proved to be quite a controversial idea. It was not long before WaSP issued a <a href="http://www.webstandards.org/2008/01/22/microsofts-version-targeting-proposal/">release</a> hinting that many WaSP members do not support the idea. Speaking in favour of the scheme we have:</p>
+
+<ul>
+<li><a href="http://www.zeldman.com/2008/01/22/in-defense-of-version-targeting/">In Defense of Version Targeting</a> by Jeffery Zeldman</li>
+<li><a href="http://alistapart.com/articles/fromswitchestotargets">From Switches to Targets: A Standardista's Journey</a> by Eric Meyer</li>
+</ul>
+
+<p>And against, we have:</p>
+
+<ul>
+<li><a href="http://ln.hixie.ch/?start=1201080691&amp;count=1">Mistakes, Sadness, Regret</a> by Ian Hickson (Google)</li>
+<li>==<a href="http://weblogs.mozillazine.org/roc/archives/2008/01/post_2.html"><code>&lt;META HTTP-EQUIV="X-BALL-CHAIN"&gt;</code></a>== by Robert O'Callahan (Mozilla)</li>
+<li><a href="http://annevankesteren.nl/2008/01/ie-lock-in">The Internet Explorer Lock-in</a> by Anne van Kesteren (Opera)</li>
+<li><a href="http://webkit.org/blog/155/versioning-compatibility-and-standards/">Versioning, Compatibility and Standards</a> by Maciej Stachowiak (WebKit / Safari)</li>
+<li><a href="http://dean.edwards.name/weblog/2008/01/quotes/">Quotes</a> by Dean Edwards</li>
+<li><a href="http://www.b-list.org/weblog/2008/jan/28/ie8/">X-No-Thanks</a> by James Bennett</li>
+<li><a href="http://ejohn.org/blog/meta-madness/">Meta Madness</a> by John Resig (jQuery)</li>
+</ul>
+
+<p>And roughly neutral:</p>
+
+<ul>
+<li><a href="http://adactio.com/journal/1402/">Broken</a> by Jeremy Keith</li>
+<li><a href="http://dev.jeffcroft.com/blog/2008/jan/26/war-within-web-standards-pragmatists-versus-purist/">War within Web Standards: Pragmatists vs Purists</a> by Jeff Croft</li>
+</ul>
+
+<p>(Interesting affiliations are shown in parentheses, but these people's personal blogs may not reflect their employers' views.)</p>
+
+<p>I can see the attraction of such an idea from a practical point of view. Once you've produced a web page, you need never touch it again. Whatever changes new browser versions bring can simply be ignored -- your page will continue to work. </p>
+
+<p>But the realist in me makes me sceptical of that idea -- will future versions really guarantee to render the page <em>exactly</em> the same? It seems simple enough: bundle historic rendering engines and have the browser switch rendering engines depending on the contents of a <code class="html">&lt;meta&gt;</code> element, but on careful consideration this presents several problems:</p>
+
+<ol>
+<li>Successive versions of the browser will become increasingly bloated, taking up more disk space and using more memory.</li>
+<li>Rendering engines are often a source of security issues. The more rendering engines you include, logically the more security issues are likely to arise.</li>
+<li>Fixing a security issue will necessarily involve tinkering with a historic rendering engine. It is possible that you'll introduce incompatibilities accidentally, or you'll be required to deliberately introduce an incompatibility to solve the security problem.</li>
+<li>In a site using frames, potentially each frame will be rendered by a different engine. Javascript on framed pages can potentially communicate and manipulate each others' <span class="caps">DOM</span>s via Javascript.</li>
+</ol>
+
+<p>In terms of the browser "ecosystem" it's bad news too. Non-Microsoft browser makes often feel compelled to emulate particular quirks of Internet Explorer. If they have to emulate several different rendering engines, it may slow down development significantly. It may also harm take-up of future versions of Internet Explorer -- after all, why would someone want to upgrade if they will not see any improvements on 99% of the pages they visit, because they're not using <code class="html">IE=edge</code>.</p>
+
+<p>The last issue is simply the vast quantities <a href="http://en.wikipedia.org/wiki/Favicon">of</a> <a href="http://support.microsoft.com/kb/303473">annoying</a> <a href="http://www.html-reference.com/META_name_MSSmartTagsPreventParsing.htm">cruft</a> that Microsoft foists upon web developers who just want to switch off their "features" -- to get back to the status quo.</p>
+
+<h2>The Tao</h2>
+
+<p>Other browser makers should respond to this by phasing out quirks mode and always using their highest quality rendering mode. After all, what's quirks mode for apart from offering compatibility with IE 5, which is dead and buried in 2008.</p></div>
+  </content>
+  <published>2008-02-06T23:52:22Z</published>
+  <updated>2008-02-06T23:52:22Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="future"/>
+</entry>

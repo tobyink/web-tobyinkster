@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2003/08/31/neopolitana/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2003/08/31/neopolitana/"/>
+  <title>Neopolitan Sauce</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>A very simple Italian tomato sauce, suitable for pasta.</p>
+
+<h2>Ingredients</h2>
+
+<ul>
+<li>450g tin of chopped tomatos</li>
+<li>1 medium onion, chopped</li>
+<li>2 to 3 cloves of garlic, finely chopped</li>
+<li>some fresh chopped basil or oregano (or both)</li>
+<li>salt and pepper to taste</li>
+<li>some olive oil</li>
+</ul>
+
+<h2>Method</h2>
+
+<p>Fry the onions and garlic in the olive oil until they start to become transparent. Then add the tomato, herbs, salt an pepper. Leave to simmer for a few minutes. Serve with pasta.</p></div>
+  </content>
+  <published>2003-08-31T18:14:50+01:00</published>
+  <updated>2008-01-01T18:14:50Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="recipes"/>
+  <category term="italy"/>
+  <category term="tomato"/>
+</entry>

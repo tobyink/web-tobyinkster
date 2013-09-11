@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/01/php-encryption-class/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/01/php-encryption-class/"/>
+  <title>PHP Encryption Class</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's a simple <span class="caps">PHP </span>library for encoding and decoding text.</p>
+
+<p>Examples:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$trivialencoder_auto</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+<span class="hl_Operator">include</span> <span class="hl_String">'TrivialEncoder.class.php'</span><span class="hl_Others">;</span>
+
+<b class="hl_Variable">$manager</b>    = <b class="hl_Keyword">new</b> TrivialEncoderManager<span class="hl_Others">;</span>
+<b class="hl_Variable">$plaintext</b>  = <span class="hl_String">'Hello world'</span><span class="hl_Others">;</span>
+<i class="hl_Comment">// Chain together Triple DES, Memfrob and Base64 encoding.</i><i class="hl_Comment">
+</i><i class="hl_Comment">// Note: 3DES encoding is passed an (optional) key "mysecretkey".</i><i class="hl_Comment">
+</i><b class="hl_Variable">$encoding</b>  = <span class="hl_String">'3des mysecretkey;memfrob;base64'</span><span class="hl_Others">;</span> 
+<b class="hl_Variable">$cyphertext</b> = <b class="hl_Variable">$manager</b>-&gt;encode<span class="hl_Others">(</span><b class="hl_Variable">$encoding</b><span class="hl_Others">,</span> <b class="hl_Variable">$plaintext</b><span class="hl_Others">);</span>
+<span class="hl_Function">echo</span> <b class="hl_Variable">$manager</b>-&gt;decode<span class="hl_Others">(</span><b class="hl_Variable">$encoding</b><span class="hl_Others">,</span> <b class="hl_Variable">$cyphertext</b><span class="hl_Others">);</span> <i class="hl_Comment">// Hello world</i><i class="hl_Comment">
+</i>1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<!--@SUMMARY@-->
+
+<p><a href="./files/TrivialEncoder.class.php">TrivialEncoder.class.php</a> (<a href="./files/TrivialEncoder.class.html">Highlighted source code</a>.)</p></div>
+  </content>
+  <published>2007-08-01T23:11:24+01:00</published>
+  <updated>2007-08-01T23:11:24+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-3.0.html"/>
+  <category term="php"/>
+  <category term="crypto"/>
+  <category term="trivial-encoder"/>
+</entry>

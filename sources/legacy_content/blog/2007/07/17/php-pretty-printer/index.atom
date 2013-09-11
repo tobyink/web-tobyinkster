@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/17/php-pretty-printer/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/17/php-pretty-printer/"/>
+  <title>Pretty Printing for PHP</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's a <span class="caps">PHP </span>function for reformatting the whitespace in <span class="caps">PHP </span>code:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'SC_STANDARD_BRACES'</span><span class="hl_Others">,</span> 0<span class="hl_Others">);</span>
+<span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'SC_IMPROVED_BRACES'</span><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">);</span>
+<span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'SC_WEIRDASS_BRACES'</span><span class="hl_Others">,</span> <span class="hl_Float">2</span><span class="hl_Others">);</span>
+
+<b class="hl_Keyword">function</b> sc_pp <span class="hl_Others">(</span><b class="hl_Variable">$sourcecode</b><span class="hl_Others">,</span> <b class="hl_Variable">$outmode</b>=SC_STANDARD_BRACES<span class="hl_Others">)</span>
+{
+	<b class="hl_Variable">$sourcecode</b>  = <span class="hl_String">"&lt;?php</span><span class="hl_BString">\n</span><b class="hl_Variable">{$sourcecode}</b><span class="hl_BString">\n</span><span class="hl_String">?&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+	<b class="hl_Variable">$indentlevel</b> = 0<span class="hl_Others">;</span>
+	<b class="hl_Variable">$output</b> = <span class="hl_String">''</span><span class="hl_Others">;</span>
+	
+	<span class="hl_Operator">foreach</span><span class="hl_Others">(</span>token_get_all<span class="hl_Others">(</span><b class="hl_Variable">$sourcecode</b><span class="hl_Others">)</span> <span class="hl_Operator">as</span> <b class="hl_Variable">$token</b><span class="hl_Others">)</span>
+	{
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">is_array</span><span class="hl_Others">(</span><b class="hl_Variable">$token</b><span class="hl_Others">))</span>
+			<span class="hl_Function">list</span><span class="hl_Others">(</span><b class="hl_Variable">$tokentype</b><span class="hl_Others">,</span> <b class="hl_Variable">$spelling</b><span class="hl_Others">)</span> = <b class="hl_Variable">$token</b><span class="hl_Others">;</span>
+		<span class="hl_Operator">else</span>
+			<span class="hl_Function">list</span><span class="hl_Others">(</span><b class="hl_Variable">$tokentype</b><span class="hl_Others">,</span> <b class="hl_Variable">$spelling</b><span class="hl_Others">)</span> = <span class="hl_Function">array</span><span class="hl_Others">(</span><b class="hl_Keyword">NULL</b><span class="hl_Others">,</span> <b class="hl_Variable">$token</b><span class="hl_Others">);</span>
+
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$tokentype</b>==<b class="hl_Keyword">T_WHITESPACE</b> &amp;&amp; <span class="hl_Function">preg_match</span><span class="hl_Others">(</span><span class="hl_String">'/\s$/'</span><span class="hl_Others">,</span> <b class="hl_Variable">$output</b><span class="hl_Others">))</span>
+			<span class="hl_Operator">continue</span><span class="hl_Others">;</span>
+		<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$tokentype</b>==<b class="hl_Keyword">T_WHITESPACE</b><span class="hl_Others">)</span>
+			<b class="hl_Variable">$spelling</b> = <span class="hl_String">' '</span><span class="hl_Others">;</span>
+
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$spelling</b>==<span class="hl_String">'{'</span><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$indentlevel</b>++<span class="hl_Others">;</span>
+			
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$outmode</b>==SC_IMPROVED_BRACES<span class="hl_Others">)</span>
+				<b class="hl_Variable">$output</b> .= <span class="hl_String">"</span><span class="hl_BString">\n</span><b class="hl_Variable">$indent</b><span class="hl_String">"</span><span class="hl_Others">;</span>
+			<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$outmode</b>==SC_WEIRDASS_BRACES<span class="hl_Others">)</span>
+				<b class="hl_Variable">$output</b> .= <span class="hl_String">"</span><span class="hl_BString">\n</span><b class="hl_Variable">$indent</b><span class="hl_BString">\t</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+		}
+		<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$spelling</b>==<span class="hl_String">'}'</span><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$indentlevel</b>--<span class="hl_Others">;</span>
+			<b class="hl_Variable">$output</b> = <span class="hl_Function">preg_replace</span><span class="hl_Others">(</span><span class="hl_String">'/\t$/i'</span><span class="hl_Others">,</span> <span class="hl_String">''</span><span class="hl_Others">,</span> <b class="hl_Variable">$output</b><span class="hl_Others">);</span>
+
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$outmode</b>==SC_WEIRDASS_BRACES<span class="hl_Others">)</span>
+				<b class="hl_Variable">$output</b> .= <span class="hl_String">"</span><span class="hl_BString">\t</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+		}
+		
+		<b class="hl_Variable">$indent</b>  = <span class="hl_Function">str_repeat</span><span class="hl_Others">(</span><span class="hl_String">"</span><span class="hl_BString">\t</span><span class="hl_String">"</span><span class="hl_Others">,</span> <b class="hl_Variable">$indentlevel</b><span class="hl_Others">);</span>
+
+		<b class="hl_Variable">$output</b> .= <b class="hl_Variable">$spelling</b><span class="hl_Others">;</span>
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$spelling</b>==<span class="hl_String">';'</span>||<b class="hl_Variable">$spelling</b>==<span class="hl_String">'{'</span>||<b class="hl_Variable">$spelling</b>==<span class="hl_String">'}'</span><span class="hl_Others">)</span>
+			<b class="hl_Variable">$output</b> .= <span class="hl_String">"</span><span class="hl_BString">\n</span><b class="hl_Variable">$indent</b><span class="hl_String">"</span><span class="hl_Others">;</span>
+	}
+
+	<span class="hl_Operator">return</span> <b class="hl_Variable">$output</b><span class="hl_Others">;</span>
+}
+
+<b class="hl_Variable">$sc</b>  = <span class="hl_String">'echo "1";if  (FALSE){echo 2;</span><span class="hl_String">
+</span><span class="hl_String">echo 2;    echo 2; if(  TRUE  ){echo 3;}}echo 4;'</span><span class="hl_Others">;</span>
+
+<span class="hl_Function">print</span> sc_pp<span class="hl_Others">(</span><b class="hl_Variable">$sc</b><span class="hl_Others">,</span> <span class="hl_Float">1</span><span class="hl_Others">);</span>
+
+1<b class="hl_Keyword">?&gt;</b></code></pre></div>
+  </content>
+  <published>2007-07-17T23:20:20+01:00</published>
+  <updated>2007-07-17T23:20:20+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="programming"/>
+</entry>

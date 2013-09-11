@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/05/22/wifi-scare/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/05/22/wifi-scare/"/>
+  <title>The Great Wi-Fi Controversy</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;Last night, &lt;a href="http://news.bbc.co.uk/1/hi/programmes/panorama/default.stm"&gt;Panorama&lt;/a&gt; broadcast &lt;a href="http://news.bbc.co.uk/1/hi/programmes/panorama/6674675.stm"&gt;Wi-Fi: a warning signal&lt;/a&gt; unmasking the "controversy" over Wi-Fi health risks.&lt;/p&gt;
+
+&lt;p&gt;This is one of those many controversies in science that are not really controversies as far as the vast majority of scientists are concerned, such as the "controversy" over whether global warming is caused by changes in solar output. &lt;/p&gt;
+
+&lt;p&gt;Panorama quotes Sir William Stewart as stating that there is a lack of evidence as to the safety of Wi-Fi. However, the difficulty of proving a negative is well acknowledged within scientific circles. As an example, to prove that there is extraterrestrial life is easy -- you just need to find an alien. To prove that there is no extraterrestrial life anywhere, you need to travel to every single planet in the universe and check in every crater, under every rock and behind every hill that there is nothing living -- this is virtually impossible, and certainly impractical.&lt;/p&gt;
+
+&lt;p&gt;Similarly, proving that there are no health risks to using Wi-Fi is impractical. A number of possible theoretical risks have been identified and studied, and the results of experimentation seem to show that these risks are invalid.&lt;/p&gt;
+
+&lt;p&gt;Wi-Fi works by taking IP data, which is normally sent over copper wires, and transmitting it by radio waves instead. These are the same type of radio wave that carry radio and television signals across the landscape, and, yes, allow mobile phones to pick up a signal.&lt;/p&gt;
+
+&lt;p&gt;I decided to investigate the intensity of two different sources of radio waves within my house. To do this, you need to know the following formula which calculates the intensity of a radio wave (&lt;i&gt;I&lt;/i&gt;, measured in Watts per square metre) based on its power at source (&lt;i&gt;P&lt;/i&gt;, measured in Watts) and your distance from the source (&lt;i&gt;r&lt;/i&gt;, measured in metres).&lt;/p&gt;
+
+
+
+
+&lt;p style="font-size:150%;text-align:center;font-family:Arial Unicode MS;"&gt;&lt;i&gt;I&lt;/i&gt; = &lt;i&gt;P&lt;/i&gt; &amp;#x2215; (4&amp;pi;&lt;i&gt;r&lt;/i&gt;&amp;#xB2;)&lt;/p&gt;
+
+
+
+
+&lt;h2&gt;DLink DI-524 Wireless Router&lt;/h2&gt;
+
+&lt;p&gt;This is a fairly typical wireless router designed for home and small office use. It&amp;#39;s one of the best selling wireless routers in the &lt;span class="caps"&gt;UK.&lt;/span&gt; I&amp;#39;m investigating using it from a distance of 15&amp;nbsp;m. The router itself is capable of operating at up to 20 times that distance (300&amp;nbsp;m) in ideal situations. Incidentally, this was the router featured in most of the illustrations on the Panorama report.&lt;/p&gt;
+
+&lt;p&gt;According to its &lt;a href="http://www.dlinktw.com.tw/temp/dk2Model/150/C-DI-524-01.pdf"&gt;spec sheet&lt;/a&gt; the DI-524 has a maximum transmit output power of 15&amp;nbsp;dBm &lt;small&gt;&amp;#177;2&amp;nbsp;dBm&lt;/small&gt;. &lt;a href="http://www.moonblinkwifi.com/dbm_to_watt_conversion.cfm"&gt;Converting&lt;/a&gt; this to Watts gives us a power output of 0.0316&amp;nbsp;W.&lt;/p&gt;
+
+&lt;p&gt;So the intensity is:&lt;/p&gt;
+
+
+
+
+&lt;p style="font-size:150%;text-align:center;font-family:Arial Unicode MS;"&gt;&lt;i&gt;I&lt;/i&gt; = 0.0316&amp;nbsp;W &amp;#x2215; (4&amp;pi; &amp;times; 15&amp;#xB2; &amp;times; 1m&amp;#xB2;) &amp;#x2245; 11.2&amp;nbsp;&amp;mu;W&amp;#x2215;m&amp;#xB2;&lt;/p&gt;
+
+
+
+
+&lt;h2&gt;Classic FM&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="http://www.classicfm.com"&gt;Classic FM&lt;/a&gt; is a classical music radio station that has been operating in the UK for nearly 15 years. It is owned by &lt;a href="http://www.gcapmedia.com"&gt;GCap Media &lt;span class="caps"&gt;PLC&lt;/span&gt;&lt;/a&gt;. It broadcasts on &lt;span class="caps"&gt;DAB &lt;/span&gt;digital radio, Sky channel 0106, Virgin TV channel 877, and, most importantly for this investigation, analogue FM radio between 100---102&amp;nbsp;MHz, depending on your nearest radio transmitter.&lt;/p&gt;
+
+&lt;p&gt;My nearest Classic FM transmission station is &lt;a href="http://en.wikipedia.org/wiki/Wrotham"&gt;Wrotham, Kent&lt;/a&gt;. Wrotham is a small village, nestled in the foothills of the North Downs. It is best known for... errr... its famous transmission station, which serves much of London and the South-East. The transmitting station is located at &lt;span class="geo"&gt;51.3206N, 0.2868E&lt;/span&gt;, nearly 54&amp;nbsp;km from my house in &lt;a href="/tag/lewes/"&gt;Lewes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;According to Wikipedia, and various other sources, Wrotham transmitting station broadcasts Classic FM at &lt;a href="http://en.wikipedia.org/wiki/Wrotham_transmitting_station"&gt;250&amp;nbsp;kW&lt;/a&gt;, or 250,000&amp;nbsp;W. Plugging this into our formula we get:&lt;/p&gt;
+
+
+
+
+&lt;p style="font-size:150%;text-align:center;font-family:Arial Unicode MS;"&gt;&lt;i&gt;I&lt;/i&gt; = 250000&amp;nbsp;W &amp;#x2215; (4&amp;pi; &amp;times; 53700&amp;#xB2; &amp;times; 1m&amp;#xB2;) &amp;#x2245; 6.90&amp;nbsp;&amp;mu;W&amp;#x2215;m&amp;#xB2;&lt;/p&gt;
+
+
+
+
+&lt;h3&gt;And I Live a Long Way from Wrotham&lt;/h3&gt;
+
+&lt;p&gt;Wrotham is closer to London than it is to Lewes. The people of London get an intensity of about 15&amp;nbsp;&amp;mu;W&amp;#8725;m&amp;#178;&lt;/p&gt;
+
+&lt;h2&gt;The Difference&lt;/h2&gt;
+
+&lt;p&gt;You&amp;#39;ll note that the intensity of the Wi-Fi signal is approximately 60% greater than the signal from Classic &lt;span class="caps"&gt;FM.&lt;/span&gt; However, one should also compare the length of exposure to each signal. I am only exposed to my Wi-Fi signal when I (or someone else) is downloading or uploading something on the laptop -- probably less than an hour of exposure per day. I&amp;#39;m exposed to Classic FM&amp;#39;s signal 24 hours a day -- &lt;strong&gt;whether or not I&amp;#39;m listening to the radio&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;So over the course of a day, my body absorbs far more energy from Classic FM&amp;#39;s radio waves than it does from my Wi-Fi router. &lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;A typical UK resident receives far more radiation from analogue radio broadcasts than they do from Wi-Fi. Radio broadcasts have operated in the UK for &lt;a href="http://www.arar93.dsl.pipex.com/mds975/Content/ukradio.html"&gt;almost 85 years&lt;/a&gt;, so if we&amp;#39;ve not heard of any long term negative health effects caused by radio waves so far, it&amp;#39;s unlikely that we will do in the future.&lt;/p&gt;
+
+&lt;p&gt;Professor Malcolm Sperrin, Director Of Medical Physics And Clinical Engineering, Royal Berkshire Hospital has said:&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Radio waves and other non-ionising radiations have been part of our lives for a century or more and if such effects were occurring then damage or other untoward effects would have been recorded and studied. Research is still proceeding in this area at leading centres in many countries but evidence points to Wi-Fi transmissions being well below any likely threshold for human effects.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;If you&amp;#39;re still concerned, then don&amp;#39;t press your Wi-Fi dongle against your directly against your exposed brain, and you ought to be alright.&lt;/p&gt;</content>
+  <published>2007-05-22T13:31:15+01:00</published>
+  <updated>2007-05-22T13:31:15+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="medicine"/>
+  <category term="physics"/>
+  <category term="science"/>
+  <category term="lewes"/>
+  <category term="radio"/>
+  <category term="wifi"/>
+</entry>

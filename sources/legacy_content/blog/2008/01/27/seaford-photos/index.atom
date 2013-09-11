@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/27/seaford-photos/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/27/seaford-photos/"/>
+  <title>Seaford Trip</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>It was a sunny day today, so we took the train to nearby Seaford.</p>
+
+<p><img src="/blog/2008/01/27/seaford-photos/files/Seaford.jpeg" alt="Montage of photographs."/></p>
+
+<!--@SUMMARY@-->
+
+<p>The pictures are, clockwise from the largest photo, and with links to larger images:</p>
+
+<ul>
+<li><a href="/blog/2008/01/27/seaford-photos/files/CIMG0144.JPG">Seaford Head</a></li>
+<li><a href="/blog/2008/01/27/seaford-photos/files/CIMG0140.JPG">View towards Newhaven</a></li>
+<li><a href="/blog/2008/01/27/seaford-photos/files/CIMG0136.JPG">Seagulls on Seaford beach</a></li>
+<li><a href="/blog/2008/01/27/seaford-photos/files/CIMG0145.JPG">Crouch Gardens</a></li>
+</ul></div>
+  </content>
+  <published>2008-01-27T17:19:00Z</published>
+  <updated>2008-01-27T17:42:04Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="DigitalPhotos"/>
+  <category term="seaford"/>
+  <category term="east-sussex"/>
+</entry>

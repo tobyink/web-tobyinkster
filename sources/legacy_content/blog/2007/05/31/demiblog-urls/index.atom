@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/05/31/demiblog-urls/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/05/31/demiblog-urls/"/>
+  <title>URLs in demiblog</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://www.w3.org/Provider/Style/URI"><span class="caps">URL </span>design is important</a>. For this reason I've put a lot of thought into the <span class="caps">URL</span>s used by <a href="http://demiblog.org">demiblog</a>.</p>
+
+<p>demiblog has a <span class="caps">PHP </span>object <tt>SiteURLSpace</tt> that maps between <span class="caps">URL</span>s and data queries. This means that demiblog's <span class="caps">URL</span>s don't necessarily have to bear much resemblence to its code structure. It's also pretty easy to completely replace the object, and thus restructure demiblog's <span class="caps">URL </span>space. (Except for a few cases like feeds and enclosures.)</p>
+
+<h2>Front Page</h2>
+
+<p>Firstly, demiblog can be installed anywhere on your server. If your domain name is example.com, then you could theoretically give demiblog <span class="caps">URL</span>s like any of these:</p>
+
+<ul>
+<li>http://example.com/</li>
+<li>http://www.example.com/</li>
+<li>http://example.com/demiblog/</li>
+<li>http://example.com/anything/you/like/</li>
+</ul>
+
+<p>This makes it easy to have demiblog power your whole site, or just a part of it.</p>
+
+<p>Now let's look at some of the <span class="caps">URL</span>s <strong>within</strong> demiblog...</p>
+
+<h2>Tags</h2>
+
+<p>demiblog articles may be tagged. This is a loose form of categorisation. Tag listings are available at <tt>http://DEMIBLOG-INSTALLATION/tag/example/</tt>. This <span class="caps">URL </span>complies with the <a href="http://microformats.org/wiki/rel-tag">rel tag microformat</a> and follows the same <span class="caps">URL </span>scheme as <a href="http://technorati.com/">Technorati</a>.</p>
+
+<h2>Users</h2>
+
+<p>All articles and comments in demiblog belong to a user. Each user has their own page which lists their name and contact details. In future versions it is likely to also list recent articles and comments published by that user. The <span class="caps">URL </span>format for this page is <tt>http://DEMIBLOG-INSTALLATION/~example/</tt> which follows the standard <a href="http://en.wikipedia.org/wiki/Home_directory">Unix home directory syntax</a>. </p>
+
+<p>In a nod to <a href="http://www.cs.tut.fi/~jkorpela/tilde.html">Jukka</a>, these pages are also available at an alternative <span class="caps">URL</span>: <tt>http://DEMIBLOG-INSTALLATION/user/example/</tt>. This is incidentally the same scheme used by <a href="http://www.youtube.com">YouTube</a> and <a href="http://www.well.com">The Well</a>.</p>
+
+<h2>Static Articles</h2>
+
+<p>Plain old bits of content have a <span class="caps">URL </span>like <tt>http://DEMIBLOG-INSTALLATION/article/example/</tt> where "example" is some meaningful identifier. This is the same scheme used by <a href="http://www.sitepoint.com">SitePoint</a>.</p>
+
+<h2>Blog Articles</h2>
+
+<p>Blog entries take <span class="caps">URL</span>s of the form <tt>http://DEMIBLOG-INSTALLATION/YYYY/MM/DD/example/</tt>. This is the same scheme of <span class="caps">URL</span>s used by many installations of <a href="http://www.wordpress.org/">WordPress</a>, including its biggest:  <a href="http://www.wordpress.com/">WordPress.com</a>.</p>
+
+<p>Look forward to more articles on the architecture of demiblog...</p></div>
+  </content>
+  <published>2007-05-31T22:01:24+01:00</published>
+  <updated>2007-05-31T22:01:24+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="url-design"/>
+  <category term="web"/>
+  <category term="demiblog"/>
+</entry>

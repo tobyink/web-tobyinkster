@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Data::Dumper::GUI</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/07/datadumpergui.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4879</id>
+
+    <published>2013-07-09T20:18:35Z</published>
+    <updated>2013-07-09T20:35:26Z</updated>
+
+    <summary>Everyone knows all that command-line stuff is for weirdo geeks, right? ;-) So let's bring Data::Dumper kicking and screaming into the 21st century and give it a pretty GUI! Introducing Data::Dumper::GUI; a GUI for Data::Dumper. It allows you to view...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="gui" label="GUI" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Everyone knows all that command-line stuff is for weirdo geeks, right? ;-) So let's bring <a href="https://metacpan.org/module/Data::Dumper">Data::Dumper</a> kicking and screaming into the 21st century and give it a pretty GUI!</p>
+
+<a href="http://blogs.perl.org/users/toby_inkster/assets_c/2013/07/ddGUI-1326.html" onclick="window.open('http://blogs.perl.org/users/toby_inkster/assets_c/2013/07/ddGUI-1326.html','popup','width=662,height=529,scrollbars=no,resizable=no,toolbar=no,directories=no,location=no,menubar=no,status=no,left=0,top=0'); return false"><img src="http://blogs.perl.org/users/toby_inkster/assets_c/2013/07/ddGUI-thumb-330x263-1326.png" width="330" height="263" alt="ddGUI.png" class="mt-image-left" style="float: left; margin: 0 20px 20px 0;" /></a>
+
+<p>Introducing <a href="https://metacpan.org/module/Data::Dumper::GUI">Data::Dumper::GUI</a>; a GUI for Data::Dumper. It allows you to view your data structures as a tree with collapsible nodes. Data::Dumper::GUI is built using <a href="https://metacpan.org/module/Prima">Prima</a> (a rather nice GUI toolkit designed specifically for Perl, that supports Win32 and X11, with no dependencies and compiles pretty quickly... for a GUI toolkit) and Moo.</p>
+
+]]>
+        <![CDATA[<p>It has special support for Moose objects, using the metaobject protocol to introspect objects being dumped and provide additional information (superclasses, subclasses, roles, attributes, methods). It will do the same for Moo objects too (but only if Moose is loaded).</p>
+
+<p>And it comes bundled with a plugin for <a href="https://metacpan.org/module/Reply">Reply</a>.</p>
+
+<p>It's early days; the GUI ain't pretty enough yet. Take a peek though, and let me know if you have any ideas for improvements.</p>
+]]>
+    </content>
+</entry>

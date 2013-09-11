@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/22/demiblog-typography/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/22/demiblog-typography/"/>
+  <title>Typography in demiblog</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;&lt;a href="http://tobyinkster.co.uk/blog/2007/06/"&gt;I&amp;#39;ve said it already&lt;/a&gt;, and I&amp;#39;ll say it again: typography is a very important and oft-neglected aspect of web design. &lt;a href="http://demiblog.org"&gt;demiblog&lt;/a&gt; is my &lt;acronym title="Content Management System"&gt;CMS&lt;/acronym&gt;; although great typography requires the conscious effort of the author/typesetter, and can&amp;#39;t be handled automatically by a &lt;span class="caps"&gt;CMS, &lt;/span&gt;there are certainly steps a &lt;span class="caps"&gt;CMS &lt;/span&gt;can take to ease the burden on its users; in this article I&amp;#39;ll outline some of demiblog&amp;#39;s features that help typography.&lt;/p&gt;
+
+&lt;h2&gt;The Asterism&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s start with the most suprious of features. In printing, it is common to mark a break in the flow by a centred paragraph consisting of just three asterisks (* * *). &lt;/p&gt;
+
+&lt;p&gt;If you create a paragraph in demiblog which consists of just three asterisks &lt;em&gt;and no spaces in between&lt;/em&gt; then demiblog will detect this as a dividing mark and can be configured to replace it with a different dividing mark. This can be something as dull as an &lt;span class="caps"&gt;HTML &lt;/span&gt;&lt;code class="html"&gt;&amp;lt;hr&amp;gt;&lt;/code&gt; tag, which adds a bevelled horizontal rule, or some other division, unique to your website.&lt;/p&gt;
+
+&lt;h2&gt;Quotes, Dashes and Elipses&lt;/h2&gt;
+
+&lt;p&gt;Proper typography uses "curly quotes" -- the difference between the beginning and end marks helps you to visually distinguish whether a bit of quoted text is starting or has just ended. This &lt;kbd&gt;"&lt;/kbd&gt; character on your keyboard has very little use. However, keyboards tend not to have keys for the curly quote characters, so typography suffers.&lt;/p&gt;
+
+&lt;p&gt;demiblog allows you to use the boring old &lt;kbd&gt;"&lt;/kbd&gt; key and converts text to use proper quote marks just prior to serving the page up to visitors. It does all this thanks to the wonderful &lt;a href="http://daringfireball.net/"&gt;SmartyPants&lt;/a&gt; library being included.&lt;/p&gt;
+
+&lt;p&gt;This also applies to &amp;#39;single quotes&amp;#39; and to apostrophes, don&amp;#39;t you know.&lt;/p&gt;
+
+&lt;p&gt;There are at least four types of dash-like character in common use --- the "em" dash (that was one just there), the "en" dash (used for marking out ranges and expanses like 0---9 or the London---Paris train), the hyphen (for hyphenated-words) and the minus (for subtraction and negitive numbers, e.g. -1). Here the typical &lt;span class="caps"&gt;QWERTY &lt;/span&gt;keyboard is of more use, because it includes &lt;kbd&gt;-&lt;/kbd&gt;, the so called &lt;em&gt;"hyphen-minus"&lt;/em&gt; key. This key may acceptably be used for either a hyphen or a minus. Many fonts do include a seperate, slightly longer minus character, but the value of using it seems negligable unless you type up an awful lot of mathematical formulae.&lt;/p&gt;
+
+&lt;p&gt;As for those other pair though, demiblog will automatically convert a double-hyphen into an em dash, and a triple hyphen into an en dash. (Explanation for triple hyphen: Because although an en dash is shorter than an em dash, it&amp;#39;s not as frequently used, so it makes sense to use the simpler double-hyphen for em dashes.) Again, this is all thanks to the magic of SmartyPants.&lt;/p&gt;
+
+&lt;p&gt;Whatsmore, when demiblog spots a space character before an em dash, it will convert that space into a non-breaking space, which ought to prevent lines from starting with an em dash, which would be a typographical sin. This is demiblog&amp;#39;s own extension to SmartyPants.&lt;/p&gt;
+
+&lt;p&gt;Finally... elipses. An elipsis is a series of three dots, like the one that began this paragraph. Rather than just using three full stops, most fonts also include a specific elipsis character, with tighter spacing between the dots than there would otherwise be. As you may have guessed, demiblog automatically converts any series of three dots into a proper elipsis character. This again, is SmartyPants&amp;#39; doing!&lt;/p&gt;
+
+&lt;h2&gt;Always Use the Best Possible Ampersand&lt;/h2&gt;
+
+&lt;p&gt;In some fonts, the ampersand is nothing special. In other fonts the ampersand is a masterpiece of swirls -- it is worth switching fonts just to use that ampersand.&lt;/p&gt;
+
+&lt;p&gt;To make this easier, demiblog will pick out all ampersands and replace them with:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="html"&gt;
+&lt;b class="hl_Keyword"&gt;&amp;lt;span&lt;/b&gt;&lt;span class="hl_Others"&gt; class=&lt;/span&gt;&lt;span class="hl_String"&gt;"amp"&lt;/span&gt;&lt;b class="hl_Keyword"&gt;&gt;&lt;/b&gt;&lt;span class="hl_DecVal"&gt;&amp;amp;amp;&lt;/span&gt;&lt;b class="hl_Keyword"&gt;&amp;lt;/span&gt;&lt;/b&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;This allows you to, with a little &lt;span class="caps"&gt;CSS, &lt;/span&gt;style ampersands seperately from the surrounding text. You can give them a different font, make them a little bigger or smaller, or even change their colour, though I wouldn&amp;#39;t recommend that!&lt;/p&gt;
+
+&lt;h2&gt;Footnotes&lt;/h2&gt;
+
+&lt;p&gt;Although, these days, the most common footnote scheme is to use superscript numbers, demiblog supports a number of other options. When you type your footnotes up, you should use numbers, and then a demiblog plugin will present these in your choice of a number of different footnote schemes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Classic (*, &amp;dagger;, &amp;amp;Dagger;, &amp;sect;, &amp;para;)&lt;/li&gt;
+&lt;li&gt;Classic extended (*, &amp;dagger;, &amp;amp;Dagger;, &amp;sect;, &amp;para;, ||, **, &amp;dagger;&amp;dagger;, &amp;amp;Dagger;&amp;amp;Dagger;)&lt;/li&gt;
+&lt;li&gt;Miniscule Roman numerals (i, ii, iii, ..., xx)&lt;/li&gt;
+&lt;li&gt;Majuscule Roman numerals (I, &lt;span class="caps"&gt;II, III,&lt;/span&gt; ..., XX)&lt;/li&gt;
+&lt;li&gt;Lower case letters (a, b, c, ..., z)&lt;/li&gt;
+&lt;li&gt;Capital letters (A, B, C, ..., Z)&lt;/li&gt;
+&lt;li&gt;Hindu-Arabic numerals (1, 2, 3, ...)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Whatsmore, if demiblog detects that your document has more footnotes than the scheme is able to handle (e.g. the classic scheme only includes five footnote markers, so cannot handle a document with six footnotes), then it will switch to a more appropriate scheme. It does so in roughly the order above, though in the case of "classic", it will skip to lower case Roman numerals rather than "classic extended".&lt;/p&gt;
+
+&lt;p&gt;The asterisks, daggers, section marks and pilcrows used by the classic schemes are a standard progression of footnote markers used for centuries.&lt;/p&gt;
+
+&lt;p&gt;***&lt;/p&gt;
+
+&lt;p&gt;These are the steps demiblog takes to help your document look beautiful. The rest is up to you.&lt;/p&gt;</content>
+  <published>2007-06-22T13:09:40+01:00</published>
+  <updated>2007-06-22T13:09:40+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="typography"/>
+  <category term="demiblog"/>
+</entry>

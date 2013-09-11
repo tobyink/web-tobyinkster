@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/23/london-wifi/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/23/london-wifi/"/>
+  <title>London Goes Wi-Fi</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>The <a href="http://en.wikipedia.org/wiki/City_of_London">square mile</a> now has <a href="http://news.bbc.co.uk/1/hi/technology/6577307.stm">Wi-Fi</a>. <em>The Cloud</em>, as it is called, is to be free for the first month, but after that there will be a charge.</p>
+
+<p>Contrast this with the proposed <a href="http://en.wikipedia.org/wiki/San_Francisco_Municipal_Wireless">San Francisco Municipal Wireless scheme</a>, and <em>the Cloud</em> starts to look fairly weak. In contrast with London's single square mile of coverage, the San Francisco scheme will cover a much larger area, and will be provided free of cost to the end user.</p>
+
+<p>Compared to what they're rolling out in San Francisco, and many other US cities for that matter, <em>the Cloud</em> is just a glorified version of what's already running in every coffee house in South East England.</p></div>
+  </content>
+  <published>2007-04-23T22:25:45+01:00</published>
+  <updated>2007-04-23T22:25:45+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="networking"/>
+  <category term="london"/>
+  <category term="wifi"/>
+</entry>

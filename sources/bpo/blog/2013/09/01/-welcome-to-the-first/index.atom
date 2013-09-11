@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - August 2013</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/09/-welcome-to-the-first.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5070</id>
+
+    <published>2013-09-01T08:17:18Z</published>
+    <updated>2013-09-01T08:21:19Z</updated>
+
+    <summary> Welcome to the first edition of Planet Moose, a brief write up on what's been happening in the world of Moose this month, for the benefit of those of you who don't have their eyes permanently glued to the...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="classtiny" label="Class-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moops" label="Moops" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="p5mop" label="p5-mop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0">
+		<p>Welcome to the first edition of Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> this month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page. The intention is to cover Moose and similar OO frameworks (Mouse, Moo, p5-mop), along with interesting developments to their dependencies and dependent projects.</p>
+		<p>This edition is a little sparse because it just contains the news that I happen to have noticed. If you have any items you'd like to be included in the September issue, add them to <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki/">the wiki</a>! That way it might not be so tobyink-focussed next month.<br style="clear:left"></p>]]>
+        <![CDATA[		<h2><span id="Moose_2.1005">Moose 2.1005</span></h2>
+		<p>No groundbreaking changes in this release: a couple of small bug fixes, plus Class::MOP::Mixin::HasMethods — and things that inherit from it, such as Moose::Meta::Class — now accept blessed coderefs being passed to the <code>add_method</code> method.</p>
+		<h2><span id="Lvalue_Attributes">Lvalue Attributes</span></h2>
+		<p>Christopher Brown has allowed me to adopt <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AMeta%3A%3AAttribute%3A%3ALvalue">MooseX::Meta::Attribute::Lvalue</a> which, after some rewriting, I've recycled into <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ALvalueAttribute">MooseX::LvalueAttribute</a>. This pilfers some ideas from Damien Krotkine's <a class="podlinkpod" href="https://metacpan.org/module/MooX%3A%3ALvalueAttribute">MooX::LvalueAttribute</a> module (which has incidentally seen a few updates recently too), and should now work properly with attributes that have type constraints, coercions, triggers, lazy builders, etc.</p>
+		<h2><span id="Class::Tiny">Class::Tiny</span></h2>
+		<p>David Golden's <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ATiny">Class::Tiny</a> is a potential candidate for placing before <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a> in the OO framework weight line-up. It gives you read-write accessors, a constructor, <code>BUILD</code>/<code>DEMOLISH</code> methods and precious little else. Throw in <a class="podlinkpod" href="https://metacpan.org/module/parent">parent</a> for inheritance and <a class="podlinkpod" href="https://metacpan.org/module/Role%3A%3ATiny">Role::Tiny</a> for roles, and you've got a good Moose substitute for projects where your OO needs are very simple.</p>
+		<p>I've also released <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ATiny%3A%3AAntlers">Class::Tiny::Antlers</a> which provides basic implementations of Moose-like <code>has</code>, <code>extends</code> and <code>with</code> functions for Class::Tiny.</p>
+		<h2><span id="Moops">Moops</span></h2>
+		<p>I've released <a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a>, which is syntactic sugar for building <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a>, <a class="podlinkpod" href="https://metacpan.org/module/Mouse">Mouse</a> and <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> classes and roles. Its syntax is inspired by <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ADeclare">MooseX::Declare</a> and p5-mop.</p>
+		<pre class="highlighting-perl">    <span class="word">class</span> <span class="word">Fooooo</span> <span class="word">extends</span> <span class="word">Foo</span> <span class="word">with</span> <span class="word">Bar</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Baz</span> <span class="structure">{</span>
+       <span class="word">method</span> <span class="word">do_something</span> <span class="structure">(</span><span class="word">Int</span> <span class="symbol" style="color:#333;background-color:#fcc">$i</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="number" style="color:#39C">42</span><span class="structure">)</span> <span class="structure">{</span> <span class="operator" style="color:#000;font-weight:bold">...</span> <span class="structure">}</span>
+    <span class="structure">}</span></pre>
+		<h2><span id="p5-mop">p5-mop</span></h2>
+		<p>There has been lots of activity on p5-mop this month; some of it thanks to moving the parsing side of it off <a class="podlinkpod" href="https://metacpan.org/module/Devel%3A%3ADeclare">Devel::Declare</a> and on to Jesse Luehrs' shiny new <a class="podlinkpod" href="https://metacpan.org/module/Parse%3A%3AKeyword">Parse::Keyword</a>; and some as a result of Stevan Little trying to document (and therefore think about) how to port <a class="podlinkurl" href="http://blogs.perl.org/users/stevan_little/2013/08/mapping-the-mop-to-moose.html">Moose code to p5-mop</a>.</p>
+		<p>One visible change is to make class and role naming follow the same logic as <code>sub</code> (which <a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a> also does); where, for example:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">xxx</span> <span class="structure">{</span> <span class="structure">}</span>       <span class="comment" style="color:#060;font-style:italic"># Foo::xxx</span>
+   <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">yyy::zzz</span> <span class="structure">{</span> <span class="structure">}</span>  <span class="comment" style="color:#060;font-style:italic"># yyy::zzz; not Foo::yyy::zzz.</span></pre>
+		<p>Stevan has <a class="podlinkurl" href="http://blogs.perl.org/users/stevan_little/2013/08/p5-mop-speedups-and-more.html">blogged about some of the other features Jesse has been working on recently</a>.</p>
+		<p>Florian Ragwitz has been working on <a class="podlinkurl" href="https://github.com/rafl/twigils">a module</a> for parsing Perl-6-like twigils (e.g. <code>$!foo</code> or <code>$.bar</code>) in Perl 5 code. It's not decided whether these will be used by p5-mop, but it's always good to have options.</p>
+		<h2><span id="In_other_news">In other news</span></h2>
+		<ul>
+			<li>Perl 5.18.1 and 5.19.3 were released during August. Moose seems to work fine on both of them.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AClass%3A%3AMoose">Test::Class::Moose</a> now has a tutorial.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Bread%3A%3ABoard">Bread::Board</a> has seen three new releases after almost two years of inactivity, with some bug fixes, documentation improvements and new features.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Type%3A%3ATiny">Type::Tiny</a> 0.024 is out, offering better integration with <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes">MooseX::Types</a> and <a class="podlinkpod" href="https://metacpan.org/module/MouseX%3A%3ATypes">MouseX::Types</a> type constraint libraries.</li>
+			<li>I've released <a class="podlinkpod" href="https://metacpan.org/module/Sub%3A%3ABlock">Sub::Block</a> which is a wrapper for <a class="podlinkpod" href="https://metacpan.org/module/Sub%3A%3AQuote">Sub::Quote</a> (a module bundled with <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a>), making it simple(ish) to create blocks of Perl code and combine them into subroutines.</li>
+		</ul>
+]]>
+    </content>
+</entry>

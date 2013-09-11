@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/03/09/sw/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/03/09/sw/"/>
+  <title>The Semantic Web</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>One of my current interests is the <a href="http://en.wikipedia.org/wiki/Semantic_Web">semantic web</a> -- that is, the push to move from publishing text on the Web to publishing structured data, which can actually be <em>understood</em> by computers (in so far as a computer can truly "understand" anything). By publishing information so that computers can understand it, you make the Web into a huge mine of interconnected data, free to be queried by everyone.</p>
+
+<p>As an example of what I mean, searching for the keyword "train" on Google brings up results related to:</p>
+
+<ul>
+<li>trains, as a form of transport</li>
+<li>the band <a href="http://www.trainline.com/">Train</a></li>
+<li>IT training courses</li>
+<li>toy trains</li>
+</ul>
+
+<p>In the semantic web, the search engine and my computer would inherently understand the difference between these concepts, so if I wanted to know about the new Train album, I wouldn't get any result related to locomotives!</p>
+
+<p>What I'm particularly interested in is ways of embedding semantic data in ordinary web pages, so that we have a single web that can be read by humans and machines instead of a two-tier web. At the moment I'm working on three main projects in this field, and I'd like to take some time to write about them now.</p>
+
+<h2>Microformats</h2>
+
+<p>Microformats are an effort to take common information which is already routinely published on the web, such as contact details, event information and geographic locations and make it machine-readable.</p>
+
+<p>For example, the following <acronym title="Hypertext Markup Language">HTML</acronym> might be used to add a link from somewhere to this website:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;a</b><span class="hl_Others"> href=</span><span class="hl_String">"http://tobyinkster.co.uk/"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/a&gt;</b>
+</code></pre>
+
+
+
+<p>We can "Microformat it up" by adding a few simple class attributes and an extra span element around the outside:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;span</b><span class="hl_Others"> class=</span><span class="hl_String">"vcard"</span><b class="hl_Keyword">&gt;</b>
+  <b class="hl_Keyword">&lt;a</b><span class="hl_Others"> class=</span><span class="hl_String">"fn url"</span><span class="hl_Others"> href=</span><span class="hl_String">"http://tobyinkster.co.uk/"</span><b class="hl_Keyword">&gt;</b>Toby Inkster<b class="hl_Keyword">&lt;/a&gt;</b>
+<b class="hl_Keyword">&lt;/span&gt;</b>
+</code></pre>
+
+
+
+<p>This enables Microformat-aware software (including some browser plugins) to know that that text represents a person, and that the person's first name is "Toby" and last name is "Inkster", and that the person's website is at http://tobyinkster.co.uk. The software is then able to do useful stuff with that information. For example, a browser plugin might offer a one-click option to add the person to your address book.</p>
+
+<p>The focus of Microformats tends to be to encode fairly simple information (e.g. the concept of a "contact" is probably easier to encode into <span class="caps">HTML </span>than the concept of an "organisation structure") which has a high return for your investment -- that is, encoding information about contacts, events and geographic locations is very useful because you can then automatically invite people to events, find maps for places, check people's schedules and locations to select the best place to get together for coffee, etc. Encoding the organisational structure for a government department probably doesn't offer as many immediate advantages.</p>
+
+<p>The two Microformats that I'm most actively trying to push forward are:</p>
+
+<ul>
+<li><a href="http://microformats.org/wiki/User:TobyInk/hcalendar-1.1">hCalendar 1.1</a> -- an update to the current Microformat for events, because I believe that the current specification is too vague and needs clarifying.</li>
+<li><a href="http://microformats.org/wiki/figure">figure</a> -- a Microformat for describing images and diagrammes found in documents. I'm working on this because I think it should be a very simple Microformat to get working, could be applied to a large number of documents out there, and should be very useful.</li>
+</ul>
+
+<h3><span class="caps">RDF</span>a</h3>
+
+<p><span class="caps">RDF</span>a is not a Microformat, but I thought I'd mention it before I got onto my next project. <span class="caps">RDF</span>a is another way of adding semantics to normal <span class="caps">HTML </span>documents. However, while Microformats deals with different concepts (contacts, events, locations, etc) on a case-by-case basis, with each concept requiring a new Microformat to be developed, <span class="caps">RDF</span>a deals with the more general case. It provides a framework on which a document author can "hang" any metadata they want.</p>
+
+<p>It's an immensely powerful set of tools, but will probably take quite a while to gain momentum.</p>
+
+<p>Although I've been watching it with interest, I've not contributed anything towards the <span class="caps">RDF</span>a specification so far, mostly because it seems to be progressing along quite nicely without me. What I have been looking at is how <span class="caps">RDF</span>a and Microformats can work together, which brings me to my next project...</p>
+
+<h2>Cognition</h2>
+
+<p>For about a month now, I've been working on <a href="http://buzzword.org.uk/cognition/">Cognition</a>" a tool designed to find and extract semantic data within web pages. Ultimately it aims to be a full-fledged graphical browser, but that's a long way off -- right now it just parses the data.</p>
+
+<p>Cognition supports both <span class="caps">RDF</span>a and Microformats, plus a bunch of other ways of encoding information. It has been very interesting seeing how all these different semantic technologies can work together.</p>
+
+<p>You can try it online to see what metadata Cognition can find on your web page!</p>
+
+<h2>demiblog</h2>
+
+<p>I have mentioned <a href="http://www.demiblog.org">demiblog</a> several times before. It's the content management system that does all the behind-the-scenes on this website. Since day one, it has had a focus on semantics, and my work on Cognition and Microformats have been helping it improve in this area over the last few weeks.</p>
+
+<p>One major recent advance is that it's moved from the old Dublin Core 1.1 vocabulary for describing articles, to the newer DC Terms vocabulary.</p>
+
+<p>Overall, development on demiblog hasn't been as fast as I'd hoped -- I've not been able to devote as much time to it as I'd have liked. It is creeping towards a 0.3.0 release though. I'll get there eventually.</p>
+
+<p>So, you see, I'm trying to work on improving the semantic web from three directions: a tool for publish semantic data, standards for encoding semantic data, and a tool for using semantic data.</p></div>
+  </content>
+  <published>2008-03-09T16:57:18Z</published>
+  <updated>2008-03-09T16:57:18Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="semantic-web"/>
+  <category term="cognition"/>
+  <category term="web"/>
+  <category term="microformats"/>
+  <category term="rdfa"/>
+  <category term="rdf"/>
+  <category term="future"/>
+  <category term="demiblog"/>
+</entry>

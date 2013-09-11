@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2003/08/31/choc-cheesecake/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2003/08/31/choc-cheesecake/"/>
+  <title>Chocolate Cheesecake</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+<p>I found this recipe somewhere on the Internet, but I can't remember where.
+  All I can remember is that it's by a guy called Glenn. I've changed it slightly
+  (metricised the units, added a little more in-depth explanation).</p>
+  
+  <h2>Ingredients</h2>
+  <h3>Crust</h3>
+  <ul>
+  <li>1 1/4 cups chocolate cookie crumbs</li>
+  <li>1/4 cup melted butter</li>
+  </ul>
+  <h3>Filling</h3>
+  <ul>
+  <li>700g cream cheese</li>
+  <li>1 cup sugar</li>
+  <li>3 eggs</li>
+  <li>1/2 cup sour cream</li>
+  <li>1 tablespoon vanilla essence</li>
+  <li>300g chocolate chips</li>
+  </ul>
+  <h3>Topping</h3>
+  <ul>
+  <li>1/2 cup double cream</li>
+  <li>150g cooking chocolate</li>
+  </ul>
+  
+  <h2>Method</h2>
+  
+  <p class="method">
+  For the crust, mix the cookie crumbs with the melted butter. Press the mix onto
+  the bottom of a 9 inch cake tin. Blind bake the crust in a preheated oven for 5
+  minutes at 160<sup>o</sup>C.
+  </p>
+  
+  <p class="method">
+  For the filling, beat the cream cheese and sugar until smooth. Beat in the eggs one
+  at a time, followed by the sour cream and vanilla essence. Stir in the chocolate
+  chips.</p>
+  
+  <p class="method">
+  Pour this mixture over the crust and bake for 45 min or until the cheesecake
+  is set. Turn off the oven, open slightly and leave the cake in the oven for 30
+  minutes. Remove from the oven and let the cake cool completely.</p>
+  
+  <p class="method">
+  For the topping, bring the cream to a boil over medium heat. Pour this over
+  chopped chocolate (which should be in a mixing bowl) and stir until smooth.
+  Pour this over the top of the cake.
+  </p>
+
+</div>
+  </content>
+  <published>2003-08-31T18:43:04+01:00</published>
+  <updated>2007-04-06T17:13:52+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dessert"/>
+  <category term="recipes"/>
+  <category term="chocolate"/>
+  <category term="cheese"/>
+</entry>

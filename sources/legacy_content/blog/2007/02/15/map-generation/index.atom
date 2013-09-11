@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/15/map-generation/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/15/map-generation/"/>
+  <title>Re: Random Map Generation</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>skulkrinbait@googlemail.com wrote:</p>
+
+<blockquote><p>My first prototype for doing this doesn't give good results, the map being far too random, can someone help me out or point me to a good resource please?</p></blockquote>
+
+<p>Real geography is not random. </p>
+
+<p>First, take a grid, say 1001Ã1001 is size. Now find the middle square of it and set it to have a height of 1m above sea level. Now spiral out from that square, creating a height for each square using an algorithm like this:</p>
+
+<ol>
+<li>Look at the adjacent squares, but only the ones that you've already assigned a height to!</li>
+<li>Find the average (mean) of height those and call it $h.</li>
+<li>Now here's where we add a bit of randomness:</li>
+</ol>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">rand</span><span class="hl_Others">(</span><span class="hl_Float">1</span><span class="hl_Others">,</span><span class="hl_Float">2</span><span class="hl_Others">)</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span>
+    <b class="hl_Variable">$h</b> -= <span class="hl_Function">log</span><span class="hl_Others">(</span><span class="hl_Function">rand</span><span class="hl_Others">(</span><span class="hl_Float">1</span><span class="hl_Others">,</span><span class="hl_Float">1000000</span><span class="hl_Others">));</span>
+<span class="hl_Operator">else</span>		
+    <b class="hl_Variable">$h</b> += <span class="hl_Function">log</span><span class="hl_Others">(</span><span class="hl_Function">rand</span><span class="hl_Others">(</span><span class="hl_Float">1</span><span class="hl_Others">,</span><span class="hl_Float">1000000</span><span class="hl_Others">));</span>
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">rand</span><span class="hl_Others">(</span><span class="hl_Float">1</span><span class="hl_Others">,</span><span class="hl_Float">20</span><span class="hl_Others">)</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span> <b class="hl_Variable">$h</b> *= <span class="hl_Float">3</span><span class="hl_Others">;</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>There is a note way down below about step 3. Don't read it yet. Wait until you get there.</p>
+
+<p><span class="caps">OK.</span> Now you have a 1001Ã1001 grid of various heights. Anything below 0m in sea level should be water.</p>
+
+<p>Find the two highest grid squares. Make them and the adjacent 16 squares into ice.</p>
+
+<p>Find the four next highest which aren't already covered with ice. Add rivers flowing from them. Here's how you chart a river's course from its origin.</p>
+
+<ol>
+<li>You're on a particular grid square.</li>
+<li>Are you at the sea yet? If so, stop.</li>
+<li>Look at the 8 adjacent squares. Which has the lowest altitude?</li>
+<li>The river should flow to that square. Go to step 1.</li>
+</ol>
+
+<p>Now you know where all the water is, find the ten squares furthest from any rivers, ice and ocean. Make them into desert.</p>
+
+<p>Find areas that are between 12m and 25m above sea level and are not either ice, river or desert. Make them into forest.</p>
+
+<p>Select a random two of the four rivers. Place a city where they meet the sea.</p>
+
+<p>Select a random two of the four rivers. Place a city half-way between the origin and the sea.</p>
+
+<p>Place two cities at any random part of the geography that is not under water.</p>
+
+<p>You get the idea. For any other geographic feature, you should be able to think of a method of placing it randomly, but realistically.</p>
+
+<p>Having done all this, you might realise that your map is now either too boring, or too unrealistic. So here comes my note about step 3. Most of the randomness that is introduced into the map is introduced here:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b> <span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">rand</span><span class="hl_Others">(</span><span class="hl_Float">1</span><span class="hl_Others">,</span><span class="hl_Float">20</span><span class="hl_Others">)</span>==<span class="hl_Float">1</span><span class="hl_Others">)</span> <b class="hl_Variable">$h</b> *= <span class="hl_Float">3</span><span class="hl_Others">;</span> 1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>If you want to make it more random, then either decrease '20' or increase '3' (or both!). If you want to make it more boring, then do the reverse.</p></div>
+  </content>
+  <published>2007-02-15T17:16:23Z</published>
+  <updated>2007-04-29T11:40:05+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="geography"/>
+  <category term="php"/>
+  <category term="programming"/>
+</entry>

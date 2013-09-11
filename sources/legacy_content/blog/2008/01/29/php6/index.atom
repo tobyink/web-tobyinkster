@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/29/php6/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/29/php6/"/>
+  <title>Looking Ahead to PHP 6</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>This is my look at what's planned for the forthcoming revision to the <a href="http://www.php.net"><span class="caps">PHP</span></a> language.</p>
+
+<h2>Removal of Deprecated Features</h2>
+
+<p><span class="caps">PHP</span> 6 includes a lot of tidying up, removing features of the language that have caused annoyance, confusion and security headaches. Although these changes are too numerous to list here, and the list will probably change before the official release, here are three of the major ones:</p>
+
+<ul>
+<li><span class="caps">PHP </span>has for some time included two different <a href="http://en.wikipedia.org/wiki/Regular_Expression">regular expression</a> libraries: <a href="http://uk.php.net/manual/en/ref.regex.php"><span class="caps">POSIX</span> Regex</a> and <a href="http://uk.php.net/manual/en/ref.pcre.php"><span class="caps">PCRE</span></a>. <span class="caps">PCRE </span>is both faster and more capable, so in <span class="caps">PHP</span> 6, the <span class="caps">POSIX</span> Regex library will be removed from the <span class="caps">PHP </span>core and exist only as an optional extension.</li>
+<li><span class="caps">PHP </span>includes a feature called <a href="http://uk.php.net/register_globals">register_globals</a>, which automatically creates global variables for any data provided to a script through an <acronym title="Hypertext Transfer Protocol">HTTP</acronym> <span class="caps">GET </span>or <span class="caps">POST </span>request, through a cookie or set in a session. Coupled with a failure to properly initialise variables, this can create big security problems. Since <span class="caps">PHP</span> 4.2, it has been disabled by default, but is still available as an option. As of <span class="caps">PHP</span> 6, it's gone.</li>
+<li>"Magic quotes" is the automatic slash-escaping of incoming data. This is intended as a security feature, and if it could be relied upon to always be switched on, world work fine, albeit in a slightly ugly and kludgy way. But because it is often disabled, this feature becomes an annoyance. Well, in <span class="caps">PHP</span> 6 is will annoy no more. The feature is gone.</li>
+</ul>
+
+<h2>Late Static Binding</h2>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+	<b class="hl_Keyword">class</b> Human
+	{
+		<b class="hl_Keyword">private</b> <b class="hl_Keyword">static</b> <b class="hl_Variable">$greeting</b> = <span class="hl_String">'Hello world'</span><span class="hl_Others">;</span>
+		
+		<b class="hl_Keyword">public</b> <b class="hl_Keyword">static</b> <b class="hl_Keyword">function</b> greet <span class="hl_Others">()</span>
+		{
+			<span class="hl_Function">print</span> <b class="hl_Keyword">self</b><span class="hl_Others">::</span><b class="hl_Variable">$greeting</b> . <span class="hl_String">"</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+		}
+	}
+	
+	<b class="hl_Keyword">class</b> Baby <b class="hl_Keyword">extends</b> Human
+	{
+		<b class="hl_Keyword">private</b> <b class="hl_Keyword">static</b> <b class="hl_Variable">$greeting</b> = <span class="hl_String">'Waaah!'</span><span class="hl_Others">;</span>
+	}
+	
+	Baby<span class="hl_Others">::</span>greet<span class="hl_Others">();</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>In <span class="caps">PHP</span> 5, the above code rather oddly will print "Hello world". In <span class="caps">PHP</span> 6, it will print the more expected output of "Waaah!"</p>
+
+<h2>Namespaces</h2>
+
+<p><a href="http://uk3.php.net/manual/en/language.namespaces.php">Namespaces</a> were developed for <span class="caps">PHP</span> 6, but have now been backported to <span class="caps">PHP</span> 5.3, so you can start using them already (as long at you don't need to support earlier versions of <span class="caps">PHP</span>!). Namespaces work using two new keywords: <code class="php">namespace</code> and <code class="php">use</code>.</p>
+
+<p>The <code class="php">namespace</code> keyword can be used once or fewer times within each <span class="caps">PHP </span>file. It tells the <span class="caps">PHP </span>interpreter that all classes, functions and constants (introduced with the <code class="php">const</code> keyword; constants introduced with the <code class="php">define</code> keyword are not namespace-aware) defined within that file belong to a particular namespace. The examples in the rest of this write-up refer only to functions, but the same princples apply to constants and classes.</p>
+
+<p>Within a namespaced file, any function calls will attempt to call a "local" function before using the "global" function. For example, within a namespace you could define your own function called <code class="php">header()</code> and this will be used in preference to the built-in <span class="caps">PHP </span><a href="http://www.php.net/header"><code class="php">header()</code></a> function. You can explicitly call the standard function by calling <code class="php">::header()</code>.</p>
+
+<p>If you want to use the function <code class="php">header()</code> from namespace <code class="php">ACMECorp::Web::HTML</code> then you call <code class="php">ACMECorp::Web::HTML::header()</code>. Obviously this is quite long and unwieldly, so if you need to repeatedly refer to various functions from a particular namespace, you can alias it using the <code class="php">use</code> keyword:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+namespace ACMECorp<span class="hl_Others">::</span>CMS<span class="hl_Others">;</span>
+use ACMECorp<span class="hl_Others">::</span>Web<span class="hl_Others">::</span>HTML <span class="hl_Operator">as</span> TheHTML<span class="hl_Others">;</span>
+
+<i class="hl_Comment">// Define a function called "header()" within namespace "ACMECorp::CMS".</i><i class="hl_Comment">
+</i><i class="hl_Comment">// This function is intended to set an HTTP header, and also include the</i><i class="hl_Comment">
+</i><i class="hl_Comment">// same header in the HTML output as a &lt;meta&gt; tag.</i><i class="hl_Comment">
+</i><b class="hl_Keyword">function</b> <span class="hl_Function">header</span> <span class="hl_Others">(</span><b class="hl_Variable">$x</b><span class="hl_Others">,</span> <b class="hl_Variable">$y</b><span class="hl_Others">)</span>
+{
+	<i class="hl_Comment">// Call the built-in PHP function "header()".</i><i class="hl_Comment">
+</i>	<span class="hl_Others">::</span><span class="hl_Function">header</span><span class="hl_Others">(</span><span class="hl_String">"</span><b class="hl_Variable">$x</b><span class="hl_String">: </span><b class="hl_Variable">$y</b><span class="hl_String">"</span><span class="hl_Others">);</span>
+	
+	<i class="hl_Comment">// Call "header()" from ACMECorp::Web::HTML.</i><i class="hl_Comment">
+</i>	TheHTML<span class="hl_Others">::</span><span class="hl_Function">header</span><span class="hl_Others">(</span><b class="hl_Variable">$x</b><span class="hl_Others">,</span> <b class="hl_Variable">$y</b><span class="hl_Others">);</span>
+}
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>Namespaces neatly solve several problems with <span class="caps">PHP.</span> Firstly, the tendancy, particularly within <a href="http://pear.php.net"><span class="caps">PEAR</span></a> for class names and method names to grow incredibly long. Secondly, the fact that every version of <span class="caps">PHP </span>tends to add even more functions, increasing the chances that there will be one with the same name as one of your own functions.</p>
+
+<p>By putting your functions into a namespace, you'll virtually eliminate the chances of naming conflicts with built-in <span class="caps">PHP </span>functions and third-party libraries.</p>
+
+<h2>Unicode</h2>
+
+<p>The other eagerly-anticipated feature of <span class="caps">PHP</span> 6 is full Unicode support. It has always been possible to use <span class="caps">UTF</span>-8 and other Unicode encodings in <span class="caps">PHP, </span>but when <span class="caps">PHP</span> 6 is put into Unicode mode (enabled by default, but about 25% slower overall), all strings are treated as Unicode. This means:</p>
+
+<ul>
+<li><span class="caps">PHP </span>scripts can be written in non-ASCII character sets, which will be recoded to Unicode on the fly. Functions, classes, variables, constants and so forth can safely use non-ASCII characters in their names.</li>
+<li>String processing functions, such as <code class="php">strlen()</code> will understand multi-byte characters and process them as single characters rather than multiple octets.</li>
+<li><span class="caps">PHP</span>'s case conversion functions will not only understand how to convert the characters A---Z between upper and lower cases, but also accented characters and non-Latin characters.</li>
+<li>Alphabetical sorting will work much better across different alphabets.</li>
+<li>Strings can be cast to a new type called <code class="php">binary</code> enabling them to be treated as octet-streams for those occasional purposes where that is necessary.</li>
+</ul>
+
+<h2>What's Staying the Same</h2>
+
+<p>There are still a number of messy bits of <span class="caps">PHP </span>that are not being cleaned up. In particular, variables are still case-sensitive while functions and classes are case-insensitive. Although the <span class="caps">PHP </span>developers do consider this an annoying inconsistency, they've decided not to fix it for <span class="caps">PHP</span> 6.</p>
+
+<p>The "<code class="php">$needle, $haystack/$haystack, $needle</code>" question remains unresolved:</p>
+
+<ul>
+<li>Regular expression matching functions use "<code class="php">$needle, $haystack</code>";</li>
+<li>Regular expression replacement functions use "<code class="php">$needle, $replacement, $haystack</code>";</li>
+<li>String search functions use "<code class="php">$haystack, $needle</code>";</li>
+<li>String manipulation functions use "<code class="php">$needle, $replacement, $haystack</code>";</li>
+<li>Array search functions use <code class="php">$needle, $haystack</code></li>
+</ul>
+
+<p>Recalling the parameter order for the various <span class="caps">PHP </span>search and replace functions requires a memory the size of an elephant, or handy access to the <span class="caps">PHP </span>manual. It seems that the <span class="caps">PHP</span> 6 developers are <a href="http://www.php.net/~derick/meeting-notes.html#make-parameter-order-consistent-over-all-functions">determined to ignore this problem</a>.</p>
+
+<p>But overall, <span class="caps">PHP</span> 6 looks like as much of an improvement over its predecessor as <span class="caps">PHP</span> 5 was over <span class="caps">PHP</span> 4, so I'm looking forward to being able to use it. It should be thought of as an evolution of the language though, rather than the revolution that Perl 6 will be. (More on Perl 6 in a future blog article!)</p></div>
+  </content>
+  <published>2008-01-29T20:05:53Z</published>
+  <updated>2008-01-29T20:05:53Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="unicode"/>
+  <category term="future"/>
+</entry>

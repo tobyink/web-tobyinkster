@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/12/bureaucracies/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/12/bureaucracies/"/>
+  <title>The Way Bureaucracies Work</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <ol>
+<li>In 1950, publish a comprehensive set of rules.</li>
+<li>In 1974, publish a note which adds a few more rules and rescinds several of the old one.</li>
+<li>In 1981, publish a note which adjusts one of the <strong>conditions</strong> for the a particular rule given in the 1974 note but doesn't otherwise rescind it.</li>
+<li>In 1987, publish a note which entirely replaces the 1974 note, not incorporating the changes of the 1981 note, although not rescinding it either.</li>
+<li>In 1992, publish a guidebook purporting to "summarise" the rules so far, but which actually contradicts the rules in several places. It must be full of pretty pictures.</li>
+<li>In 1993, an internal briefing establishes more rules, but these are never publically published.</li>
+<li>In 1994, publish a note that adjusts the conditions for rule #2 in last year's internal briefing, but without restating what rule #2 was.</li>
+<li>In 1997, publish a note rescinding the 1981 note.</li>
+<li>In 1998, reprint the 1992 guide without edits.</li>
+<li>In 1999, compile a full and comprehensive set of all the rules so far. Only issue it in Swahili.</li>
+<li>In 2000, issue a translations of the 1992 guide in several languages, including Swahili. Withdraw the original Swahili rulebook as it doesn't have any pretty pictures.</li>
+<li>In 2002, publish a "guide to the guide" detailing all changes made to the rules since 1992.</li>
+<li>In 2003, change the corporate branding on the English guide. Do not update the content in any way. Withdraw the 2002 guide to the guide as it does not fit with new branding scheme. Do not reprint it.</li>
+<li>In 2004, rebrand again. </li>
+<li>In 2005, rebrand again. Change your visition statement.</li>
+<li>In 2006, rebrand again. Publish a note which rescinds the 1997 note.</li>
+</ol>
+    </div>
+  </content>
+  <published>2007-04-12T12:23:56+01:00</published>
+  <updated>2007-04-12T12:23:56+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dumb"/>
+</entry>

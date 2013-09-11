@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/27/zeldman-in-time/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/27/zeldman-in-time/"/>
+  <title>Long-Awaited Zeldman Article</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>Jeffrey Zeldman has posted a long-awaited article on <a href="http://www.zeldman.com/2007/06/20/remove-maybe-from-invitation-systems/">the problem of 'maybe' options on forms</a>. So long awaited indeed that many of the comments are dated over 37 years ago.</p>
+    </div>
+  </content>
+  <published>2007-06-27T15:50:59+01:00</published>
+  <updated>2007-06-27T15:50:59+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="blogging"/>
+</entry>

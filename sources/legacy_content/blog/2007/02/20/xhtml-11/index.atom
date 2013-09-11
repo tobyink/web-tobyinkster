@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/20/xhtml-11/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/20/xhtml-11/"/>
+  <title>Re: Views on XHTML 1.1 site</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>David Dorward wrote:</p>
+
+
+
+
+<blockquote>
+<p>Jukka K. Korpela wrote:</p>
+<blockquote>
+<p>But the W3C makes a big noise about it! See http://www.w3.org main page right now. They have created a working draft for XHTML 1.1 Second Edition.</p>
+</blockquote>
+<p>Which says that XHTML 1.1 SHOULD be served as text/html... and references a document which says it SHOULD NOT be served as text/html to support that.</p>
+</blockquote>
+
+
+
+
+<p>The other major change is that it adds a Schema to validate your X(HT)ML against. All <span class="caps">XHTML</span> 1.1 documents must continue to carry a <span class="caps">DOCTYPE </span>though, and conform to the <span class="caps">DTD.</span></p>
+
+<p>Overall, I think I am <strong>for</strong> allowing <span class="caps">XHTML</span> 1.1 to be served as text/html, provided it meets the compatibility guidelines in <span class="caps">XHTML</span> 1.0 Appendix C.</p>
+
+<p>David, on your web page you write:</p>
+
+<blockquote><p>Additionally, as far as I know, nothing added in <span class="caps">XHTML</span> 1.1 (i.e. Ruby annotation) is supported by legacy user agents. So there seems little point in allowing it to be served as text/html.</p></blockquote>
+
+<p>As it happens, Ruby annotation is <strong>only</strong> supported by Internet Explorer 5.0+ for both Windows and Macintosh -- precisely the sort of browsers that benefit from allowing <span class="caps">XHTML</span> 1.1 to be served as text/html.</p>
+
+<p>(With a bit of <span class="caps">CSS </span>trickery, you can fake Ruby support in other browsers.)</p>
+
+<p>Yes, it would be nice if Internet Explorer supported <span class="caps">XHTML </span>properly, and sending it as application/xhtml+xml serves as a useful stick to beat Microsoft with, to encourage them to add proper <span class="caps">XHTML </span>support to their browser.</p>
+
+<p>You could argue that sending <span class="caps">XHTML </span>as text/html prevents you from taking advantage of browsers' stricter parsing methods. But browser makers are free to apply these strict parsing methods to <span class="caps">XHTML </span>documents served as text/html -- there is <strong>nothing</strong> in any specification that even suggests that they should not.</p>
+
+<p>Allowing <span class="caps">XHTML</span> 1.1 to be served as text/html <strong>finally</strong> gives the <span class="caps">CJK </span>community a standards-compliant way of serving ruby annotated text to a user agent that supports ruby annotated text.</p></div>
+  </content>
+  <published>2007-02-20T17:09:01Z</published>
+  <updated>2007-04-08T18:24:59+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="html"/>
+  <category term="w3c"/>
+  <category term="web"/>
+  <category term="ruby-markup"/>
+</entry>

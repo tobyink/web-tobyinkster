@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/19/trivial-encoder/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/19/trivial-encoder/"/>
+  <title>TrivialEncoder/0.2</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;An update to my &lt;span class="caps"&gt;PHP &lt;/span&gt;encryption class. Despite the name, it&amp;#39;s becoming a pretty sophisticated encyption machine. New encryption algorithms added:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Vigenere_cipher"&gt;Vigener&amp;egrave; cypher&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/One-time_pad"&gt;One-Time Pad&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Superencryption"&gt;Bruce Schneier&amp;#39;s Superencyption&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Various other methods using the MCrypt library&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code class="php"&gt;TrivialEncoderManager&lt;/code&gt; class has been obsoleted by &lt;code class="php"&gt;TE_Machine&lt;/code&gt;, an abstract class with several different child classes for encoding, decoding and analysis. &lt;code class="php"&gt;TE_Machine&lt;/code&gt; has a greatly improved parser for methods, which has made it a lot easier for me to add additional functionality such as the ability to analyse an encryption technique to see how strong it would be, and to check whether the output would be &lt;span class="caps"&gt;ASCII&lt;/span&gt;-safe. &lt;code class="php"&gt;TrivialEncoderManager&lt;/code&gt; is still present, but is deprecated and will be removed next release.&lt;/p&gt;
+
+&lt;!--@SUMMARY@--&gt;
+
+&lt;h3&gt;Usage&lt;/h3&gt;
+
+
+
+&lt;pre&gt;&lt;code class="php"&gt;
+&lt;b class="hl_Keyword"&gt;&amp;lt;?php&lt;/b&gt;
+&lt;b class="hl_Variable"&gt;$trivialencoder_auto&lt;/b&gt; = &lt;b class="hl_Keyword"&gt;FALSE&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;span class="hl_Operator"&gt;include&lt;/span&gt; &lt;span class="hl_String"&gt;'TrivialEncoder.class.php'&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+
+&lt;b class="hl_Variable"&gt;$method&lt;/b&gt; = &lt;span class="hl_String"&gt;'twofish "mypassword"; xor 7; vig "ace"; base64;'&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$plain_text&lt;/b&gt; = &lt;span class="hl_String"&gt;"Test message.&lt;/span&gt;&lt;span class="hl_BString"&gt;\n&lt;/span&gt;&lt;span class="hl_String"&gt;"&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$encrypted_text&lt;/b&gt; = TE_Machine_Encoder&lt;span class="hl_Others"&gt;::&lt;/span&gt;Go&lt;span class="hl_Others"&gt;(&lt;/span&gt;&lt;b class="hl_Variable"&gt;$method&lt;/b&gt;&lt;span class="hl_Others"&gt;,&lt;/span&gt; &lt;b class="hl_Variable"&gt;$plain_text&lt;/b&gt;&lt;span class="hl_Others"&gt;);&lt;/span&gt;
+&lt;b class="hl_Variable"&gt;$decrypted_text&lt;/b&gt; = TE_Machine_Decoder&lt;span class="hl_Others"&gt;::&lt;/span&gt;Go&lt;span class="hl_Others"&gt;(&lt;/span&gt;&lt;b class="hl_Variable"&gt;$method&lt;/b&gt;&lt;span class="hl_Others"&gt;,&lt;/span&gt; &lt;b class="hl_Variable"&gt;$encrypted_text&lt;/b&gt;&lt;span class="hl_Others"&gt;);&lt;/span&gt;
+&lt;span class="hl_Function"&gt;print&lt;/span&gt; &lt;b class="hl_Variable"&gt;$decrypted_text&lt;/b&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt; &lt;i class="hl_Comment"&gt;// prints "Test message.\n"&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;1&lt;b class="hl_Keyword"&gt;?&gt;&lt;/b&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h3&gt;Download&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="./files/TrivialEncoder.class.php"&gt;TrivialEncoder.class.php&lt;/a&gt; (&lt;a href="./files/TrivialEncoder.class.phps"&gt;Highlighted source code&lt;/a&gt;.)&lt;/li&gt;
+&lt;li&gt;&lt;a href="./files/TE_Machine.class.php"&gt;TE_Machine.class.php&lt;/a&gt; (&lt;a href="./files/TE_Machine.class.phps"&gt;Highlighted source code&lt;/a&gt;.)&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <published>2007-08-19T23:54:17+01:00</published>
+  <updated>2007-08-20T15:44:14+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-3.0.html"/>
+  <category term="php"/>
+  <category term="crypto"/>
+  <category term="trivial-encoder"/>
+</entry>

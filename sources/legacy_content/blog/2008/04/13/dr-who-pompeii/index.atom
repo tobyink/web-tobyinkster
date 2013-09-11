@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/04/13/dr-who-pompeii/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/04/13/dr-who-pompeii/"/>
+  <title>Dr Who Goes To Pompeii</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p><span class="caps">OK, </span>so Doctor Who has gone to Pompeii and <a href="http://en.wikipedia.org/wiki/The_Fires_of_Pompeii">saved Caecilius and his family</a>. Now the entire <a href="http://www.cambridgescp.com/page.php?p=clc%5Eoa_book1%5Estage1">Cambridge Latin Course</a> will need to be rewitten!</p>
+    </div>
+  </content>
+  <published>2008-04-13T19:54:30+01:00</published>
+  <updated>2008-04-13T19:54:30+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="bbc"/>
+  <category term="latin"/>
+  <category term="doctor-who"/>
+</entry>

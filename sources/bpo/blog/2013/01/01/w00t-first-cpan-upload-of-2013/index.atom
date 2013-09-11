@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>w00t! First CPAN upload of 2013!</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/01/w00t-first-cpan-upload-of-2013.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4165</id>
+
+    <published>2013-01-01T08:04:31Z</published>
+    <updated>2013-07-29T14:53:55Z</updated>
+
+    <summary>According to metacpan.org, MooX-ClassAttribute-0.001 was the first upload of 2013! Yay!...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="cpan" label="CPAN" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>According to <a href="https://metacpan.org/recent">metacpan.org</a>, <a href="https://metacpan.org/release/TOBYINK/MooX-ClassAttribute-0.001">MooX-ClassAttribute-0.001</a> was the first upload of 2013! Yay!</p>]]>
+        <![CDATA[<p>Yes, I did plan that. No, I didn't sit there and press the button. (<kbd>sleep</kbd> is a useful command-line tool.)</p>
+
+<p>Meh... so now I notice I forgot to list the pre-requisites...</p>]]>
+    </content>
+</entry>

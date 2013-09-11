@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2005/11/12/form-functions/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2005/11/12/form-functions/"/>
+  <title>Reusable Form Functions</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Like me, you are probably confronted with many requests for surveys, questionnaires, feedback forms, registration forms and so forth: forms where the processing requirements are very simple (store in a database or e-mail to a particular address).</p>
+
+<p>Despite the simple requirements, there is often quite a lot of work involved: crafting a database to store results, writing a function to store the data to the database, one to verify submitted data (e.g. make sure that if you've asked for an e-mail address, it contains an @-sign), and marking up the form itself (which can be quite a task if you want to make correct use of <code class="html">&lt;label&gt;</code>, <code class="html">&lt;th scope="blah"&gt;</code>, etc.</p>
+
+<p>So I introduce my reusable form functions, with the rather unglamorous name of inc_surveytool.php v1.0.</p>
+
+<ul>
+<li><a href="http://tobyinkster.co.uk/Software/inc_surveytool.phps">Highlighted Source</a></li>
+<li><a href="http://tobyinkster.co.uk/Software/inc_surveytool.txt">Plain Source</a></li>
+</ul>
+
+<p>They are far from finished (expect a 1.1 and a 2.0 version soon -- I have big plans for them). Despite being 1.0, I think there is still a lot of work to be done, and I'd like some feedback.</p>
+
+<p>If you needed to sum them up in one pithy line: It's an entire programming language for creating and validating <span class="caps">HTML </span>forms.</p>
+
+<h2>Usage</h2>
+
+<p>Here is an example of what you can do with them:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<span class="hl_Operator">include</span> <span class="hl_String">'inc_surveytool.php'</span><span class="hl_Others">;</span>
+
+<span class="hl_Function">print</span> <span class="hl_String">"&lt;!DOCTYPE HTML PUBLIC </span><span class="hl_BString">\"</span><span class="hl_String">-//W3C//DTD HTML 4.01//EN</span><span class="hl_BString">\"\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+<span class="hl_Function">print</span> <span class="hl_String">"   </span><span class="hl_BString">\"</span><span class="hl_String">http://www.w3.org/TR/html4/strict.dtd</span><span class="hl_BString">\"</span><span class="hl_String">&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+<span class="hl_Function">print</span> <span class="hl_String">"&lt;title&gt;Example Form&lt;/title&gt;</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+
+<b class="hl_Variable">$widgets</b> = <span class="hl_String">"Form</span><span class="hl_String">
+</span><span class="hl_String">mailto:me@example.com</span><span class="hl_String">
+</span><span class="hl_String">multiplesubmissions=1</span><span class="hl_String">
+</span><span class="hl_String">showsubmissions=0</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">Text 1 100 / /</span><span class="hl_String">
+</span><span class="hl_String">name=Please enter your name:</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">Integer 1 150</span><span class="hl_String">
+</span><span class="hl_String">age=Please enter your age:</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">Multi 1 3</span><span class="hl_String">
+</span><span class="hl_String">statements=Which of these statements do you agree with?</span><span class="hl_String">
+</span><span class="hl_String">1=Foo is good.</span><span class="hl_String">
+</span><span class="hl_String">2=Bar is good.</span><span class="hl_String">
+</span><span class="hl_String">3=Quux is good.</span><span class="hl_String">
+</span><span class="hl_String">4=Flibble is good.</span><span class="hl_String">
+</span><span class="hl_String">5=Blah is good.</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">GridSingle</span><span class="hl_String">
+</span><span class="hl_String">satisfaction=Please rate the following.</span><span class="hl_String">
+</span><span class="hl_String">Cols</span><span class="hl_String">
+</span><span class="hl_String">1=Excellent</span><span class="hl_String">
+</span><span class="hl_String">2=Good</span><span class="hl_String">
+</span><span class="hl_String">3=Average</span><span class="hl_String">
+</span><span class="hl_String">4=Poor</span><span class="hl_String">
+</span><span class="hl_String">5=Rubbish</span><span class="hl_String">
+</span><span class="hl_String">Rows</span><span class="hl_String">
+</span><span class="hl_String">foo=Foo</span><span class="hl_String">
+</span><span class="hl_String">bar=Bar</span><span class="hl_String">
+</span><span class="hl_String">qux=Quux</span><span class="hl_String">
+</span><span class="hl_String">flb=Flibble</span><span class="hl_String">
+</span><span class="hl_String">blh=Blah</span><span class="hl_String">
+</span><span class="hl_String">
+</span><span class="hl_String">Units Volume 5</span><span class="hl_String">
+</span><span class="hl_String">vol=How much do you like Foo?"</span><span class="hl_Others">;</span>
+
+form_Main<span class="hl_Others">(</span><b class="hl_Variable">$widgets</b><span class="hl_Others">);</span>
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>This will display a semantically marked-up (even nicely indented!) form containing:</p>
+
+<ul>
+<li>an input for the user's name, which will be checked to be between 1and 100 digits, and checked that it matches the perl-compatible regular expression / / (i.e. it must contain a space character);</li>
+<li>an input for the user's age, which will be checked to be an integer between 1 and 150 upon submission;</li>
+<li>five checkboxes asking them what they agree with: they must tick between 1 and 3 boxes;</li>
+<li>a table allowing the user to rate some things on a scale of 1 to 5;</li>
+<li>an input allowing the user to enter a physical volume in a choice of kilolitre, litre, millilitre, brpint, fluidounce, m<sup>3</sup>, cm<sup>3</sup>, mm<sup>3</sup> with m<sup>3</sup> being the default.</li>
+</ul>
+
+<p>When the form is submitted, it will be validated and e-mailed to me@example.com. The submission will be stored in a database. You would be able to visit the form, adding a query string "?adminscreen=1" to view the results. (Security is handled by editing a function called form_WhoisAdmin which can test for IP address, cookies, session data, etc.)</p>
+
+<p>(Oh, and the physical volume I mentioned is converted to litres and stored in both the user's chosen units, and the converted units for easier sorting!)</p>
+
+<p>If the users are logged in, or may be uniquely identified somehow (exactly how to identify each user is specified in function form_Whois, which can be customised for your own site) then it is possible to allow or disallow multiple submissions for one user, and to control what happens when there are multiple submissions (the new submission could over-write the old one, or the submissions could be stored alongside each other). Users returning to the form are able to view previous submissions.</p>
+
+<p>Anyway, all this is only the tip of the iceberg -- it's a very flexible, very capable library of form-building functions.</p>
+
+<p>The reason I post is that I'd like some other people to try it out and get a feel for how it works and what more is needed. I'd also like people to point out any obvious security flaws.</p>
+
+<h2>Requirements</h2>
+
+<ul>
+<li><span class="caps">PHP</span> 4.3;</li>
+<li>an <span class="caps">SQL </span>database (PostgreSQL supported, MySQL has been catered for, but not properly tested);</li>
+<li><span class="caps">GNU</span> Units ("/usr/bin/units") if you want to be able to use the Units widget.</li>
+</ul>
+
+<p>There is almost zero documentation, so if you'd like to use it, do drop me an e-mail (mail at tobyinkster.co.uk) and I'll try to answer any questions. If there is demand, I might even set up a mailing list.</p></div>
+  </content>
+  <published>2005-11-12T12:03:54Z</published>
+  <updated>2007-04-08T20:17:52+01:00</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/gpl-2.0.html"/>
+  <category term="php"/>
+  <category term="web"/>
+</entry>

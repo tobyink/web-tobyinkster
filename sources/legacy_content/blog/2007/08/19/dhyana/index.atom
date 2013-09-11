@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/19/dhyana/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/19/dhyana/"/>
+  <title>Sequential Video Thumbnails on Linux</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>So, I was looking for a way to create sequential video thumbnails (<a href="/blog/2007/08/19/dhyana/files/pb-s02e03.jpeg">like this one</a>) from a video file on Linux. I found that my options were severely limited. On Windows there are a plethora of tools capable of this fairly simple task, including <a href="http://sourceforge.net/projects/guliverkli/">Media Player Classic</a>, but on Linux all I could find was <a href="http://developer.berlios.de/projects/qframecatcher/">QFrameCatcher</a>. The QFrameCatcher website was inaccessible yesterday; today I managed to download the source code, but couldn't get it to build.</p>
+
+<p>Anyway, I decided it probably wouldn't be very difficult to build my own so...</p>
+
+<h2>dhyana.pl</h2>
+
+<p>dhyana.pl is a small Perl script that co-ordinates <a href="http://mplayerhq.hu">mplayer</a> and <a href="http://imagemagick.org">ImageMagick</a> to create a lovely montage of thumbnails. (Dyhana -- roughly pronounced as <em>"jahna"</em> -- is the Sanskrit word for a deep meditation.)</p>
+
+<!--@SUMMARY@-->
+
+<h3>Usage</h3>
+
+<p><kbd>dhyana.pl MovieFile.avi 8 4 '240Ã180+10+10'</kbd></p>
+
+<p>The first parameter is required and is the file name for the movie file. dhyana.pl has been tested with videos in <span class="caps">AVI, WMV </span>and <span class="caps">MPEG </span>formats. <span class="caps">MPEG </span>videos come out looking like crap, but <span class="caps">AVI </span>and <span class="caps">WMV </span>look much better.</p>
+
+<p>The second and third parameters are the numbers of rows and columns in the output file. These parameters are optional and default to 6 rows and 4 columns = 24 thumbnails.</p>
+
+<p>The fourth parameter is a geometry setting to be passed to ImageMagick. This is also optional. It takes the form of <var>W</var>x<var>H</var>+<var>L</var>+<var>T</var> where:</p>
+
+<ul>
+<li><strong>W</strong> is the thumbnail width</li>
+<li><strong>H</strong> is the thumbnail height</li>
+<li><strong>L</strong> is the left and right padding</li>
+<li><strong>T</strong> is the top and bottom padding</li>
+</ul>
+
+<p>Thumbnails will be resized keeping their aspect ratio, so images don't look squished. Normally with ImageMagick you can precede the width with an exclamation mark to force the image to be resized to exactly the sepcified dimensions. I've not tried this with dhyana.pl, but it should work. The default geometry is '240Ã180+10+10'.</p>
+
+<h3>Requirements</h3>
+
+<ul>
+<li>ImageMagick</li>
+<li>MPlayer</li>
+<li>ffmpeg (optional)</li>
+<li>Perl 5</li>
+</ul>
+
+<p><span class="caps">FFMPEG </span>is used for <span class="caps">MPEG </span>video captures and MPlayer is used for other video captures. As previously mentioned <span class="caps">MPEG </span>video captures look like crap -- but they look even worse when you use MPlayer. <span class="caps">AVI </span>and <span class="caps">WMV </span>captures look great. (This has to do with key frames and stuff... I won't go into the boring details. Also, it's worth noting that ffmpeg is very slow for video captures. MPlayer is significantly faster.)</p>
+
+<p>If you have those programs, but they're not installed in the normal place (/usr/bin/), then you'll need to open up dhyana.pl in your favourite text editor and manually set the correct paths.</p>
+
+<p>Actually, you'll probably need to open it up anyway and enter in the path to your favourite TrueType font, as it's probably different to how it is on my system.</p>
+
+<h3>Download</h3>
+
+<p>If, after all that, I've not scared you away, here it is...</p>
+
+<ul>
+<li><a href="/blog/2007/08/19/dhyana/files/dhyana.pl">dhyana.pl</a> (<a href="/blog/2007/08/19/dhyana/files/dhyana.pl.html">Highlighted source code</a>.)</li>
+</ul></div>
+  </content>
+  <published>2007-08-19T16:47:57+01:00</published>
+  <updated>2007-08-19T22:55:21+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dhyana"/>
+  <category term="programming"/>
+  <category term="video"/>
+  <category term="linux"/>
+  <category term="perl"/>
+</entry>

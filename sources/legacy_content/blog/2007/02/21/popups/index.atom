@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/21/popups/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/21/popups/"/>
+  <title>Re: target new window = good or bad?</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;idiotprogrammer wrote:&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;I find this to be bothersome and contrary to current web trends. But I can find no articles or recommendations to back me up here.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;!--@SUMMARY@--&gt;
+
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/library/default.asp?url=%2Flibrary%2Fen-us%2Fdnwui%2Fhtml%2Fwinuifaq.asp"&gt;Windows User Experience team, Microsoft Windows User Experience Frequently Asked Questions: Why is the taskbar at the bottom of the screen?, March 2001&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Research shows that most users don&amp;#39;t like to run more than one application at a time. In fact, many users are confused by multiple applications.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href="http://www.snyderconsulting.net/article_7tricks.htm#7"&gt;Carolyn Snyder, Seven tricks that Web users don&amp;#39;t know: 7. Second browser windows, June 2001&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Some people can use Windows applications for years without understanding the concept of task switching. (When I point to the task bar and ask them what it&amp;#39;s for, they can&amp;#39;t tell me.) (...) spawning second browser windows can completely throw users off track because it removes the one thing they are sure how to use: the &amp;#39;Back&amp;#39; button.(...) In another recent study, six out of 17 users had difficulty with  multiple windows, and three of them required assistance to get back to the first window and continue the task.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href="http://www.useit.com/alertbox/990530.html"&gt;Jakob Nielsen, The Top Ten New Mistakes of Web Design: 2. Opening New Browser Windows, May 30, 1999&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Users often don&amp;#39;t notice that a new window has opened, especially if they are using a small monitor where the windows are maximized to  fill up the screen. So a user who tries to return to the origin will be  confused by a grayed out Back button.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Ian Lloyd, tutorial at Accessify.com, November 20th 2002&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;The biggest fault with pop-ups is that it takes the focus away from the main browser window, and this can be disconcerting. It presents general usability issues aside from accessibility. How often have you seen someone launch a pop-up and then inadvertently click back on the launcher window and thinking that nothing&amp;#39;s happened, click the link again with nothing happening? Of course the window has opened but is now  under the launcher window, and only moving down to the task-bar and selecting the window from there will solve this."&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href="http://diveintoaccessibility.org/day_16_not_opening_new_windows.html"&gt;Mark Pilgrim, Dive Into Accessibility: not opening new windows, 2002&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;In all dominant browsers, using the &lt;a target="_blank"&gt; tag to force a link to open in a new window breaks the Back button. The new window does not retain the browser history of the previous window, so the "Back" button is disabled. This is incredibly confusing, even for me, and I&amp;#39;ve been using the web for 10 years. In 2002, it&amp;#39;s amazing that people still do this.&lt;/p&gt;&lt;/blockquote&gt;</content>
+  <published>2007-02-21T11:19:27Z</published>
+  <updated>2007-04-08T18:49:32+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="web"/>
+  <category term="usability"/>
+</entry>

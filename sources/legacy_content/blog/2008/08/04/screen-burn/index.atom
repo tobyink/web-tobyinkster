@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/08/04/screen-burn/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/08/04/screen-burn/"/>
+  <title>Charlie Brooker Quote</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://www.guardian.co.uk/culture/2008/aug/02/television.television?gusrc=rss">Charlie Brooker</a> on creationism:</p>
+
+<blockquote><p>Darwin's theory of evolution was simple, beautiful, majestic and awe-inspiring. But because it contradicts the allegorical babblings of a bunch of made-up old books, it's been under attack since day one. That's just tough luck for Darwin. <em style="font-weight:bold;font-style:normal">If the Bible had contained a passage that claimed gravity is caused by God pulling objects toward the ground with magic invisible threads, we'd still be debating Newton with idiots too.</em></p></blockquote>
+
+<p>(via <a href="http://richarddawkins.net/article,2937,n,n">Richard Dawkins</a>)</p></div>
+  </content>
+  <published>2008-08-04T19:05:05+01:00</published>
+  <updated>2008-08-04T19:05:05+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="guardian"/>
+  <category term="richard-dawkins"/>
+  <category term="evolution"/>
+  <category term="charlie-brooker"/>
+</entry>

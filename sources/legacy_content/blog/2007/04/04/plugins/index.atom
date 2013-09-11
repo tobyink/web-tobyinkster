@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/04/plugins/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/04/plugins/"/>
+  <title>Re: Building a "modular" PHP site</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Tyno Gendo wrote:</p>
+
+<blockquote><p>I have been pondering over building a "modular" site which accepts add-ons built by other people. I was wondering if anyone has any links to any reading material on how you build this kind of facility into your site?</p></blockquote>
+
+<p>The basic technique is this:</p>
+
+<p>Firstly, provide a plugin registration function, which we'll call, say, "plugin_register". When a plugin is loaded, it will call your plugin_register function and tell your site at least the following information:</p>
+
+<ol>
+<li>How to use the plugin -- i.e. provide a function name or a class name that the site can use to access the functionality of the plugin;</li>
+<li>When to use the plugin -- this is normally done via a named hook.</li>
+</ol>
+
+<p>So a particular plugin might be defined like this:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;?php</b>
+	function tobys_plugin ()
+	{
+		echo "&lt;!-- Hello World --&gt;\n";
+	}
+	plugin_register('tobys_plugin', 'onpagefinished');
+<b class="hl_Keyword">?&gt;</b>
+</code></pre>
+
+
+
+<p>Your plugin_register function would then add "tobys_plugin" to a list of functions that need to be run when the page has finished outputting.</p>
+
+<p>Then in the rest of your code, add you hooks. For example, at the end of each page, you'd have:</p>
+
+
+
+<pre><code class="html">
+<b class="hl_Keyword">&lt;?php</b>
+	run_plugins('onpagefinished');
+<b class="hl_Keyword">?&gt;</b>
+</code></pre>
+
+
+
+<p>where run_plugins looks at the list of registered plugins and runs the ones that have registered using that hook.</p>
+
+<p>That's the simplified version. In real life, to allow the plugins to be more useful, you'll often want to pass them particular parameters, such as the current <span class="caps">URL, </span>the login name of the currently logged in user, etc. I'll leave you to figure that out on your own.</p></div>
+  </content>
+  <published>2007-04-04T16:08:14+01:00</published>
+  <updated>2007-04-08T22:45:20+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="php"/>
+  <category term="programming"/>
+</entry>

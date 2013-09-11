@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/02/05/perl6/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/02/05/perl6/"/>
+  <title>Looking Ahead to Perl 6</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;One of the most important changes in Perl 6 over earlier versions is that it has started out as a written specification, which may end up with several different implementations. In previous versions of Perl, alternative versions had to implement all the quirks of the official Perl interpreter, as the definition of the Perl language was "whatever the Perl interpreter will interpret", which was (of course) a moving target, as each released version introduced new features and changed existing behaviour (though usually only on the peripheries of the language). The lack of a stable written specification killed off many useful projects, such as the Perl compiler (perlcc).&lt;/p&gt;
+
+&lt;p&gt;The written specification is what allows me to write this article right now, as the current implementations of Perl 6 are only partial -- indeed, the specification is not yet complete, but I can comment on those parts that have been written. There are &lt;em&gt;way&lt;/em&gt; too many changes to touch on them all, but I&amp;#39;ll try to write about some of the most important and most interesting.&lt;/p&gt;
+
+&lt;h2&gt;Unicode&lt;/h2&gt;
+
+&lt;p&gt;Like &lt;a href="/blog/2008/01/00/php6/"&gt;&lt;span class="caps"&gt;PHP&lt;/span&gt; 6&lt;/a&gt;, Perl 6 introduces full native support for Unicode, which means that source code can be written in &lt;span class="caps"&gt;UTF&lt;/span&gt;-8 or &lt;span class="caps"&gt;UTF&lt;/span&gt;-16 -- or recoded to Unicode at compile time -- and that identifiers (function names and variable names) can use non-ASCII characters.&lt;/p&gt;
+
+
+
+
+&lt;p&gt;In fact, Perl 6 goes even further in that many of its built-in operators include non-ASCII characters, although they have ASCII equivalents for people lacking a decent input mechanism for such characters. For example, the greater-than-or-equal-to operator can be written as &lt;code class="perl"&gt;&amp;#8805;&lt;/code&gt; though the traditional &lt;code class="perl"&gt;&gt;=&lt;/code&gt; alternative is still supported.&lt;/p&gt;
+
+&lt;p&gt;As another example, while &lt;code class="perl"&gt;(...)&lt;/code&gt;, &lt;code class="perl"&gt;[...]&lt;/code&gt;, &lt;code class="perl"&gt;{...}&lt;/code&gt; and &lt;code class="perl"&gt;&amp;lt;...&gt;&lt;/code&gt; are still supported as bracketing characters, so too are all the Unicode bracketing characters, such as &lt;code class="perl"&gt;&amp;#8968;...&amp;#8969;&lt;/code&gt; and &lt;code class="perl"&gt;&amp;#9129;...&amp;#9133;&lt;/code&gt;.&lt;/p&gt;
+
+
+
+
+&lt;h2&gt;Classes&lt;/h2&gt;
+
+&lt;p&gt;Perl 5 supports object-oriented programming, but it does so in a fairly laissez fair way -- you create a package and put all your methods (public or private, static or dynamic) in there. Any function in the package which returns a blessed hash or array ref can be used as a constructor. Although this takes a bit of getting used to, it&amp;#39;s actually an extremely flexible system, supporting not just Java-style object orientation (which many programmers seem to think is the only way that OO can be done, or at least the "One True Way") but also prototype-based OO (a la &lt;span class="caps"&gt;ECMAS&lt;/span&gt;cript) and various methods in between. Allowing alternative constructors for a class reduces the need for all these "Factory" classes you see popping up in Java code.&lt;/p&gt;
+
+&lt;p&gt;The Perl 5 OO system is actually entirely ripped off from Python. Yet Perl gets lambasted for the ugliness of its code, while Python is praised for its elegance.&lt;/p&gt;
+
+&lt;p&gt;Perl 6 still allows programmers to use this flexible system for OO programming, but also introduces a new data structure along the lines of arrays and hashes: the object. Objects are instances of a class, defined through the new &lt;code class="perl"&gt;class&lt;/code&gt; keyword. Classes support both interfaces and multiple inheritance. Classes may have methods, introduced through the &lt;code class="perl"&gt;method&lt;/code&gt; keyword instead of &lt;code class="perl"&gt;sub&lt;/code&gt;. Multiple methods with different numbers of arguments can be defined with the same name, allowing method overloading.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;#39;s an example of using classes in Perl 6, with Dog being defined as a subclass of Mammal and used:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+class Dog is Mammal
+{
+	has &lt;b class="hl_Variable"&gt;$.&lt;/b&gt;name;
+
+	submethod BUILD (&lt;span class="hl_DataType"&gt;$name&lt;/span&gt;)
+	{
+		&lt;b class="hl_Variable"&gt;$.&lt;/b&gt;name = &lt;span class="hl_DataType"&gt;$name&lt;/span&gt;;
+	}
+
+	method bark ()
+	{
+		&lt;i class="hl_Comment"&gt;# The "say" function is new in Perl 6. It's like "print"&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;		&lt;i class="hl_Comment"&gt;# but automatically adds a new line character to the end.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;		say &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;woof!&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;;
+	}
+	
+	method bark (&lt;span class="hl_DataType"&gt;$name&lt;/span&gt;)
+	{
+		&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$name&lt;/span&gt; &lt;span class="hl_Operator"&gt;eq&lt;/span&gt; &lt;b class="hl_Variable"&gt;$.&lt;/b&gt;name
+		{
+			self.bark();
+		}
+	}
+}
+
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$pet&lt;/span&gt; = Dog.new(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;fido&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;);
+&lt;span class="hl_DataType"&gt;$pet&lt;/span&gt;.bark();       &lt;i class="hl_Comment"&gt;# say "woof!"&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;span class="hl_DataType"&gt;$pet&lt;/span&gt;.bark(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;);  &lt;i class="hl_Comment"&gt;# nothing&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;span class="hl_DataType"&gt;$pet&lt;/span&gt;.bark(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;fido&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;); &lt;i class="hl_Comment"&gt;# say "woof!"&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h2&gt;Junctions, Bags and Ranges&lt;/h2&gt;
+
+&lt;p&gt;Junctions are inspired by Schrodinger&amp;#39;s cat. Schrodinger was a famous quantum physicist who proposed that a cat that is in a black box with an equal possibility of being alive or dead, is in fact both alive and dead until you open the box and take a peek.&lt;/p&gt;
+
+&lt;p&gt;Junctions are a type of Perl variable that can take several different values simultaneously. The operators &lt;code class="perl"&gt;|&lt;/code&gt;, &lt;code class="perl"&gt;^&lt;/code&gt; and &lt;code class="perl"&gt;&amp;amp;&lt;/code&gt; are no longer used for bitwise arithmetic and have instead been retasked as junction constructors.&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$x&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt; &amp;amp; &lt;span class="hl_Float"&gt;2&lt;/span&gt; &amp;amp; &lt;span class="hl_Float"&gt;3&lt;/span&gt;;   &lt;i class="hl_Comment"&gt;# $x is simultaneously 1, 2, and 3.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$y&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt; ^ &lt;span class="hl_Float"&gt;2&lt;/span&gt; ^ &lt;span class="hl_Float"&gt;3&lt;/span&gt;;   &lt;i class="hl_Comment"&gt;# $y is one of 1, 2, or 3, but we don't know which yet.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$z&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt; | &lt;span class="hl_Float"&gt;2&lt;/span&gt; | &lt;span class="hl_Float"&gt;3&lt;/span&gt;;   &lt;i class="hl_Comment"&gt;# $z is one of 1, 2, or 3, or a combination of them.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;
+&lt;span class="hl_DataType"&gt;$z&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt; ^ &lt;span class="hl_Float"&gt;2&lt;/span&gt; ^ &lt;span class="hl_Float"&gt;3&lt;/span&gt; ^ (&lt;span class="hl_Float"&gt;1&lt;/span&gt;&amp;amp;&lt;span class="hl_Float"&gt;2&lt;/span&gt;) ^ (&lt;span class="hl_Float"&gt;1&lt;/span&gt;&amp;amp;&lt;span class="hl_Float"&gt;3&lt;/span&gt;) ^ (&lt;span class="hl_Float"&gt;2&lt;/span&gt;&amp;amp;&lt;span class="hl_Float"&gt;3&lt;/span&gt;) ^ (&lt;span class="hl_Float"&gt;1&lt;/span&gt;&amp;amp;&lt;span class="hl_Float"&gt;2&lt;/span&gt;&amp;amp;&lt;span class="hl_Float"&gt;3&lt;/span&gt;);  &lt;i class="hl_Comment"&gt;# $z = 1 | 2 | 3&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;
+&lt;i class="hl_Comment"&gt;# &lt;/i&gt;&lt;span class="hl_Alert"&gt;Note&lt;/span&gt;&lt;i class="hl_Comment"&gt; that brackets are no longer required around an "if" clause.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;==&lt;span class="hl_Float"&gt;1&lt;/span&gt; &amp;amp;&amp;amp; &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;==&lt;span class="hl_Float"&gt;2&lt;/span&gt;
+{
+	&lt;i class="hl_Comment"&gt;# Yes, this will happen!&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;}
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;Bags are more of a sensible sounding idea. They are simply arrays with no inherant order.&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$bag1&lt;/span&gt; = Bag(&lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;2&lt;/span&gt;, &lt;span class="hl_Float"&gt;3&lt;/span&gt;, 4);
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$bag2&lt;/span&gt; = Bag(&lt;span class="hl_Float"&gt;2&lt;/span&gt;, &lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;3&lt;/span&gt;, 4);
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$bag3&lt;/span&gt; = Bag(&lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;2&lt;/span&gt;, &lt;span class="hl_Float"&gt;3&lt;/span&gt;, 4, 4);
+
+&lt;i class="hl_Comment"&gt;# &lt;/i&gt;&lt;span class="hl_Alert"&gt;Note&lt;/span&gt;&lt;i class="hl_Comment"&gt; that brackets are no longer required around an "if" clause.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$bag1&lt;/span&gt; == &lt;span class="hl_DataType"&gt;$bag2&lt;/span&gt;&lt;span class="hl_DataType"&gt;
+&lt;/span&gt;{
+	&lt;i class="hl_Comment"&gt;# Yes, this will happen.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;}
+&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$bag1&lt;/span&gt; == &lt;span class="hl_DataType"&gt;$bag3&lt;/span&gt;&lt;span class="hl_DataType"&gt;
+&lt;/span&gt;{
+	&lt;i class="hl_Comment"&gt;# This will not happen.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;}
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;Ranges are similar to arrays except that you only need to specify the first element and the last element. Perl 6 doesn&amp;#39;t bother filling in the middle elements until it &lt;em&gt;really&lt;/em&gt; needs to.&lt;/p&gt;
+
+&lt;!--
+my @range1 = 1..20;
+my @range2 = 'A'..'Z';     # Ranges are not just numeric
+my @range3 = '&amp;alpha;'..'&amp;omega;';     # Not just western either
+my @range4 = 1..Inf;       # No, this won't exhaust your memory
+
+# Note that you no longer use $ to reference array elements. 
+say @range2[4];   # say "D"
+
+# OK, now we can cause problems...
+my $sum = 0;
+for @range4 -&gt; $i
+{
+	$sum += $i;
+}
+--&gt;
+
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;&lt;span class="hl-reserved"&gt;my&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range1&lt;/span&gt;&lt;span class="hl-code"&gt; = &lt;/span&gt;&lt;span class="hl-number"&gt;1&lt;/span&gt;&lt;span class="hl-code"&gt;.&lt;/span&gt;&lt;span class="hl-number"&gt;.20&lt;/span&gt;&lt;span class="hl-code"&gt;;
+&lt;/span&gt;&lt;span class="hl-reserved"&gt;my&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range2&lt;/span&gt;&lt;span class="hl-code"&gt; = &lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-string"&gt;A&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-code"&gt;..&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-string"&gt;Z&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-code"&gt;;     &lt;/span&gt;&lt;span class="hl-comment"&gt;# Ranges are not just numeric&lt;/span&gt;&lt;span class="hl-code"&gt;
+&lt;/span&gt;&lt;span class="hl-reserved"&gt;my&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range3&lt;/span&gt;&lt;span class="hl-code"&gt; = &lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-string"&gt;&amp;alpha;&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-code"&gt;..&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-string"&gt;&amp;omega;&lt;/span&gt;&lt;span class="hl-quotes"&gt;'&lt;/span&gt;&lt;span class="hl-code"&gt;;     &lt;/span&gt;&lt;span class="hl-comment"&gt;# Not just western either&lt;/span&gt;&lt;span class="hl-code"&gt;
+&lt;/span&gt;&lt;span class="hl-reserved"&gt;my&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range4&lt;/span&gt;&lt;span class="hl-code"&gt; = &lt;/span&gt;&lt;span class="hl-number"&gt;1&lt;/span&gt;&lt;span class="hl-code"&gt;..&lt;/span&gt;&lt;span class="hl-identifier"&gt;Inf&lt;/span&gt;&lt;span class="hl-code"&gt;;       &lt;/span&gt;&lt;span class="hl-comment"&gt;# No, this won't exhaust your memory&lt;/span&gt;&lt;span class="hl-code"&gt;
+
+ 
+&lt;/span&gt;&lt;span class="hl-comment"&gt;# Note that you no longer use $ to reference array elements.&lt;/span&gt;&lt;span class="hl-code"&gt;
+&lt;/span&gt;&lt;span class="hl-identifier"&gt;say&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range2&lt;/span&gt;&lt;span class="hl-brackets"&gt;[&lt;/span&gt;&lt;span class="hl-number"&gt;4&lt;/span&gt;&lt;span class="hl-brackets"&gt;]&lt;/span&gt;&lt;span class="hl-code"&gt;;   &lt;/span&gt;&lt;span class="hl-comment"&gt;# say &amp;quot;D&amp;quot;&lt;/span&gt;&lt;span class="hl-code"&gt;
+ 
+&lt;/span&gt;&lt;span class="hl-comment"&gt;# OK, now we can cause problems...&lt;/span&gt;&lt;span class="hl-code"&gt;
+&lt;/span&gt;&lt;span class="hl-reserved"&gt;my&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;$sum&lt;/span&gt;&lt;span class="hl-code"&gt; = &lt;/span&gt;&lt;span class="hl-number"&gt;0&lt;/span&gt;&lt;span class="hl-code"&gt;;
+
+&lt;/span&gt;&lt;span class="hl-reserved"&gt;for&lt;/span&gt;&lt;span class="hl-code"&gt; &lt;/span&gt;&lt;span class="hl-var"&gt;@range4&lt;/span&gt;&lt;span class="hl-code"&gt; -&amp;gt; &lt;/span&gt;&lt;span class="hl-var"&gt;$i&lt;/span&gt;&lt;span class="hl-code"&gt;
+&lt;/span&gt;&lt;span class="hl-brackets"&gt;{&lt;/span&gt;&lt;span class="hl-code"&gt;
+    &lt;/span&gt;&lt;span class="hl-var"&gt;$sum&lt;/span&gt;&lt;span class="hl-code"&gt; += &lt;/span&gt;&lt;span class="hl-var"&gt;$i&lt;/span&gt;&lt;span class="hl-code"&gt;;
+&lt;/span&gt;&lt;span class="hl-brackets"&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;h2&gt;Operators&lt;/h2&gt;
+
+&lt;p&gt;As you may have noticed above, several of the old Perl operators have been repurposed. The Perl 5 concatenation operator (&lt;code class="perl"&gt;.&lt;/code&gt;) is now used for calling object methods and the bitwise operators now construct junctions. So what do we do to replace them?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The new string concatenation operator is &lt;code class="perl"&gt;~&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The new exponent (raise to power of) operator is &lt;code class="perl"&gt;**&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Bitwise operators (the plus signs can be replaced with a tilde to coerce the variables to strings before bitwise operation, or a question mark to coerce to booleans):&lt;ul&gt;
+&lt;li&gt;Not: &lt;code class="perl"&gt;+^&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;And: &lt;code class="perl"&gt;+&amp;amp;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Or: &lt;code class="perl"&gt;+|&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Xor: &lt;code class="perl"&gt;+^&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The regular expression match operator has changed from &lt;code class="perl"&gt;=~&lt;/code&gt; to &lt;code class="perl"&gt;~~&lt;/code&gt;, with &lt;code class="perl"&gt;!~&lt;/code&gt; now &lt;code class="perl"&gt;!~~&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Perl 6 introduces some new operators making it easy to deal with entire arrays simultaneously.&lt;/p&gt;
+
+&lt;h3&gt;Hyper Operators&lt;/h3&gt;
+
+&lt;p&gt;The unicode characters "&amp;Atilde;&amp;#131;&amp;Acirc;&amp;#130;&amp;Atilde;&amp;#130;&amp;Acirc;&amp;raquo;" and "&amp;Atilde;&amp;#131;&amp;Acirc;&amp;#130;&amp;Atilde;&amp;#130;&amp;Acirc;&amp;laquo;" are used to operate on whole groupings (arrays, junctions, bags, etc) simultaneously. They are attached to normal operators such as addition, subtraction, string concatenation, etc. Here are some examples from the Perl 6 spec:&lt;/p&gt;
+
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;-&amp;laquo; (1,2,3);                     # (-1, -2, -3)
+(1,1,2,3,5) &amp;raquo;+&amp;laquo; (1,2,3,5,8);    # (2, 3, 5, 8, 13)
+@array &amp;raquo;+=&amp;raquo; 42;                 # add 42 to each element&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;p&gt;An &lt;span class="caps"&gt;ASCII &lt;/span&gt;equivalent is also provided:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;span class="hl_Operator"&gt;-&lt;/span&gt;&amp;lt;&amp;lt; (&lt;span class="hl_Float"&gt;1&lt;/span&gt;,&lt;span class="hl_Float"&gt;2&lt;/span&gt;,&lt;span class="hl_Float"&gt;3&lt;/span&gt;);                    &lt;i class="hl_Comment"&gt;# (-1, -2, -3)&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;(&lt;span class="hl_Float"&gt;1&lt;/span&gt;,&lt;span class="hl_Float"&gt;1&lt;/span&gt;,&lt;span class="hl_Float"&gt;2&lt;/span&gt;,&lt;span class="hl_Float"&gt;3&lt;/span&gt;,&lt;span class="hl_Float"&gt;5&lt;/span&gt;) &gt;&gt;+&amp;lt;&amp;lt; (&lt;span class="hl_Float"&gt;1&lt;/span&gt;,&lt;span class="hl_Float"&gt;2&lt;/span&gt;,&lt;span class="hl_Float"&gt;3&lt;/span&gt;,&lt;span class="hl_Float"&gt;5&lt;/span&gt;,&lt;span class="hl_Float"&gt;8&lt;/span&gt;);  &lt;i class="hl_Comment"&gt;# (2, 3, 5, 8, 13)&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;span class="hl_DataType"&gt;@array&lt;/span&gt; &gt;&gt;+=&gt;&gt;42;                &lt;i class="hl_Comment"&gt;# add 42 to each element&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h3&gt;Reduction Operators&lt;/h3&gt;
+
+&lt;p&gt;Similarly, square brackets can be used to reduce an entire array to a scalar. For example:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+[+] (&lt;span class="hl_Float"&gt;1&lt;/span&gt;,&lt;span class="hl_Float"&gt;2&lt;/span&gt;,&lt;span class="hl_Float"&gt;3&lt;/span&gt;);                    &lt;i class="hl_Comment"&gt;# 6&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;@array&lt;/span&gt; = &lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;hello&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;, &lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;world&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;;
+say [~] &lt;span class="hl_DataType"&gt;@array&lt;/span&gt;;                 &lt;i class="hl_Comment"&gt;# say 'helloworld'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h3&gt;Cross Operators&lt;/h3&gt;
+
+&lt;p&gt;The last of these wonderful operators which deal with whole groupings is the cross operator, which surrounds a regular operator with the capital letter "X". This takes a group of &lt;em&gt;n&lt;/em&gt; elements and a group of &lt;em&gt;m&lt;/em&gt; elements and combines them to crease a group of &lt;em&gt;nm&lt;/em&gt; elements. For example:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+(&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;a&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;, &lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;b&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;, &lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;c&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;) X~X (&lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;2&lt;/span&gt;);     &lt;i class="hl_Comment"&gt;# ('a1', 'a2', 'b1', 'b2', 'c1', 'c2')&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h2&gt;Strongish Typing&lt;/h2&gt;
+
+&lt;p&gt;By default, Perl 6 variables are still weakly typed, being automatically cast to the appropriate type depending on the operation being carried out on them. But it is possible, if desired, to explicitly type variables when you declare them, and to cast them to explicit types. This allows the compiler to optimise your code a bit better.&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_Function"&gt;int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$foo&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;;
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_Function"&gt;int&lt;/span&gt; &lt;span class="hl_DataType"&gt;@Foo&lt;/span&gt; = &lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;2&lt;/span&gt;, &lt;span class="hl_Float"&gt;3&lt;/span&gt;, 4;
+&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;@bar&lt;/span&gt; of &lt;span class="hl_Function"&gt;int&lt;/span&gt;;  &lt;i class="hl_Comment"&gt;# Same as: my int @bar&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h2&gt;Regexs&lt;/h2&gt;
+
+&lt;p&gt;Regular expressions are no longer called regular expressions, as they&amp;#39;ve diverged too far from real regular expressions. Some changes are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Modifiers now go at the &lt;em&gt;start&lt;/em&gt; of the regex. (&lt;code class="perl"&gt;m/foo/gi&lt;/code&gt; becomes &lt;code class="perl"&gt;m:g:i/foo/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The old &lt;code class="perl"&gt;:s&lt;/code&gt; behaviour is gone -- that behavious is now the default.&lt;/li&gt;
+&lt;li&gt;The &lt;code class="perl"&gt;:x&lt;/code&gt; modifier is gone because that behaviour is now the default. A new &lt;code class="perl"&gt;:s&lt;/code&gt; modifier is available which treats white space as significant (though treats all whitespace characters as equivalent to each other).&lt;/li&gt;
+&lt;li&gt;A &lt;code class="perl"&gt;:P5&lt;/code&gt; modifier is available to use Perl 5 syntax.&lt;/li&gt;
+&lt;li&gt;A &lt;code class="perl"&gt;:b&lt;/code&gt; (base character) modifier is available which acts like &lt;code class="perl"&gt;:i&lt;/code&gt;, except ignores accents instead of case.&lt;/li&gt;
+&lt;li&gt;Ordinal modifiers exist, so &lt;code class="perl"&gt;m:5th/FOO/&lt;/code&gt; means "find the fifth occurance of &amp;#39;FOO&amp;#39;".&lt;/li&gt;
+&lt;li&gt;The &lt;code class="perl"&gt;{}&lt;/code&gt; signs no longer specify repetitions, but are used for embedding Perl code within a regex. To specify repetitions, use &lt;code class="perl"&gt;**&lt;/code&gt; followed by an integer or a range: &lt;code class="perl"&gt;m/ FOO ** 2 BAR ** 3..* /&lt;/code&gt; means "find &amp;#39;FOO&amp;#39; repeated twice and followed by &amp;#39;BAR&amp;#39; repeated three or more times". The integer or range may be calculated using embedded Perl code, so the following is equivalent: &lt;code class="perl"&gt;m/ FOO**{2} BAR**{3..Inf} /&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code class="perl"&gt;[a-z]&lt;/code&gt; no longer specifies a character class. Instead &lt;code class="perl"&gt;&amp;lt;foo&amp;gt;&lt;/code&gt; are used, where "foo" may be a named set of characters, such as "alpha", or a custom set of characters within square backets, e.g. &lt;code class="perl"&gt;&amp;lt;[b..dfghj..np..tv..z_]&amp;gt;&lt;/code&gt; will match all consonants and the underscore.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There have been &lt;a href="http://feather.perl6.nl/syn/S05.html"&gt;tonnes of other changes too&lt;/a&gt;. Perl 6 regexs are pretty different from Perl 5 regular expressions, but for the terrified, you only need to be aware of the &lt;code class="perl"&gt;:P5&lt;/code&gt; modifier, and remember to put your modifiers at the start instead of the end, and you can happily use Perl 5 style expressions!&lt;/p&gt;
+
+&lt;h2&gt;Subroutines&lt;/h2&gt;
+
+&lt;h3&gt;Declaration&lt;/h3&gt;
+
+&lt;p&gt;The syntax for declaring a sub in Perl 6 is expanded from Perl 5. The old Perl 5 way is still supported, but new features are available to explicitly declare the number and type of parameters taken by a sub, and to declare the return type:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;i class="hl_Comment"&gt;# Perl 5 way still works&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;addition1&lt;/span&gt;
+{
+	&lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; = &lt;span class="hl_Function"&gt;shift&lt;/span&gt;;
+	&lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt; = &lt;span class="hl_Function"&gt;shift&lt;/span&gt;;
+	&lt;b class="hl_Keyword"&gt;return&lt;/b&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;;
+}
+
+&lt;i class="hl_Comment"&gt;# Can explicitly declare parameters:&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;addition2&lt;/span&gt; (&lt;span class="hl_DataType"&gt;$&lt;/span&gt;arg1, &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;)
+{
+	&lt;b class="hl_Keyword"&gt;return&lt;/b&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;;
+}
+
+&lt;i class="hl_Comment"&gt;# Declare the types of parameters and return type:&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;our&lt;/b&gt; &lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;addition3&lt;/span&gt; (&lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt;, &lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;)
+{
+	&lt;b class="hl_Keyword"&gt;return&lt;/b&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;;
+}
+
+&lt;i class="hl_Comment"&gt;# Alternative syntax for the same thing:&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;addition4&lt;/span&gt; (&lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt;, &lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt; -&lt;span class="hl_Operator"&gt;-&lt;/span&gt;&gt; &lt;span class="hl_Function"&gt;Int&lt;/span&gt;)
+{
+	&lt;b class="hl_Keyword"&gt;return&lt;/b&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt;;
+}
+
+&lt;i class="hl_Comment"&gt;# The "-&gt;" operator acts almost as a synonym for "sub". Useful for declaring&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;i class="hl_Comment"&gt;# anonymous subroutines.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;b class="hl_Keyword"&gt;my&lt;/b&gt; &lt;span class="hl_DataType"&gt;$addition&lt;/span&gt; = &lt;span class="hl_Operator"&gt;-&lt;/span&gt;&gt; &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt;, &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt; { &lt;span class="hl_DataType"&gt;$arg1&lt;/span&gt; + &lt;span class="hl_DataType"&gt;$arg2&lt;/span&gt; };
+say &lt;span class="hl_DataType"&gt;$addition&lt;/span&gt;(&lt;span class="hl_Float"&gt;1&lt;/span&gt;, &lt;span class="hl_Float"&gt;2&lt;/span&gt;);   &lt;i class="hl_Comment"&gt;# 3&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h3&gt;Named Arguments&lt;/h3&gt;
+
+&lt;p&gt;Arguments can be named and then used in any order (like in VisualBASIC). For example:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;makeBigNum&lt;/span&gt; (:&lt;span class="hl_DataType"&gt;$mantissa&lt;/span&gt;, :&lt;span class="hl_DataType"&gt;$exponent&lt;/span&gt;, :&lt;span class="hl_DataType"&gt;$radix&lt;/span&gt;)
+{
+	&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$radix&lt;/span&gt; 
+		{ &lt;span class="hl_DataType"&gt;$r&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$radix&lt;/span&gt;; }
+	&lt;b class="hl_Keyword"&gt;else&lt;/b&gt;
+		{ &lt;span class="hl_DataType"&gt;$r&lt;/span&gt; = &lt;span class="hl_Float"&gt;10&lt;/span&gt;; }
+	&lt;b class="hl_Keyword"&gt;return&lt;/b&gt; &lt;span class="hl_DataType"&gt;$mantissa&lt;/span&gt; &lt;span class="hl_Operator"&gt;*&lt;/span&gt; (&lt;span class="hl_DataType"&gt;$r&lt;/span&gt; *&lt;span class="hl_Operator"&gt;*&lt;/span&gt; &lt;span class="hl_DataType"&gt;$exponent&lt;/span&gt;);
+}
+
+&lt;span class="hl_DataType"&gt;$speed1&lt;/span&gt; = makeBigNum(&lt;span class="hl_Float"&gt;3&lt;/span&gt;, &lt;span class="hl_Float"&gt;8&lt;/span&gt;);
+&lt;span class="hl_DataType"&gt;$speed2&lt;/span&gt; = makeBigNum(exponent=&gt;&lt;span class="hl_Float"&gt;8&lt;/span&gt;, mantissa=&gt;&lt;span class="hl_Float"&gt;3&lt;/span&gt;);
+&lt;b class="hl_Keyword"&gt;if&lt;/b&gt; &lt;span class="hl_DataType"&gt;$speed1&lt;/span&gt; == &lt;span class="hl_DataType"&gt;$speed2&lt;/span&gt;&lt;span class="hl_DataType"&gt;
+&lt;/span&gt;{
+	&lt;i class="hl_Comment"&gt;# Yes, this should happen.&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;}
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;As a side note: a shortcut for the if/else clause can be given as &lt;code class="perl"&gt;$r = $radix // 10;&lt;/code&gt;. The &lt;code class="perl"&gt;//&lt;/code&gt; ("default operator") is useful for assigning default values to arguments that haven&amp;#39;t been explicitly provided. Note that &lt;code class="perl"&gt;$radix = $radix // 10;&lt;/code&gt; would not work, as arguments are read-only by default (see "Traits" below).&lt;/p&gt;
+
+&lt;h3&gt;Overloading&lt;/h3&gt;
+
+&lt;p&gt;The fact that we can specify the number and types of argument a sub takes means that Perl can offer us function overloading:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+multi &lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;speak&lt;/span&gt; (&lt;span class="hl_DataType"&gt;$&lt;/span&gt;speaker, &lt;span class="hl_DataType"&gt;$words&lt;/span&gt;)
+{
+	say &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_DataType"&gt;$speaker&lt;/span&gt;&lt;span class="hl_String"&gt; says, '&lt;/span&gt;&lt;span class="hl_DataType"&gt;$words&lt;/span&gt;&lt;span class="hl_Operator"&gt;'"&lt;/span&gt;;
+}
+multi &lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;speak&lt;/span&gt; (&lt;span class="hl_DataType"&gt;$&lt;/span&gt;words)
+{
+	say &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;'&lt;/span&gt;&lt;span class="hl_DataType"&gt;$words&lt;/span&gt;&lt;span class="hl_Operator"&gt;'"&lt;/span&gt;;
+}
+
+speak(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;, &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Hello world!&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;);     &lt;i class="hl_Comment"&gt;# Bob says, 'Hello world!'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;speak(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Hello Bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;);               &lt;i class="hl_Comment"&gt;# 'Hello Bob'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;speak(&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;, &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Who said that?!&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;);  &lt;i class="hl_Comment"&gt;# Bob says, 'Who said that?!'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;As well as the keyword &lt;code class="perl"&gt;multi&lt;/code&gt;, there is a keyword &lt;code class="perl"&gt;only&lt;/code&gt; to explicitly declare that a function may not be overloaded.&lt;/p&gt;
+
+&lt;h3&gt;Operators&lt;/h3&gt;
+
+&lt;p&gt;You may define your own operators, or overload existing ones by defining functions along the lines of one of the following (where &amp;#39;op&amp;#39; is the symbol to use for the operator):&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code class="perl"&gt;sub prefix:{&amp;#39;op&amp;#39;} ($arg) { ... }&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class="perl"&gt;sub postfix:{&amp;#39;op&amp;#39;} ($arg) { ... }&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class="perl"&gt;sub infix:{&amp;#39;op&amp;#39;} ($arg1, $arg2) { ... }&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class="perl"&gt;sub circumfix:{&amp;#39;op1&amp;#39;, &amp;#39;op2&amp;#39;} ($arg) { ... }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here are some examples:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;infix&lt;/span&gt;:{&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;quoth&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;} (&lt;span class="hl_DataType"&gt;$speaker&lt;/span&gt;, &lt;span class="hl_DataType"&gt;$words&lt;/span&gt;)
+{
+	say &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_DataType"&gt;$speaker&lt;/span&gt;&lt;span class="hl_String"&gt; says, '&lt;/span&gt;&lt;span class="hl_DataType"&gt;$words&lt;/span&gt;&lt;span class="hl_Operator"&gt;'"&lt;/span&gt;;
+}
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;postfix&lt;/span&gt;:{&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;isHeard&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;} (&lt;span class="hl_DataType"&gt;$words&lt;/span&gt;)
+{
+	say &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;'&lt;/span&gt;&lt;span class="hl_DataType"&gt;$words&lt;/span&gt;&lt;span class="hl_Operator"&gt;'"&lt;/span&gt;;
+}
+
+&lt;span class="hl_DataType"&gt;$dude&lt;/span&gt; = &lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;Bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;;
+&lt;span class="hl_DataType"&gt;$dude&lt;/span&gt; quoth &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Hello world!&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;;     &lt;i class="hl_Comment"&gt;# Bob says, 'Hello world!'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Hello &lt;/span&gt;&lt;span class="hl_DataType"&gt;$dude&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt; isHeard;          &lt;i class="hl_Comment"&gt;# 'Hello Bob'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Bob&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt; quoth &lt;span class="hl_Operator"&gt;"&lt;/span&gt;&lt;span class="hl_String"&gt;Who said that?!&lt;/span&gt;&lt;span class="hl_Operator"&gt;"&lt;/span&gt;;  &lt;i class="hl_Comment"&gt;# Bob says, 'Who said that?!'&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;h3&gt;Traits&lt;/h3&gt;
+
+&lt;p&gt;Subs and arguments may be declared with particular "traits" that allow them to behave differently from normal. (In fact, so can constants and variables.) For example, the &lt;code class="perl"&gt;is rw&lt;/code&gt; trait marks a parameter as being read-write, so the subroutine is able to modify it, with the modified value then available to the code that called the function.&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;prefix&lt;/span&gt;:{&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;double&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;} (&lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$num&lt;/span&gt; is rw -&lt;span class="hl_Operator"&gt;-&lt;/span&gt;&gt; &lt;span class="hl_Function"&gt;Int&lt;/span&gt;)
+{
+	&lt;span class="hl_DataType"&gt;$num&lt;/span&gt; *= &lt;span class="hl_Float"&gt;2&lt;/span&gt;;
+}
+
+&lt;span class="hl_DataType"&gt;$x&lt;/span&gt; = &lt;span class="hl_Float"&gt;12&lt;/span&gt;;
+double &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;;
+say &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;;     &lt;i class="hl_Comment"&gt;# 24&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;As mentioned in the "Named Arguments" section above, parameters are read-only by default. The function can&amp;#39;t even change the value of parameters &lt;em&gt;internally&lt;/em&gt;. The &lt;code class="perl"&gt;is copy&lt;/code&gt; trait creates a read-write &lt;em&gt;copy&lt;/em&gt; of the variable passed as an argument. &lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;prefix&lt;/span&gt;:{&lt;span class="hl_Operator"&gt;'&lt;/span&gt;&lt;span class="hl_String"&gt;saydouble&lt;/span&gt;&lt;span class="hl_Operator"&gt;'&lt;/span&gt;} (&lt;span class="hl_Function"&gt;Int&lt;/span&gt; &lt;span class="hl_DataType"&gt;$num&lt;/span&gt; is copy -&lt;span class="hl_Operator"&gt;-&lt;/span&gt;&gt; &lt;span class="hl_Function"&gt;Int&lt;/span&gt;)
+{
+	&lt;span class="hl_DataType"&gt;$num&lt;/span&gt; *= &lt;span class="hl_Float"&gt;2&lt;/span&gt;;
+	say &lt;span class="hl_DataType"&gt;$num&lt;/span&gt;;
+}
+
+&lt;span class="hl_DataType"&gt;$x&lt;/span&gt; = &lt;span class="hl_Float"&gt;12&lt;/span&gt;;
+saydouble &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;;  &lt;i class="hl_Comment"&gt;# 24&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;say &lt;span class="hl_DataType"&gt;$x&lt;/span&gt;;        &lt;i class="hl_Comment"&gt;# 12&lt;/i&gt;&lt;i class="hl_Comment"&gt;
+&lt;/i&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;This allows us to rewrite our makeBigNum function as:&lt;/p&gt;
+
+
+
+&lt;pre&gt;&lt;code class="perl"&gt;
+&lt;b class="hl_Keyword"&gt;sub &lt;/b&gt;&lt;span class="hl_Function"&gt;makeBigNum&lt;/span&gt; (:&lt;span class="hl_DataType"&gt;$mantissa&lt;/span&gt;, :&lt;span class="hl_DataType"&gt;$exponent&lt;/span&gt;, :&lt;span class="hl_DataType"&gt;$radix&lt;/span&gt; is copy)
+{
+	&lt;span class="hl_DataType"&gt;$radix&lt;/span&gt; = &lt;span class="hl_DataType"&gt;$radix&lt;/span&gt; /&lt;span class="hl_Operator"&gt;/&lt;/span&gt;&lt;span class="hl_Others"&gt; 10;&lt;/span&gt;&lt;span class="hl_Others"&gt;
+&lt;/span&gt;&lt;span class="hl_Others"&gt;	return &lt;/span&gt;&lt;span class="hl_DataType"&gt;$mantissa&lt;/span&gt;&lt;span class="hl_Others"&gt; &lt;/span&gt;&lt;span class="hl_Char"&gt;*&lt;/span&gt;&lt;span class="hl_Others"&gt; &lt;/span&gt;&lt;span class="hl_Char"&gt;(&lt;/span&gt;&lt;span class="hl_DataType"&gt;$radix&lt;/span&gt;&lt;span class="hl_Others"&gt; &lt;/span&gt;&lt;span class="hl_Char"&gt;**&lt;/span&gt;&lt;span class="hl_Others"&gt; &lt;/span&gt;&lt;span class="hl_DataType"&gt;$exponent&lt;/span&gt;&lt;span class="hl_Char"&gt;)&lt;/span&gt;&lt;span class="hl_Others"&gt;;&lt;/span&gt;&lt;span class="hl_Others"&gt;
+&lt;/span&gt;&lt;span class="hl_Others"&gt;}&lt;/span&gt;&lt;span class="hl_Others"&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;p&gt;A number of other &lt;a href="http://feather.perl6.nl/syn/S06.html#Properties_and_traits"&gt;traits are defined&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Other Non-Syntax Changes&lt;/h2&gt;
+
+&lt;p&gt;I&amp;#39;ve taken you through a tour of some of the more interesting and drastic changes to Perl syntax in Perl 6. I&amp;#39;ve by no means covered them all -- I&amp;#39;ve not even touched upon multiline comments, or the new built-in maths and array functions. If you want to read up on them, check out the current draft of the &lt;a href="http://feather.perl6.nl/syn/"&gt;Perl 6 documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I want to hark back to what I was saying earlier about Perl 6&amp;#39;s written specification, and how this allows multiple competing Perl 6 implementations. Most interestingly, it will allow alternative implementors to do something other than "just interpret the language".&lt;/p&gt;
+
+&lt;p&gt;The original intention was that the "official" implementation of Perl would be a tool that parsed Perl 6, compiled it into "Parrot": http://www.parrotcode.org/ bytecode and then ran that. Parrot is a virtual machine, similar to the .NET Common Language Runtime and the Java Virtual Machine. It was started as a "sister project" to Perl 6, but aims to support plenty of other languages too -- &lt;span class="caps"&gt;APL,&lt;/span&gt; Tcl, Lua, &lt;a href="http://en.wikipedia.org/wiki/Brainfuck"&gt;Brainfuck&lt;/a&gt;, Lisp, Scheme, Perl 1.0, Python and Javascript all work, but with varying levels of completeness and reliability. An experimental translator is available to convert .NET bytecode to Parrot bytecode. Eventually the hope is that within Parrot, code written in Javascript could instantiate an object written in Python, which called a function written in Perl and another written in Parrot assembly language -- many different languages interacting seamlessly. However, it is still a long way from being usable for day-to-day coding.&lt;/p&gt;
+
+&lt;p&gt;However &lt;a href="http://www.pugscode.org/"&gt;Pugs&lt;/a&gt;, a Haskell implementation of Perl 6 is currently more feature-complete. Amongst the features already implemented are overloaded functions and operators, including named arguments; ranges and junctions, classes and objects, packages (including the ability to link to some Perl 5 packages) and many of the new operators. It is likely to always remain an experimental implementation, but it&amp;#39;s currently very useful to see where the language is headed, and may be used to &lt;a href="http://en.wikipedia.org/wiki/Bootstrapping_%28compilers%29"&gt;bootstrap&lt;/a&gt; an eventual "Perl 6 written in Perl 6".&lt;/p&gt;
+
+&lt;p&gt;Unlike &lt;span class="caps"&gt;PHP&lt;/span&gt; 6, which should be ready some time this year, I doubt we&amp;#39;ll see a version of Perl 6 usable before 2012. In the mean time, many of is features are available in Perl 5, &lt;a href="http://en.wikipedia.org/wiki/Haskell_%28programming_language%29"&gt;Haskell&lt;/a&gt;, &lt;a href="http://www.php.net"&gt;&lt;span class="caps"&gt;PHP&lt;/span&gt;&lt;/a&gt;, &lt;span class="caps"&gt;ECMAS&lt;/span&gt;cript and Python, though often with very different syntaxes, and not available all together in a single language like Perl 6 should offer.&lt;/p&gt;</content>
+  <published>2008-02-05T18:36:33Z</published>
+  <updated>2008-02-05T18:36:33Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="unicode"/>
+  <category term="perl"/>
+  <category term="future"/>
+</entry>

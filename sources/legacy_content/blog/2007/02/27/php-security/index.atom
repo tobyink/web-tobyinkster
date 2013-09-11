@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/27/php-security/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/27/php-security/"/>
+  <title>Re: is PHP less secure than Perl, Python, or Ruby?</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>walterbyrd wrote:</p>
+
+<blockquote><p>I honestly don't know. But, I have seen articles and posts about how <span class="caps">PHP </span>is terribly insecure.</p></blockquote>
+
+<p><span class="caps">PHP </span>is not inherently insecure, but because it's very easy to write <span class="caps">PHP, </span>it has become rather a popular language amongst people with little, if any, formal training on how to program. Because of this, there are an awful lot of badly written <span class="caps">PHP </span>scripts out there; installing them may well open up your server to abuse.</p>
+
+<p>Most security issues (in <strong>any</strong> language) arise from a failure to properly check user input. Programmers make assumptions that a particular bit of submitted input doesn't, say, contain an apostrophe and then they feed it into a database. If a user accidentally enters an apostrophe where they shouldn't, this may cause an error trying to insert the data into the database. If the user <strong>deliberately</strong> enters an apostrophe, and then some other specially crafted input, then they may be able to do malicious things.</p>
+
+<p>Most security issues arise from programmers making assumptions when they shouldn't. If you always check and double-check every variable before doing anything critical with it, then you've solved 9% of security issues right there. (90% of security issues are caused by users who choose easy passwords, or write their passwords on their forehead so that they can remember it. The other 1% are "miscellaneous".)</p></div>
+  </content>
+  <published>2007-02-27T16:53:52Z</published>
+  <updated>2007-04-08T17:42:22+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="sql"/>
+  <category term="php"/>
+  <category term="security"/>
+</entry>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/08/php-wrong/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/08/php-wrong/"/>
+  <title>How PHP programmers get things wrong</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Firstly, three disclaimers: <span class="caps">PHP </span>is a great programming language, one of my favourites -- this website is written in <span class="caps">PHP</span>; there are many great <span class="caps">PHP </span>programmers out there, some of whom probably never get things wrong; I probably get things wrong a lot of the time.</p>
+
+<p>The majority of the database-backed Open Source <span class="caps">PHP </span>projects that I've used/examined make the same flaw again and again: they fail to make use of the security measures built into the database engine. A typical MySQL-backed <span class="caps">PHP </span>project will include some code like this near the top:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$link</b> = <span class="hl_Function">mysql_connect</span><span class="hl_Others">(</span><span class="hl_String">'localhost'</span><span class="hl_Others">,</span> <span class="hl_String">'mysql_user'</span><span class="hl_Others">,</span> <span class="hl_String">'mysql_password'</span><span class="hl_Others">);</span>
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!<b class="hl_Variable">$link</b><span class="hl_Others">)</span> {
+    <span class="hl_Function">die</span><span class="hl_Others">(</span><span class="hl_String">'Not connected : '</span> . <span class="hl_Function">mysql_error</span><span class="hl_Others">());</span>
+}
+
+<i class="hl_Comment">// make foo the current db</i><i class="hl_Comment">
+</i><b class="hl_Variable">$db_selected</b> = <span class="hl_Function">mysql_select_db</span><span class="hl_Others">(</span><span class="hl_String">'foo'</span><span class="hl_Others">,</span> <b class="hl_Variable">$link</b><span class="hl_Others">);</span>
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!<b class="hl_Variable">$db_selected</b><span class="hl_Others">)</span> {
+    <span class="hl_Function">die</span> <span class="hl_Others">(</span><span class="hl_String">'Can</span><span class="hl_BString">\'</span><span class="hl_String">t use foo : '</span> . <span class="hl_Function">mysql_error</span><span class="hl_Others">());</span>
+}
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>And why not? It's the suggested code in the <span class="caps">PHP </span>manual. But let's take a closer look and figure out what's wrong...</p>
+
+<p>Imagine that this code is supposed to be for a content management system. Certain users (let's call them "Editors") will use the content management system to make changes to the website's content. Because they need to be able to make changes to the website, the MySQL user <tt>mysql_user</tt> has been <code class="sql">GRANT</code>ed permission to edit the content tables in the database.</p>
+
+<p>Most of the website's users (let's call them "Viewers") will only ever be passively interacting with the website -- reading content. Viewers use the same link to the database (<code class="php">$link</code>) as the Editors, so as far as MySQL is concerned, they also have full access to the database, and are able to edit tables. It is only the developers <span class="caps">PHP </span>code that prevents them from doing so. Now, <span class="caps">SQL </span>injection is one of the first things developers learn about when learning to use databases. (If it's not, then it should be!) But even the best developers occasionally slip up. If somewhere in the content management system code, there is a single <span class="caps">SQL </span>injection vulnerability, a malicious Visitor can obtain full read/write access to your database -- they can add/edit/delete anything they want!</p>
+
+<p>So what's the solution? Firstly, set up your MySQL database with not one, but <strong>two</strong> different users. Give once full access to everything needed, and give the other one read-only access. Now, change your database connection code to something like this:</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+<b class="hl_Variable">$user</b> = figure_out_who_is_logged_in<span class="hl_Others">();</span>
+
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>is_editor<span class="hl_Others">(</span><b class="hl_Variable">$user</b><span class="hl_Others">))</span> {
+    <b class="hl_Variable">$link</b> = <span class="hl_Function">mysql_connect</span><span class="hl_Others">(</span><span class="hl_String">'localhost'</span><span class="hl_Others">,</span> <span class="hl_String">'mysql_user'</span><span class="hl_Others">,</span> <span class="hl_String">'mysql_password'</span><span class="hl_Others">);</span>
+}
+<span class="hl_Operator">else</span> {
+    <b class="hl_Variable">$link</b> = <span class="hl_Function">mysql_connect</span><span class="hl_Others">(</span><span class="hl_String">'localhost'</span><span class="hl_Others">,</span> <span class="hl_String">'mysql_guest'</span><span class="hl_Others">,</span> <span class="hl_String">'guest_password'</span><span class="hl_Others">);</span>
+}
+
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!<b class="hl_Variable">$link</b><span class="hl_Others">)</span> {
+    <span class="hl_Function">die</span><span class="hl_Others">(</span><span class="hl_String">'Not connected : '</span> . <span class="hl_Function">mysql_error</span><span class="hl_Others">());</span>
+}
+
+<i class="hl_Comment">// make foo the current db</i><i class="hl_Comment">
+</i><b class="hl_Variable">$db_selected</b> = <span class="hl_Function">mysql_select_db</span><span class="hl_Others">(</span><span class="hl_String">'foo'</span><span class="hl_Others">,</span> <b class="hl_Variable">$link</b><span class="hl_Others">);</span>
+<span class="hl_Operator">if</span> <span class="hl_Others">(</span>!<b class="hl_Variable">$db_selected</b><span class="hl_Others">)</span> {
+    <span class="hl_Function">die</span> <span class="hl_Others">(</span><span class="hl_String">'Can</span><span class="hl_BString">\'</span><span class="hl_String">t use foo : '</span> . <span class="hl_Function">mysql_error</span><span class="hl_Others">());</span>
+}
+1<b class="hl_Keyword">?&gt;</b></code></pre>
+
+
+
+<p>If a visitor does manage to find an <span class="caps">SQL </span>injection vulnerability, then at least all they can do it use it to <strong>read</strong> data, not change it.</p>
+
+<p>If you are a developer writing <span class="caps">PHP </span>applications for distributions, <strong>please</strong> give your customers the option of connecting to the database with read-only users when appropriate.</p>
+
+<p>If you are a web hosting provider offering <span class="caps">PHP</span>/*SQL hosting, please allow your customers to set up at least two different users in their databases.</p></div>
+  </content>
+  <published>2007-04-08T17:15:00+01:00</published>
+  <updated>2007-04-08T17:15:00+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="sql"/>
+  <category term="php"/>
+  <category term="security"/>
+  <category term="programming"/>
+</entry>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2002/07/22/linux-story/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2002/07/22/linux-story/"/>
+  <title>How I Started Using Linux</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+<p>I bought my first copy of Linux in 1999 - it was <a href="http://www.suse.com/">SuSE 6.2</a>. I got it from the local branch of Software Warehouse (now called <a href="http://www.jungle.com/">jungle.com</a>) and it cost me about Â£30. I bought it partly because I knew that I would be using a UNIX system when I started University and wanted a little experience, and partly because I thought it would increase my future employability.</p>
+
+<p>My initial experiences weren't very favourable. I couldn't get my sound card to work, nor my network card, nor my <a href="http://www.idir.net/~gromitkc/winmodem.html">WinModem</a> (no surprise there!), nor my TV card. As a result, it sat largely unused on my machine for quite some time.</p>
+
+<p>At <a href="http://www.doc.ic.ac.uk/">college</a> however I used Linux regularly. There were only a few Windows machines, so you had to either like it or lump it - I grew to like it.</p>
+
+<p>Linux gave me the power to do everything I could in Windows and a whole lot more that I hadn't dreamt of. There was a whole development environment just <em>there</em> on my computer (as against the Â£99 I had to pay for a student license for <a href="http://www.microsoft.com/">Visual Studio 6.0 Professional</a>) and practically all the source code for everything I used was available for me to play with.</p>
+
+<p>By the time I was half-way through my second year I had become so used to Linux that I was using Windows at home in the most Linux-y way I could. I was using the same browser that I used on Linux (<a href="http://www.opera.com/">Opera</a>) and I did a lot of my stuff remotely on the college's Linux machines from home via SSH. So I decided it was time for me to have another bash at setting up Linux for my home computer.</p>
+
+<p>This time, with a bit more experience and a lot more determination I managed to get my network card up and running and my sound card too. I was a happy chappy. I was now using Linux a bit on my home computer, but I didn't really have the determination to start using it full time.</p>
+
+<p>At the beginning of my third year, I ditched SuSE 6.2 and downloaded a copy of Mandrake 8.1 (aren't high-speed college connections fun?) It was a breeze to install and it automatically detected and configured all my hardware (except for the WinModem obviously). Mandrake was a breath of fresh air - it is truly amazing the difference between Linux of 2001 and Linux of 1999. I found myself spending a good proportion of my time in Mandrake.</p>
+
+<p>However, I was still tied to Windows for a few reasons:</p>
+
+<ul>
+  <li><a href="http://www.digiguide.co.uk/">DigiGuide for Windows</a>;</li>
+  <li>My blasted WinModem; and</li>
+  <li>A few home-made tools for maintaining this website.</li>
+</ul>
+
+<p>Then... <em>disaster struck</em>.</p>
+
+<p>My Windows partition got some kind of minor fault, so I ran <kbd>scandisk</kbd>. Scandisk completely obliterated my hard drive. Roughly half of my stuff just disappeared! This was the final straw.</p>
+
+<p>I started porting my website tools to Linux. I bought a <em>proper</em> Modem in the Christmas 2001 holidays. By January 2002, the only thing stopping me was DigiGuide.</p>
+
+<p>DigiGuide (a TV guide program) actually ran under Linux (using a tool called WINE, which allows Windows programs to run in Linux), however it refused to download TV listings unless it was running on proper Windows. So every 2 weeks I had to boot into Windows to download the new listings.</p>
+
+<p>It was clear that this couldn't go on for long. So I have now (March 6th, 2002) officially given up on DigiGuide. I shall use their website which also displays the listsings, although isn't quite as nice as the real thing.</p>
+
+<p>My Windows partition is now gone. It's the end of an era. And the beginning of a new one.</p>
+</div>
+  </content>
+  <published>2002-07-22T00:00:00+01:00</published>
+  <updated>2007-04-06T17:13:52+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="linux"/>
+</entry>

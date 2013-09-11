@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/01/02/nationalities/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/01/02/nationalities/"/>
+  <title>Nationalities, Countries, Languages, Cultures, Ethnicity and The Web</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>user wrote:</p>
+
+<blockquote><p>Anyone have a full list of Nationalities?<br/>
+Eg: Germans, French, British, Malaysian, etc etc</p></blockquote>
+
+<p>A lot of people within Britain might not consider themselves British, but rather English, Welsh, Scottish, Irish, or perhaps even Cornish. Think also of Kosovo, Quebec and Tibet. People can be quite emotive about such issues. (The list from your third post in this thread doesn't include "Palestinian" -- how many Palestinians are going to want to choose "Israeli" from your list?!)</p>
+
+<p>For what purpose to you need this information? If you need to ask where a visitor lives, or what their citizenship is, it is better to use a drop-down list of countries rather than nationalities.</p>
+
+<p>If you Google for "ISO 3166", then you'll find a handy list of countries, along with useful 2 and 3 letter codes, and 3 digit numerical codes to identify them. Storing the 2 digit code in a database, instead of the full country name, may save some space, and may help later if you need to integrate your database with some other data, as <span class="caps">ISO</span> 3166 is a commonly used standard.</p>
+
+<p>On the other hand, if you need to identify their language, then you're way off. For example, Castillian Spanish is spoken all over South America (in Brazil the official language is Portuguese, but I'd imagine that there are at least some Spanish speakers), but in Spain, Castillian is one of a number of languages spoken.</p>
+
+<p>The official languages are Castillian, Catalan, Basque, Galician and Aranese. (Catalan is similar to Spanish, but only in the same sense that French is similar to Italian. Aranese is most closely related to Gascon, an endangered romance language in France. Galician is very similar to Portuguese. Basque is entirely unrelated to any other European language and likely predates the arrival of other languages to the continent.) Asturian and Aragonese are also gaining acceptance as candidates for official status. Valencian, a dialect of Catalan, is considered a language in its own right by many of its speakers. Arabic is also widely spoken in Ceuta and Melilla (two small enclaves on the North African coast which are officially part of Spain).</p>
+
+<p>So having an option of "Spanish" on a drop down list doesn't really cover it. If you want a list of languages, try "ISO 639-2" which will also provide you with handy three letter codes for each language. There are also two letter codes for the most commonly spoken languages, as the three digit list does include quite a few weirdo languages (e.g. historical languages, such as Old English, Old French, Hittite, Ancient Greek, etc; and languages which many consider to be dialects, such as Alemannic German, spoken in and around Switzerland, but arguably a dialect of German). Which list you use depends on how likely you think it is that people will want to choose a language that's on the three letter list, but not the more limited two letter list; and how likely it is that people will choose "Old English" just for a bit of a laugh.</p>
+
+<p>On the third hand, you may want to use this list to identify people's culture or heritage. In which case again, you are way off. For example, Jewish people in many different countries may wish to state their culture as "Jewish"; indigenous Australians may wish to state their culture as "Aborigine" or "Torres Strait Islander" rather than "Australian", or may even wish to describe themselves as belonging to a particular Aboriginal group, such as the Eora. (Most of the Aboriginal words which have been adopted into English originally come from the language of the Eora people; e.g. boomerang.)</p>
+
+<p>If you wish to ask someone's cultural background, then a free text box is probably wise. Perhaps provide a drop down list of common cultures with an "Other (please specify)" option.</p>
+
+<p>On the fourth hand, perhaps you are really trying to find someone's race. In which case -- you guessed it -- you are way off again! For example, in the UK there are many non-white people who would describe their nationality as "British", though for certain purposes (e.g. assessing susceptability to Sickle-cell Anaemia) it might be more useful to categorise them as West African. Because of inter-racial mixing throughout history, genetically speaking, most people are of mixed race. (Though race is quite a fuzzy concept anyway.) If you wish to find out someone's race, you might be best off using a small list of very general races, such as:</p>
+
+<ul>
+<li>Mixed Race</li>
+<li>Arctic (Siberian, Eskimo)</li>
+<li>Caucasian (European)</li>
+<li>Caucasian (Indian)</li>
+<li>Caucasian (Middle East)</li>
+<li>Caucasian (North African, Other)</li>
+<li>Indiginous Australian</li>
+<li>Native American</li>
+<li>North East Asian (Mongol, Tibetan, Korean Japanese, etc)</li>
+<li>Pacific (Polynesian, Micronesian, etc)</li>
+<li>South East Asian (Chinese, Thai, Malay, Filipino, etc)</li>
+<li>West African, Bushmen, Ethiopian</li>
+<li>Other Race</li>
+</ul>
+
+<p>And also you should be aware, that most people would classify themselves incorrectly.</p>
+
+<p>In summary, classifying people's nationality, language, heritage, race, culture, and ethnicity (we've not brought up religion, but the same applies) can be a difficult because in many cases the lines between them can be blurry (e.g. nationality: English vs British; language: Valencian vs Catalan; culture: Australian vs Aborigine; race: African vs West African). There are so many splinters/dialects which some people might consider part of the main group, whereas others would consider them distinct. Whatsmore, if the group a person identifies themselves with does not appear on the list, many will be reluctant to choose another group which might be considered "close enough" for your purposes. Many of these issues can be highly emotive for some people.</p>
+
+<p>It is better to stick with distinct lists of discrete groups -- for example, the list of countries recognised by the United Nations is unarguable. Pretty much everyone knows which of those countries they belong to. In certain cases, they may not <strong>like</strong> it (e.g. a large minority of people in Northern Ireland would like that province to be part of the Republic of Ireland, instead of the United Kingdom), but they are aware of how the current situation stands, and shouldn't be too perturbed at having to specify in which country they reside or of which they enjoy citizenship.</p>
+
+<p>The <span class="caps">ISO </span>list of languages is also unarguable -- a language is either on there, or it's not. (Though of course, the list is updated occasionally.) If somebody complains that their preferred language is not on the list, you could quite rightly tell them to take up their complaint with <span class="caps">ISO </span>instead of you. Whatsmore, there will almost certainly be a language on the list which they are able to speak almost as well as their first choice. (e.g. if someone from Valencia complains that you don't offer a Valancian version of your newsletter, you could say that there hasn't been enough demand for one, but that many Valencians choose to subscribe to your Catalan newsletter, as Valencians are people with great linguistic talent, and are usually fluent in Catalan. Don't suggest that Valencian and Catalan are virtually the same language -- that might upset them -- but suggest that many Valencians can also speak Catalan.)</p></div>
+  </content>
+  <published>2007-01-02T12:40:46Z</published>
+  <updated>2007-04-08T20:59:54+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="linguistics"/>
+  <category term="web"/>
+  <category term="i18n"/>
+</entry>

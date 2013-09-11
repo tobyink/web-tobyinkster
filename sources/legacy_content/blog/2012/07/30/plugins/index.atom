@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2012/07/30/plugins/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2012/07/30/plugins/"/>
+  <title>Perils of Plugins</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Plugin-based architectures can be a bad idea.</p>
+
+<p>Not always. In user-facing applications, where the list of installed and enabled plugins is clear, then plugins are often a good thing. This article is concerned not with end-user facing applications, but with libraries. Libraries that allow their functionality to be extended through plugins. In particular, libraries that automatically detect and load all installed plugins.</p>
+
+<p>Plugins aren't always obviously plugins. In this article, I'm defining a plugin as a software module that adds additional functionality or modifies the externally observable behaviour of the existing functionality of the core piece of software. Call it a "plugin" or an "optional dependency" - it's the same thing.</p>
+
+<p>Here's a simple hypothetical example:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> Postcode;
+
+<b class="hl_Keyword">our</b> <span class="hl_DataType">$AUTHORITY</span> = <span class="hl_Operator">'</span><span class="hl_String">local:ALICE</span><span class="hl_Operator">'</span>;
+<b class="hl_Keyword">our</b> <span class="hl_DataType">$VERSION</span>   = <span class="hl_Operator">'</span><span class="hl_String">1.0</span><span class="hl_Operator">'</span>;
+
+<b class="hl_Keyword">use</b> <span class="hl_Function">Modern::Perl</span>;
+<b class="hl_Keyword">use</b> Carp <span class="hl_Operator">qw(</span> confess <span class="hl_Operator">)</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Class::Load</span> <span class="hl_Operator">qw(</span> try_load_class is_class_loaded <span class="hl_Operator">)</span>;
+
+<b class="hl_Keyword">use</b> <b class="hl_Keyword">constant</b> {
+	IDX_COUNTRY     =&gt; 0,
+	IDX_POSTAL_CODE =&gt; <span class="hl_Float">1</span>,
+	NEXT_IDX        =&gt; <span class="hl_Float">2</span>,
+};
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">new</span>
+{
+	<b class="hl_Keyword">my</b> (<span class="hl_DataType">$class</span>, <span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>) = <span class="hl_DataType">@_</span>;
+	
+	<i class="hl_Comment"># $country should be an upper-case ISO 3166 alpha-2 code</i><i class="hl_Comment">
+</i>	<span class="hl_DataType">$country</span> = <span class="hl_Function">uc</span> <span class="hl_DataType">$country</span>;	
+	confess <span class="hl_Operator">"</span><span class="hl_DataType">$country</span><span class="hl_String"> not a valid country identifier</span><span class="hl_Operator">"</span>
+		<b class="hl_Keyword">unless</b> <span class="hl_DataType">$country</span> =~ <span class="hl_Operator">/</span><span class="hl_Char">^[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2}$</span><span class="hl_Operator">/</span>;
+	
+	<b class="hl_Keyword">unless</b> (<span class="hl_DataType">$class</span> =~ <span class="hl_Operator">/</span><span class="hl_Others">::</span><span class="hl_Char">[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2}$</span><span class="hl_Operator">/</span>)
+	{
+		<b class="hl_Keyword">my</b> <span class="hl_DataType">$specific_class</span> = <span class="hl_Function">join</span> <span class="hl_Operator">'</span><span class="hl_String">::</span><span class="hl_Operator">'</span> =&gt; (<span class="hl_DataType">$class</span>, <span class="hl_DataType">$country</span>);
+		try_load_class(<span class="hl_DataType">$specific_class</span>);
+		<b class="hl_Keyword">return</b> <span class="hl_DataType">$specific_class</span>-&gt;<span class="hl_DataType">new</span>(<span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>)
+			<b class="hl_Keyword">if</b> is_class_loaded(<span class="hl_DataType">$specific_class</span>);
+	}
+	
+	<b class="hl_Keyword">return</b> <span class="hl_Function">bless</span> [<span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>] =&gt; <span class="hl_DataType">$class</span>;
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">country</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span> = <span class="hl_Function">shift</span>;
+	<span class="hl_DataType">$self</span>-&gt;[ <span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">IDX_COUNTRY</span> ];
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">postal_code</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span> = <span class="hl_Function">shift</span>;
+	<span class="hl_Function">uc</span> <span class="hl_DataType">$self</span>-&gt;[ <span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">IDX_POSTAL_CODE</span> ];
+}
+
+<span class="hl_Float">1</span>;
+</code></pre>
+
+
+
+<p>Hopefully what the above code does should be immediately apparent. You can construct postcode objects like this:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$beverley_hills</span>    = <span class="hl_Function">Postcode::</span><span class="hl_Operator">-</span>&gt;new(US =&gt; <span class="hl_Float">90210</span>);
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$buckingham_palace</span> = <span class="hl_Function">Postcode::</span><span class="hl_Operator">-</span>&gt;new(GB =&gt; <span class="hl_Operator">"</span><span class="hl_String">SW1A 1AA</span><span class="hl_Operator">"</span>);
+</code></pre>
+
+
+
+<p>If the modules <code>Postcode::US</code> or <code>Postcode::GB</code> are installed, then locale-specific objects will be constructed which may provide extra functionality like <code>$beverley_hills-&gt;get_state</code>; otherwise generic <code>Postcode</code> objects will be constructed. Here's an example locale-specific plugin...</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> <span class="hl_Function">Postcode::GB</span>;
+
+<b class="hl_Keyword">our</b> <span class="hl_DataType">$AUTHORITY</span> = <span class="hl_Operator">'</span><span class="hl_String">local:ALICE</span><span class="hl_Operator">'</span>;
+<b class="hl_Keyword">our</b> <span class="hl_DataType">$VERSION</span>   = <span class="hl_Operator">'</span><span class="hl_String">1.0</span><span class="hl_Operator">'</span>;
+
+<b class="hl_Keyword">use</b> <span class="hl_Function">Modern::Perl</span>;
+<b class="hl_Keyword">use</b> Carp <span class="hl_Operator">qw(</span> confess <span class="hl_Operator">)</span>;
+<b class="hl_Keyword">use</b> base <span class="hl_Operator">'</span><span class="hl_String">Postcode</span><span class="hl_Operator">'</span>;
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">new</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span> = shift-&gt;<span class="hl_Function">SUPER::new</span>(<span class="hl_DataType">@</span>_);
+	
+	<i class="hl_Comment"># Canonicalise whitespace</i><i class="hl_Comment">
+</i>	<span class="hl_DataType">$self</span>-&gt;[ <span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">IDX_POSTAL_CODE</span> ] =~ <span class="hl_Operator">s{</span><span class="hl_BaseN">\s</span><span class="hl_Operator">}{}g</span>;
+	<span class="hl_DataType">$self</span>-&gt;[ <span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">IDX_POSTAL_CODE</span> ] =~ <span class="hl_Operator">s{</span><span class="hl_Char">(^</span><span class="hl_Others">.</span><span class="hl_Char">+)(</span><span class="hl_Others">...</span><span class="hl_Char">)$</span><span class="hl_Operator">}{</span><b class="hl_Variable">$1</b><span class="hl_String"> </span><b class="hl_Variable">$2</b><span class="hl_Operator">}g</span>;
+	
+	<b class="hl_Keyword">return</b> <span class="hl_DataType">$self</span>;
+}
+
+<i class="hl_Comment"># XXX: this regexp doesn't cover some overseas territories</i><i class="hl_Comment">
+</i><i class="hl_Comment"># (Falklands, Pitcairn, etc) and doesn't cover BFPO codes.</i><i class="hl_Comment">
+</i><i class="hl_Comment">#</i><i class="hl_Comment">
+</i><b class="hl_Keyword">my</b> <span class="hl_DataType">$regexp</span> = <span class="hl_Operator">qr</span><span class="hl_Others"> </span><span class="hl_Operator">{</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">^</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">([</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{1,2})</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">([</span><span class="hl_BaseN">0-9</span><span class="hl_Char">]{1,2}</span><span class="hl_Others"> </span><span class="hl_Char">|</span><span class="hl_Others"> </span><span class="hl_Char">[</span><span class="hl_BaseN">0-9</span><span class="hl_Char">]{1}[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{1})</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_BaseN">\s</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">([</span><span class="hl_BaseN">0-9</span><span class="hl_Char">]{1})</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">([</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2})</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Char">$</span><span class="hl_Others">
+</span><span class="hl_Operator">}x</span>;
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">postcode_area</span>     { shift-&gt;postcode =~ <span class="hl_DataType">$regexp</span> <span class="hl_Operator">and</span> <span class="hl_Operator">"</span><b class="hl_Variable">$1</b><span class="hl_Operator">"</span> }
+<b class="hl_Keyword">sub </b><span class="hl_Function">postcode_district</span> { shift-&gt;postcode =~ <span class="hl_DataType">$regexp</span> <span class="hl_Operator">and</span> <span class="hl_Operator">"</span><b class="hl_Variable">$1$2</b><span class="hl_Operator">"</span> }
+<b class="hl_Keyword">sub </b><span class="hl_Function">postcode_sector</span>   { shift-&gt;postcode =~ <span class="hl_DataType">$regexp</span> <span class="hl_Operator">and</span> <span class="hl_Operator">"</span><b class="hl_Variable">$1$2</b><span class="hl_String"> </span><b class="hl_Variable">$3</b><span class="hl_Operator">"</span> }
+<b class="hl_Keyword">sub </b><span class="hl_Function">postcode_unit</span>     { shift-&gt;postcode =~ <span class="hl_DataType">$regexp</span> <span class="hl_Operator">and</span> <span class="hl_Operator">"</span><b class="hl_Variable">$1$2</b><span class="hl_String"> </span><b class="hl_Variable">$3$4</b><span class="hl_Operator">"</span> }
+
+<span class="hl_Float">1</span>;
+</code></pre>
+
+
+
+<p>Perhaps some of those locale-specific modules will be distributed alongside the base Postcode distribution; others may be written by third parties interested in dealing with addresses in specific geographic regions. Sounds like a good plan - if Alice is maintaining the <code>Postcode</code> distribution, she might be happy to maintain the British and Irish modules, but have no interest in maintaining modules covering China or Vietnam. (Ireland would be especially easy to implement - it is, as far as I'm aware, the only European state to not use postal codes.) Somebody else might be happy to maintain those though.</p>
+
+<p>But what's wrong with this?</p>
+
+<p>Bob decides to write an <code>Address</code> module that makes use of <code>Postcode</code>. Here's some of the methods:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> Address;
+
+<b class="hl_Keyword">use</b> Postcode;
+...;
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">get_country_iso3166</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span> = <span class="hl_Function">shift</span>;
+	<b class="hl_Keyword">return</b> <span class="hl_Function">uc</span>(...);
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">get_postcode</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span>   = <span class="hl_Function">shift</span>;
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$pc_str</span> = ...;
+	<b class="hl_Keyword">return</b> <span class="hl_Function">Postcode::</span><span class="hl_Operator">-</span>&gt;new(<span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">get_country_iso3166</span>, <span class="hl_DataType">$pc_str</span>);
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">get_state</span>
+{
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$self</span>  = <span class="hl_Function">shift</span>;
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$state</span> = ...;
+	
+	<i class="hl_Comment"># For the USA, if the state is missing, can infer it</i><i class="hl_Comment">
+</i>	<i class="hl_Comment"># from postal code.</i><i class="hl_Comment">
+</i>	<i class="hl_Comment">#</i><i class="hl_Comment">
+</i>	<span class="hl_DataType">$state</span> /<span class="hl_Operator">/</span><span class="hl_Others">= </span><span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">get_postcode</span>-&gt;<span class="hl_DataType">get_state</span><span class="hl_DataType">
+</span><span class="hl_Others">		if </span><span class="hl_DataType">$self</span>-&gt;<span class="hl_DataType">get_country_iso3166</span><span class="hl_Others"> eq 'US';</span><span class="hl_Others">
+</span><span class="hl_Others">	</span><span class="hl_Others">
+</span><span class="hl_Others">	return </span><span class="hl_DataType">$state</span><span class="hl_Others">;</span><span class="hl_Others">
+</span><span class="hl_Others">}</span><span class="hl_Others">
+</span><span class="hl_Others">
+</span><span class="hl_Others">...;</span><span class="hl_Others">
+</span><span class="hl_Others">1;</span><span class="hl_Others">
+</span></code></pre>
+
+
+
+<p>Everything looks fine, but what happens if the <code>Address</code> package gets run on a machine without <code>Postcode::US</code> installed? Then there will be no <code>$self-&gt;get_postcode-&gt;get_state</code> method and the code will croak.</p>
+
+<p><span class="caps">OK, </span>so Bob should explicitly declare a dependency on Postcode::US, but there are any number of reasons why he might not, including:</p>
+
+<ul>
+<li><code>Postcode::US</code> might be distributed as part of the core <code>Postcode</code> distribution. (But the fact that it is now, doesn't mean it won't be split out into a separate distribution in the future.)</li>
+<li>Bob might be generating his dependency list automatically using some script that scans his source code looking for package names, but <code>Postcode::US</code> isn't mentioned explicitly in his code.</li>
+<li>Bob might have simply assumed that because the <code>get_state</code> method is available on his own machine, it will always be available everywhere.</li>
+</ul>
+
+<p>And this does happen in real life. Few were prepared when <span class="caps">HTTPS </span>support was split out from libwww-perl.</p>
+
+<p>Another more subtle issue would be if the <code>Address</code> package relied on <code>Postcode::-&gt;new(GB =&gt; $postcode)</code> performing the whitespace canonicalisation found in <code>Postcode::GB</code>. This variety of problem is particularly hard to debug.</p>
+
+<p>A related issue is that the <code>Address</code> package and the <code>GeoLocator</code> package might require different sets of plugins to be loaded. <code>Address</code> may be relying on <code>Postcode::GB</code> being installed, but <code>GeoLocator</code> may be relying on it <em>not</em> being installed.</p>
+
+<p><span class="caps">OK, </span>so now we understand the problems, what are the solutions?</p>
+
+<p>One resolution is to eschew plugins entirely. However plugin based architectures do provide certain benefits, such as the convenience of being able to split different non-overlapping areas of functionality (locales in the <code>Postcode</code> example) between maintainers; or to make particular high-cost pieces of functionality (high <span class="caps">CPU </span>or memory usage; lots of <span class="caps">CPAN </span>dependencies; etc) more optional.</p>
+
+<p>So let's assume we want to be able to write pluggable software libraries. One simple solution is to simply stop automatically loading all plugins found on disk. Make your library's caller explicitly load the plugins they need. Don't do the <code>try_load_class</code> thing on your caller's behalf.</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> Address;
+
+<b class="hl_Keyword">use</b> Postcode;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Postcode::AU</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Postcode::GB</span>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Postcode::US</span>;
+...;
+=</code></pre>
+
+
+
+<p>You could even provide a little syntactic sugar:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> Address;
+
+<b class="hl_Keyword">use</b> Postcode <span class="hl_Operator">-l</span>ocales =&gt; [<span class="hl_Operator">qw/</span>au gb us<span class="hl_Operator">/</span>];
+...;
+</code></pre>
+
+
+
+<p>The key part to providing this sugar is that the <code>Postcode</code> must attempt to load the three plugins and croak (or at least carp) if any of them is not available. If it silently ignores missing locale plugins then it's not doing its job.</p>
+
+<p>This precaution solves many of the issues we've looked at, but not the issue where within the lifetime of a single process we want to <em>sometimes</em> use the <code>Postcode::GB</code> plugin, but at other times use plain old <code>Postcode</code>.</p>
+
+<p>This is really a problem of <a href="http://programmers.stackexchange.com/questions/148108/why-is-global-state-so-evil">global state</a> - the decision of whether to use the plugin or not, all basically comes down to the contents of the <code>%INC</code> hash, Perl's global variable which tracks which modules have been loaded. If <code>Postcode::GB</code> is loaded, then it will always be used for British postcodes; if it's not loaded, then it will never be used.</p>
+
+<p>So the solution is to use local state. Determine the list of plugins in use on an object-by-object basis. Let's see how this can be applied to <code>Postcode</code>:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">package</b> Postcode;
+
+...;
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">new</span>
+{
+	<b class="hl_Keyword">my</b> (<span class="hl_DataType">$class</span>, <span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>) = <span class="hl_DataType">@_</span>;
+	
+	<i class="hl_Comment"># $country should be an upper-case ISO 3166 alpha-2 code</i><i class="hl_Comment">
+</i>	<span class="hl_DataType">$country</span> = <span class="hl_Function">uc</span> <span class="hl_DataType">$country</span>;	
+	confess <span class="hl_Operator">"</span><span class="hl_DataType">$country</span><span class="hl_String"> not a valid country identifier</span><span class="hl_Operator">"</span>
+		<b class="hl_Keyword">unless</b> <span class="hl_DataType">$country</span> =~ <span class="hl_Operator">/</span><span class="hl_Char">^[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2}$</span><span class="hl_Operator">/</span>;
+		
+	<b class="hl_Keyword">return</b> <span class="hl_Function">bless</span> [<span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>] =&gt; <span class="hl_DataType">$class</span>;
+}
+
+<b class="hl_Keyword">sub </b><span class="hl_Function">new_using_plugin</span>
+{
+	<b class="hl_Keyword">my</b> (<span class="hl_DataType">$class</span>, <span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>) = <span class="hl_DataType">@_</span>;
+	
+	<i class="hl_Comment"># $country should be an upper-case ISO 3166 alpha-2 code</i><i class="hl_Comment">
+</i>	<span class="hl_DataType">$country</span> = <span class="hl_Function">uc</span> <span class="hl_DataType">$country</span>;	
+	confess <span class="hl_Operator">"</span><span class="hl_DataType">$country</span><span class="hl_String"> not a valid country identifier</span><span class="hl_Operator">"</span>
+		<b class="hl_Keyword">unless</b> <span class="hl_DataType">$country</span> =~ <span class="hl_Operator">/</span><span class="hl_Char">^[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2}$</span><span class="hl_Operator">/</span>;
+	
+	confess <span class="hl_Operator">"</span><span class="hl_String">call new_using_plugin on the base 'Postcode' class</span><span class="hl_Operator">"</span>
+		<b class="hl_Keyword">if</b> <span class="hl_DataType">$class</span> =~ <span class="hl_Operator">/</span><span class="hl_Others">::</span><span class="hl_Char">[</span><span class="hl_BaseN">A-Z</span><span class="hl_Char">]{2}$</span><span class="hl_Operator">/</span>;
+	
+	<b class="hl_Keyword">my</b> <span class="hl_DataType">$specific_class</span> = <span class="hl_Function">join</span> <span class="hl_Operator">'</span><span class="hl_String">::</span><span class="hl_Operator">'</span> =&gt; (<span class="hl_DataType">$class</span>, <span class="hl_DataType">$country</span>);
+	try_load_class(<span class="hl_DataType">$specific_class</span>);
+	confess <span class="hl_Operator">"</span><span class="hl_String">Could not load class </span><span class="hl_DataType">$specific_class</span><span class="hl_Operator">"</span>
+		<b class="hl_Keyword">unless</b> is_class_loaded(<span class="hl_DataType">$specific_class</span>)
+	<b class="hl_Keyword">return</b> <span class="hl_DataType">$specific_class</span>-&gt;<span class="hl_DataType">new</span>(<span class="hl_DataType">$country</span>, <span class="hl_DataType">$postal_code</span>);
+}
+
+...;
+<span class="hl_Float">1</span>;
+</code></pre>
+
+
+
+<p>With those two constructors, the caller is forced to make a choice between using the base <code>Postcode</code> class, or using the plugin (but croaking if the plugin is unavailable). If they really don't care, then they can always do this:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$beverley_hills</span> =
+	<span class="hl_Function">eval</span> { <span class="hl_Function">Postcode::</span><span class="hl_Operator">-</span>&gt;new_using_plugin(US =&gt; <span class="hl_Float">90210</span>) }
+	||do { <span class="hl_Function">Postcode::</span><span class="hl_Operator">-</span>&gt;new(US =&gt; <span class="hl_Float">90210</span>) };
+</code></pre>
+
+
+
+<p>For more complex cases where you wish to allow plugins on an object-by-object basis, then consider writing the plugin as <a href="https://metacpan.org/module/Moose::Role">Moose roles</a> and using <a href="https://metacpan.org/module/MooseX::Traits">MooseX::Traits</a> to allow your caller to construct objects using a combination of those roles.</p>
+
+<p>Plugins can be a very powerful tool, if used carefully. Avoid unpredictable loading; avoid global state.</p></div>
+  </content>
+  <published>2012-07-23T20:14:33+01:00</published>
+  <updated>2012-07-30T09:55:48+01:00</updated>
+  <link rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/uk/"/>
+  <category term="perl"/>
+</entry>

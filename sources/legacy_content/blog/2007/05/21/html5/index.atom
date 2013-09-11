@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/05/21/html5/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/05/21/html5/"/>
+  <title>The Tao of HTML 5 - Part II</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Part of the problem with the <a href="http://whatwg.org"><span class="caps">WHATWG</span></a> <a href="http://www.whatwg.org/specs/web-apps/current-work/"><span class="caps">HTML</span> 5 specification</a> is that it's primarily written by browser makers. (<a href="http://hixie.ch">Hixie</a>, its editor, is the exception, as he currently works for <a href="http://www.google.com">Google</a>, though in the past was employed by <a href="http://www.mozilla.org">the Mozilla Foundation</a> and <a href="http://www.opera.com">Opera</a>.)</p>
+
+<p>This has steered the focus of the specification towards browser manufacturers -- the specification includes such things as algorithms for parsing markup. To expect a typical document author to <strong>care</strong> about such details, let alone <strong>understand</strong> them is a triumph of optimism over sanity.</p>
+
+<h2>Understanding Motivations</h2>
+
+<p>The aim of most browser makers is to increase their market share -- to attract users, the browser must enable them to view any documents they could in their old browser, plus tempt the user with an array of new features and improvements. Naturally this leads to a situation where browsers are somewhat liberal in interpreting documents.</p>
+
+<p>Whatsmore, it tends to mean that tolerences of malformed <span class="caps">HTML </span>in one browser proliferate.</p>
+
+<h2>Paving the Cow Paths</h2>
+
+<p><span class="caps">HTML5 </span>embodies a principle called "paving the cow paths".</p>
+
+<p>The idea behind this analogy is that at some time ago, a lonely cow wandered haphazardly through a field. A day or so later, a man walking through the same field decided to follow the trodden down path instead of venturing into the long grass. Over time, many people following the same path wore it down into a dirt path where no grass would grow. This was eventually paved.</p>
+
+<p>Nobody seems to have mentioned to <span class="caps">WHATWG </span>that this isn't a good thing. You end up with a haphazard road rather than a straight, efficient route. You end up with <code class="html">&lt;img&gt;</code> and <code class="html">&lt;applet&gt;</code> and <code class="html">&lt;object&gt;</code> and <code class="html">&lt;embed&gt;</code> and <code class="html">&lt;audio&gt;</code> and <code class="html">&lt;video&gt;</code> all doing roughly the same thing.</p>
+
+<h2>"Well, We Have To Support It..."</h2>
+
+<p><code class="html">&lt;object&gt;</code> is the standards-compliant method for embedding an external object (video, sound, interactive element, spreadsheet, etc) into a web page. However, old versions of Netscape used <code class="html">&lt;embed&gt;</code> instead. In practice authors used one or the other, or both. And so, sensibly, browser makers implemented support for both <code class="html">&lt;object&gt;</code> and <code class="html">&lt;embed&gt;</code>.</p>
+
+<p><span class="caps">HTML5, </span>as it stands, standardises <code class="html">&lt;embed&gt;</code>. So there are now two, functionally identical, but syntactically different methods for embedding external objects into an <span class="caps">HTML </span>document. This is confusing for authors who have to wonder when they should use one, or the other, or both! In practice, the majority of authors will use both out of a belief that they have to (or should) -- if they didn't have to, then why would both elements be included in the spec? -- so the staus quo remains unchanged, and authors end up using twice as much markup as they need to.</p>
+
+<p>What would happen if <span class="caps">HTML5 </span>did not include the <code class="html">&lt;embed&gt;</code> element? Would the sky come tumbling down? People writing to the <span class="caps">HTML5 </span>spec would use <code class="html">&lt;object&gt;</code> alone and save themselves some coding. Those authors who knew about <code class="html">&lt;embed&gt;</code>, and used it instead of <strong>or as well as</strong> <code class="html">&lt;object&gt;</code> would find that their pages still worked, but didn't validate. In other words: browsers would behave the same, <code class="html">&lt;embed&gt;</code> and <code class="html">&lt;object&gt;</code> would both work the same, but the specification would be simpler and authors would find it less confusing.</p>
+
+<p>The people behind the <span class="caps">HTML5 </span>spec, as they've approached the problem (naturally) from a browser maker's point of view, seem to have come to the conclusion that any elements that they'd like to support need to be in the specification. However, history has shown us that this is not the case. Despite it never being part of any <span class="caps">HTML </span>spec, the annoying <code class="html">&lt;blink&gt;</code> element has been implemented fairly consistantly in all major browsers for a number of years.</p>
+
+<p>***</p>
+
+<h2>The Tao</h2>
+
+<p>Here is the way forward: two specifications.</p>
+
+<p>One specification should be written for authors. It should be based on <span class="caps">HTML</span> 4.01 Strict and <span class="caps">XHTML</span> 1.0 Strict, but introduce a number of new, useful elements and attributes to the language -- "clean" ones -- well-designed extensions to the language -- not the haphazard results of meandering bovines.</p>
+
+<p>The other specification should be written for browser makers. It should be based on <span class="caps">HTML</span> 4.01 Transitional and <span class="caps">XHTML</span> 1.0 Transitional. It should be a proper superset of the specification for authors. It should include <code class="html">&lt;embed&gt;</code> and <code class="html">&lt;blink&gt;</code> and <code class="html">&lt;marquee&gt;</code>. It should support frames and all the other things which browser makers <strong>need</strong> to support no matter how much we wish they didn't. </p>
+
+<p>Authors deal with a small standard, telling them best practice for authoring modern documents; browser makers have a comprehensive document that specifies how their software should parse and display the full set of current, historical and proprietary elements.</p></div>
+  </content>
+  <published>2007-05-21T22:39:24+01:00</published>
+  <updated>2007-05-21T22:39:24+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="w3c"/>
+</entry>

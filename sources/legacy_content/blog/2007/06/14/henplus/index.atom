@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/14/henplus/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/14/henplus/"/>
+  <title>HenPlus</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>For a while, I've been using a great little Java-based <acronym title="Graphical User Interface">GUI</acronym> <acronym title="Structured Query Language">SQL</acronym> client called <a href="http://www.dbvis.com">dbVisualizer</a>. It's a nifty little database management tool that -- here's the good part -- supports virtually every database backend under the sun. I use it to manage PostgreSQL and MySQL databases at home and PostgreSQL and Microsoft <span class="caps">SQL</span> Server at work, and I can flit between them, using a consistent interface for them all. It's great.</p>
+
+<p>However, being a <span class="caps">GUI </span>app, it's a bit slow for when I just want to make one or two small queries, so I went looking for a speedy command-line equivalent today and found <a href="http://henplus.sourceforge.net/">HenPlus</a>. Like dbVis, HenPlus is based on Java and <acronym title="Java Database Connectivity">JDBC</acronym>, so it's able to work with a staggering array of backends. It's command-line based, so it should work double-fast, even over a <acronym title="Secure Shell">SSH</acronym> connection.</p>
+
+<p>The one problem I had installing it was with <tt>libreadline-java</tt>, which is a bridge between Java and <a href="http://tiswww.case.edu/php/chet/readline/rltop.html"><span class="caps">GNU </span>readline</a>. (GNU readline is a library that allows tab-completion and command history -- it seriously speeds up command-line work.) I installed the <a href="http://www.mandriva.com">Mandriva</a> Cooker <a href="http://ftp.cica.es/Mandrake-devel/cooker/i586/media/main/release/libreadline-java-0.8.1-1.1mdv2007.1.i586.rpm"><span class="caps">RPM </span>package</a> but it seemed to be missing a couple of files.</p>
+
+<p>My solution was to download and install the <a href="http://ftp.cica.es/Mandrake-devel/cooker/SRPMS/main/release/libreadline-java-0.8.1-1.1mdv2007.1.src.rpm">source <span class="caps">RPM</span></a> and then:</p>
+
+
+
+
+<pre>
+cd /usr/src/RPM/
+rpm -ba SPECS/libreadline-java.spec
+[This may give you an error, but leaves behind important files!]
+cd BUILD/libreadline-java-0.8.1/
+make T_LIBS=JavaReadline
+cp libJavaReadline.so /usr/lib/
+ln -s /usr/lib/libJavaReadline.so /usr/lib/libJavaReadline.so.0.8.1
+</pre>
+
+
+
+
+<p>also I needed to apply the following patch to <tt>/usr/bin/henplus</tt>:</p>
+
+
+
+<pre><code class="diff">
+<b class="hl_Keyword">--- /usr/bin/henplus.orig   2007-06-14 16:57:51.000000000 +0100</b><b class="hl_Keyword">
+</b><b class="hl_Keyword">+++ /usr/bin/henplus    2007-06-14 17:36:19.000000000 +0100</b><b class="hl_Keyword">
+</b><span class="hl_DataType">@@ -13,6 +13,8 @@</span><span class="hl_DataType">
+</span>     JAVA=$JAVA_HOME/bin/java
+ fi
+ 
+<span class="hl_String">+JAVA=/usr/java/jre1.5.0_07/bin/java</span><span class="hl_String">
+</span><span class="hl_String">+</span><span class="hl_String">
+</span> ##------------------
+ THISDIR=`dirname $0`
+ HENPLUSDIR=$THISDIR/../share/henplus
+<span class="hl_DataType">@@ -26,7 +28,7 @@</span><span class="hl_DataType">
+</span> # Modify this, if you installation stores this at a different
+ # position.
+ LD_LIBRARY_PATH=$THISDIR/../lib:/usr/lib/jni:$LD_LIBRARY_PATH
+<span class="hl_Others">-CLASSPATH=$CLASSPATH:$THISDIR/../share/java/libreadline-java.jar</span><span class="hl_Others">
+</span><span class="hl_String">+CLASSPATH=$CLASSPATH:$THISDIR/../share/java/libreadline-java.jar:/usr/lib/java/libreadline-java.jar</span><span class="hl_String">
+</span> 
+ # you may just throw your own jar files in this dir.
+ # (like additional JDBC-drivers, that are not in default
+</code></pre>
+
+
+
+<p>It's working great now</p></div>
+  </content>
+  <published>2007-06-14T18:31:33+01:00</published>
+  <updated>2007-06-14T18:31:33+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="java"/>
+  <category term="sql"/>
+  <category term="readline"/>
+  <category term="command-line"/>
+</entry>

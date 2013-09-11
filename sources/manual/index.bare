@@ -1,0 +1,187 @@
+<title>Toby Inkster</title>
+
+<article id="document_main"
+	xmlns:cert="http://www.w3.org/ns/auth/cert#"
+	xmlns:dc="http://purl.org/dc/terms/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:google="http://rdf.data-vocabulary.org/#"
+	xmlns:iso8601="urn:iso:std:iso:8601#"
+	xmlns:ogp="http://ogp.me/ns#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:rsa="http://www.w3.org/ns/auth/rsa#"
+	xmlns:schema="http://schema.org/"
+	xmlns:seminbox="http://purl.org/NET/semantic-inbox#"
+	xmlns:sioc="http://rdfs.org/sioc/ns#"
+	xmlns:this="http://tobyinkster.co.uk/#"
+	xmlns:wot="http://xmlns.com/wot/0.1/"
+	about="[this:i]"
+	typeof="google:Person foaf:Person schema:Person"
+	>
+	
+	<header role="heading">
+		<h1 property="foaf:name google:name schema:name rdfs:label">Toby Inkster</h1>
+	</header>
+	
+	<span style="display:none" rel="foaf:img foaf:depiction schema:image" rev="foaf:depicts">
+		<img src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=128"
+		alt="" style="width:128px;height:128px;border:0" typeof="foaf:Image" />
+	</span>
+	
+	<p rel="google:address foaf:based_near schema:address">
+		<span about="[this:home_lewes]" typeof="google:Address schema:PostalAddress">
+			<span property="google:locality schema:addressLocality" datatype=""><span about="" property="ogp:locality">Lewes</span></span>,
+			<span property="google:region schema:addressRegion" datatype=""><span about="" property="ogp:region">East Sussex</span></span>,
+			<span property="google:country-name schema:addressCountry" datatype=""><span about="" property="ogp:country-name">UK</span></span>.
+		</span>
+	</p>
+	
+	<dl class="expand">
+		<dt>Web</dt>
+		<dd>
+			<a href="http://tobyinkster.co.uk/" rev="foaf:primaryTopic foaf:maker dc:creator" rel="google:url foaf:homepage foaf:made schema:url">
+				<span property="ogp:url" datatype="" xml:lang=''>http://tobyinkster.co.uk/</span>
+				<span property="ogp:type" content="person" xml:lang=''></span>
+				<span property="ogp:title" content="Toby Inkster"></span>
+				<span property="ogp:image" content="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=128" xml:lang=''></span>
+			</a>
+		</dd>
+		
+		<dt>E-mail</dt>
+		<dd><a href="mailto:mail@tobyinkster.co.uk" rel="foaf:mbox schema:email"><span about="" property="ogp:email">mail@tobyinkster.co.uk</span></a></dd>
+		
+		<!-- dt>RESTful HTTP Mailbox</dt>
+		<dd><a href="https://tobyinkster.co.uk/mbox" rel="seminbox:mbox">https://tobyinkster.co.uk/mbox</a></dd>
+		<dd><a href="http://tobyinkster.co.uk/mbox" rel="seminbox:mbox">http://tobyinkster.co.uk/mbox</a></dd -->
+		
+		<dt>Telephone</dt>
+		<dd resource="tel:+44-7855-833657" rel="foaf:phone google:tel" property="schema:telephone" datatype=""><span about="" property="ogp:phone_number">+44 7855 833657</span></dd>
+		<!-- dd><a href="sip:tobyink@ekiga.net" rel="foaf:phone google:tel" property="schema:telephone">sip:tobyink@ekiga.net</a></dd -->
+		
+		<dt>Instant Messaging / Chat</dt>
+		<dd content="tobyink@jabber.linux.it" property="foaf:jabberID"><i>XMPP:</i> <a href="xmpp:tobyink@jabber.linux.it">tobyink@jabber.linux.it</a> (preferred)</dd>
+		<dd rel="foaf:account"><i>IRC:</i> <span about="irc://irc.freenode.net/tobyink,isnick" typeof="foaf:OnlineChatAccount"><span property="foaf:accountName">tobyink</span> on <a href="http://freenode.net/" rel="foaf:accountServiceHomepage">freenode.net</a></span></dd>
+		<dd content="tobyink" property="foaf:yahooChatID"><i>Yahoo:</i> <a href="ymsgr:sendIM?tobyink">tobyink</a></dd>
+		<dd content="inka80" property="foaf:aimChatID"><i>AIM:</i> <a href="aim:goim?screenname=inka80">inka80</a></dd>
+		<dd content="6622880" property="foaf:icqChatID"><i>ICQ:</i> <a href="http://www.icq.com/people/cmd.php?uin=6622880&#38;action=message">6622880</a></dd>
+	</dl>
+
+	<p>More of me on the Web&#8230;</p>
+	<dl>
+		<dt>Social</dt>
+		<dd rel="foaf:account" rev="sioc:account_of">
+			<a about="http://identi.ca/user/36737#acct" typeof="sioc:UserAccount" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://identi.ca/tobyink">
+				<span rel="foaf:primaryTopic dc:contributor" rev="foaf:homepage foaf:weblog" resource="[this:i]">tobyink@identi.ca</span>
+			</a>
+		</dd>
+		<dd rel="foaf:account" rev="sioc:account_of">
+			<a about="http://alpha.libre.fm/user/tobyink#acct" typeof="sioc:UserAccount" property="foaf:accountName" content="tobyink"  rel="me foaf:accountProfilePage" href="http://alpha.libre.fm/user/tobyink">
+				<span rel="foaf:primaryTopic dc:contributor" rev="foaf:page" resource="[this:i]">libre.fm: tobyink</span>
+			</a>
+		</dd>
+		<dd>(There is a Toby Inkster on Facebook, but it is <em>not</em> me.)</dd>
+		<dt>Programming</dt>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/bitbucket]" rel="me foaf:accountProfilePage" href="https://bitbucket.org/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Bitbucket: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/CPAN]" rel="me foaf:accountProfilePage" href="https://metacpan.org/author/TOBYINK"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">CPAN: TOBYINK</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/ohloh]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://www.ohloh.net/accounts/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Ohloh: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/GitHub]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://github.com/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">GitHub: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/gitorious]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://gitorious.com/~tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">gitorious: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/PerlMonks]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://www.perlmonks.org/?node=tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">PerlMonks: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/SemanticOverflow]" property="foaf:accountName" content="588" rel="me foaf:accountProfilePage" href="http://answers.semanticweb.com/users/588/tobyink/"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">answers.semanticweb.com: Toby Inkster</span></a></dd>
+		<dt>Wikis</dt>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/Wikipedia]" property="foaf:accountName" content="Tobyink" rel="me foaf:accountProfilePage" href="http://en.wikipedia.org/wiki/User:Tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Wikipedia: Tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/W3C-Wiki-ESW]" property="foaf:accountName" content="Tinkster" rel="me foaf:accountProfilePage" href="http://esw.w3.org/User:Tinkster"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">W3C Wiki: Tinkster</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/W3C-Wiki-SWIG]" property="foaf:accountName" content="Tinkster" rel="me foaf:accountProfilePage" href="http://www.w3.org/2001/sw/wiki/User:Tinkster"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">W3C Semantic Web Interest Group Wiki: Tinkster</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/W3C-Wiki-SWXG]" property="foaf:accountName" content="Tinkster" rel="me foaf:accountProfilePage" href="http://www.w3.org/2005/Incubator/socialweb/wiki/User:Tinkster"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">W3C Social Web Incubator Group Wiki: Tinkster</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/W3C-Wiki-RDFaWG]" property="foaf:accountName" content="Tinkster" rel="me foaf:accountProfilePage" href="http://www.w3.org/2010/02/rdfa/wiki/User:Tinkster"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">W3C RDFa Working Group Wiki: Tinkster</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/rdfa.info-Wiki]" property="foaf:accountName" content="TobyInk" rel="me foaf:accountProfilePage" href="http://rdfa.info/wiki/User:TobyInk"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">rdfa.info Wiki: TobyInk</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/microformats.org-Wiki]"  property="foaf:accountName" content="TobyInk" rel="me foaf:accountProfilePage" href="http://microformats.org/wiki/User:TobyInk"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Microformats Wiki: TobyInk</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/FOAF-Wiki]" property="foaf:accountName" content="TobyInk" rel="me foaf:accountProfilePage" href="http://wiki.foaf-project.org/w/User:TobyInk"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">FOAF Wiki: TobyInk</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/SIOC-Wiki]" property="foaf:accountName" content="TobyInk" rel="me foaf:accountProfilePage" href="http://wiki.sioc-project.org/index.php/User:TobyInk"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">SIOC Wiki: TobyInk</span></a></dd>
+		<dd>&#8230; and probably others I forget!</dd>
+		<dt>Made</dt>
+		<dd><a rel="me foaf:made" rev="foaf:maker dc:creator" href="http://buzzword.org.uk/">buzzword.org.uk</a></dd>
+		<dd><a rel="me foaf:made" rev="foaf:maker dc:creator" href="http://rdfa.check.info/">rdfa.check</a></dd>
+		<dd><a rel="me foaf:made" rev="foaf:maker dc:creator" href="http://ontologi.es/">ontologi.es</a></dd>
+	</dl>
+	
+	<dl class="expand" rel="foaf:topic_interest">
+		<dt>Interests &#8212; Technology</dt>
+		<dd content="Perl" about="http://dbpedia.org/resource/Perl" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Perl" href="http://en.wikipedia.org/wiki/Perl" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Perl</span></a></dd>
+		<dd content="PHP" about="http://dbpedia.org/resource/PHP" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/PHP" href="http://en.wikipedia.org/wiki/PHP" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">PHP</span></a></dd>
+		<dd content="Semantic Web" about="http://dbpedia.org/resource/Semantic_Web" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Semantic_Web" href="http://en.wikipedia.org/wiki/Semantic_Web" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Semantic Web</span></a></dd>
+		<dd content="The Social Web as a future network" about="http://dbpedia.org/resource/Social_web#The_Social_Web_as_a_future_network" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Social_web#The_Social_Web_as_a_future_network" href="http://en.wikipedia.org/wiki/Social_web#The_Social_Web_as_a_future_network" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Social Web &#8212; The Social Web as a Future Network</span></a></dd>
+		<dd content="W3C Standards" about="http://dbpedia.org/resource/W3C#Standards" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/W3C#Standards" href="http://en.wikipedia.org/wiki/W3C#Standards" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">W3C &#8212; Standards</span></a></dd>
+		<dt>Interests &#8212; Society</dt>
+		<dd content="Free software" about="http://dbpedia.org/resource/Free_software" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Free_software" href="http://en.wikipedia.org/wiki/Free_software" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Free software</span></a></dd>
+		<dd content="Humanism" about="http://dbpedia.org/resource/Humanism_(life_stance)" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Humanism_(life_stance)" href="http://en.wikipedia.org/wiki/Humanism_(life_stance)" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Humanism (life stance)</span></a></dd>
+		<dd content="Liberalism" about="http://dbpedia.org/resource/Liberalism" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Liberalism" href="http://en.wikipedia.org/wiki/Liberalism" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Liberalism</span></a></dd>
+		<dd content="Open government" about="http://dbpedia.org/resource/Open_government" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Open_government" href="http://en.wikipedia.org/wiki/Open_government" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Open government</span></a></dd>
+		<dt>Interests &#8212; Culinary</dt>
+		<dd content="British cuisine" about="http://dbpedia.org/resource/British_cuisine" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/British_cuisine" href="http://en.wikipedia.org/wiki/British_cuisine" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">British cuisine</span></a></dd>
+		<dd content="Italian cuisine" about="http://dbpedia.org/resource/Italian_cuisine" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Italian_cuisine" href="http://en.wikipedia.org/wiki/Italian_cuisine" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Italian cuisine</span></a></dd>
+		<dd content="Slow Food" about="http://dbpedia.org/resource/Slow_Food" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Slow_Food" href="http://en.wikipedia.org/wiki/Slow_Food" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Slow Food</span></a> (though I disagree with their stance on genetic engineering).</dd>
+		<dt>Interests &#8212; Local</dt>
+		<dd content="East Sussex" about="http://dbpedia.org/resource/East_Sussex" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/East_Sussex" href="http://en.wikipedia.org/wiki/East_Sussex" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">East Sussex</span></a></dd>
+		<dd content="Lewes" about="http://dbpedia.org/resource/Lewes" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Lewes" href="http://en.wikipedia.org/wiki/Lewes" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Lewes</span></a></dd>
+	</dl>
+	
+	<dl class="expand">
+		<dt>OpenID</dt>
+		<dd><a href="http://tobyinkster.co.uk/" rel="foaf:openid">http://tobyinkster.co.uk/</a></dd>
+		<dd><a href="http://openid.tobyinkster.co.uk/tobyink" rel="foaf:openid">http://openid.tobyinkster.co.uk/tobyink</a></dd>
+		
+		<dt>GPG</dt>
+		<dd rev="wot:identity" style="margin-bottom:0.33em" resource="[this:key_pgp_6A2A7D39]" rel="wot:hasKey">
+			<a property="wot:hex_id" href="/pgp/6A2A7D39" rel="wot:pubkeyAddress">6A2A7D39</a>
+			<small>
+				&#8212; <span property="wot:length">768</span> bit key (good security)
+				<br/>Fingerprint: <tt property="wot:fingerprint">5524 A8FF E3EB 3ACF 85B3  36E8 CEBF 8128 6A2A 7D39</tt>
+			</small>
+		</dd>
+		<!-- dd rev="wot:identity" style="margin-bottom:0.33em" resource="[this:key_pgp_C3881954]" rel="wot:hasKey">
+			<a property="wot:hex_id" href="/pgp/C3881954" rel="wot:pubkeyAddress">C3881954</a>
+			<small>
+				&#8212; <span property="wot:length">4096</span> bit key (paranoid security)
+				<br/>Fingerprint: <tt property="wot:fingerprint">A8B1 AEC7 8D00 40DD 5D03  0241 6042 C04C C388 1954</tt>
+				<br/><span datatype="iso8601:timeInterval" content="P1Y/2010-02-03" property="dc:valid">[expires: 2010-02-03]</span>
+			</small>
+		</dd -->
+		<dt>X.509</dt>
+		<dd style="margin-bottom:0.33em" rel="cert:key" rev="cert:identity">
+			<span about="[this:key_rsa_B025112EAF7811F968593BBCBC795CFF5A9158C0]" typeof="rsa:RSAPublicKey">
+				<a href="/pgp/X509_B0-25-11-2E-AF-78-11-F9-68-59-3B-BC-BC-79-5C-FF-5A-91-58-C0.pem" rev="cert:public_key"><span property="rdfs:label">B0:25:11:2E:AF:78:11:F9:68:59:3B:BC:BC:79:5C:FF:5A:91:58:C0</span></a><br/>
+				<small style="margin:0;padding:0">Public Exponent: <span datatype="cert:int" property="rsa:public_exponent">65537</span></small><br/>
+				<small style="margin:0;padding:0">Modulus: <tt datatype="cert:hex" property="rsa:modulus">d08e f5e3 e41d fef0 775d 8857 8a64 7566
+				fab0 c89a 6305 5ee5 ea67 730c 0046 bc48
+				a117 e4c1 7ac1 92f5 7e6c 4f63 8d34 0338
+				360d 78b2 0f8a 79d9 1007 de20 f12c 6a1b
+				c5c3 cf30 03c8 1411 cd1b 8e11 fd06 3970
+				2625 aaf5 2cdc 1929 bbd0 2075 d669 2404
+				390c 7f2d 8dfc 98fa 51e0 f779 68b8 eed0
+				81db 781c c874 5c2f 31bf ac9d 960f c94f</tt></small><br/>
+				<small datatype="iso8601:timeInterval" content="P1Y/2013-06-22" property="dc:valid">[expires: 2013-06-26]</small>
+			</span>
+		</dd>
+		
+		<dt>OpenSSH</dt>
+		<dd>
+			<a href="/pgp/id_dsa.pub">id_dsa.pub</a><br/>
+			<small>53:44:41:ed:bd:31:9f:cd:28:36:17:2f:97:b3:51:44</small>
+		</dd>
+		
+		<dt rel="foaf:account" rev="sioc:account_of">
+			<a about="[this:accounts/bitcoin]" typeof="foaf:OnlineAccount" rel="foaf:accountServiceHomepage" href="http://www.bitcoin.org/">Bitcoin</a>
+		</dt>
+		<dd about="[this:accounts/bitcoin]" property="foaf:accountName" xml:lang="">1CZirTMH1Pj5LGg6v4r9weMNmGwnWKK9mr</dd>
+	</dl>
+	
+	<!-- Various equivalencies, etc -->
+	<span rev="owl:sameAs" about="http://tobyinkster.co.uk/rdf/foaf#me" resource="[this:i]" rel="owl:sameAs"></span>
+	<span rev="owl:sameAs" about="http://tobyinkster.co.uk/~tobyink/#" resource="[this:i]" rel="owl:sameAs"></span>
+	<span rev="owl:sameAs" about="http://tobyinkster.co.uk/" typeof="foaf:PersonalProfileDocument" resource="http://tobyinkster.co.uk" rel="owl:sameAs"></span>
+	<span about="http://tobyinkster.co.uk/" resource="[this:i]" rel="foaf:primaryTopic"></span>
+	<span about="http://tobyinkster.co.uk" resource="[this:i]" rel="foaf:primaryTopic"></span>
+	<span rev="foaf:maker dc:creator" about="[this:i]" resource="/blog/" rel="foaf:weblog foaf:made"></span>
+	
+</article>

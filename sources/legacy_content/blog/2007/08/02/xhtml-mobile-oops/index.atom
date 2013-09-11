@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/08/02/xhtml-mobile-oops/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/08/02/xhtml-mobile-oops/"/>
+  <title>Open Mobile Alliance DTD Oops!</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><a href="http://www.openmobilealliance.org/">The Open Mobile Alliance</a>, who are responsible for co-ordinating the web-browsing efforts of mobile phones, seem to have misplaced <a href="http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12-model-1.mod">xhtml-mobile12-model-1.mod</a>. This file is a key part of the <acronym title="Document Type Definition">DTD</acronym> for the latest version of their <span class="caps">XHTML</span> Mobile Profile standard, which defines how authors should construct web pages intended for the consumption of mobile phones. Now that it's missing, all pages that reference the <span class="caps">XHTML</span> Mobile Profile 1.2 <span class="caps">DTD </span>are instantly invalid. Oops!</p>
+
+<p>Oh, and the corresponding files for versions 1.0 and 1.1 of the standard have also gone astray.</p></div>
+  </content>
+  <published>2007-08-02T12:46:21+01:00</published>
+  <updated>2007-08-02T12:49:36+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="mobile"/>
+  <category term="web"/>
+</entry>

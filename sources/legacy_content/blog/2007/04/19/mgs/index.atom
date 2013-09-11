@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/04/19/mgs/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/04/19/mgs/"/>
+  <title>The Importance of Software Testing</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Most programmers, especially those who work on server software, will have been in a situation when we've been reconfiguring, upgrading, modifying or otherwise replacing some piece of vital software on a physically remote server, and things haven't gone quite as expected.</p>
+
+<p>Often, fixing it is a simple matter of logging into the server remotely (via, say, secure shell) and reversing the change. In some extreme cases, the problem is so severe though, that it can't be fixed remotely -- for example, you've managed to accidentally halt the machine, so you can't log into it remotely and it needs a restart. In such a situation, you'll need to physically go over to the server (or phone someone and have them do so) and fix the problem.</p>
+
+<p><span class="caps">NASA</span>'s Mars Global Surveyor (MGS) was launched in November 1996. Fast forward almost a decade and a couple of bugs in a firmware update end up swivelling the antena further than the antenna was built to go. This led to the craft reorienting itself and exposing one of its batteries towards the sun. The battery overheated so the spacecraft decided to stop charging it. The second battery didn't have enough remaining power to keep the craft running. Within 12 hours, the <span class="caps">MGS </span>was space debris, and <span class="caps">NASA</span>'s not going to be able to find anyone able to walk over to it and hit the "reboot" button.</p>
+
+<p>Next time you're considering deploying some server-side software without testing, remember this story.</p>
+
+<ul>
+<li><a href="http://space.newscientist.com/article/dn11608-software-fix-responsible-for-loss-of-mars-probe.html">The New Scientist: Software 'fix' responsible for loss of Mars probe</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Mars_Global_Surveyor#Loss_of_Contact">Wikipedia: Mars Global Surveyor -- Loss of Contact</a></li>
+<li><a href="http://www.nasa.gov/pdf/174244main_mgs_white_paper_20070413.pdf" title="PDF"><span class="caps">NASA</span> White Paper</a></li>
+</ul></div>
+  </content>
+  <published>2007-04-19T19:04:45+01:00</published>
+  <updated>2007-04-19T19:04:45+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="science"/>
+  <category term="programming"/>
+  <category term="astronomy"/>
+  <category term="mars"/>
+</entry>

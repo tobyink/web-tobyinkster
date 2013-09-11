@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/02/15/html-vs-postscript/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/02/15/html-vs-postscript/"/>
+  <title>Re: Web Design: Would you design a PDF by writing Postscript in Notepad?</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>fgdg wrote:</p>
+
+<blockquote><p>Why do we put up with web design software? Nobody makes a <span class="caps">PDF</span>s by writing Postscript in Notepad, but that is what designer's working for the web are expected to do.</p></blockquote>
+
+<p>You are comparing apples with oranges here. PostScript is<sup class="footnote"><a href="#fn1">1</a></sup> a language for describing what pages look like. <span class="caps">HTML </span>is a language for describing what pages <strong>mean</strong>.</p>
+
+<p>People can auto-generate postscript documents from visual tools and the generating process will accurately create a document conveying the user's intentions.</p>
+
+<p>When people auto-generate <span class="caps">HTML </span>documents from visual tools, the tool needs to guess what the user really meant. Is does this text begin a new paragraph (<code class="html">&lt;p&gt;</code>), or is it really just two line breaks (<code class="html">&lt;br&gt;&lt;br&gt;</code>)? This series of several short lines, should it be marked up as a bullet-less list? Do these italics signify a citation (<code class="html">&lt;cite&gt;</code>), some emphasis (<code class="html">&lt;em&gt;</code>), or a Latin phrase (<code class="html">&lt;i lang="la"&gt;</code>)? Is that a single-line paragraph of bold text (<code class="html">&lt;p&gt;&lt;b&gt;</code>) or should it really be a third-level heading (<code class="html">&lt;h3&gt;</code>)?</p>
+
+<p>There are, as I see it, three solutions to this conundrum:</p>
+
+<ol>
+<li>To hell with semantics! Forget <code class="html">&lt;em&gt;</code>, <code class="html">&lt;cite&gt;</code> and so on, just use <code class="html">&lt;i&gt;</code> all the time!</li>
+<li>Write a tool that's really, really good at guessing semantics. </li>
+<li>Write a tool that doesn't have buttons and short-cut keys for things like bold, italic, different colours and fonts and so forth, but has buttons to insert citations, quotes, diagrammes and so forth, has options to mark certain chunks of text as either more or less important than the rest.</li>
+</ol>
+
+<p>Most recent visual <span class="caps">HTML </span>editors use the first approach, creating semantic-free documents. In my opinion authors using this sort of tool have no business writing <span class="caps">HTML </span>at all. If all they care about is the visual appearance of the document, they should probably switch to publishing in Flash, which is far more suited to their ideas.</p>
+
+<p>The second solution has been attempted once or twice, but tends to get things wrong as often as it gets them right.</p>
+
+<p>The third solution is a good idea, but using the current attempts at this sort of tool tends to be no easier to use than typing the <span class="caps">HTML </span>by hand anyway, rendering them rather useless.</p>
+
+<p>As an aside, some people <strong>do</strong> write postscript by hand. And whatsmore, this usually results in much smaller files, which load much more quickly.</p>
+
+<p class="footnote" id="fn1"><sup>1</sup> PostScript is actually a fully-fledged scripting language, but it's commonly used as a page description language and as a transmission format for print jobs.</p></div>
+  </content>
+  <published>2007-02-15T18:04:20Z</published>
+  <updated>2007-04-08T17:58:12+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="postscript"/>
+  <category term="html"/>
+  <category term="web"/>
+</entry>

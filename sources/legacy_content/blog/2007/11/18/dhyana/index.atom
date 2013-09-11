@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/11/18/dhyana/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/11/18/dhyana/"/>
+  <title>Dhyana.pl Updated</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>This release works around errors in capturing screen shots from certain <span class="caps">WMV </span>files. It also changes the default geometry from 240Ã180+0+0 to "auto" which is an automatically calculated, hopefully appropriate, geometry.</p>
+
+<!--@SUMMARY@-->
+
+<h2>Download</h2>
+
+<ul>
+<li><a href="./files/dhyana.pl">dhyana.pl</a></li>
+<li><a href="./files/dhyana.pl.html">Highlighted source code</a></li>
+</ul></div>
+  </content>
+  <published>2007-11-18T13:01:13Z</published>
+  <updated>2007-11-18T13:01:13Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="dhyana"/>
+  <category term="update"/>
+  <category term="programming"/>
+  <category term="video"/>
+  <category term="linux"/>
+  <category term="perl"/>
+</entry>

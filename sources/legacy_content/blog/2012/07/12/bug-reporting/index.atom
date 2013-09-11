@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2012/07/12/bug-reporting/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2012/07/12/bug-reporting/"/>
+  <title>10 Out Of 10</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><h2>How to File a Perfect Bug Report</h2>
+
+<p>My criteria for a perfect bug report...</p>
+
+<ol>
+<li>The report is filed correctly.</li>
+<li>The issue identified affects the latest version of the software.</li>
+<li>The report includes a test script illustrating the problem</li>
+<li>... which is self-contained</li>
+<li>... and is minimal</li>
+<li>... and conforms to the Test Anything Protocol.</li>
+<li>The report includes an explanation.</li>
+<li>The report includes patch</li>
+<li>... which is well-written</li>
+<li>... and obeys coding conventions.</li>
+</ol>
+
+<p>Obviously all reports of genuine bugs are welcome, but that doesn't mean all bug reports are equal; some are better than others. Getting 10 out of 10 is a lot of work, but even 6 out of 10 is better than average in my experience. </p>
+
+<p>Why is writing a good bug report important? Because the better the bug report, the faster the issue can be solved; and the faster the issue is solved, the sooner you can use the fixed software.</p>
+
+<p>So let's look at those criteria a little more closely.</p>
+
+
+<h2>File the Report Correctly</h2>
+
+<p>My <span class="caps">CPAN </span>releases (indeed most <span class="caps">CPAN </span>releases) include a link to a bug tracker fairly prominently in the documentation. If you file a bug report anywhere other than that bug tracker, it has not been filed correctly.</p>
+
+<p>There are occasionally reasons to follow up the report with additional communication through other channels (email, <span class="caps">IRC, </span>etc), but if a bug isn't filed on the bug tracker, then I'm likely to lose track of it. One reason to follow up by e-mail might be that you have an example of some input data that some code of mine is choking on, but you don't want this data in the public domain.</p>
+
+<p>Another part of filing the report correctly is categorising it correctly. If you're filing a feature request, mark it as "wishlist", not "critical".</p>
+
+
+<h2>Check which Releases are Affected</h2>
+
+<p>Make sure you have the latest released version installed, and the issue can still be observed. Except in rare cases where there are multiple officially supported branches of the software, most developers of open source software are unlikely to be interested in bug reports that only affect historic releases.</p>
+
+<p>For extra brownie points, grab a copy of the current development code from the project's source code repository and see if this is affected too.</p>
+
+<p>In your bug report, mention which versions you have tested the issue against.</p>
+
+
+<h2>Write a Test Script</h2>
+
+<p>Here's where you can really pick up the points: four points for a good test script. A test script is important for the following reasons:</p>
+
+<ul>
+<li>it proves that the issue exists;</li>
+<li>once the issue has been fixed, it tells the developer; and</li>
+<li>if the developer retains the test script as part of the project's test suite, it should prevent the issue from reoccurring in the future.</li>
+</ul>
+
+<p>So what is a good test script? In the context of a bug report, it's a script that currently "fails" (whatever is meant by failure... crashing or outputting the text "not ok" are good) but would pass if the issue were fixed.</p>
+
+<p>If possible, the script should be self-contained. It shouldn't, for instance, rely on files that might not exist on my system. It shouldn't download stuff from the Internet: if if needs a copy of some <span class="caps">HTML, </span>then that can be hard-coded into the test script; if it needs to perform actual <span class="caps">HTTP </span>to illustrate the problem, then it should launch a local Test::HTTP::Server instance.</p>
+
+<p>The script should be minimal. By which I mean it shouldn't include anything not necessary to illustrate the problem. I do not mean you should be playing keystroke golf. Keep: stuff that is necessary for it to be self-contained; stuff that is necessary for clarity; stuff that illustrates the problem; stuff that illustrates due dilligence (e.g. "use strict; use warnings").</p>
+
+<p>This is where this article gets Perl-specific. You should use Test::More or another module that produces <span class="caps">TAP</span>-compliant output. Why? Because this makes it easy to add your test case to the project's test suite, helping the developer avoid future regressions.</p>
+
+<p>Here's an example test case.</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">use</b> <b class="hl_Keyword">strict</b>;
+<b class="hl_Keyword">use</b> <b class="hl_Keyword">warnings</b>;
+<b class="hl_Keyword">use</b> <span class="hl_Function">Test::More</span> tests =&gt; <span class="hl_Float">1</span>;
+<b class="hl_Keyword">use</b> <b class="hl_Keyword">My</b>::<span class="hl_Function">Prime::Number</span>::<span class="hl_Function">Checker</span> <span class="hl_Operator">qw(</span>check_prime<span class="hl_Operator">)</span>;
+
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$result</span> = <span class="hl_Function">eval</span> { check_prime(0) };
+ok(!<span class="hl_Function">defined</span> <span class="hl_DataType">$result</span>, <span class="hl_Operator">"</span><span class="hl_String">check_prime(0) dies or returns undef</span><span class="hl_Operator">"</span>)
+    <span class="hl_Operator">or</span> note<span class="hl_Operator"> &lt;&lt;</span><b class="hl_Keyword">'EXPLAIN';</b>
+It is nonsensical to ask whether a non-natural number is prime.
+The check_prime function should return undef, or die if asked to
+check such a number.
+<b class="hl_Keyword">EXPLAIN</b>
+</code></pre>
+
+
+
+<p>Test scripts should avoid producing unnecessary output to the screen except when they're failing. In a large test suite, output from noisy passing tests can obscure the real failures.</p>
+
+
+<h2>Explain the Issue</h2>
+
+<p>So you've written a test script; a script that currently fails, but ought to pass. Explain <strong>why</strong> it should pass. Convince me that the issue you're experiencing isn't intended behaviour.</p>
+
+<p>Good arguments:</p>
+
+<ul>
+<li>Current behaviour violates a specification from a recognised standards body. If I'm aiming to implement a published standard, then a test case showing my implementation falls short is very persuasive.</li>
+<li>Current behaviour impedes interoperability with other software. </li>
+<li>Current behaviour contradicts the documentation. Of course, that might just mean that the documentation needs changing.</li>
+</ul>
+
+<p>For extra brownie points, embed at least an abbreviated form of this explanation into the test script.</p>
+
+
+<h2>Supply a Patch</h2>
+
+<p>This will not always be possible. Not every user of software has the necessary skills to modify that software. But if you have the ability, the inclination and the time to supply a patch, then this will greatly increase the speed the software maintainer is able to release a fixed version.</p>
+
+<p>That said, if the patch is badly written it may not be much help. Things to avoid are:</p>
+
+<ul>
+<li>unreadable code;</li>
+<li>slow or otherwise inefficient algorithms;</li>
+<li>massive refactoring where a one or two line fix would do; and</li>
+<li>introducing unnecessary additional dependencies.</li>
+</ul>
+
+<p>Try to match the surrounding code with regard to indentation and spacing, naming conventions and so forth.</p>
+
+
+<h2>You've got to roll with it</h2>
+
+<p>Now, there is always a danger that even if you've got 10 out of 10 for your bug report, the software maintainer just doesn't agree with your arguments.</p>
+
+<p>Say I've written an implementation of the FooBar 1.0 specification, and I don't implement the xyzzy feature correctly. This may be deliberate: perhaps the technically incorrect implementation is actually more interoperable with other FooBar implementations, or maybe I think the xyzzy part of FooBar is plain dumb.</p>
+
+<p>But in these cases I could probably be pursuaded to accept a patch which can be used conditionally. For instance:</p>
+
+
+
+<pre><code class="perl">
+<b class="hl_Keyword">my</b> <span class="hl_DataType">$parser</span> = <span class="hl_Function">Foo::Bar</span>-&gt;new(xyzzy_compliance =&gt; <span class="hl_DataType">$boolean</span>);
+</code></pre>
+
+
+
+<p>So if you've had an issue (especially a feature request) rejected as "not an issue", be prepared to change your request. Don't get too wedded to your original patch. Can the code be changed to make your feature request into an <strong>optional</strong> feature? Maybe, in the case of our Foo::Bar example, the implementation could actually detect at run time whether the "compliant" or "loose" xyzzy implementation was more appropriate and intelligently take the correct path.</p>
+
+
+<h2>The Exceptions</h2>
+
+<p>There are some kinds of trivial issues for which all of the above is overkill. Here are some examples:</p>
+
+<ul>
+<li>Typographical errors in documentation.</li>
+<li>Typographical errors in warnings and other messages emitted by the software.</li>
+<li>Factual errors in documentation.</li>
+<li>Dependencies not listed in <span class="caps">META.</span>yml.</li>
+</ul>
+
+<p>While you should still be reporting these on the correct issue tracker, and checking that the latest version is affected, a test case would almost certainly be overkill.</p></div>
+  </content>
+  <published>2012-07-12T19:49:04+01:00</published>
+  <updated>2012-07-13T06:58:07+01:00</updated>
+  <link rel="license" href="http://creativecommons.org/licenses/by-sa/2.0/uk/"/>
+  <category term="perl"/>
+</entry>

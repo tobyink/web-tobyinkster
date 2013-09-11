@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/07/bbc-home-page/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/07/bbc-home-page/"/>
+  <title>New BBC Home Page</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>So the <span class="caps">BBC </span>has redesigned its <a href="http://www.bbc.co.uk/home/beta/">home page</a>. <span class="caps">OK, </span>so normally I'm against the "let's be a portal" philosophy, but for the Beeb, I think it works. They produce such a colossal volume of content -- and in areas that make sense for a portal site (news, weather, sports, listings info) -- that they can get away with it. It sports togglable, movable widgets a la <a href="http://en.wikipedia.org/wiki/IGoogle">iGoogle</a>, thus allowing the user to customise their "BBC experience" to their own tastes.</p>
+
+<p>Overall, I'd say it's an improvement. There's still work to be done, but it's only in beta, so that is to be expected.</p>
+
+<p>But why the animated clock in the upper right-hand corner? (No, unlike most of the content on the page, it can't be removed.) Virtually every operating system includes a clock somewhere on the screen by default -- which the user can generally customise to their heart's content -- not only in terms of fonts and colours, but also more important stuff like whether to use 24-hour or 12-hour time, whether to include seconds, whether to show the date, etc. When I've already got my own personalised clock on screen, why would I need a second clock -- one not atuned to my own idiosyncratic tastes -- sitting on the <span class="caps">BBC </span>home page?</p>
+
+<p>I really don't understand this need some web developers seem to have to put clocks on their bloody webpages.</p>
+
+<p id="articleclock"/>
+<script type="text/javascript">
+function dotime ()
+{
+  var d = new Date;
+  document.getElementById('articleclock').innerHTML = d.toTimeString().substr(0,8);
+}
+window.setInterval(dotime, 500);
+</script></div>
+  </content>
+  <published>2008-01-07T01:02:52Z</published>
+  <updated>2008-01-07T01:07:11Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="bbc"/>
+  <category term="web"/>
+  <category term="usability"/>
+</entry>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/06/16/typography/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/06/16/typography/"/>
+  <title>Typography Links</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Most of the really pleasant web designs I see seem to display more than a little evidence of classical typographic knowledge. Here's my collection of typography-related resources, including links to some classic (and some common) fonts.</p>
+
+<h2>Tips and Tricks</h2>
+
+<ul>
+<li><a href="http://markboulton.co.uk/articles/detail/five_simple_steps_to_better_typography/">Mark Boulton: Five Simple Steps to Better Typography</a></li>
+<li><a href="http://webtypography.net/sxsw2007/webtypography-sxsw2007.pdf">Richard Rutter &amp; Mark Boulton: Web Typography Sucks</a></li>
+</ul>
+
+<h2>Particular Characters</h2>
+
+<ul>
+<li><a href="http://www.markboulton.co.uk/journal/comments/five_simple_steps_to_typesetting_on_the_web_the_right_glyph_for_the_job/">Mark Boulton: The Right Glyph for the Job</a> (ellipsis, quotes, ligatures)</li>
+<li><a href="http://www.markboulton.co.uk/journal/comments/five_simple_steps_to_typesetting_on_the_web_dashes/">Mark Boulton: Dashes</a></li>
+<li><a href="http://alistapart.com/articles/emen/">A List Apart: The Trouble with EM 'n EN</a> (dashes, hyphens, spaces, quotes, primes, ellipsis)</li>
+<li><a href="http://www.cs.tut.fi/~jkorpela/dashes.html">Jukka Korpela: Dashes and Hyphens</a></li>
+<li><a href="http://www.cs.tut.fi/~jkorpela/chars/spaces.html">Jukka Korpela: Unicode Spaces</a></li>
+<li><a href="http://www.cs.tut.fi/~jkorpela/html/euro.html" title="and in some other contexts">Jukka Korpela: The Euro Sign in <span class="caps">HTML</span></a></li>
+<li><a href="http://www.cs.tut.fi/~jkorpela/chars/si.html">Jukka Korpela: Characters in SI Notations</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Asterisk">Wikipedia: Asterisk</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Asterism_%28typography%29">Wikipedia: Asterism</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Dagger_%28typography%29">Wikipedia: Dagger</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Guillemets">Wikipedia: Guillemets</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Pilcrow">Wikipedia: Pilcrow</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Prime_%28symbol%29">Wikipedia: Prime</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Section_sign">Wikipedia: Section Sign</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Tilde">Wikipedia: Tilde</a></li>
+</ul>
+
+<h2>Fonts</h2>
+
+<ul>
+<li><a href="http://www.codestyle.org/css/font-family/">Code Style: Font Sampler</a></li>
+<li><a href="http://buzzword.org.uk/fonts/">Buzzword.org.uk: Common Fonts</a></li>
+<li><strong>Sans Serif / Gothic</strong><ul>
+<li>Grotesque<ul>
+<li><a href="http://en.wikipedia.org/wiki/Franklin_Gothic">Wikipedia: Franklin Gothic</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Geneva_%28typeface%29">Wikipedia: Geneva</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Haettenschweiler">Wikipedia: Haettenschweiler</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Helvetica">Wikipedia: Helvetica</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Impact_%28typeface%29">Wikipedia: Impact</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Univers">Wikipedia: Univers</a></li>
+</ul>
+</li>
+<li>Geometric<ul>
+<li><a href="http://en.wikipedia.org/wiki/Century_Gothic">Wikipedia: Century Gothic</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Futura_%28typeface%29">Wikipedia: Futura</a></li>
+</ul>
+</li>
+<li>Humanist<ul>
+<li><a href="http://en.wikipedia.org/wiki/Frutiger">Wikipedia: Frutiger</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Gill_Sans">Wikipedia: Gill Sans</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Lucida_Grande">Wikipedia: Lucida Grande</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Myriad_%28typeface%29">Wikipedia: Myriad</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Optima">Wikipedia: Optima</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Tahoma_%28typeface%29">Wikipedia: Tahoma</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Trebuchet_MS">Wikipedia: Trebuchet MS</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Verdana">Wikipedia: Verdana</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Serif</strong><ul>
+<li>Old Style<ul>
+<li><a href="http://en.wikipedia.org/wiki/Aldus_%28typeface%29">Wikipedia: Aldus</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Caslon">Wikipedia: Caslon</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Garamond">Wikipedia: Garamond</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Hoefler_Text">Wikipedia: Hoefler Text</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Palatino">Wikipedia: Palatino</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Trajan_%28typeface%29">Wikipedia: Trajan</a></li>
+</ul>
+</li>
+<li>Transitional<ul>
+<li><a href="http://en.wikipedia.org/wiki/Baskerville">Wikipedia: Baskerville</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Bernhard_Modern">Wikipedia: Berhard Modern</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Bookman_%28typeface%29">Wikipedia: Bookman</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Georgia_%28typeface%29">Wikipedia: Georgia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Mrs_Eaves">Wikipedia: Mrs Eaves</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Times_Roman">Wikipedia: Times Roman</a></li>
+</ul>
+</li>
+<li>Modern<ul>
+<li><a href="http://en.wikipedia.org/wiki/Bodoni">Wikipedia: Bodoni</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Century_Schoolbook">Wikipedia: Century Schoolbook</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Didot_%28typeface%29">Wikipedia: Didot</a></li>
+</ul>
+</li>
+<li>Slab Serif<ul>
+<li><a href="http://en.wikipedia.org/wiki/Courier_%28typeface%29">Wikipedia: Courier</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Rockwell_%28typeface%29">Wikipedia: Rockwell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Script</strong><ul>
+<li>Casual<ul>
+<li><a href="http://en.wikipedia.org/wiki/Brush_Script">Wikipedia: Brush Script</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Comic_Sans">Wikipedia: Comic Sans MS</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Dom_Casual">Wikipedia: Dom Casual</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Mistral_%28typeface%29">Wikipedia: Mistral</a></li>
+</ul>
+</li>
+<li>Caligraphic<ul>
+<li><a href="http://www.adobe.com/type/browser/P/P_165.html">Adobe: <span class="caps">ITC</span> Zapf Chancery</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Kuenstler_Script">Wikipedia: Kuenstler Script</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Zapfino">Wikipedia: Zapfino</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Black Letter</strong><ul>
+<li><a href="http://en.wikipedia.org/wiki/Fette_Fraktur">Wikipedia: Fette Fraktur</a></li>
+</ul></li>
+</ul>
+
+<p>***</p>
+
+<p>I won't give any links to grid-based layout information because I just don't think grid-based layout gels well with web design -- it doesn't work with liquid layouts and resizable fonts.</p></div>
+  </content>
+  <published>2007-06-16T14:05:27+01:00</published>
+  <updated>2007-06-16T14:05:27+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="typography"/>
+  <category term="links"/>
+  <category term="web"/>
+  <category term="fonts"/>
+</entry>

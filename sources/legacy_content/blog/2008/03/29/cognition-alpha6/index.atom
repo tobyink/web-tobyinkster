@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/03/29/cognition-alpha6/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/03/29/cognition-alpha6/"/>
+  <title>Cognition 0.1 Alpha 6</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;Tonight I&amp;#39;ve released another alpha version of &lt;a href="http://buzzword.org.uk/cognition/"&gt;Cognition&lt;/a&gt;, my semantic web parser. Changelog includes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Microformats:&lt;/em&gt;&lt;ul&gt;
+&lt;li&gt;Add option (disabled by default) to require &lt;code class="html"&gt;&amp;lt;head profile&amp;gt;&lt;/code&gt; for microformat support. Microformat profiles are treated as &lt;strong&gt;opaque strings&lt;/strong&gt;! Supports the following profiles:&lt;ul&gt;
+&lt;li&gt;http://purl.org/uF/2008/03/&lt;/li&gt;
+&lt;li&gt;http://www.w3.org/2006/03/hcard or http://purl.org/uF/hCard/1.0/&lt;/li&gt;
+&lt;li&gt;http://dannyayers.com/microformats/hcalendar-profile or http://purl.org/uF/hCalendar/1.0/&lt;/li&gt;
+&lt;li&gt;http://purl.org/uF/hAtom/0.1/&lt;/li&gt;
+&lt;li&gt;http://purl.org/uF/rel-tag/1.0/&lt;/li&gt;
+&lt;li&gt;http://purl.org/uF/rel-license/1.0/&lt;/li&gt;
+&lt;li&gt;No profiles required for rel-enclosure, adr or geo (yet).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Support for hAtom, WebSlices.&lt;ul&gt;
+&lt;li&gt;In addition to hAtom 0.1, rel-enclosure is supported within hEntries.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Improve include-pattern support to prevent some infinite loops.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;span class="caps"&gt;GRDDL&lt;/span&gt;:&lt;/em&gt;&lt;ul&gt;
+&lt;li&gt;Add option (disabled by default) to require &lt;head profile&gt; for &lt;span class="caps"&gt;GRDDL.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Add option to check profile &lt;span class="caps"&gt;URL&lt;/span&gt;s for profileTransformation links.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Export:&lt;/em&gt;&lt;ul&gt;
+&lt;li&gt;Atom output. (Supports &lt;span class="caps"&gt;RDF&lt;/span&gt;/RSS and hAtom as input.)&lt;/li&gt;
+&lt;li&gt;iCalendar export option.&lt;ul&gt;
+&lt;li&gt;hCalendar 1.1 events.&lt;/li&gt;
+&lt;li&gt;hCalendar 1.1 todo items&lt;/li&gt;
+&lt;li&gt;hCalendar 1.1 freebusy info.&lt;/li&gt;
+&lt;li&gt;hCalendar 1.1 alarms.&lt;/li&gt;
+&lt;li&gt;hAtom entries (as &lt;span class="caps"&gt;VJOURNAL&lt;/span&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;span class="caps"&gt;W3C&lt;/span&gt;&amp;#39;s iCal &lt;span class="caps"&gt;RDF &lt;/span&gt;vocab (but see note in Cognition/Export/Calendar.pm)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://web.resource.org/rss/1.0/modules/event/"&gt;&lt;span class="caps"&gt;RSS&lt;/span&gt; Event Module&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Added a "--nofollow" option to prevent secondary fetching from particular hosts. (Secondary fetching = requesting &lt;code class="html"&gt;&amp;lt;head profile&amp;gt;&lt;/code&gt;, &lt;code class="html"&gt;&amp;lt;link rel=&amp;quot;meta&amp;quot;&amp;gt;&lt;/code&gt;, &lt;code class="html"&gt;&amp;lt;link rel=&amp;quot;transformation&amp;quot;&amp;gt;&lt;/code&gt;.)&lt;/li&gt;
+&lt;li&gt;Support &lt;code class="html"&gt;&amp;lt;rdf:RDF&amp;gt;&lt;/code&gt; elements found directly in (X)HTML.&lt;/li&gt;
+&lt;li&gt;Much improved &lt;span class="caps"&gt;HTML &lt;/span&gt;to Text convertion. Namely: word wrapping, line breaks added after block elements, quote marks around &lt;code class="html"&gt;&amp;lt;q&amp;gt;&lt;/code&gt; elements, bullet points and numbers before &lt;code class="html"&gt;&amp;lt;li&amp;gt;&lt;/code&gt; elements in unordered and ordered lists, brackets around superscript text, parentheses around subscripts, tab characters between table cells, usenet-style quoting for &lt;code class="html"&gt;&amp;lt;blockquote&amp;gt;&lt;/code&gt;, alt text from &lt;code class="html"&gt;&amp;lt;img&amp;gt;&lt;/code&gt; and &lt;code class="html"&gt;&amp;lt;input type=&amp;quot;img&amp;quot;&amp;gt;&lt;/code&gt;, values from other &lt;code class="html"&gt;&amp;lt;input&amp;gt;&lt;/code&gt; tags. Should be able to handle nested elements like &lt;code class="xpath"&gt;//ul/li/ol/li/dl/dd/blockquote/img[@alt]&lt;/code&gt;. Won&amp;#39;t be completely foolproof, but should be an improvement over what was there before!&lt;/li&gt;
+&lt;li&gt;Fix so that the entire page is not given a rdf:type of ical:vcalendar unless it contains some bona fide vevent/vtodo/valarm/vfreebusy nodes.&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <published>2008-03-29T23:02:33Z</published>
+  <updated>2008-03-29T23:13:39Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="programming"/>
+  <category term="semantic-web"/>
+  <category term="cognition"/>
+  <category term="web"/>
+  <category term="perl"/>
+</entry>

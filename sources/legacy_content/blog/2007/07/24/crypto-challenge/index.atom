@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/24/crypto-challenge/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/24/crypto-challenge/"/>
+  <title>Cryptography Challenge</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's a challenge. Decrypt...</p>
+
+<p>aWt6eWZlaWEKfWJjeWFvcwppa3p5ZmVpYQpvaWJlCmZjZ2sKZmNnawp5<br/>
+emtpbwpub2Z+awpleWlreApkZXxvZ2hveApvaWJlCmhrZG0KeXpraW8Ka<br/>
+Wt6eWZlaWEKemt6awppa3p5ZmVpYQpmY2drCm9pYmUKa2Z6YmsKeW<br/>
+NveHhrCm9pYmUKeXpraW8KZmNnawpvaWJlCmtmemJrCnxjaX5leApvaW<br/>
+JlCnl6a2lvCmtmemJrCnl6a2lvCmlia3hmY28KZXlpa3gKZ2NhbwpnY2FvCm9<br/>
+pYmUKZGV8b2dob3gKfmtkbWUKeXpraW8KZXlpa3gKZGV8b2dob3gKeX<br/>
+praW8KfmtkbWUKZXlpa3gKaHhrfGUKc2tkYW9vCmNkbmNtZQpkZXxvZ2h<br/>
+veAphY2ZlCnljb3h4awp+a2RtZQpvaWJlCnhlZ29lCnl+ZXoKaWJreGZjbwpl<br/>
+eWlreAp5fmV6Cn9kY2xleGcKYWNmZQp5emtpbwppYmt4ZmNvCmZjZ2sK<br/>
+a2Z6YmsKY2RuY21lCmdjYW8KY2RuY21lCmRlfG9naG94Cm1lZmwKeXpra<br/>
+<span class="caps">W8K</span>aWJreGZjbwp4ZWdvZQpvaWJlCm5vZn5rCmNkbmNtZQp+a2RtZQp5f<br/>
+mV6</p></div>
+  </content>
+  <published>2007-07-24T23:30:25+01:00</published>
+  <updated>2007-07-24T23:30:25+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="challenge"/>
+  <category term="crypto"/>
+</entry>

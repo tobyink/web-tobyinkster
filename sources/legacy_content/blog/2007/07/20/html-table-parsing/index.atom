@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/20/html-table-parsing/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/20/html-table-parsing/"/>
+  <title>Parsing an HTML Table with PEAR's XML_HTMLSax3</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's an example of how to parse an <span class="caps">HTML </span>table into an array using the <a href="http://pear.php.net"><span class="caps">PEAR</span></a> module <strong><span class="caps">XML</span>_HTMLSax3</strong>. It supports the <code class="html">&lt;tr&gt;</code>, <code class="html">&lt;td&gt;</code> and <code class="html">&lt;th&gt;</code> elements and the <code class="html">rowspan</code> and <code class="html">colspan</code> attributes.</p>
+
+<p>It's worth noting that this code will raise a bunch of notices if you run it displaying all errors. This is pretty difficult to avoid, so if you don't like that, disable the display of notices.</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<b class="hl_Reserved">/**
+ * Example of how to parse an HTML table using PEAR XML_HTMLSax3.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * Copyright (C) 2007 Toby Inkster</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * This program is free software; you can redistribute it and/or modify</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * it under the terms of the GNU Lesser General Public License as</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * published by the Free Software Foundation; either version 3 of the </b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * License, or (at your option) any later version.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * This program is distributed in the hope that it will be useful, but</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * WITHOUT ANY WARRANTY; without even the implied warranty of</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * Lesser General Public License for more details.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * You should have received a copy of the GNU Lesser General Public</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * License along with this program.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * If not, see </b><b class="hl_Keyword">&lt;http:</b><span class="hl_Others">//www.gnu.org/licenses</span><b class="hl_Keyword">/&gt;</b><b class="hl_Reserved">.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * </b><b class="hl_Keyword">@author</b><b class="hl_Reserved"> Toby Inkster</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * @copyright Copyright (C) 2007 Toby Inkster</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * @license http://www.gnu.org/licenses/gpl-3.0.html GNU General Public Licence</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> */</b>
+
+<b class="hl_Reserved">/**
+ * Parser class. </b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> *</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> * You probably only need to directly access the "Go" method.</b><b class="hl_Reserved">
+</b><b class="hl_Reserved"> */</b>
+<b class="hl_Keyword">class</b> TableParser
+{
+	<b class="hl_Keyword">private</b> <b class="hl_Variable">$currow</b> = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>
+	<b class="hl_Keyword">private</b> <b class="hl_Variable">$curcol</b> = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>
+
+	<b class="hl_Keyword">private</b> <b class="hl_Variable">$shape</b> = <span class="hl_Function">array</span><span class="hl_Others">();</span>
+	<b class="hl_Keyword">private</b> <b class="hl_Variable">$data</b>  = <span class="hl_Function">array</span><span class="hl_Others">();</span>
+
+	<b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> openHandler <span class="hl_Others">(</span><b class="hl_Variable">$parser</b><span class="hl_Others">,</span> <b class="hl_Variable">$tag</b><span class="hl_Others">,</span> <b class="hl_Variable">$attrs</b><span class="hl_Others">)</span>
+	{
+		<b class="hl_Variable">$tag</b> = <span class="hl_Function">strtolower</span><span class="hl_Others">(</span><b class="hl_Variable">$tag</b><span class="hl_Others">);</span>
+
+		<i class="hl_Comment">// Move to the correct cell co-ordinates.</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$tag</b>==<span class="hl_String">'tr'</span><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$this</b>-&gt;currow++<span class="hl_Others">;</span>
+			<b class="hl_Variable">$this</b>-&gt;curcol = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>
+		}
+		<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$tag</b>==<span class="hl_String">'td'</span>||<b class="hl_Variable">$tag</b>==<span class="hl_String">'th'</span><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$this</b>-&gt;curcol++<span class="hl_Others">;</span>
+		}
+
+		<i class="hl_Comment">// This should account for rowspan and colspan.</i><i class="hl_Comment">
+</i>		<span class="hl_Operator">while</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;shape<span class="hl_Others">[</span><b class="hl_Variable">$this</b>-&gt;currow<span class="hl_Others">][</span><b class="hl_Variable">$this</b>-&gt;curcol<span class="hl_Others">])</span>
+			<b class="hl_Variable">$this</b>-&gt;curcol++<span class="hl_Others">;</span>
+		<b class="hl_Variable">$rowspan</b> = <span class="hl_Float">1</span><span class="hl_Others">;</span>
+		<b class="hl_Variable">$colspan</b> = <span class="hl_Float">1</span><span class="hl_Others">;</span>
+		<span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$attrs</b> <span class="hl_Operator">as</span> <b class="hl_Variable">$k</b>=&gt;<b class="hl_Variable">$v</b><span class="hl_Others">)</span>
+		{
+			<b class="hl_Variable">$k</b> = <span class="hl_Function">strtolower</span><span class="hl_Others">(</span><b class="hl_Variable">$k</b><span class="hl_Others">);</span>
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$k</b>==<span class="hl_String">'rowspan'</span><span class="hl_Others">)</span>
+				<b class="hl_Variable">$rowspan</b>=<span class="hl_Others">(</span>int<span class="hl_Others">)</span><b class="hl_Variable">$v</b><span class="hl_Others">;</span>
+			<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><b class="hl_Variable">$k</b>==<span class="hl_String">'colspan'</span><span class="hl_Others">)</span>
+				<b class="hl_Variable">$colspan</b>=<span class="hl_Others">(</span>int<span class="hl_Others">)</span><b class="hl_Variable">$v</b><span class="hl_Others">;</span>
+		}
+		<span class="hl_Operator">for</span> <span class="hl_Others">(</span><b class="hl_Variable">$i</b>=0<span class="hl_Others">;</span> <b class="hl_Variable">$i</b>&lt;<b class="hl_Variable">$rowspan</b><span class="hl_Others">;</span> <b class="hl_Variable">$i</b>++<span class="hl_Others">)</span>
+			<span class="hl_Operator">for</span> <span class="hl_Others">(</span><b class="hl_Variable">$j</b>=0<span class="hl_Others">;</span> <b class="hl_Variable">$j</b>&lt;<b class="hl_Variable">$colspan</b><span class="hl_Others">;</span> <b class="hl_Variable">$j</b>++<span class="hl_Others">)</span>
+			{
+				<b class="hl_Variable">$x</b> = <b class="hl_Variable">$this</b>-&gt;currow + <b class="hl_Variable">$i</b><span class="hl_Others">;</span>
+				<b class="hl_Variable">$y</b> = <b class="hl_Variable">$this</b>-&gt;curcol + <b class="hl_Variable">$j</b><span class="hl_Others">;</span>
+				<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;shape<span class="hl_Others">[</span><b class="hl_Variable">$x</b><span class="hl_Others">][</span><b class="hl_Variable">$y</b><span class="hl_Others">])</span>
+					<span class="hl_Function">error_log</span><span class="hl_Others">(</span><span class="hl_String">'Overlap!'</span><span class="hl_Others">);</span>
+				<b class="hl_Variable">$this</b>-&gt;shape<span class="hl_Others">[</span><b class="hl_Variable">$x</b><span class="hl_Others">][</span><b class="hl_Variable">$y</b><span class="hl_Others">]</span> = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+			}
+	}
+
+	<b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> closeHandler <span class="hl_Others">(</span><b class="hl_Variable">$parser</b><span class="hl_Others">,</span> <b class="hl_Variable">$tag</b><span class="hl_Others">)</span>
+	{
+	}
+
+	<b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> dataHandler <span class="hl_Others">(</span><b class="hl_Variable">$parser</b><span class="hl_Others">,</span> <b class="hl_Variable">$data</b><span class="hl_Others">)</span>
+	{
+		<b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$this</b>-&gt;currow<span class="hl_Others">][</span><b class="hl_Variable">$this</b>-&gt;curcol<span class="hl_Others">]</span> .= <b class="hl_Variable">$data</b><span class="hl_Others">;</span>
+	}
+
+	<b class="hl_Keyword">public</b> <b class="hl_Keyword">function</b> getData <span class="hl_Others">()</span>
+	{
+		<span class="hl_Function">unset</span><span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><span class="hl_DecVal">-1</span><span class="hl_Others">]);</span>
+		<span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;data <span class="hl_Operator">as</span> <b class="hl_Variable">$k</b>=&gt;<b class="hl_Variable">$v</b><span class="hl_Others">)</span>
+			<span class="hl_Function">unset</span><span class="hl_Others">(</span><b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">[</span><b class="hl_Variable">$k</b><span class="hl_Others">][</span><span class="hl_DecVal">-1</span><span class="hl_Others">]);</span>
+		<span class="hl_Operator">return</span> <b class="hl_Variable">$this</b>-&gt;data<span class="hl_Others">;</span>
+	}
+	
+	<b class="hl_Keyword">public</b> <b class="hl_Keyword">static</b> <b class="hl_Keyword">function</b> Go <span class="hl_Others">(</span><b class="hl_Variable">$table_html</b><span class="hl_Others">)</span>
+	{
+		<span class="hl_Operator">require_once</span> <span class="hl_String">'XML/HTMLSax3.php'</span><span class="hl_Others">;</span>
+		<b class="hl_Variable">$sax</b>  = <b class="hl_Keyword">new</b> XML_HTMLSax3<span class="hl_Others">;</span>
+		<b class="hl_Variable">$hdlr</b> = <b class="hl_Keyword">new</b> TableParser<span class="hl_Others">;</span>
+		<b class="hl_Variable">$sax</b>-&gt;set_object<span class="hl_Others">(</span><b class="hl_Variable">$hdlr</b><span class="hl_Others">);</span>
+		<b class="hl_Variable">$sax</b>-&gt;set_element_handler<span class="hl_Others">(</span><span class="hl_String">'openHandler'</span><span class="hl_Others">,</span> <span class="hl_String">'closeHandler'</span><span class="hl_Others">);</span>
+		<b class="hl_Variable">$sax</b>-&gt;set_data_handler<span class="hl_Others">(</span><span class="hl_String">'dataHandler'</span><span class="hl_Others">);</span>
+		<b class="hl_Variable">$sax</b>-&gt;parse<span class="hl_Others">(</span><b class="hl_Variable">$table_html</b><span class="hl_Others">);</span>
+		<span class="hl_Operator">return</span> <b class="hl_Variable">$hdlr</b>-&gt;getData<span class="hl_Others">();</span>
+	}
+	
+}
+
+<b class="hl_Variable">$table</b> = <span class="hl_String">'</span><span class="hl_String">
+</span><span class="hl_String">&lt;table&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td rowspan="2"&gt;Test table lalala&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;123&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;456&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;/tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;789&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;ABC&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;/tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td colspan="2" rowspan="2"&gt;123&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;456&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;/tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">    &lt;td&gt;789&lt;/td&gt;</span><span class="hl_String">
+</span><span class="hl_String">  &lt;/tr&gt;</span><span class="hl_String">
+</span><span class="hl_String">&lt;/table&gt;</span><span class="hl_String">
+</span><span class="hl_String">'</span><span class="hl_Others">;</span>
+<span class="hl_Function">print_r</span><span class="hl_Others">(</span>TableParser<span class="hl_Others">::</span>Go<span class="hl_Others">(</span><b class="hl_Variable">$table</b><span class="hl_Others">));</span>
+
+1<b class="hl_Keyword">?&gt;</b></code></pre></div>
+  </content>
+  <published>2007-07-20T10:30:56+01:00</published>
+  <updated>2007-11-26T19:45:46Z</updated>
+  <link rel="license" href="http://www.gnu.org/licenses/lgpl-3.0.html"/>
+  <category term="pear"/>
+  <category term="html"/>
+  <category term="php"/>
+  <category term="programming"/>
+  <category term="sax"/>
+  <category term="xml"/>
+  <category term="oop"/>
+</entry>

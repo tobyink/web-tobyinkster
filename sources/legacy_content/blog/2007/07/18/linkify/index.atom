@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2007/07/18/linkify/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2007/07/18/linkify/"/>
+  <title>PHP Linkifier</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>Here's a nifty bit of code I wrote a while back (utilising a function from <span class="caps">PHP</span> SmartyPants) that takes a bunch of <span class="caps">HTML, </span>searches it for some word or phrase that you specify, and turns all occurances of it into a link, unless it's already a link!</p>
+
+
+
+<pre><code class="php">
+<b class="hl_Keyword">&lt;?php</b>
+
+<i class="hl_Comment">// how many times do you want to allow the tokenizer to loop?</i><i class="hl_Comment">
+</i><i class="hl_Comment">// The higher the value, the longer your system could churn</i><i class="hl_Comment">
+</i><i class="hl_Comment">// given an infinite-loop bug (or really really really long text string).</i><i class="hl_Comment">
+</i><span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'MAX_TOKENIZER_LOOPS'</span><span class="hl_Others">,</span> <span class="hl_Float">2000</span><span class="hl_Others">);</span>
+
+<i class="hl_Comment">// print error on tokenizer loop problem? </i><i class="hl_Comment">
+</i><span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'ADVISE_TOKENIZER_FAILURE'</span><span class="hl_Others">,</span> <b class="hl_Keyword">FALSE</b><span class="hl_Others">);</span>
+
+<i class="hl_Comment">// keys for $tokens hash</i><i class="hl_Comment">
+</i><span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'TOKENS_TYPE_TEXT'</span><span class="hl_Others">,</span> <span class="hl_String">'text'</span><span class="hl_Others">);</span>
+<span class="hl_Function">define</span><span class="hl_Others">(</span><span class="hl_String">'TOKENS_TYPE_TAG'</span><span class="hl_Others">,</span>  <span class="hl_String">'tag'</span><span class="hl_Others">);</span>
+
+<b class="hl_Keyword">function</b> _tokenize<span class="hl_Others">(</span>&amp;<b class="hl_Variable">$str</b><span class="hl_Others">,</span> &amp;<b class="hl_Variable">$tokens</b><span class="hl_Others">)</span> {
+<i class="hl_Comment">#</i><i class="hl_Comment">
+</i><i class="hl_Comment">#   Parameter:  Pointer to string containing HTML markup,</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               pointer to array to store results.</i><i class="hl_Comment">
+</i><i class="hl_Comment">#</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               Output array contains tokens comprising the input</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               string. Each token is either a tag (possibly with nested,</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               tags contained therein, such as &lt;a href="&lt;MTFoo&gt;"&gt;, or a</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               run of text between tags. Each element of the array is a</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               two-element array; the first is either 'tag' or 'text';</i><i class="hl_Comment">
+</i><i class="hl_Comment">#               the second is the actual value.</i><i class="hl_Comment">
+</i><i class="hl_Comment">#</i><i class="hl_Comment">
+</i><i class="hl_Comment">#   Based on the _tokenize() subroutine from Brad Choate's MTRegex plugin.</i><i class="hl_Comment">
+</i><i class="hl_Comment">#       &lt;http://www.bradchoate.com/past/mtregex.php&gt;</i><i class="hl_Comment">
+</i>
+
+    <b class="hl_Variable">$len</b> = <span class="hl_Function">strlen</span><span class="hl_Others">(</span><b class="hl_Variable">$str</b><span class="hl_Others">);</span>
+
+    <b class="hl_Variable">$depth</b> = <span class="hl_Float">6</span><span class="hl_Others">;</span>
+    <b class="hl_Variable">$nested_tags</b> = <span class="hl_Function">str_repeat</span><span class="hl_Others">(</span><span class="hl_String">'(?:&lt;(?:[^&lt;&gt;]|'</span><span class="hl_Others">,</span> <b class="hl_Variable">$depth</b><span class="hl_Others">);</span>
+    <b class="hl_Variable">$nested_tags</b> = <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$nested_tags</b><span class="hl_Others">,</span> 0<span class="hl_Others">,</span> <span class="hl_DecVal">-1</span><span class="hl_Others">);</span>
+    <b class="hl_Variable">$nested_tags</b> .= <span class="hl_Function">str_repeat</span><span class="hl_Others">(</span><span class="hl_String">')*&gt;)'</span><span class="hl_Others">,</span> <b class="hl_Variable">$depth</b><span class="hl_Others">);</span>
+
+    <b class="hl_Variable">$match</b> = <span class="hl_String">"/(?s: &lt;! ( -- .*? -- \s* )+ &gt; ) |</span><span class="hl_String">
+</span><span class="hl_String">               (?s: &lt;\? .*? \?&gt; ) |</span><span class="hl_String">
+</span><span class="hl_String">               </span><b class="hl_Variable">$nested_tags</b><span class="hl_String">/x"</span><span class="hl_Others">;</span>
+
+    <b class="hl_Variable">$last_tag_end</b> = <span class="hl_DecVal">-1</span><span class="hl_Others">;</span>
+    <b class="hl_Variable">$loops</b> = <b class="hl_Variable">$offset</b> = 0<span class="hl_Others">;</span>
+
+    <span class="hl_Operator">while</span> <span class="hl_Others">(</span><span class="hl_Function">preg_match</span><span class="hl_Others">(</span><b class="hl_Variable">$match</b><span class="hl_Others">,</span> <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$str</b><span class="hl_Others">,</span> <b class="hl_Variable">$offset</b><span class="hl_Others">),</span> <b class="hl_Variable">$hits</b><span class="hl_Others">,</span> <b class="hl_Keyword">PREG_OFFSET_CAPTURE</b><span class="hl_Others">))</span> {
+
+        <b class="hl_Variable">$extracted_tag</b> = <b class="hl_Variable">$hits</b><span class="hl_Others">[</span>0<span class="hl_Others">][</span>0<span class="hl_Others">];</span>   <i class="hl_Comment">// contains the full HTML tag</i><i class="hl_Comment">
+</i>        <b class="hl_Variable">$tag_start</b> = <b class="hl_Variable">$offset</b> + <span class="hl_Others">(</span>int<span class="hl_Others">)</span><b class="hl_Variable">$hits</b><span class="hl_Others">[</span>0<span class="hl_Others">][</span><span class="hl_Float">1</span><span class="hl_Others">];</span>  <i class="hl_Comment">// position of captured in string</i><i class="hl_Comment">
+</i>        <b class="hl_Variable">$offset</b> = <b class="hl_Variable">$tag_start</b> + <span class="hl_Float">1</span><span class="hl_Others">;</span>       <i class="hl_Comment">// tells preg_match where to start on next iteration</i><i class="hl_Comment">
+</i>
+        <i class="hl_Comment">// if this tag isn't next to the previous one, store the interstitial text</i><i class="hl_Comment">
+</i>        <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$tag_start</b> &gt; <b class="hl_Variable">$last_tag_end</b><span class="hl_Others">)</span> {
+            <b class="hl_Variable">$tokens</b><span class="hl_Others">[]</span> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'type'</span> =&gt; TOKENS_TYPE_TEXT<span class="hl_Others">,</span>
+                              <span class="hl_String">'body'</span> =&gt; <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$str</b><span class="hl_Others">,</span> <b class="hl_Variable">$last_tag_end</b>+<span class="hl_Float">1</span><span class="hl_Others">,</span> <b class="hl_Variable">$tag_start</b>-<b class="hl_Variable">$last_tag_end</b>-<span class="hl_Float">1</span><span class="hl_Others">));</span>
+        }
+
+        <b class="hl_Variable">$tokens</b><span class="hl_Others">[]</span> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'type'</span> =&gt; TOKENS_TYPE_TAG<span class="hl_Others">,</span>
+                          <span class="hl_String">'body'</span> =&gt; <b class="hl_Variable">$extracted_tag</b><span class="hl_Others">);</span>
+
+        <b class="hl_Variable">$last_tag_end</b> = <b class="hl_Variable">$tag_start</b> + <span class="hl_Function">strlen</span><span class="hl_Others">(</span><b class="hl_Variable">$extracted_tag</b><span class="hl_Others">)</span> - <span class="hl_Float">1</span><span class="hl_Others">;</span>
+        
+        <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$loops</b>++ &gt; MAX_TOKENIZER_LOOPS<span class="hl_Others">)</span> { 
+        
+            <span class="hl_Operator">if</span> <span class="hl_Others">(</span>ADVISE_TOKENIZER_FAILURE<span class="hl_Others">)</span> {
+                <span class="hl_Function">print</span> <span class="hl_String">"SmartyPants _tokenize failure."</span><span class="hl_Others">;</span> 
+            }
+            <span class="hl_Operator">return</span><span class="hl_Others">;</span> 
+        }
+    }
+
+
+    <i class="hl_Comment">// if text remains after the close of the last tag, grab it</i><i class="hl_Comment">
+</i>    <span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$offset</b> &lt; <b class="hl_Variable">$len</b><span class="hl_Others">)</span> {
+        <b class="hl_Variable">$tokens</b><span class="hl_Others">[]</span> = <span class="hl_Function">array</span><span class="hl_Others">(</span><span class="hl_String">'type'</span> =&gt; TOKENS_TYPE_TEXT<span class="hl_Others">,</span>
+                          <span class="hl_String">'body'</span> =&gt; <span class="hl_Function">substr</span><span class="hl_Others">(</span><b class="hl_Variable">$str</b><span class="hl_Others">,</span> <b class="hl_Variable">$last_tag_end</b> + <span class="hl_Float">1</span><span class="hl_Others">));</span>
+    }
+
+    <span class="hl_Operator">return</span><span class="hl_Others">;</span>
+    
+}
+
+<b class="hl_Keyword">function</b> linkity <span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">,</span> <b class="hl_Variable">$word</b><span class="hl_Others">,</span> <b class="hl_Variable">$link</b>=<span class="hl_String">''</span><span class="hl_Others">,</span> <b class="hl_Variable">$casesensitive</b>=<b class="hl_Keyword">FALSE</b><span class="hl_Others">)</span>
+{
+	<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$link</b>==<span class="hl_String">''</span><span class="hl_Others">)</span>
+		<b class="hl_Variable">$link</b> = <span class="hl_String">'http://en.wikipedia.org/wiki/'</span>.<span class="hl_Function">ucfirst</span><span class="hl_Others">(</span><b class="hl_Variable">$word</b><span class="hl_Others">);</span>
+
+	<b class="hl_Variable">$regexp</b> = <span class="hl_String">'#\b('</span>.<b class="hl_Variable">$word</b>.<span class="hl_String">')\b#'</span>.<span class="hl_Others">(</span><b class="hl_Variable">$casesenitive</b>?<span class="hl_String">''</span><span class="hl_Others">:</span><span class="hl_String">'i'</span><span class="hl_Others">);</span>
+	<b class="hl_Variable">$inlink</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+	<b class="hl_Variable">$out</b> = <span class="hl_String">''</span><span class="hl_Others">;</span>
+
+	<b class="hl_Variable">$tokens</b> = <span class="hl_Function">array</span><span class="hl_Others">();</span>
+	_tokenize<span class="hl_Others">(</span><b class="hl_Variable">$string</b><span class="hl_Others">,</span> <b class="hl_Variable">$tokens</b><span class="hl_Others">);</span>
+	
+	<span class="hl_Operator">foreach</span> <span class="hl_Others">(</span><b class="hl_Variable">$tokens</b> <span class="hl_Operator">as</span> <b class="hl_Variable">$t</b><span class="hl_Others">)</span>
+	{
+		<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'type'</span><span class="hl_Others">]</span>==TOKENS_TYPE_TAG<span class="hl_Others">)</span>
+		{
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><span class="hl_Function">preg_match</span><span class="hl_Others">(</span><span class="hl_String">'#&lt;a#i'</span><span class="hl_Others">,</span> <b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'body'</span><span class="hl_Others">]))</span>
+				<b class="hl_Variable">$inlink</b> = <b class="hl_Keyword">TRUE</b><span class="hl_Others">;</span>
+			<span class="hl_Operator">elseif</span> <span class="hl_Others">(</span><span class="hl_Function">preg_match</span><span class="hl_Others">(</span><span class="hl_String">'#&lt;/a#i'</span><span class="hl_Others">,</span> <b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'body'</span><span class="hl_Others">]))</span>
+				<b class="hl_Variable">$inlink</b> = <b class="hl_Keyword">FALSE</b><span class="hl_Others">;</span>
+			<b class="hl_Variable">$out</b> .= <b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'body'</span><span class="hl_Others">];</span>
+		}
+		<span class="hl_Operator">else</span>
+		{
+			<span class="hl_Operator">if</span> <span class="hl_Others">(</span><b class="hl_Variable">$inlink</b><span class="hl_Others">)</span>
+				<b class="hl_Variable">$out</b> .= <b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'body'</span><span class="hl_Others">];</span>
+			<span class="hl_Operator">else</span>
+				<b class="hl_Variable">$out</b> .= <span class="hl_Function">preg_replace</span><span class="hl_Others">(</span><b class="hl_Variable">$regexp</b><span class="hl_Others">,</span>
+						<span class="hl_String">"&lt;a href=</span><span class="hl_BString">\"</span><b class="hl_Variable">{$link}</b><span class="hl_BString">\"</span><span class="hl_String">&gt;$1&lt;/a&gt;"</span><span class="hl_Others">,</span>
+						<b class="hl_Variable">$t</b><span class="hl_Others">[</span><span class="hl_String">'body'</span><span class="hl_Others">]);</span>
+		}
+	}
+	<span class="hl_Operator">return</span> <b class="hl_Variable">$out</b><span class="hl_Others">;</span>
+}
+
+<b class="hl_Variable">$str</b> = <span class="hl_String">'Let</span><span class="hl_BString">\'</span><span class="hl_String">s go to &lt;a href="my.htm"&gt;my car&lt;/a&gt;. Tomorrow I</span><span class="hl_BString">\'</span><span class="hl_String">ll have to buy</span><span class="hl_String">
+</span><span class="hl_String">a new car because there is a problem with the carburettor.'</span><span class="hl_Others">;</span>
+
+<span class="hl_Function">print</span> <span class="hl_String">"</span><b class="hl_Variable">$str</b><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+<span class="hl_Function">print</span> linkity<span class="hl_Others">(</span><b class="hl_Variable">$str</b><span class="hl_Others">,</span> <span class="hl_String">'car'</span><span class="hl_Others">)</span>.<span class="hl_String">"</span><span class="hl_BString">\n</span><span class="hl_String">"</span><span class="hl_Others">;</span>
+
+1<b class="hl_Keyword">?&gt;</b></code></pre></div>
+  </content>
+  <published>2007-07-18T00:22:40+01:00</published>
+  <updated>2007-07-18T00:22:40+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="html"/>
+  <category term="php"/>
+</entry>

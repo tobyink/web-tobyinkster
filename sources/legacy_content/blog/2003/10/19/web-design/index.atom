@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2003/10/19/web-design/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2003/10/19/web-design/"/>
+  <title>On Web Design</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;local wrote:&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Now I wonder how important cross-browser coding actually is. How many browsers do I have to test, which versions?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I have two philosophies on this question.&lt;/p&gt;
+
+&lt;p&gt;The first is the philosophy I apply when making my own website -- I stick to the standards and let any browser that can&amp;#39;t handle it be damned. If 99% of browsers don&amp;#39;t work on it, that&amp;#39;s fine by me. (OK, so I have added a few little workarounds for &lt;span class="caps"&gt;IE6, &lt;/span&gt;but nothing major)&lt;/p&gt;
+
+&lt;p&gt;The second philosophy is similar and is what I use for other people&amp;#39;s websites. Again, write to standards, but make sure it works more or less perfectly in:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;IE 5+ (Windows)&lt;/li&gt;
+&lt;li&gt;Netscape 6+&lt;/li&gt;
+&lt;li&gt;Opera 7+&lt;/li&gt;
+&lt;li&gt;Konqueror&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;and make sure the content is readable and the site is navigatable in:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Netscape 4.x&lt;/li&gt;
+&lt;li&gt;IE 4 (Win)&lt;/li&gt;
+&lt;li&gt;IE 5 (Mac)&lt;/li&gt;
+&lt;li&gt;Opera 5+&lt;/li&gt;
+&lt;li&gt;Lynx&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now, the best way to do this, is to follow my smiple (sic) 7 point design&lt;br /&gt;
+procedure:&lt;/p&gt;
+
+&lt;h2&gt;1. Content&lt;/h2&gt;
+
+&lt;p&gt;Start with the content. It may be cliche to say so nowadays, but content really is king.&lt;/p&gt;
+
+&lt;h2&gt;2. Markup&lt;/h2&gt;
+
+&lt;p&gt;Mark up the content with semantically appropriate &lt;span class="caps"&gt;HTML&lt;/span&gt; 4.01 Strict (or use &lt;span class="caps"&gt;XHTML&lt;/span&gt; 1.0/1.1 if you like, although I tend to use &lt;span class="caps"&gt;HTML&lt;/span&gt; 4.01 in the second philosophy). If something&amp;#39;s a quote, use &lt;code class="html"&gt;&amp;lt;blockquote&amp;gt;&lt;/code&gt;. If something&amp;#39;s not a quote, then don&amp;#39;t use &lt;code class="html"&gt;&amp;lt;blockquote&amp;gt;&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;An important thing to remember in step 2 is heading structure. Each page should have exactly one (no more, no less) &lt;code class="html"&gt;&amp;lt;h1&amp;gt;...&amp;lt;/h1&amp;gt;&lt;/code&gt; heading. Its content should probably be similar to the contents of the &lt;code class="html"&gt;&amp;lt;title&amp;gt;...&amp;lt;/title&amp;gt;&lt;/code&gt; element, though not neccessarily the same. Then first-level subheadings should be &lt;code class="html"&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;. The next level of subheadings, &lt;code class="html"&gt;&amp;lt;h3&amp;gt;&lt;/code&gt;. You will rarely need to go on to &lt;code class="html"&gt;&amp;lt;h4&amp;gt;&lt;/code&gt;, &lt;code class="html"&gt;&amp;lt;h5&amp;gt;&lt;/code&gt; and &lt;code class="html"&gt;&amp;lt;h6&amp;gt;&lt;/code&gt;. Give &lt;code class="html"&gt;&amp;lt;h2&amp;gt;&lt;/code&gt; elements IDs -- this is nice for linking.&lt;/p&gt;
+
+&lt;p&gt;At this point, you should not even be considering what your page looks like!&lt;/p&gt;
+
+&lt;h2&gt;3. Validation&lt;/h2&gt;
+
+&lt;p&gt;Validate your &lt;span class="caps"&gt;HTML.&lt;/span&gt; If there are any errors, go back to Step 2. If there are no errors, send me &amp;Atilde;&amp;#131;&amp;Acirc;&amp;#130;&amp;Atilde;&amp;#130;&amp;Acirc;&amp;pound;20.&lt;/p&gt;
+
+&lt;h2&gt;4. Styling&lt;/h2&gt;
+
+&lt;p&gt;Now you can add &lt;span class="caps"&gt;CSS.&lt;/span&gt; It should work in the four target rendering engines I mentioned above: Trident (Used in IE/Win and derivatives), Gecko (used in Netscape 6+, Mozilla and related), Presto (used in Opera 7) and &lt;span class="caps"&gt;KHTML &lt;/span&gt;(used in Konqueror and Safari). &lt;/p&gt;
+
+&lt;p&gt;Try to make as few changes to your &lt;span class="caps"&gt;HTML &lt;/span&gt;as possible. Adding classes is &lt;span class="caps"&gt;OK, &lt;/span&gt;but it is usually better to take advantage of descendent selectors, etc when you can.&lt;/p&gt;
+
+&lt;p&gt;I will not go into detail here, but this is arguably the hardest part, especially as you will almost certainly need to add &lt;span class="caps"&gt;CSS &lt;/span&gt;hacks to get things to work in &lt;span class="caps"&gt;IE5.&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;5. Validation Again&lt;/h2&gt;
+
+&lt;p&gt;Validate your &lt;span class="caps"&gt;CSS.&lt;/span&gt; If there are any errors, back to Step 4. If there aren&amp;#39;t, send me &amp;Atilde;&amp;#131;&amp;Acirc;&amp;#130;&amp;Atilde;&amp;#130;&amp;Acirc;&amp;pound;20.&lt;/p&gt;
+
+&lt;h2&gt;6. Text Browsers&lt;/h2&gt;
+
+&lt;p&gt;Test your page in a non-CSS browser. Lynx is a good one. Or Netscape 2. If it is unusable, then you probably haven&amp;#39;t been paying attention to my instructions. If it is usable, give yourself a pat on the back and send me &amp;Atilde;&amp;#131;&amp;Acirc;&amp;#130;&amp;Atilde;&amp;#130;&amp;Acirc;&amp;pound;20 -- you have created a hopefully pretty web page which is still very usable in Lynx without really targetting Lynx.&lt;/p&gt;
+
+&lt;h2&gt;7. Scripting&lt;/h2&gt;
+
+&lt;p&gt;Optionally, add a little JavaScript here and there, but certainly don&amp;#39;t rely on it. When at all possible, stick to the subset of JavaScript that is &lt;span class="caps"&gt;ECMAS&lt;/span&gt;cript and only use the &lt;span class="caps"&gt;W3C DOM &lt;/span&gt;(not proprietry extensions).&lt;/p&gt;
+
+&lt;p&gt;Oh, and by the way, you should have considered accessibility and usability. These are not really steps as such, but design principles that should be in the back of your mind the whole way through. For example, in step 1, don&amp;#39;t use long words when short words will do. In step 4, don&amp;#39;t use microfonts, etc.&lt;/p&gt;
+
+&lt;p&gt;Some of my favourite usability points:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;don&amp;#39;t overwhelm the user with links. A navigation menu should have no more than 7 links. Better still, stick to 5.&lt;/li&gt;
+&lt;li&gt;away from the main navigation menu, but prominently, have a link to the home page, a site map and, if there is one, a search engine.&lt;/li&gt;
+&lt;li&gt;inline links are good.&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <published>2003-10-19T16:05:38+01:00</published>
+  <updated>2007-04-08T20:57:56+01:00</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/mirror"/>
+  <category term="html"/>
+  <category term="x-browser"/>
+  <category term="web"/>
+  <category term="accessibility"/>
+  <category term="standards"/>
+  <category term="css"/>
+  <category term="usability"/>
+  <category term="validation"/>
+</entry>

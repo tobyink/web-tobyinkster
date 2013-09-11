@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/07/click-click-click/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/07/click-click-click/"/>
+  <title>Click, click, click...</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="xml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p><span class="caps">OK, </span>so I was minding my own business, cleaning the stove and suddenly it starts making this regular clicking sound. Click, click, click, click, click... like a bomb or something. I remove the rings above the gas hobs and every time there's a click, a little spark flies out from the igniter. So I think to myself, I wonder what caused that...</p>
+
+<!--@SUMMARY@-->
+
+<p>Fairly obvious really. When I was cleaning, water seeped into the control panel, underneath the button that's normally used to ignite the flame. The water shorted out the button, firing the ignition continuously.</p>
+
+<p>But what to do?</p>
+
+<p>Obvious answer is to switch off the oven at the isolation switch and leave it to dry out. However, there doesn't seem to be an isolation switch, so I need to switch off the whole kitchen circuit at the fuse box. But who knows how long it will take to dry? And meanwhile I've got a fridge-freezer full of food warming up.</p>
+
+<p>So: bright idea! Switch the power back on, plug in an electric fan heater and aim it right at the ignition button. After 10 minutes, the clicking seems to slow down. Another 10 minutes and it's stopped. Oven's working fine, and sparkling clean of course!</p></div>
+  </content>
+  <published>2008-01-07T00:31:48Z</published>
+  <updated>2008-01-07T00:31:48Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="house"/>
+  <category term="electricity"/>
+  <category term="fix"/>
+</entry>

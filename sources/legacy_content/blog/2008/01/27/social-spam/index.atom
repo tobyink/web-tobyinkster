@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>http://tobyinkster.co.uk/blog/2008/01/27/social-spam/</id>
+  <link rel="self" href="http://tobyinkster.co.uk/blog/2008/01/27/social-spam/"/>
+  <title>Social Spam</title>
+  <author>
+    <name>Toby Inkster</name>
+    <email>mail@tobyinkster.co.uk</email>
+    <uri>http://tobyinkster.co.uk/</uri>
+  </author>
+  <content type="text/html" mode="escaped">&lt;p&gt;I&amp;#39;ve recently started receiving the occasional piece of junk mail from friends and colleages who have e-mail accounts at some of the larger webmail services (Hotmail, GMail, etc). The messages genuinely seem to come from their accounts, with proper message headers indicating that they were really sent via the webmail service, and sent to everyone in their address books.&lt;/p&gt;
+
+&lt;p&gt;This has been noted before and is apparently becoming more common:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://taint.org/2007/12/21/171309a.html"&gt;taint.org: Spambots stealing GMail and Hotmail passwords?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://tiffehr.tumblr.com/post/23634429"&gt;Tiffehr: Gmail account hacked, apologies to all&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blogs.gnome.org/sudaltsov/2007/12/23/google-wtf/"&gt;&lt;span class="caps"&gt;SVU&lt;/span&gt;&amp;#39;s blog: Google, &lt;span class="caps"&gt;WTF&lt;/span&gt;?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://groups.google.com/group/Gmail-ABCs/browse_thread/thread/1c3e51ec741f6382"&gt;Google Groups: GMail &lt;span class="caps"&gt;ABC&lt;/span&gt;s: Spam Email sent from my gmail, to my contact list&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;How does this happen? Best guess on what I&amp;#39;ve read so far seems to be that people have &lt;a href="http://blogs.chron.com/techblog/archives/2007/09/spam_alert_just_say_no_to_quechup_1.html"&gt;voluntarily given away their account login details&lt;/a&gt; to various "social networking sites" to automate inviting their friends. These sites either behaved in a less than ethical manner, or were subject to a security breach. (How many of them routinely use &lt;span class="caps"&gt;HTTPS &lt;/span&gt;-- secured web connections? Probably not many.)&lt;/p&gt;
+
+&lt;p&gt;The other possibility that needs considering is use of the services on open wireless networks, such as you might find in caf&amp;eacute;s and airport departure lounges. Theoretically anybody could be listening on the network, picking up your login details. Apparently both GMail and Hotmail use &lt;span class="caps"&gt;HTTPS &lt;/span&gt;for logins, but many webmail services do also offer unencrypted &lt;span class="caps"&gt;POP3 &lt;/span&gt;and &lt;span class="caps"&gt;IMAP4 &lt;/span&gt;logins to their services, which might be more susceptable to attack.&lt;/p&gt;
+
+&lt;p&gt;However this is happening, if the exploit is not blocked fast, then it will pose a major difficulty for automated spam blocking systems, as it makes discerning between spam and ham that much more difficult. Projects like &lt;span class="caps"&gt;SURBL&lt;/span&gt;:http://www.surbl.org/ may still be able to help, as rather than looking at message characteristics, they look at the &lt;span class="caps"&gt;URI&lt;/span&gt;s(Uniform Resource Identifiers) included in the message, to check if they&amp;#39;ve been spotted in known spam before. It may be that we have to start treating &lt;strong&gt;all&lt;/strong&gt; messages from the major webmail hosts with a higher degree of suspicion.&lt;/p&gt;</content>
+  <published>2008-01-27T09:36:36Z</published>
+  <updated>2008-01-27T09:36:36Z</updated>
+  <link rel="license" href="http://tobyinkster.co.uk/licence/c"/>
+  <category term="security"/>
+  <category term="e-mail"/>
+  <category term="privacy"/>
+</entry>
