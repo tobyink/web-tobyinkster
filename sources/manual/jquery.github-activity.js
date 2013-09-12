@@ -15,8 +15,11 @@
 		};
 		
 		var repositoryLink = function(repo) {
+			var name = repo.name;
+			if (name.substr(0, username.length + 1) == username + '/')
+				name = name.substr(username.length + 1);
 			return $('<a>', {
-				text: repo.name,
+				text: name,
 				href: githubURL + repo.name
 			})
 		};

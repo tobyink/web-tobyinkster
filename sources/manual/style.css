@@ -118,6 +118,14 @@ footer {
 	border: 1px solid #999;
 }
 
+#sidebar-top h1 {
+	margin-bottom: 0.33em;
+}
+
+#sidebar-top p {
+	margin-top: 0;
+}
+
 article.with-sidebar {
 	margin: 0 2em 0 22em;
 }
