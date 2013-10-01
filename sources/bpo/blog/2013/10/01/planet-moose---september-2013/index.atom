@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - September 2013</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/10/planet-moose---september-2013.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5198</id>
+
+    <published>2013-10-01T12:10:01Z</published>
+    <updated>2013-10-01T10:27:55Z</updated>
+
+    <summary> Welcome to the second edition of Planet Moose, a brief write up on what's been happening in the world of Moose this month, for the benefit of those of you who don't have their eyes permanently glued to the...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="classtiny" label="Class-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="gideon" label="Gideon" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="meerkat" label="Meerkat" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moops" label="Moops" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="p5mop" label="p5-mop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="yapceu" label="YAPC::EU" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0" />
+		<p>Welcome to the second edition of Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> this month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>Thanks for contributions from Damien Krotkine and Stevan Little. If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.<br style="clear:left" /></p>]]>
+        <![CDATA[		<h2><span id="Moose_2.1100">Moose 2.1100</span></h2>
+		<p>The <a class="podlinkurl" href="https://metacpan.org/release/ETHER/Moose-2.1100-TRIAL">Moose 2.1100 trial version</a> was released, officially deprecating <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3AMOP">Class::MOP</a>'s duplicates of some <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ALoad">Class::Load</a> functions, and removing some already-deprecated features.</p>
+		<p>It also seems to be moving towards using <code>%INC</code> as the authoritative way to judge whether a package is already loaded. Moose now adds your classes and roles to <code>%INC</code> even if it's they are "inner packages". (<a class="podlinkurl" href="https://github.com/stevan/p5-mop-redux">p5-mop</a> and <a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a> already do this, and there is talk of <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a> perhaps doing the same soon.) Moose is now using <a class="podlinkpod" href="https://metacpan.org/module/Module%3A%3ARuntime">Module::Runtime</a> (which trusts <code>%INC</code>) to load classes and roles instead of <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ALoad">Class::Load</a> (which uses its own set of heuristics).</p>
+		<p>See <a class="podlinkurl" href="https://metacpan.org/source/ETHER/Moose-2.1100-TRIAL/Changes">the Changes file</a> for further details.</p>
+		<h2><span id="p5-mop">p5-mop</span></h2>
+		<p>The <a class="podlinkurl" href="https://github.com/stevan/p5-mop-redux">p5-mop</a> project continues to be heavily developed and enhanced.</p>
+		<p>Damien Krotkine has written <a class="podlinkurl" href="http://blogs.perl.org/users/damien_dams_krotkine/2013/09/p5-mop.html">a gentle introduction</a> to the project, explaining how to install p5-mop, giving some small examples of how to use it, explaining some of the design decisions (e.g. twigils), and exploring areas for further development.</p>
+		<p>Stevan Little has written up his <a class="podlinkurl" href="http://blogs.perl.org/users/stevan_little/2013/09/on-porting-a-moose-module.html">experiences porting Bread::Board from Moose to mop</a>, and Zak B Elep has followed it up by writing about <a class="podlinkurl" href="http://blogs.perl.org/users/zak_b_elep/2013/09/notes-on-porting-to-p5-mop.html">porting Hashids from Moo to mop</a>.</p>
+		<h2><span id="YAPC::EU_talks"><span class="caps">YAPC</span>::EU talks</span></h2>
+		<p>Ovid has posted an <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2013/09/testclassmoose-introductory-video.html">introductory video</a> for <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AClass%3A%3AMoose">Test::Class::Moose</a>.</p>
+		<p>Other interesting videos from <span class="caps">YAPC</span>::EU 2013 include:</p>
+		<ul>
+			<li><a class="podlinkurl" href="http://www.youtube.com/watch?v=Boh3109HVLo">Herbert Breunung, Perl 6 OO vs. Moose</a></li>
+			<li><a class="podlinkurl" href="http://www.youtube.com/watch?v=YsKXjPDloWA">StrayTaoist, perl 5 + moose = perl 7</a></li>
+			<li><a class="podlinkurl" href="http://www.youtube.com/watch?v=RFF85r0TPRc">Thomas Klausner, Bread::Board by example</a>.</li>
+		</ul>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Ovid has blogged about <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2013/09/building-your-own-moose.html">building your own Moose</a> which is a somewhat similar idea to my <a class="podlinkurl" href="http://www.perladvent.org/2012/2012-12-16.html">creating your own Perl</a> article.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Gideon">Gideon</a> looks like it might be interesting. <i>Gideon's goal is to build a data access layer for your model and let you focus on business logic. It's designed to support multiple backends and to be extended to support other features not provided with the distribution.</i></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Meerkat">Meerkat</a> looks interesting too. <i>Meerkat lets you manage MongoDB documents as Moose objects.</i></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a> 1.003001 was released, with no ground-breaking new features, but some useful bug fixes.</li>
+			<li>A new version of <a class="podlinkpod" href="https://metacpan.org/module/Role%3A%3ATiny">Role::Tiny</a> was released to address a couple of minor faults.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3AMethod%3A%3AModifiers">Class::Method::Modifiers</a> (used by Moo and Role::Tiny) has a new release, adding support for lvalue methods.</li>
+			<li>There have been new releases of <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ATiny">Class::Tiny</a> and <a class="podlinkpod" href="https://metacpan.org/module/Class%3A%3ATiny%3A%3AAntlers">Class::Tiny::Antlers</a> too.</li>
+			<li>And <a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a> (which, incidentally, the documentation of recent releases of <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ADeclare">MooseX::Declare</a> now suggests as an alternative to <span class="caps">MXD</span>).</li>
+			<li>The first release of <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ANonMoose">MooseX::NonMoose</a> in over two years removes some use of soon-to-be-deprecated functions. As well as the changes mentioned above, skimming the diffs reveals that <code>Class::MOP::class_of</code> has been replaced in MooseX::NonMoose with <code>Moose::Util::find_meta</code> - a hint of a future deprecation?</li>
+			<li>In a whirlwind of activity, <a class="podlinkurl" href="https://metacpan.org/author/ETHER">Karen Etheridge</a> released updates for a bunch of MooseX modules, dropping the usage of newly deprecated functions, and fixing some low-hanging bugs. She's also been moving them to the <a class="podlinkurl" href="https://github.com/moose">Moose organization</a> on GitHub. This includes <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes">MooseX::Types</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3ACommon">MooseX::Types::Common</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3ALoadableClass">MooseX::Types::LoadableClass</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ADeclare">MooseX::Declare</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AStorage">MooseX::Storage</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AMethod%3A%3ASignatures">MooseX::Method::Signatures</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AGetopt">MooseX::Getopt</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AAlwaysCoerce">MooseX::AlwaysCoerce</a>, and <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AConfigFromFile">MooseX::ConfigFromFile</a>.</li>
+		</ul>]]>
+    </content>
+</entry>
