@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Acme-oop-ism Part One</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/10/acme-oop-ism-part-one.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5259</id>
+
+    <published>2013-10-22T11:17:47Z</published>
+    <updated>2013-10-22T11:19:50Z</updated>
+
+    <summary> Ingy gave a talk on Acmeism at YAPC::NA. Acmeism is a simple, yet ambitious idea. Break down the barriers that exist in programming by publishing software modules that work in multiple different languages. (And use smarter tools so that...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="acmeoop" label="acmeoop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkurl" href="https://metacpan.org/author/INGY">Ingy</a> gave a <a href="https://github.com/ingydotnet/acmeism-yapcna2013-talk" class="podlinkurl">talk</a> on <a href="http://acmeism.org/" class="podlinkurl">Acmeism</a> at YAPC::NA. Acmeism is a simple, yet ambitious idea. Break down the barriers that exist in programming by publishing software modules that work in multiple different languages. (And use smarter tools so that that doesn't have to be so burdensome.)</p>
+		<p>I'm writing to tell you about Acme-oop-ism. A somewhat less ambitious idea, but perhaps one that you'll like anyway.</p>]]>
+        <![CDATA[		<p>People who write OO code in Perl tend to fall into one of five categories:</p>
+		<ol>
+			<li>use Moose</li>
+			<li>use Mouse</li>
+			<li>use Moo</li>
+			<li>use some other obscure OO framework</li>
+			<li>write it all by hand</li>
+		</ol>
+		<p>Acme-oop-ism is about uniting the first three groups and bringing the others in from the cold.</p>
+		<p>I'm here to tell you about how to write Moose extensions that also work in Mouse and Moo. I'll show you that it can be done, and show you how to do it.</p>
+]]>
+    </content>
+</entry>
