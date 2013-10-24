@@ -2,5 +2,15 @@
 
 <article id="document_main">
 	<header role="heading"><h1>F???</h1></header>
-	<p>OK, so I have this whole alphabetical thing going on in the menu at the top of my site, but I can't think of anything to link "F" to.</p>
+	<p>OK, so I have this whole alphabetical thing going on in the menu at the
+	top of my site, but I can't think of anything to link "F" to. Maybe...</p>
+	<ul>
+		<li><b>Fiction</b> - the original <a href="/Software/dan_brown/"
+		>Create Your Own Dan Brown Novel</a> as featured in <i>Time Out</i>
+		(Dec 2007).</li>
+		<li><b>FOAF+SSL</b> - an authentication protocol I inadvertantly <a
+		href="http://lists.w3.org/Archives/Public/semantic-web/2008Mar/0207.html"
+		>co-created</a>.</li>
+		<li><b>Food</b> - I like to cook.</li>
+	</ul>
 </article>
