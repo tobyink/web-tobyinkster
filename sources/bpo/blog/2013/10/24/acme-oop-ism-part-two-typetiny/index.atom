@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Acme-oop-ism Part Two: Type::Tiny</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/10/acme-oop-ism-part-two-typetiny.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5267</id>
+
+    <published>2013-10-24T07:42:01Z</published>
+    <updated>2013-10-24T07:45:00Z</updated>
+
+    <summary> Acme-oop-ism is about writing code that works in Moose, Mouse and Moo. Type::Tiny was born of frustration with how MooX::Types::MooseLike handles "inflation". Inflation is how Moo handles interacting with Moose. I'm simplifying here, but when Moo detects that Moose...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="acmeoop" label="acmeoop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>Acme-oop-ism is about writing code that works in <a href="https://metacpan.org/module/Moose" class="podlinkpod">Moose</a>, <a class="podlinkpod" href="https://metacpan.org/module/Mouse">Mouse</a> and <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a>.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Type%3A%3ATiny">Type::Tiny</a> was born of frustration with how <a class="podlinkpod" href="https://metacpan.org/module/MooX%3A%3ATypes%3A%3AMooseLike">MooX::Types::MooseLike</a> handles "inflation". Inflation is how Moo handles interacting with Moose. I'm simplifying here, but when Moo detects that Moose is being used, it builds a <a class="podlinkpod" href="https://metacpan.org/module/Moose%3A%3AMeta%3A%3AClass">Moose::Meta::Class</a> for each Moo class you've defined, and a <a class="podlinkpod" href="https://metacpan.org/module/Moose%3A%3AMeta%3A%3ARole">Moose::Meta::Role</a> for each role.</p>
+]]>
+        <![CDATA[		<p><a href="https://metacpan.org/module/MooX%3A%3ATypes%3A%3AMooseLike" class="podlinkpod">MooX::Types::MooseLike</a> hooks into the inflation system so that if a Moo attribute uses, say, the <code>PositiveInt</code> type constraint from <a href="https://metacpan.org/module/MooX%3A%3ATypes%3A%3AMooseLike%3A%3ANumeric" class="podlinkpod">MooX::Types::MooseLike::Numeric</a>, this gets inflated to the <code>PositiveInt</code> type from <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3ACommon%3A%3ANumeric">MooseX::Types::Common::Numeric</a>.</p>
+		<p>After seeing a bug report from the <a class="podlinkpod" href="https://metacpan.org/module/Dancer2">Dancer2</a> developers whose type constraints were breaking during inflation, I started thinking about how this system was somewhat fragile and repetitive.</p>
+		<p>Let's rewind a bit; what's a type constraint? In Moose, Mouse and Moo classes, you can say that a certain class attribute "isa" string or a number or an integer, using syntax along these lines:</p>
+		<pre class="highlighting-perl"> <span class="word">has</span> <span class="word">favourite_number</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span><span class="structure">);</span></pre>
+		<p><code>Int</code> is a type constraint, defined in a library somewhere, something like this:</p>
+		<pre class="highlighting-perl"> <span class="word">type</span><span class="structure">(</span><span class="double" style="color:#909">"Int"</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="operator" style="color:#000;font-weight:bold">=~</span> <span class="match" style="color:#333;background-color:#9f9">m/\A-?[0-9]+\z/s</span> <span class="structure">});</span></pre>
+		<p>So, type constraints are basically just coderefs that return true or false after testing <code>$_</code> against some rule. If we've got a list of these coderefs, why can't we use that list to generate both a Moo type constraint library <i>and</i> a Moose one?</p>
+		<p>And so <a href="https://metacpan.org/module/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a> was born. It started off as above. You'd create a library of coderefs in <code>MyTypes.pm</code>. Then, from your Moo classes, you'd import <code>use MyTypes -moo</code>; from Moose classes, <code>use MyTypes -moose</code> and from Mouse classes... well, I'm sure you've already guessed.</p>
+		<p>No need for <a class="podlinkpod" href="https://metacpan.org/module/MouseX%3A%3ATypes%3A%3AURI">MouseX::Types::URI</a> and <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3AURI">MooseX::Types::URI</a> to remain separate any more; <a href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3ADateTime" class="podlinkpod">MooseX::Types::DateTime</a> and <a href="https://metacpan.org/module/MouseX%3A%3ATypes%3A%3ADateTime" class="podlinkpod">MouseX::Types::DateTime</a> could be united at last; <a href="https://metacpan.org/module/MouseX%3A%3ATypes%3A%3APath%3A%3AClass" class="podlinkpod">MouseX::Types::Path::Class</a> and <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3APath%3A%3AClass">MooseX::Types::Path::Class</a> could live together in harmony. (Note: none of these type constraint libraries has taken the plunge... yet.)</p>
+		<p>By the time Type::Tiny 0.004 was released, by overloading <code>&amp;{}</code> and by carefully mocking the <a class="podlinkpod" href="https://metacpan.org/module/Moose%3A%3AMeta%3A%3ATypeConstraint">Moose::Meta::TypeConstraint</a> and <a href="https://metacpan.org/module/Mouse%3A%3AMeta%3A%3ATypeConstraint" class="podlinkpod">Mouse::Meta::TypeConstraint</a> APIs, even the need for these little <code>-moo</code>, <code>-moose</code> and <code>-mouse</code> import flags was gone.</p>
+		<p>So Type::Tiny works fairly transparently with all three of the major modern Perl OO frameworks, yet depends on none of them. (Making it useful outside OO code too.) There are no doubt still some bugs to be worked out, but it demonstrates that it's possible.</p>
+		<p>What other features could potentially be built to work cross-framework? Extensions for singleton classes? Or abstract classes?</p>
+		<p>In the next part, we'll look at some of the tricks of the trade.</p>
+]]>
+    </content>
+</entry>
