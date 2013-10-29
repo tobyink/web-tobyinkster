@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Acme-oop-ism Part Three: techniques</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/10/acme-oop-ism-part-three-techniques.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5294</id>
+
+    <published>2013-10-28T21:09:34Z</published>
+    <updated>2013-10-28T21:12:33Z</updated>
+
+    <summary> Acme-oop-ism is about writing code that works in Moose, Mouse and Moo. We've already looked at how Type::Tiny has achieved this. Now I'm going to introduce you to some Acme-oop-ist techniques....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="acmeoop" label="acmeoop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="classtiny" label="Class-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>Acme-oop-ism is about writing code that works in <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a>, <a class="podlinkpod" href="https://metacpan.org/module/Mouse">Mouse</a> and <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a>. We've already looked at how <a href="https://metacpan.org/module/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a> has achieved this. Now I'm going to introduce you to some Acme-oop-ist techniques.</p>]]>
+        <![CDATA[		<h2><span id="use_Moo">use Moo</span></h2>
+		<p>Want to write a reusable class or role to stick on <span class="caps">CPAN</span>? If you were planning on using <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a>, how about considering <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a> instead? Moo doesn't have all of Moose's features, but if your project doesn't need advanced metaprogramming, it may still have enough.</p>
+		<p>Moo is designed to interact nicely with Moose. Moose and Moo classes can extend each other. Moose classes can consume Moo roles, and vice versa. It won't much help you interact with Mouse, but two out of three ain't bad.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Role%3A%3ATiny">Role::Tiny</a> is sometimes also an option.</p>
+		<h2><span id="Delegate">Delegate</span></h2>
+		<p>Rather than creating roles intended for consumption, or base classes intended for inheriting from, each of which would potentially lock people using your module into a particular OO framework, consider creating small classes that can be delegated to.</p>
+		<p>As an example, rather than creating a <code>HorseDrawn</code> role that can be applied to cart objects, create a <code>Horse</code> class that cart objects can delegate conveyance to.</p>
+		<p>Moo, Mouse and Moose each have handy shortcuts (<code>handles</code>) for delegated methods.</p>
+		<p>Use Moo or <a href="https://metacpan.org/module/Class%3A%3ATiny" class="podlinkpod">Class::Tiny</a>, or even hand-written classes to keep dependencies down.</p>
+		<h2><span id="Use_the_surface_syntax">Use the surface syntax</span></h2>
+		<p>The internals of Moo, Mouse and Moose are rather different to each other (particularly Moo). Their syntactic sugar is less so. Rather than calling <code>$class-&amp;gt;meta-&amp;gt;add_attribute()</code>, can you get away with calling <code>has()</code>?</p>
+		<p><a href="https://metacpan.org/module/MooX%3A%3AHandlesVia" class="podlinkpod">MooX::HandlesVia</a> and <a href="https://metacpan.org/module/MooX%3A%3Alate" class="podlinkpod">MooX::late</a> are two <span class="caps">CPAN </span>modules that extend Moo by providing wrappers for <code>has()</code>. Each of these is Moo-specific, but it's easy to imagine applications of this idea that are not.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AMungeHas">MooseX::MungeHas</a> provides generic logic for munging <code>has</code> across OO frameworks.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/MooX%3A%3APrivateAttributes">MooX::PrivateAttributes</a> and <a href="https://metacpan.org/module/MooX%3A%3AProtectedAttributes" class="podlinkpod">MooX::ProtectedAttributes</a> manage to work for <a href="https://metacpan.org/module/Moose" class="podlinkpod">Moose</a> by using a similar technique - calling the <code>has</code> and <code>around</code> sugar instead of metaclass tinkering.</p>
+		<h2><span id="Multiple_code_paths">Multiple code paths</span></h2>
+		<p>As a last resort, you can add different code paths for handling Moose, Mouse and Moo. You can check to see what framework a class is using via <code>$class-&amp;gt;meta-&amp;gt;isa(...)</code> and handle it appropriately.</p>
+		<p>Tools of the trade include run-time loading via <code>require</code> or <a href="https://metacpan.org/module/Module%3A%3ARuntime" class="podlinkpod">Module::Runtime</a>, and judicious use of stringy eval.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Kavorka%3A%3AMethodModifier">Kavorka::MethodModifier</a>'s <code>install_sub</code> method is an example of this, providing different code paths for installing method modifiers into <a href="https://metacpan.org/module/Moo" class="podlinkpod">Moo</a>, <a href="https://metacpan.org/module/Mouse" class="podlinkpod">Mouse</a>, <a href="https://metacpan.org/module/Moose" class="podlinkpod">Moose</a>, and plain Perl classes.</p>
+		<p><a href="https://metacpan.org/module/Subclass%3A%3AOf" class="podlinkpod">Subclass::Of</a> is another example.</p>
+		<p>That's all your Acme-oop for now. I'll write some more on the topic soon.</p>]]>
+    </content>
+</entry>
