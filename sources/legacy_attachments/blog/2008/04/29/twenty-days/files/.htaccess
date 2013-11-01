@@ -1,0 +1,100 @@
+<Files "CIMG0154.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0163.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0165.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0171.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0195.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0252.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0260.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0282.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0300.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG0304.jpg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Herstmonceux26April.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "Herstmonceux26April.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Herstmonceux26AprilSmall.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "Herstmonceux26AprilSmall.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Herstmonceux26April.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Lewes6April.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "Lewes6April.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Lewes6AprilSmall.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "Lewes6AprilSmall.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "Lewes6April.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>

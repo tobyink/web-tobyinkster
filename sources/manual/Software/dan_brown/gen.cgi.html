@@ -1,0 +1,514 @@
+
+<html>
+<head>
+<title>gen.cgi</title>
+<meta name="generator" content="perl2html 0.9.2">
+<meta name="date" content="2006-01-04T22:46:19+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+<pre width="80"><font color="#B22222">#!/usr/bin/perl</font>
+
+%x = (
+	<font color="#228B22">'GIF'</font> =&gt; 
+	[
+		<font color="#228B22">'ball_gold.gif'</font>, 
+		<font color="#228B22">'ball_ocean.gif'</font>, 
+		<font color="#228B22">'ball_white.gif'</font>
+	],
+	
+	<font color="#228B22">'CoverBG'</font> =&gt; 
+	[
+		<font color="#228B22">'purplebg'</font>, 
+		<font color="#228B22">'redbg'</font>, 
+		<font color="#228B22">'bluebg'</font>,
+		<font color="#228B22">'blackbg'</font>
+	],
+
+	<font color="#228B22">'HTMLDiv'</font> =&gt;
+	[
+		<font color="#228B22">"&lt;</font>div<font color="#228B22">&gt;\n"</font>.
+		<font color="#228B22">"&lt;</font>h1<font color="#228B22">&gt;[[Title,]]&lt;</font>br<font color="#228B22">&gt;&lt;</font>small<font color="#228B22">&gt;by Dan Brown&lt;/small&gt;&lt;/h1&gt;\n"</font>.
+		<font color="#228B22">"&lt;div id=\"</font>cover<font color="#228B22">\" class=\"[[CoverBG]]\"&gt;&lt;</font>span<font color="#228B22">&gt;[[Title,]]&lt;/span&gt;&lt;img src=\"[[GIF]]\" alt=\"\"&gt;&lt;</font>span<font color="#228B22">&gt;&lt;</font>small<font color="#228B22">&gt;Dan Brown&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;\n"</font>.
+		<font color="#228B22">"&lt;</font>p<font color="#228B22">&gt;&lt;</font>b<font color="#228B22">&gt;\"[[NewspaperReview]]\"&lt;/b&gt;&lt;</font>br<font color="#228B22">&gt;&lt;</font>i<font color="#228B22">&gt;[[Paper]]&lt;/i&gt;&lt;/p&gt;\n"</font>.
+		<font color="#228B22">"&lt;</font>p<font color="#228B22">&gt;[[Summary]]&lt;/p&gt;\n"</font>.
+		<font color="#228B22">"&lt;</font>p<font color="#228B22">&gt;&lt;</font>b<font color="#228B22">&gt;\"[[NewspaperReview]]\"&lt;/b&gt;&lt;</font>br<font color="#228B22">&gt;&lt;</font>i<font color="#228B22">&gt;[[Paper]]&lt;/i&gt;&lt;/p&gt;\n"</font>.
+		<font color="#228B22">"&lt;/div&gt;\n"</font>
+	],
+
+	<font color="#228B22">'Title'</font> =&gt;
+	[
+		<font color="#228B22">'[[TitleObject,]]s and [[TitleObject2,]]s'</font>,
+		<font color="#228B22">'The [[TitleAdj,]] [[TitleObject,]]'</font>,
+		<font color="#228B22">'The [[TitleObject,]] of [[TitleAdj,]]'</font>
+	],
+	
+	<font color="#228B22">'TitleAdj'</font> =&gt; [<font color="#228B22">'Gold'</font>, <font color="#228B22">'White'</font>, <font color="#228B22">'Black'</font>, <font color="#228B22">'Silver'</font>, <font color="#228B22">'Scarlet'</font>, <font color="#228B22">'Amber'</font>,
+			<font color="#228B22">'Michaelangelo'</font>, <font color="#228B22">'Da Vinci'</font>, <font color="#228B22">'Rafaelo'</font>, <font color="#228B22">'Leonardo'</font>,
+			<font color="#228B22">'Crowley'</font>, <font color="#228B22">'Comte de Saint Germain'</font>,
+<font color="#B22222">			# homage to Umberto Eco</font>
+			<font color="#228B22">'Ardenti'</font>,
+<font color="#B22222">			# /homage</font>
+			<font color="#228B22">'Magick'</font>, <font color="#228B22">'Soloman'</font>
+			],
+	
+	<font color="#228B22">'TitleObject'</font> =&gt; 
+	[
+		<font color="#228B22">'Pyramid'</font>,
+		<font color="#228B22">'Band'</font>,
+		<font color="#228B22">'Book'</font>,
+		<font color="#228B22">'Wand'</font>,
+		<font color="#228B22">'Ring'</font>,
+		<font color="#228B22">'Circle'</font>,
+		<font color="#228B22">'Box'</font>,
+		<font color="#228B22">'Crucifix'</font>,
+		<font color="#228B22">'Code'</font>,
+		<font color="#228B22">'Temple'</font>,
+		<font color="#228B22">'Cross'</font>,
+		<font color="#228B22">'Secret'</font>,
+		<font color="#228B22">'Shroud'</font>,
+		<font color="#228B22">'Crucible'</font>,
+		<font color="#228B22">'Chapel'</font>,
+		<font color="#228B22">'Arch'</font>,
+		<font color="#228B22">'Piece'</font>,
+		<font color="#228B22">'Godhead'</font>,
+		<font color="#228B22">'Key'</font>,
+		<font color="#228B22">'Shrub'</font>,
+		<font color="#228B22">'Angel'</font>,
+		<font color="#228B22">'Demon'</font>
+	],
+
+	<font color="#228B22">'TitleObject2'</font> =&gt; 
+	[
+		<font color="#228B22">'Wand'</font>,
+		<font color="#228B22">'Ring'</font>,
+		<font color="#228B22">'Crucifix'</font>,
+		<font color="#228B22">'Code'</font>,
+		<font color="#228B22">'Temple'</font>,
+		<font color="#228B22">'Secret'</font>,
+		<font color="#228B22">'Shroud'</font>,
+		<font color="#228B22">'Crucible'</font>,
+		<font color="#228B22">'Chapel'</font>,
+		<font color="#228B22">'Arch'</font>,
+		<font color="#228B22">'Piece'</font>,
+		<font color="#228B22">'Godhead'</font>,
+		<font color="#228B22">'Key'</font>,
+		<font color="#228B22">'Angel'</font>,
+		<font color="#228B22">'Demon'</font>
+	],
+
+	<font color="#228B22">'NewspaperReview'</font> =&gt;
+	[
+		<font color="#228B22">'[[Review1]] [[Review2]]![[Stars]]'</font>,
+		<font color="#228B22">'[[Title,]] is [[Review1lc]] [[Review2]]![[Stars]]'</font>
+	],
+	
+	<font color="#228B22">'Review1'</font> =&gt;
+	[
+		<font color="#228B22">'A fascinating'</font>,
+		<font color="#228B22">'An explosive'</font>,
+		<font color="#228B22">'An exciting'</font>,
+		<font color="#228B22">'A shocking'</font>,
+		<font color="#228B22">'A highly original'</font>
+	],
+	
+	<font color="#228B22">'Review1lc'</font> =&gt;
+	[
+		<font color="#228B22">'a fascinating'</font>,
+		<font color="#228B22">'an explosive'</font>,
+		<font color="#228B22">'an exciting'</font>,
+		<font color="#228B22">'a shocking'</font>,
+		<font color="#228B22">'a highly original'</font>
+	],
+	
+	<font color="#228B22">'Review2'</font> =&gt;
+	[
+		<font color="#228B22">'masterpiece'</font>,
+		<font color="#228B22">'best-seller'</font>,
+		<font color="#228B22">'tale of intrigue'</font>,
+		<font color="#228B22">'tale of suspense'</font>,
+		<font color="#228B22">'best-selling masterpiece'</font>,
+		<font color="#228B22">'best-selling masterpiece of suspense'</font>,
+		<font color="#228B22">'novel'</font>,
+		<font color="#228B22">'page-turner'</font>
+	],
+	
+	<font color="#228B22">'Stars'</font> =&gt;
+	[
+		<font color="#228B22">' ****'</font>,
+		<font color="#228B22">' *****'</font>,
+		<font color="#228B22">''</font>
+	],
+	
+	<font color="#228B22">'Paper'</font> =&gt;
+	[
+		<font color="#228B22">'The Times'</font>,
+		<font color="#228B22">'The Guardian'</font>,
+		<font color="#228B22">'The Scotsman'</font>,
+		<font color="#228B22">'The Observer'</font>,
+		<font color="#228B22">'The Independent'</font>,
+		<font color="#228B22">'The Washington Post'</font>,
+		<font color="#228B22">'The New York Times'</font>,
+		<font color="#228B22">'Le Monde'</font>
+	],
+	
+	<font color="#228B22">'Summary'</font> =&gt;
+	[
+		<font color="#228B22">'For hundreds of years, people have speculated about the existance of [[ShadyGroup,]]. [[Intro]][[Middle]][[Outro]]'</font>,
+		<font color="#228B22">'[[Intro]][[Middle]][[Outro]]'</font>,
+		<font color="#228B22">'[[MurderStory]]'</font>,
+		<font color="#228B22">"It's nearly the millennium. [[Intro]][[Middle]][[Outro]]"</font>,
+		<font color="#228B22">'[[Intro]][[Middle]][[Outro]]'</font>
+	],
+	
+	<font color="#228B22">'Intro'</font> =&gt;
+	[
+		<font color="#228B22">'[[ShadyGroup,]] have kept the secret of [[Secret]] for [[LongPeriod]]. '</font>,
+		<font color="#228B22">'The secret of [[Secret]] has been guarded by [[ShadyGroup,]] for [[LongPeriod]]. '</font>,
+		<font color="#228B22">'Deep in the sewers of [[Place]], [[ShadyGroup,]] guards the dark secret of [[Secret]]. '</font>
+	],
+	
+	<font color="#228B22">'Middle'</font> =&gt;
+	[
+		<font color="#228B22">'A [[PersonalAttribute]] [[Occupation]] has stumbled upon their trail while [[InnocentActivity]]. '</font>,
+		<font color="#228B22">'A [[PersonalAttribute]] [[Occupation]] has stumbled upon their trail. '</font>,
+		<font color="#228B22">'A [[PersonalAttribute]] [[Occupation]], [[Firstname]] [[Surname]], has stumbled upon their trail. '</font>,
+		<font color="#228B22">'But one of them has decided to use the secret for his own gain. '</font>
+	],
+	
+	<font color="#228B22">'Outro'</font> =&gt;
+	[
+		<font color="#228B22">"It's now a desparate race to [[Place]] with [[SomethingImportant]] at stake. "</font>,
+		<font color="#228B22">"It's now a desparate race [[Expanse]] and [[SomethingImportant]] is at stake. "</font>,
+		<font color="#228B22">"[[ShadyGroup]] will stop at nothing to keep their secret. "</font>,
+		<font color="#228B22">"[[ShadyGroup]] will stop at nothing to keep their secret, but can [[ShadyGroup]] stop </font>*them<font color="#228B22">* first?! "</font>,
+	],
+
+	<font color="#228B22">'MurderStory'</font> =&gt;
+	[
+		<font color="#228B22">"[[FirstnameM]] [[Surname]], a [[Occupation]], is found murdered in [[Place,]] and [[FirstnameM,]] [[Surname]], a [[Occupation]] is asked to supply expert information to the [[Place]] police. [[FirstnameM]] teams up with [[FirstnameF]] [[Surname]], a beautiful [[Occupation]], to solve the murder and unravel a mystery involving the secret of [[Secret]], a desparate chase across [[Expanse]] and a fateful showdown in [[Place]] with the [[ShadyGroup]] where [[SomethingImportant]] is at stake."</font>,
+		<font color="#228B22">"[[FirstnameM]] [[Surname]], a [[Occupation]], is found murdered in [[Place,]] and [[FirstnameM,]] [[Surname]], a [[Occupation]] is asked to supply expert information to the [[Place]] police. Soon [[FirstnameM,]] finds himself involved with a beautiful [[Occupation]] called [[FirstnameF]], meetings in [[Place]] with the highly-secretive group [[ShadyGroup]] and a dramatic showdown with [[ShadyGroup,]] after a chase across [[Expanse]]. When [[SomethingImportant]] is at stake, [[ShadyGroup]] won't let anything stand in their way. Can [[FirstnameM]] stop them in time?"</font>
+	],
+	
+	<font color="#228B22">'Firstname'</font> =&gt; [<font color="#228B22">'[[FirstnameF]]'</font>,<font color="#228B22">'[[FirstnameM]]'</font>],
+	
+	<font color="#228B22">'FirstnameM'</font> =&gt;
+	[
+		<font color="#228B22">'Dan'</font>,
+		<font color="#228B22">'Brian'</font>,
+		<font color="#228B22">'John'</font>,
+		<font color="#228B22">'Dave'</font>,
+		<font color="#228B22">'Mark'</font>,
+		<font color="#228B22">'Joe'</font>,
+		<font color="#228B22">'Steven'</font>,
+		<font color="#228B22">'Adam'</font>,
+		<font color="#228B22">'Andrew'</font>
+	],
+	
+	<font color="#228B22">'FirstnameF'</font> =&gt;
+	[
+		<font color="#228B22">'Chloe'</font>,
+		<font color="#228B22">'Zoe'</font>,
+		<font color="#228B22">'Sofia'</font>,
+		<font color="#228B22">'Amy'</font>,
+		<font color="#228B22">'Katie'</font>,
+		<font color="#228B22">'Stephanie'</font>
+	],
+	
+	<font color="#228B22">'Surname'</font> =&gt;
+	[
+		<font color="#228B22">'Brown'</font>,
+		<font color="#228B22">'Black'</font>,
+		<font color="#228B22">'Jones'</font>,
+		<font color="#228B22">'Alberti'</font>,
+		<font color="#228B22">'James'</font>,
+		<font color="#228B22">'Nelson'</font>,
+		<font color="#228B22">'Jackson'</font>,
+		<font color="#228B22">'Presley'</font>,
+		<font color="#228B22">"O'Conner"</font>
+	],
+	
+	<font color="#228B22">'ShadyGroup'</font> =&gt;
+	[
+		<font color="#228B22">'The Knights Templar'</font>,
+		<font color="#228B22">'The Illuminati'</font>,
+		<font color="#228B22">'The Freemasons'</font>,
+		<font color="#228B22">'The Rosicrucians'</font>,
+		<font color="#228B22">'The Ordo Templi Orientis'</font>,
+		<font color="#228B22">'The Osirica'</font>,
+		<font color="#228B22">'The Cabalists'</font>,
+		<font color="#228B22">'The Followers of the Temple Of The Vampire'</font>,
+		<font color="#228B22">'The Secret Order of the Knights of the Round Table'</font>,
+		<font color="#228B22">'The Cardinals of the Catholic Church'</font>,
+		<font color="#228B22">'The Church of Satan'</font>,
+		<font color="#228B22">'The Gnostics'</font>,
+		<font color="#228B22">'The Elders of Zion'</font>,
+		<font color="#228B22">'The Assassins'</font>,
+		<font color="#228B22">'The Jesuits'</font>,
+		<font color="#228B22">'The Paulicians'</font>,
+		<font color="#228B22">'The Synarchists'</font>,
+		<font color="#228B22">'The Templi Resurgentes Equites Synarchici'</font>,
+		<font color="#228B22">'The Babylonian Brotherhood'</font>,
+		<font color="#228B22">'The Hermetic Order of the Golden Dawn'</font>,
+		<font color="#228B22">'Opus Dei'</font>,
+		<font color="#228B22">'The Priory of Sion'</font>,
+		<font color="#228B22">'Enron'</font>,
+		<font color="#228B22">'The British Royal Family'</font>
+	],
+	
+	<font color="#228B22">'Secret'</font> =&gt;
+	[
+		<font color="#228B22">'Ra'</font>,
+		<font color="#228B22">'the Holy Grail'</font>,
+		<font color="#228B22">'the Golden Fleece'</font>,
+		<font color="#228B22">'the Holy Chalice'</font>,
+		<font color="#228B22">'Excalibur'</font>,
+		<font color="#228B22">'the blood line of Jesus'</font>,
+		<font color="#228B22">'the Spear of Destiny'</font>,
+		<font color="#228B22">'the City of Atlantis'</font>,
+		<font color="#228B22">'the Ark of the Covenant'</font>,
+		<font color="#228B22">'the Pyramids of Egypt'</font>,
+		<font color="#228B22">'the Crystal skulls'</font>,
+		<font color="#228B22">'the Delphic Oracle'</font>,
+		<font color="#228B22">'Camelot'</font>,
+		<font color="#228B22">'the Garden of Eden'</font>,
+		<font color="#228B22">'King Arthur'</font>,
+		<font color="#228B22">'Mary Magdalene'</font>,
+		<font color="#228B22">"Noah's Ark"</font>,
+		<font color="#228B22">'Stonehenge'</font>,
+		<font color="#228B22">'the Ten Lost Tribes of Israel'</font>,
+		<font color="#228B22">"Lucifer's crypt"</font>,
+		<font color="#228B22">'the Winged Skull of Ur'</font>,
+		<font color="#228B22">'the first of the great Old &amp;AElig;on'</font>,
+		<font color="#228B22">'the umbilicus mundi'</font>,
+		<font color="#228B22">'the telluric currents'</font>,
+		<font color="#228B22">"qabbalah nevu'it"</font>,
+		<font color="#228B22">'time travel'</font>,
+		<font color="#228B22">'the identity of the Anti-Christ'</font>,
+		<font color="#228B22">'the Anunnaki'</font>,
+		<font color="#228B22">'antimatter'</font>,
+		<font color="#228B22">"the Colonel Sanders' fourteen herbs and spices"</font>,
+		<font color="#228B22">'the lady Pope Joan'</font>,
+		<font color="#228B22">'Mary Magdalene'</font>
+	],
+	
+	<font color="#228B22">'LongPeriod'</font> =&gt;
+	[	
+		<font color="#228B22">'over a thousand years'</font>,
+		<font color="#228B22">'nearly a millennium'</font>,
+		<font color="#228B22">'twelve centiuries'</font>,
+		<font color="#228B22">'centuries'</font>
+	],
+	
+	<font color="#228B22">'PersonalAttribute'</font> =&gt;
+	[
+		<font color="#228B22">'intrepid'</font>,
+		<font color="#228B22">'young'</font>,
+		<font color="#228B22">'beautiful'</font>,
+		<font color="#228B22">'Italian'</font>,
+		<font color="#228B22">'psychic'</font>,
+		<font color="#228B22">'dying'</font>,
+		<font color="#228B22">'retired'</font>,
+		<font color="#228B22">'troubled'</font>
+	],
+	
+	<font color="#228B22">'Occupation'</font> =&gt;
+	[
+		<font color="#228B22">'reporter'</font>,
+		<font color="#228B22">'pastry chef'</font>,
+		<font color="#228B22">'novelist'</font>,
+		<font color="#228B22">'researcher'</font>,
+		<font color="#228B22">'doctor'</font>,
+		<font color="#228B22">'taxi-driver'</font>,
+		<font color="#228B22">'violinist'</font>,
+		<font color="#228B22">'p&amp;aelig;diatric nurse'</font>,
+		<font color="#228B22">'archaeologist'</font>,
+		<font color="#228B22">'lawyer'</font>,
+		<font color="#228B22">'civil engineer'</font>,
+		<font color="#228B22">'priest'</font>,
+		<font color="#228B22">'scientist'</font>,
+		<font color="#228B22">'librarian'</font>
+	],
+	
+	<font color="#228B22">'InnocentActivity'</font> =&gt;
+	[
+		<font color="#228B22">'decyphering an encoded letter found in a library'</font>,
+		<font color="#228B22">'overhearing a conversation in [[Place]]'</font>,
+		<font color="#228B22">'solving a crossword puzzle'</font>
+	],
+	
+	<font color="#228B22">'Place'</font> =&gt;
+	[
+		<font color="#228B22">'London'</font>,
+		<font color="#228B22">'Paris'</font>,
+		<font color="#228B22">'Baghdad'</font>,
+		<font color="#228B22">'Archangel'</font>,
+		<font color="#228B22">'St Petersberg'</font>,
+		<font color="#228B22">'Rome'</font>,
+		<font color="#228B22">'Prague'</font>,
+		<font color="#228B22">'Athens'</font>,
+		<font color="#228B22">'Sparta'</font>,
+		<font color="#228B22">'Troy'</font>,
+		<font color="#228B22">'Istanbul'</font>,
+		<font color="#228B22">'Cairo'</font>,
+		<font color="#228B22">'Atlantis'</font>,
+		<font color="#228B22">'Jerusalem'</font>,
+		<font color="#228B22">'the North Pole'</font>,
+		<font color="#228B22">'Bethlehem'</font>,
+		<font color="#228B22">'Vatican City'</font>,
+		<font color="#228B22">'Seville'</font>,
+		<font color="#228B22">'Rio de Janeiro'</font>,
+		<font color="#228B22">'New York'</font>,
+		<font color="#228B22">'Edinburgh'</font>,
+		<font color="#228B22">'Dublin'</font>,
+		<font color="#228B22">'Cardiff'</font>,
+		<font color="#228B22">'Toulouse'</font>,
+		<font color="#228B22">'Zurich'</font>,
+		<font color="#228B22">'Marseille'</font>
+	],
+	
+	<font color="#228B22">'Expanse'</font> =&gt;
+	[
+		<font color="#228B22">'across the wastelands of Siberia'</font>,
+		<font color="#228B22">'through modern-day Europe'</font>,
+		<font color="#228B22">'around the Mediterranean'</font>,
+		<font color="#228B22">'through the caverns of old Constantinople'</font>,
+		<font color="#228B22">'across the Middle East'</font>
+	],
+	
+	<font color="#228B22">'SomethingImportant'</font> =&gt;
+	[
+		<font color="#228B22">'the very fabric of space-time itself'</font>,
+		<font color="#228B22">'the fate of the world'</font>,
+		<font color="#228B22">'western civilisation'</font>,
+		<font color="#228B22">'world peace'</font>,
+		<font color="#228B22">'a small MacDonalds Franchise'</font>,
+		<font color="#228B22">"the wealth of one of Europe's oldest families"</font>
+	]
+);	
+
+$div = &amp;expand(<font color="#228B22">'[[HTMLDiv]]'</font>);
+
+print &lt;&lt;EOF;
+Content-Type: text/html
+
+&lt;!DOCTYPE HTML PUBLIC <font color="#228B22">"-//W3C//DTD HTML 4.01//EN"</font> <font color="#228B22">"http://www.w3.org/TR/html4/strict.dtd"</font>&gt;
+
+&lt;title&gt;Create Your Own Dan Brown Novel&lt;/title&gt;
+
+&lt;style type=<font color="#228B22">"text/css"</font>&gt;
+BODY {
+<strong><font color="#FF0000">	margin:</font></strong> 0;
+<strong><font color="#FF0000">	padding:</font></strong> 1em 6em;
+	font-family: <font color="#228B22">"</font>Arial<font color="#228B22">"</font>, sans-serif;
+}
+H1 { text-align: center; margin: 0 0 1.5em; }
+<font color="#B22222">#cover {</font>
+<strong><font color="#FF0000">	height:</font></strong> 350px;
+<strong><font color="#FF0000">	width:</font></strong> 250px;
+<strong><font color="#FF0000">	color:</font></strong> white;
+	text-align: center;
+<strong><font color="#FF0000">	float:</font></strong> left;
+<strong><font color="#FF0000">	margin:</font></strong> 0 1em 1em 0;
+<strong><font color="#FF0000">	border:</font></strong> 2px solid black;
+}
+.purplebg { background: purple url(<font color="#228B22">"</font>purplebg.png<font color="#228B22">"</font>); }
+.redbg    { background: red url(<font color="#228B22">"</font>redbg.png<font color="#228B22">"</font>); }
+.bluebg   { background: blue url(<font color="#228B22">"</font>bluebg.png<font color="#228B22">"</font>); }
+.blackbg  { background: black url(<font color="#228B22">"</font>blackbg.png<font color="#228B22">"</font>); }
+<font color="#B22222">#cover span</font>
+{
+	text-align: center;
+<strong><font color="#FF0000">	margin:</font></strong> 10px;
+<strong><font color="#FF0000">	display:</font></strong> block;
+	font-size: 36px;
+	font-weight: bold;
+	font-family: <font color="#228B22">"</font>Garamond<font color="#228B22">"</font>, <font color="#228B22">"Times New Roman"</font>, serif;
+}
+<font color="#B22222">#cover small</font>
+{
+	text-align: center;
+<strong><font color="#FF0000">	margin:</font></strong> 10px;
+<strong><font color="#FF0000">	display:</font></strong> block;
+	font-size: 18px;
+	font-weight: bold;
+	font-family: <font color="#228B22">"</font>Garamond<font color="#228B22">"</font>, <font color="#228B22">"Times New Roman"</font>, serif;
+}
+B {
+	font-size: 120%; 
+}
+HR {
+<strong><font color="#FF0000">	clear:</font></strong> both;
+}
+&lt;/style&gt;
+
+$div
+
+&lt;hr&gt;
+&lt;p&gt;Automatically generated by Toby Inkster<font color="#228B22">'s &lt;a 
+href="source.html" title="Perl Source Code"&gt;&lt;i&gt;Create Your Own
+Dan Brown Novel&lt;/i&gt;&lt;/a&gt;. Use your browser'</font>s <font color="#228B22">"</font>Reload<font color="#228B22">"</font> button to create
+another novel, each one as original and well thought out as a real
+Dan Brown best-seller.&lt;/p&gt;
+EOF
+
+<strong><font color="#4169E1">sub expand
+</font></strong>{
+<font color="#4169E1">	local</font> $_ = shift;
+<font color="#4169E1">	local</font> $token;
+<font color="#4169E1">	local</font> @poss;
+<font color="#4169E1">	local</font> %replacement;
+<font color="#4169E1">	local</font> $repeat;
+	
+<font color="#4169E1">	while</font> (/\[\[[A-Za-z0-9]*\,?\]\]/)
+	{
+	
+		&amp;debug(<font color="#228B22">"regexp match: </font>$&<font color="#228B22">"</font>);
+	
+		$token = $&amp;;<font color="#B22222"> 		# last matched thing</font>
+		$token =~ s/[\[\]]//g;<font color="#B22222"> 	# remove brackets</font>
+		
+		$repeat = 0;
+<font color="#4169E1">		if</font> ($token =~ /\,/)
+		{
+			$repeat = 1;
+			$token =~ s/\,//;
+		}
+		
+		&amp;debug(<font color="#228B22">"token: </font>$token<font color="#228B22">"</font>);
+		
+<font color="#4169E1">		if</font> (!defined($replacement{$token}))
+		{
+			warn <font color="#228B22">"PercentX doesn't exist!\n"</font> 
+<font color="#4169E1">				unless</font> (%x);
+			warn <font color="#228B22">"PercentX doesn't list </font>$token<font color="#228B22">!\n"</font> 
+<font color="#4169E1">				unless</font> ($x{$token});
+				
+<font color="#B22222">			# find possible replacements</font>
+			@poss  = @{$x{$token}};
+						
+<font color="#B22222">			# choose one</font>
+			$replacement{$token} = $poss[rand @poss];
+			
+			&amp;debug(<font color="#228B22">"defined </font>$token<font color="#228B22"> as '"</font>.$replacement{$token}.<font color="#228B22">"'"</font>);
+		}
+<font color="#4169E1">		else</font>
+			{ &amp;debug(<font color="#228B22">"Already defined </font>$token<font color="#228B22">. Using again."</font>); }
+		
+		s/\[\[$token\,?\]\]/$replacement{$token}/;
+		
+		undef($replacement{$token})<font color="#4169E1"> unless</font> ($repeat==1);
+	}
+	
+<font color="#4169E1">	return</font> $_;
+}
+
+<strong><font color="#4169E1">sub debug
+</font></strong>{
+<font color="#4169E1">	local</font> $d = shift;
+<font color="#B22222">	#print STDERR "DEBUG-- $d\n";</font>
+}
+</pre>
+</body>
+
+</html>

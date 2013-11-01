@@ -1,0 +1,25 @@
+<Files "CIMG0136.JPG">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "CIMG0140.JPG">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "CIMG0144.JPG">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "CIMG0145.JPG">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "Seaford.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>

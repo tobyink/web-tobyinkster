@@ -1,0 +1,30 @@
+<Files "World-2050-Large.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "World-2050-Large.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "World-2050-Medium.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "World-2050-Scalable.svg">
+  SetHandler default-handler
+  ForceType "image/svg+xml"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "World-2050-Small.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "World-2050-Tiny.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>

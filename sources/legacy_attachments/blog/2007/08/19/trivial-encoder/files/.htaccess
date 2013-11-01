@@ -1,0 +1,20 @@
+<Files "TE_Machine.class.php">
+  SetHandler default-handler
+  ForceType "application/x-httpd-php-source"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "TE_Machine.class.phps">
+  SetHandler default-handler
+  ForceType "text/html; charset=utf-8"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "TrivialEncoder.class.php">
+  SetHandler default-handler
+  ForceType "application/x-http-php-source"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "TrivialEncoder.class.phps">
+  SetHandler default-handler
+  ForceType "text/html; charset=utf-8"
+  Header set "Content-Disposition" "inline"
+</Files>

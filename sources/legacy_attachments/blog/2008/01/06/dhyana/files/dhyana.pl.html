@@ -1,0 +1,749 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>205+dhyana.pl</title>
+<meta name="Generator" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	font-family: '!Bitstream Vera Sans';
+	color: #808080;
+	font-size: 9pt;
+}
+.S2 {
+	font-family: '!Bitstream Vera Serif';
+	color: #007F00;
+	font-size: 9pt;
+}
+.S4 {
+	color: #007F7F;
+}
+.S5 {
+	font-weight: bold;
+	color: #00007F;
+}
+.S6 {
+	font-family: '!Bitstream Vera Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+.S7 {
+	font-family: '!Bitstream Vera Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+.S10 {
+	font-weight: bold;
+	color: #000000;
+}
+.S11 {
+	color: #000000;
+}
+.S12 {
+	color: #000000;
+	background: #FFE0E0;
+	text-decoration: inherit;
+}
+.S13 {
+	color: #000000;
+	background: #FFFFE0;
+	text-decoration: inherit;
+}
+.S14 {
+	color: #000000;
+	background: #FFE0FF;
+	text-decoration: inherit;
+}
+.S17 {
+	color: #000000;
+	background: #A0FFA0;
+	text-decoration: inherit;
+}
+.S18 {
+	color: #000000;
+	background: #F0E080;
+	text-decoration: inherit;
+}
+.S20 {
+	color: #FFFF00;
+	background: #A08080;
+	text-decoration: inherit;
+}
+.S21 {
+	color: #600000;
+	background: #FFF0D8;
+	text-decoration: inherit;
+}
+.S30 {
+	color: #000000;
+	background: #FFFFE0;
+	text-decoration: inherit;
+}
+span {
+	font-family: '!Bitstream Vera Sans';
+	color: #000000;
+	font-size: 9pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S2">#!/usr/bin/perl</span><br />
+<br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$VERSION</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S7">'0.3'</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># dhyana.pl/0.3 (20080106)</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Added differently coloured title</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Use Getopt to parse command line</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Improved handling of certain dodgy WMV files</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Improved use of FFMPEG</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Code straightened out to use functions</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * [Matt Pinkham] Matt's capture mode</span><br />
+<span class="S2">#&nbsp; &nbsp; &nbsp; &nbsp;* Added lots of help.</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># dhyana.pl/0.2 (20071118)</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Workarounds for odd PNG files</span><br />
+<span class="S2">#&nbsp; &nbsp; &nbsp; &nbsp;* Added 'auto' geometry.</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># dhyana.pl/0.1 (20070819)</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># &nbsp; &nbsp; &nbsp; * Initial release</span><br />
+<br />
+<br />
+<span class="S2"># Silly tests.</span><br />
+<span class="S5">die</span><span class="S0"> </span><span class="S6">"This program cannot run if 00000001.png exists.\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S7">'00000001.png'</span><span class="S10">);</span><br />
+<span class="S5">die</span><span class="S0"> </span><span class="S6">"This program cannot run if 00000002.png exists.\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S7">'00000002.png'</span><span class="S10">);</span><br />
+<span class="S5">die</span><span class="S0"> </span><span class="S6">"This program cannot run if 00000001.gif exists.\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S7">'00000001.gif'</span><span class="S10">);</span><br />
+<br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Getopt</span><span class="S10">::</span><span class="S11">ArgvFile</span><span class="S0"> </span><span class="S30">qw(argvFile)</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Getopt</span><span class="S10">::</span><span class="S11">Long</span><span class="S0"> </span><span class="S4">2.33</span><span class="S0"> </span><span class="S30">qw(GetOptions)</span><span class="S10">;</span><span class="S0"> </span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Pod</span><span class="S10">::</span><span class="S11">Usage</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">POSIX</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">strict</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Paths to stuff.</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S14">%path</span><span class="S10">;</span><br />
+<span class="S12">$path</span><span class="S10">{</span><span class="S11">convert</span><span class="S10">}</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/bin/convert'</span><span class="S10">;</span><br />
+<span class="S12">$path</span><span class="S10">{</span><span class="S11">ffmpeg</span><span class="S10">}</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/bin/ffmpeg'</span><span class="S10">;</span><br />
+<span class="S12">$path</span><span class="S10">{</span><span class="S11">midentify</span><span class="S10">}=</span><span class="S0"> </span><span class="S7">'/usr/bin/midentify'</span><span class="S10">;</span><br />
+<span class="S12">$path</span><span class="S10">{</span><span class="S11">montage</span><span class="S10">}</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/bin/montage'</span><span class="S10">;</span><br />
+<span class="S12">$path</span><span class="S10">{</span><span class="S11">mplayer</span><span class="S10">}</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/bin/mplayer'</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Style settings.</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text_font</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/share/fonts/TTF/Vera.ttf'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text_colour</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'black'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text_bg</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'#f8f8ff'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text_size</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'12'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text2_font</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'/usr/share/fonts/TTF/VeraSeBd.ttf'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text2_colour</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'#009900'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$text2_size</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'24'</span><span class="S10">;</span><br />
+<br />
+<span class="S5">my</span><span class="S0"> &nbsp;</span><span class="S12">$file</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$rows</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">6</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$cols</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">4</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S7">'auto'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$Title</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$MM</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$CM</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S7">'auto'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$i</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><span class="S0"> </span><span class="S2"># counter</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$e</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><span class="S0"> </span><span class="S2"># error frame counter</span><br />
+<br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$verbosity</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Read from an options file</span><br />
+<span class="S10">&amp;</span><span class="S11">argvFile</span><br />
+<span class="S10">(</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'home'</span><span class="S10">=&gt;</span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'current'</span><span class="S10">=&gt;</span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'resolveEnvVars'</span><span class="S10">=&gt;</span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'resolveRelativePathes'</span><span class="S10">=&gt;</span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'startupFilename'</span><span class="S10">=&gt;</span><span class="S7">'.dhyanarc'</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'fileOption'</span><span class="S10">=&gt;</span><span class="S7">'--options'</span><br />
+<span class="S10">);</span><br />
+<br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$man</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$help</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<br />
+<span class="S10">&amp;</span><span class="S11">GetOptions</span><br />
+<span class="S10">(</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"path=s%"</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S14">%path</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"font-family=s"</span><span class="S0"> &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text_font</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"colour|color=s"</span><span class="S0"> &nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text_colour</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"background=s"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text_bg</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"font-size=i"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text_size</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"heading-font-family=s"</span><span class="S0">&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text2_font</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"heading-colour|heading-color=s"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text2_colour</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"heading-font-size=i"</span><span class="S0">&nbsp; &nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$text2_size</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"multi!"</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$MM</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"title|t=s"</span><span class="S0">&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$Title</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"rows|r=i"</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$rows</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"columns|cols|c=i"</span><span class="S0">&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$cols</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"geometry|geom|geo|g=s"</span><span class="S0">&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$geom</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"capture-mode|C=s"</span><span class="S0">&nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$CM</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"verbose|v+"</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$verbosity</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"quiet"</span><span class="S0">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S5">sub</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S12">$verbosity</span><span class="S10">=</span><span class="S4">0</span><span class="S10">;</span><span class="S0"> </span><span class="S10">},</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'help|usage|h'</span><span class="S0"> &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$help</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'man'</span><span class="S0">&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$man</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S7">'version'</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S5">sub</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S5">die</span><span class="S0"> </span><span class="S12">$VERSION</span><span class="S10">;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S10">);</span><br />
+<span class="S11">pod2usage</span><span class="S10">(</span><span class="S4">2</span><span class="S10">)</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S12">$help</span><span class="S10">;</span><br />
+<span class="S11">pod2usage</span><span class="S10">(</span><span class="S4">0</span><span class="S10">)</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S12">$man</span><span class="S10">;</span><br />
+<span class="S5">exit</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$help</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$man</span><span class="S10">);</span><br />
+<br />
+<span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$MM</span><span class="S10">)</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">while</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">process</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"$file not found."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S10">}</span><br />
+<span class="S5">else</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Read command line options.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S11">pod2usage</span><span class="S10">(</span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$rows</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$rows</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$cols</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$cols</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$geom</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S7">'auto'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$Title</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$Title</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">process</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">);</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">create_tmp_dir</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$ENV</span><span class="S10">{</span><span class="S7">'TMPDIR'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S12">$ENV</span><span class="S10">{</span><span class="S7">'TMP'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S7">'/tmp'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">.=</span><span class="S0"> </span><span class="S7">'/dhyana-'</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S5">rand</span><span class="S10">(</span><span class="S4">100_000</span><span class="S10">))</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'/'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">mkdir</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$tmp_dir</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Created working directory $tmp_dir."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">get_video_info</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Using $path{midentify} to get file information."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">3</span><span class="S10">);</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Info about the video.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@info</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">split</span><span class="S0"> </span><span class="S17">/\n/</span><span class="S10">,</span><span class="S0"> </span><span class="S20">`$path{midentify} '$file'`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S14">%info</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@info</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$k</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$v</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">chomp</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S12">$k</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$v</span><span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">split</span><span class="S0"> </span><span class="S17">/\=/</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$v</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/\\//g</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$info</span><span class="S10">{</span><span class="S12">$k</span><span class="S10">}</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$v</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S14">%info</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">get_annotation</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$info</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$annotation</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"Size: %.02f MB (%d bytes)\n"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">)/(</span><span class="S4">1024</span><span class="S10">*</span><span class="S4">1024</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">))</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"Length: %d:%02d:%02d\n"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}/</span><span class="S4">3600</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">((</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}%</span><span class="S4">3600</span><span class="S10">)/</span><span class="S4">60</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}%</span><span class="S4">60</span><span class="S10">)</span><span class="S0"> </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'Video: '</span><span class="S10">.</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_WIDTH'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'x'</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_HEIGHT'</span><span class="S10">}</span><span class="S0"> </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' ('</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_FORMAT'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">', '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_FPS'</span><span class="S10">})</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' frames/sec, '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_BITRATE'</span><span class="S10">}/</span><span class="S4">1000</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" kb/sec)\n"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'Audio: '</span><span class="S10">.</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_NCH'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' chan'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' ('</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_CODEC'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">', '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_RATE'</span><span class="S10">}/</span><span class="S4">1000</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' kHz, '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_BITRATE'</span><span class="S10">}/</span><span class="S4">1000</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" kb/sec)\n"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Error calculating stuff, it seems.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_FPS'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">==</span><span class="S0"> </span><span class="S4">1000</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Potentially unreliable info, so using reduced information set."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">3</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$annotation</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"Size: %.02f MB (%d bytes)\n"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">)/(</span><span class="S4">1024</span><span class="S10">*</span><span class="S4">1024</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">))</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"Length: %d:%02d:%02d\n"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}/</span><span class="S4">3600</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">((</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}%</span><span class="S4">3600</span><span class="S10">)/</span><span class="S4">60</span><span class="S10">),</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">floor</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">}%</span><span class="S4">60</span><span class="S10">)</span><span class="S0"> </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'Video: '</span><span class="S10">.</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_WIDTH'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'x'</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_HEIGHT'</span><span class="S10">}</span><span class="S0"> </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' ('</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_FORMAT'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">")\n"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'Audio: '</span><span class="S10">.</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_NCH'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' chan'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' ('</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_CODEC'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">', '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_RATE'</span><span class="S10">}/</span><span class="S4">1000</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' kHz, '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_AUDIO_BITRATE'</span><span class="S10">}/</span><span class="S4">1000</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" kb/sec)\n"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$annotation</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">get_capture_timings</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Calculating timings for captures."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">3</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$info</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$n_frames</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$rows</span><span class="S0"> </span><span class="S10">*</span><span class="S0"> </span><span class="S12">$cols</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$length</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_LENGTH'</span><span class="S10">};</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">-&gt;{</span><span class="S7">'ID_VIDEO_FPS'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">==</span><span class="S0"> </span><span class="S4">1000</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Potentially dodgy file. Adjusting timings."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$length</span><span class="S0"> </span><span class="S10">*=</span><span class="S0"> </span><span class="S4">0.6</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$part_length</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$length</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$n_frames</span><span class="S0"> </span><span class="S10">-</span><span class="S0"> </span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@times</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">(</span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">for</span><span class="S0"> </span><span class="S10">(</span><span class="S5">my</span><span class="S0"> </span><span class="S12">$i</span><span class="S10">=</span><span class="S4">1</span><span class="S10">;</span><span class="S0"> </span><span class="S12">$i</span><span class="S10">&lt;</span><span class="S12">$n_frames</span><span class="S10">;</span><span class="S0"> </span><span class="S12">$i</span><span class="S10">++)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">push</span><span class="S0"> </span><span class="S13">@times</span><span class="S10">,</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$i</span><span class="S0"> </span><span class="S10">*</span><span class="S0"> </span><span class="S12">$part_length</span><span class="S10">)-</span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S13">@times</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">process</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">die</span><span class="S0"> </span><span class="S6">"Horrible apostrophe-filled file name.\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/\'/</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">create_tmp_dir</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S14">%info</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">get_video_info</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$annotation</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">get_annotation</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S10">\</span><span class="S14">%info</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S12">$geom</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$real_geom</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S7">'auto'</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_WIDTH</span><span class="S10">}</span><span class="S0"> </span><span class="S10">&gt;</span><span class="S0"> </span><span class="S4">600</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$real_geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_WIDTH</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">3</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'x'</span><span class="S0"> </span><span class="S10">.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_HEIGHT</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">3</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'+4+4'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">elsif</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_WIDTH</span><span class="S10">}</span><span class="S0"> </span><span class="S10">&gt;</span><span class="S0"> </span><span class="S4">315</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$real_geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_WIDTH</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">2</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'x'</span><span class="S0"> </span><span class="S10">.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_HEIGHT</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">2</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'+4+4'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$real_geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_WIDTH</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">1</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'x'</span><span class="S0"> </span><span class="S10">.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">int</span><span class="S10">(</span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_HEIGHT</span><span class="S10">}</span><span class="S0"> </span><span class="S10">/</span><span class="S0"> </span><span class="S4">1</span><span class="S10">)</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">'+4+4'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@timings</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">get_capture_timings</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S10">\</span><span class="S14">%info</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$i</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$e</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$CM</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/^matt$/i</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">||</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">(</span><span class="S12">$CM</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/^auto$/i</span><span class="S0"> </span><span class="S10">&amp;&amp;</span><span class="S0"> </span><span class="S12">$info</span><span class="S10">{</span><span class="S11">ID_VIDEO_FPS</span><span class="S10">}==</span><span class="S4">1000</span><span class="S0"> &nbsp;</span><span class="S10">))</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">capture_matt</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S13">@timings</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$t</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@timings</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$CM</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/^auto$/i</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$file</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/\.(mpe?g|mp4)$/i</span><span class="S0"> </span><span class="S10">&amp;&amp;</span><span class="S0"> </span><span class="S5">-e</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">ffmpeg</span><span class="S10">})</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">capture_mpeg</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$t</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">capture_std</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$t</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">elsif</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$CM</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/^(ff)?mpe?g$/i</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">capture_mpeg</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$t</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">elsif</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$CM</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">/^old.?(ff)?mpe?g$/i</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">capture_old_mpeg</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$t</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">capture_std</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$t</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$montage</span><span class="S0"> &nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">create_montage</span><span class="S10">(</span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$a_montage</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">annotate_montage</span><span class="S10">(</span><span class="S12">$file</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$annotation</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$montage</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Finalising</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$file_out</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/\.[^\.]+$/.jpeg/</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Saving final file as '$file_out'."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"$path{convert} -quality 90 '$a_montage' '$file_out'"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Cleaning up temporary files."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"rm -fr '$tmp_dir'"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">capture_mpeg</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">while</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$_</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"MPEG Capture [slow!]: frame $i, at $_ seconds."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">ffmpeg</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -i '$file'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' -f image2'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -ss $_ -vframes 1"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -y '%08d.png'"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`$cmd 2&gt;&amp;1`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"cp '00000001.png' '%s/frame-%06d.png'"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$_</span><span class="S10">));</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"rm -f '00000001.png'"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$i</span><span class="S10">++;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">capture_old_mpeg</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">while</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$_</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"MPEG Capture [slow!]: frame $i, at $_ seconds."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">ffmpeg</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -i '$file'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' -f image -img gif'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -ss $_ -vframes 1"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -y '%08d.gif'"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`$cmd 2&gt;&amp;1`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"$path{convert} '00000001.gif' '%s/frame-%06d.png'"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$_</span><span class="S10">));</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"rm -f '00000001.gif'"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$i</span><span class="S10">++;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">capture_std</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">while</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$_</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Capture: frame $i, at $_ seconds."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">mplayer</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' -really-quiet -nosound'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' -vo png:z=3 -frames 2'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -ss $_ '$file'"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`$cmd 2&gt;&amp;1`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S7">'00000002.png'</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S5">system</span><span class="S10">(</span><span class="S5">sprintf</span><span class="S10">(</span><span class="S6">"mv '00000002.png' '%s/frame-%06d.png'"</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$_</span><span class="S10">));</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Something wrong with capture at $_ seconds"</span><span class="S10">,</span><span class="S0"> </span><span class="S4">1</span><span class="S10">);</span><span class="S0"> </span><span class="S12">$e</span><span class="S10">++;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">for</span><span class="S0"> </span><span class="S10">(</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$f</span><span class="S10">=</span><span class="S4">1</span><span class="S0"> </span><span class="S10">;</span><span class="S0"> </span><span class="S12">$f</span><span class="S10">&lt;=</span><span class="S4">2</span><span class="S0"> </span><span class="S10">;</span><span class="S0"> </span><span class="S12">$f</span><span class="S10">++</span><span class="S0"> </span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><span class="S0"> </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"rm -f '0000000$f.png'"</span><span class="S10">)</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S6">"0000000$f.png"</span><span class="S10">);</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$i</span><span class="S10">++;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">capture_matt</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">use</span><span class="S0"> </span><span class="S11">Cwd</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">use</span><span class="S0"> </span><span class="S11">File</span><span class="S10">::</span><span class="S11">chdir</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">use</span><span class="S0"> </span><span class="S11">File</span><span class="S10">::</span><span class="S11">Spec</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@timings</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S13">@_</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$abs_file</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">getcwd</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Matt's Capture: put your faith in mplayer."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S11">File</span><span class="S10">::</span><span class="S11">Spec</span><span class="S10">-&gt;</span><span class="S11">file_name_is_absolute</span><span class="S10">(</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> </span><span class="S10">))</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$abs_file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$file</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">die</span><span class="S0"> </span><span class="S6">"Apostrophes \' are bad in dir names\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$dir</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/\'/\\'/g</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$abs_path</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">File</span><span class="S10">::</span><span class="S11">Spec</span><span class="S10">-&gt;</span><span class="S11">rel2abs</span><span class="S10">(</span><span class="S0"> </span><span class="S12">$dir</span><span class="S0"> </span><span class="S10">)</span><span class="S0"> </span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$abs_file</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S6">"$dir/$file"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$part_length</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$timings</span><span class="S10">[</span><span class="S4">2</span><span class="S10">]</span><span class="S0"> </span><span class="S10">-</span><span class="S0"> </span><span class="S12">$timings</span><span class="S10">[</span><span class="S4">1</span><span class="S10">];</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$n_frames</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S12">$#timings</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$CWD</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">mplayer</span><span class="S10">}</span><span class="S0"> </span><span class="S10">.</span><span class="S0"> </span><span class="S7">' -really-quiet -nosound'</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -vo png:z=3 -sstep $part_length -frames $n_frames"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" '$abs_file'"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`$cmd 2&gt;&amp;1`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$frame_count</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`ls $tmp_dir/0*.png|wc -l`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$CWD</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$dir</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$e</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$rows</span><span class="S0"> </span><span class="S10">*</span><span class="S0"> </span><span class="S12">$cols</span><span class="S10">)</span><span class="S0"> </span><span class="S10">-</span><span class="S0"> </span><span class="S12">$frame_count</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$i</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$frame_count</span><span class="S0"> </span><span class="S10">+</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">create_montage</span><span class="S0"> </span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$frame_count</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$cols</span><span class="S0"> </span><span class="S10">*</span><span class="S0"> </span><span class="S12">$rows</span><span class="S10">)</span><span class="S0"> </span><span class="S10">-</span><span class="S0"> </span><span class="S12">$e</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$real_rows</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">POSIX</span><span class="S10">::</span><span class="S11">ceil</span><span class="S10">(</span><span class="S12">$frame_count</span><span class="S10">/</span><span class="S12">$cols</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Creating montage."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Only $frame_count captures, so $cols by $real_rows."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">1</span><span class="S10">)</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$e</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">montage</span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -geometry '$real_geom'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -background '$text_bg'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -fill '$text_colour'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -tile '"</span><span class="S10">.</span><span class="S12">$cols</span><span class="S10">.</span><span class="S6">"x"</span><span class="S10">.</span><span class="S12">$real_rows</span><span class="S10">.</span><span class="S6">"'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" $tmp_dir/frame-*.png $tmp_dir/0*.png $tmp_dir/montage.png"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd_out</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S20">`$cmd 2&gt;&amp;1`</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">die</span><span class="S0"> </span><span class="S6">"Error creating montage!\n"</span><span class="S0"> </span><span class="S5">unless</span><span class="S0"> </span><span class="S10">(</span><span class="S5">-e</span><span class="S0"> </span><span class="S6">"$tmp_dir/montage.png"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S6">"$tmp_dir/montage.png"</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">annotate_montage</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$file</span><span class="S0"> &nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$tmp_dir</span><span class="S0"> &nbsp; &nbsp; </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$annotation</span><span class="S0">&nbsp; </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$montage</span><span class="S0">&nbsp; &nbsp; &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S0">&nbsp; &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">debug</span><span class="S10">(</span><span class="S6">"Annotating montage '$montage'."</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$bord</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$real_geom</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$bord</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/^\d+x\d+\+//</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$bord</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/\+/x/</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">convert</span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -fill '$text_colour'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -background '$text_bg'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -font '\@$text_font'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -pointsize '$text_size'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># &nbsp; &nbsp; &nbsp; . " -gravity North"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -trim +repage"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -bordercolor '$text_bg'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -border $bord"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" text:- '$tmp_dir/annotation.png'"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">open</span><span class="S10">(</span><span class="S11">CONVERT</span><span class="S10">,</span><span class="S0"> </span><span class="S6">"|$cmd"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$file</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S12">$Title</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">print</span><span class="S0"> </span><span class="S11">CONVERT</span><span class="S0"> </span><span class="S6">"$annotation\n"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">else</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">print</span><span class="S0"> </span><span class="S11">CONVERT</span><span class="S0"> </span><span class="S6">"$file\n$annotation\n"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">close</span><span class="S10">(</span><span class="S11">CONVERT</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$cmd</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$path</span><span class="S10">{</span><span class="S11">convert</span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -fill '$text2_colour'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -background '$text_bg'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -font '\@$text2_font'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -pointsize '$text2_size'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># &nbsp; &nbsp; &nbsp; . " -gravity North"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -trim +repage"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -bordercolor '$text_bg'"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" -border $bord"</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">.</span><span class="S0"> </span><span class="S6">" text:- '$tmp_dir/filename.png'"</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">open</span><span class="S10">(</span><span class="S11">CONVERT</span><span class="S10">,</span><span class="S0"> </span><span class="S6">"|$cmd"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">print</span><span class="S0"> </span><span class="S11">CONVERT</span><span class="S0"> </span><span class="S6">"$Title\n"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">close</span><span class="S10">(</span><span class="S11">CONVERT</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">system</span><span class="S10">(</span><span class="S6">"$path{convert} -bordercolor '$text_bg' -border $bord -background '$text_bg' '$tmp_dir/filename.png' '$tmp_dir/annotation.png' '$tmp_dir/montage.png' -append '$tmp_dir/final.png'"</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S6">"$tmp_dir/final.png"</span><span class="S10">;</span><br />
+<span class="S10">}</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;</span><br />
+<br />
+<br />
+<span class="S2"># Debugging function.</span><br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">debug</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$x</span><span class="S0">&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$level</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">print</span><span class="S0"> </span><span class="S6">"[$level] $x\n"</span><span class="S0"> </span><span class="S5">unless</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$level</span><span class="S0"> </span><span class="S10">&gt;</span><span class="S0"> </span><span class="S12">$verbosity</span><span class="S10">);</span><br />
+<span class="S10">}</span><br />
+<br />
+<br />
+<span class="S21">__END__</span><br />
+<br />
+<span class="S21">=head1 NAME</span><br />
+<br />
+<span class="S21">dhyana.pl - Sequential video screen captures on Linux</span><br />
+<br />
+<span class="S21">=head1 SYNOPSIS</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;dhyana.pl [options] file [cols [rows [geometry [title]]]]</span><br />
+<span class="S21">&nbsp;&nbsp;dhyana.pl --multi [options] file [file ...]</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;Options:</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--help &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brief help message</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--man &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;full documentation</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--version &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print version number</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--verbose, -v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increase verbosity</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--quiet &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no status output</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--path TOOL=PATH &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set path for external tool</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">&nbsp;&nbsp;Capture options:</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--cols=X, -c X &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;columns of images to capture (default 4)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--rows=Y, -r Y &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rows of images to capture (default 6)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--geometry=G, -g G &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;geometry of thumbnails (default 'auto')</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--title=T, -t T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title for thumbnails (filename default)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--capture-mode=M, -C M &nbsp;&nbsp;capture technique (default 'auto')</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">&nbsp;&nbsp;Style options:</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--background &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background colour (e.g. 'green', '#00ff00')</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--font-family &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path to TTF file for text</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--font-size &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size of text in pixels</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--colour, --color &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colour for text</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--heading-font-family &nbsp;&nbsp;&nbsp;path to TTF file for heading</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--heading-font-size &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size of heading in pixels</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;--heading-colour &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colour for heading</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">=head1 OPTIONS</span><br />
+<br />
+<span class="S21">Dhyana.pl processes video files and outputs an image file containing a</span><br />
+<span class="S21">summary of the video in the form of thumbnails taken at regular intervals.</span><br />
+<br />
+<span class="S21">It includes annotation at the top of the image with video file details such</span><br />
+<span class="S21">as file name, codecs used, bitrates, length, file size and so forth.</span><br />
+<br />
+<span class="S21">For more details, see http://tobyinkster.co.uk/tag/dhyana/.</span><br />
+<br />
+<span class="S21">=over 8</span><br />
+<br />
+<span class="S21">=item B&lt;--options&gt;</span><br />
+<br />
+<span class="S21">To save time typing frequently used options, you may specify a group of</span><br />
+<span class="S21">options in a text file. The text file syntax is the same as the command</span><br />
+<span class="S21">line parameters, including dashes, but may extend over multiple lines, and</span><br />
+<span class="S21">can include comment lines starting with a hash.</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;dhyana.pl --options=myopts.txt file.mpeg</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">A shorthand for this exists:</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;dhyana.pl @myopts.txt file.mpeg</span><br />
+<br />
+<span class="S21">Dhyana.pl also looks for additional options in the files './.dhyanarc' and</span><br />
+<span class="S21">'~/.dhyanarc' if they exist.</span><br />
+<br />
+<span class="S21">=item B&lt;--verbose&gt;, B&lt;--quiet&gt; </span><br />
+<br />
+<span class="S21">By default, only warning/debugging messages with priority "1" are shown.</span><br />
+<span class="S21">You may increase dhyana.pl's verbosity using the --verbose option. This</span><br />
+<span class="S21">option may be used multiple times to increase it further. The --quiet</span><br />
+<span class="S21">option mutes all output from dhyana.pl except fatal errors.</span><br />
+<br />
+<span class="S21">=item B&lt;--path&gt;</span><br />
+<br />
+<span class="S21">Dhyana.pl uses several external programs:</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* mplayer</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* midentify [part of mplayer]</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* ffmpeg</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* convert [part of ImageMagick]</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* montage [part of ImageMagick]</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">By default it looks for these programs in /usr/bin/. You may specify</span><br />
+<span class="S21">alternative locations using the path option. e.g.</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;dhyana.pl --path ffmpeg=/opt/media/bin/ffmpeg file.mpeg</span><br />
+<br />
+<span class="S21">You may specify multiple paths by using the --path option repeatedly:</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;dhyana.pl --path convert=/opt/magick/bin/convert \</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--path mogrify=/opt/magick/bin/mogrify file.mpeg</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">It is suggested that such paths are specified in '.dhyanarc' files to</span><br />
+<span class="S21">save repeatedly typing them.</span><br />
+<br />
+<span class="S21">=item B&lt;--capture-mode&gt;</span><br />
+<br />
+<span class="S21">Dhyana.pl calls external programs such as mplayer and ffmpeg (see also</span><br />
+<span class="S21">the --path option) to take the screen captures. The capture mode allows</span><br />
+<span class="S21">you to choose which external programs to use, and how. Available modes</span><br />
+<span class="S21">are:</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* auto (choose best based on input file codecs)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* standard (frame-by-frame using mplayer)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* ffmpeg (PNG export using newer ffmpeg)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* old-ffmpeg (GIF export using older ffmpeg)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;* matt (all-at-once using mplayer)</span><br />
+<span class="S21">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S21">Unless you have a particular reason to choose otherwise, it's normally</span><br />
+<span class="S21">fine to use the default capture mode ('auto').</span><br />
+<br />
+<span class="S21">=item B&lt;--cols&gt;, B&lt;--rows&gt;</span><br />
+<br />
+<span class="S21">Lays out the thumbnails in an X*Y table. By default, 4 columns and 6 rows</span><br />
+<span class="S21">are used. </span><br />
+<br />
+<span class="S21">Occasionally, certain frame captures fail, in which case the resulting</span><br />
+<span class="S21">table may be smaller than requested. In this case, rows will be removed,</span><br />
+<span class="S21">not columns.</span><br />
+<br />
+<span class="S21">=item B&lt;--geometry&gt;</span><br />
+<br />
+<span class="S21">Specified in the format XxY+W+H where X and Y are the width and height of</span><br />
+<span class="S21">image thumbnails to take, and W and H are the width and height of the</span><br />
+<span class="S21">margin to include around them. </span><br />
+<br />
+<span class="S21">These dimensions are passed directly to ImageMagick, so dhyana.pl follows</span><br />
+<span class="S21">ImageMagick's behaviour with regard to them. Namely, images are scaled</span><br />
+<span class="S21">by default preserving aspect ratio. If you want to warp the images, you</span><br />
+<span class="S21">may prefix the geometry with an exclamation mark (!) to force the images</span><br />
+<span class="S21">to be scaled to your exact dimensions.</span><br />
+<br />
+<span class="S21">The default geometry is 'auto' which automatically chooses an appropriate</span><br />
+<span class="S21">geometry based on the video resolution.</span><br />
+<br />
+<span class="S21">=item B&lt;--title&gt;</span><br />
+<br />
+<span class="S21">Sets the title to display at the top of the image. The title can be in a</span><br />
+<span class="S21">different font and colour from the rest of the annotation. If no title is</span><br />
+<span class="S21">specified, the file name is used. If a title other than the file name is</span><br />
+<span class="S21">specified, the file name will be included in the body of the annotation.</span><br />
+<br />
+<span class="S21">=item B&lt;Style Options&gt;</span><br />
+<br />
+<span class="S21">These are not yet documented.</span><br />
+<br />
+<span class="S21">=back </span><br />
+<span class="S0"></span></span>
+</body>
+</html>

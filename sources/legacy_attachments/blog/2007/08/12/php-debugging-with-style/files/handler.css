@@ -1,0 +1,82 @@
+#debuggerwrapper
+{
+	color: white;
+	background: #006;
+	position: fixed;
+	height: 250px;
+	width: 80%;
+	left: 10%;
+	bottom: 12px;
+	padding: 4px 0.5%;
+	font-family: "Arial", sans-serif;
+}
+
+#debuggerwrapper *
+{
+	font-family: "Arial", sans-serif;
+	letter-spacing: 0;
+}
+
+#debuggerwrapper h1
+{
+	background: #00C;
+	color: white;
+	margin: 0 0 4px;
+	font-size: 16px;
+	padding: 2px;
+	height: 22px;
+}
+
+#debuggerwrapper ol
+{
+	margin: 0 0.5% 0 0;
+	padding: 0;
+	color: black;
+	background: #EEF;
+	list-style: none;
+	font-size: 80%;
+	width: 40%;
+	height: 220px;
+	float: left;
+	overflow: auto;
+}
+
+#debuggerwrapper ol li.selected-bug
+{
+	background: #FF6;
+}
+
+#debuggerwrapper li { margin: 0; padding: 0; }
+
+#debuggerwrapper ul
+{
+	margin: 0 0.5% 0 0;
+	padding: 0;
+	color: black;
+	background: #DDF;
+	list-style: none;
+	font-size: 80%;
+	width: 15%;
+	height: 220px;
+	float: left;
+	overflow: auto;
+}
+
+#debuggerwrapper ul li.selected-aspect
+{
+	background: #FB6;
+}
+
+#debuggerwrapper #debuggerpanel2
+{
+	margin: 0;
+	color: black;
+	background: #CCF;
+	list-style: none;
+	font-size: 80%;
+	font-family: "Lucida Console", monospace;
+	width: 43%;
+	height: 220px;
+	float: right;	
+	overflow: auto;
+}

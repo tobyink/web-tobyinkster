@@ -1,0 +1,15 @@
+<Files "dhyana.pl">
+  SetHandler default-handler
+  ForceType "text/x-perl; charset=us-ascii"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "dhyana.pl.html">
+  SetHandler default-handler
+  ForceType "text/html; charset=us-ascii"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "pb-s02e03.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>

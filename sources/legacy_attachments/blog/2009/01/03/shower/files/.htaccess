@@ -1,0 +1,20 @@
+<Files "CIMG1889">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG1889_small">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "CIMG1895">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "CIMG1895_small">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>

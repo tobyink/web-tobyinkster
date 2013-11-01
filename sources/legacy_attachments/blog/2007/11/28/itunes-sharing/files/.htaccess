@@ -1,0 +1,30 @@
+<Files "iTunes.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iTunes-small.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iTunes-tiny.jpeg">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "mail.service">
+  SetHandler default-handler
+  ForceType "text/xml; charset=utf-8"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "mt-daapd.service">
+  SetHandler default-handler
+  ForceType "text/xml; charset=utf-8"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "postgresql.service">
+  SetHandler default-handler
+  ForceType "text/xml; charset=utf-8"
+  Header set "Content-Disposition" "attachment"
+</Files>

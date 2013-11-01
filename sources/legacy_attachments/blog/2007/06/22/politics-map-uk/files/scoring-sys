@@ -1,0 +1,37 @@
+Government:
+	Localisation of govt		y+10
+	Govt transparency		y+20
+	Voting reform			y+10
+	
+Law & Order:
+	Decrim illegal drugs		y+20
+	Increase in police powers	y-20
+	ID Cards			y-20
+	Looser copyright restrictions	y+10
+
+Tax policy:
+	Tax increases			x-20 ~ x+10
+	Progressive taxation		x-10 ~ x+20
+
+Free market:
+	Market deregulation		x+20 & y+10 ~ x-20 & y-10
+
+Welfare and employment rights:
+	Increases in welfare		x-10 ~ x+10
+	Min wage / workers rights	x-10
+	Union busting, drop min wage	x+10
+	Anti-discrimination laws	x-10 & y+10
+
+Public services:
+	Increases in services		x-10 ~ x+20
+	Nationalisation			x-20 ~ x+20
+
+Society:
+	Gay rights			y+20 ~ y-20
+	Discrim against a religion	y-20
+	Discrim against a race		y-20
+	Privacy laws			y+10
+	Environmentalism		y-10
+
+Transport:
+	Public transport		x-10 ~ x+10

@@ -1,0 +1,5 @@
+<Files "Domain.class.php">
+  SetHandler default-handler
+  ForceType "application/x-httpd-php-source"
+  Header set "Content-Disposition" "attachment"
+</Files>

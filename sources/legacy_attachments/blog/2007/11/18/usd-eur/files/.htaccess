@@ -1,0 +1,15 @@
+<Files "usd-eur.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "usd-eur-small.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "usd-eur.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>

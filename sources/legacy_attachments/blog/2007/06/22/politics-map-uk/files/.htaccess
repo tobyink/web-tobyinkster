@@ -1,0 +1,95 @@
+<Files "iAlliance">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iBlank">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iBNP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iConservative">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iDUP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iGreen">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iLabour">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iLibDem">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iPCymru">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iRespect">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iSDLP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iSinnFein">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iSNP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iUKIP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "iUUP">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "political-compass">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "political-compass-gimp">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "pparties.ods">
+  SetHandler default-handler
+  ForceType "application/x-opendocument"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "scoring-sys">
+  SetHandler default-handler
+  ForceType "text/plain; charset=us-ascii"
+  Header set "Content-Disposition" "inline"
+</Files>

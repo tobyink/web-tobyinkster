@@ -1,0 +1,25 @@
+<Files "error-handler.html">
+  SetHandler default-handler
+  ForceType "text/html; charset=utf-8"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "handler.css">
+  SetHandler default-handler
+  ForceType "text/css; charset=us-ascii"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "handler.js">
+  SetHandler default-handler
+  ForceType "text/javascript; charset=us-ascii"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "MegaErrorHandler.class.php">
+  SetHandler default-handler
+  ForceType "application/x-httpd-php-source"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "MegaErrorHandler.class.phps">
+  SetHandler default-handler
+  ForceType "text/html; charset=us-ascii"
+  Header set "Content-Disposition" "inline"
+</Files>

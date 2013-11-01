@@ -1,0 +1,164 @@
+
+<html>
+<head>
+<title>181+dhyana.pl</title>
+<meta name="generator" content="perl2html 0.9.2">
+<meta name="date" content="2007-08-19T14:49:53+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+<pre width="80"><a name="line1">  1: </a><font color="#B22222">#!/usr/bin/perl</font>
+<a name="line2">  2: </a>
+<a name="line3">  3: </a><font color="#4169E1">use strict;</font>
+<a name="line4">  4: </a><font color="#4169E1">use POSIX;</font>
+<a name="line5">  5: </a>
+<a name="line6">  6: </a><font color="#B22222"># Paths to stuff.</font>
+<a name="line7">  7: </a><font color="#4169E1">my</font> $path_convert   = <font color="#228B22">'/usr/bin/convert'</font>;
+<a name="line8">  8: </a><font color="#4169E1">my</font> $path_ffmpeg    = <font color="#228B22">'/usr/bin/ffmpeg'</font>;
+<a name="line9">  9: </a><font color="#4169E1">my</font> $path_midentify = <font color="#228B22">'/usr/bin/midentify'</font>;
+<a name="line10"> 10: </a><font color="#4169E1">my</font> $path_montage   = <font color="#228B22">'/usr/bin/montage'</font>;
+<a name="line11"> 11: </a><font color="#4169E1">my</font> $path_mplayer   = <font color="#228B22">'/usr/bin/mplayer'</font>;
+<a name="line12"> 12: </a>
+<a name="line13"> 13: </a><font color="#B22222"># Silly tests.</font>
+<a name="line14"> 14: </a>die <font color="#228B22">"This program cannot run if 00000001.png exists.\n"</font><font color="#4169E1"> if</font> (-e <font color="#228B22">'00000001.png'</font>);
+<a name="line15"> 15: </a>die <font color="#228B22">"This program cannot run if 00000002.png exists.\n"</font><font color="#4169E1"> if</font> (-e <font color="#228B22">'00000002.png'</font>);
+<a name="line16"> 16: </a>die <font color="#228B22">"This program cannot run if 00000001.gif exists.\n"</font><font color="#4169E1"> if</font> (-e <font color="#228B22">'00000001.gif'</font>);
+<a name="line17"> 17: </a>
+<a name="line18"> 18: </a><font color="#B22222"># Read command line options.</font>
+<a name="line19"> 19: </a><font color="#4169E1">my</font> $file = shift @ARGV || die <font color="#228B22">"Specify input file.\n"</font>;
+<a name="line20"> 20: </a><font color="#4169E1">my</font> $rows = shift @ARGV || 6;
+<a name="line21"> 21: </a><font color="#4169E1">my</font> $cols = shift @ARGV || 4;
+<a name="line22"> 22: </a><font color="#4169E1">my</font> $geom = shift @ARGV || <font color="#228B22">'240x180+10+10'</font>;
+<a name="line23"> 23: </a><font color="#4169E1">my</font> $is_mpeg = 0;
+<a name="line24"> 24: </a>$is_mpeg = 1<font color="#4169E1"> if</font> ($file =~ /\.mpe?g$/i && -e $path_ffmpeg);
+<a name="line25"> 25: </a>
+<a name="line26"> 26: </a><font color="#B22222"># Other settings.</font>
+<a name="line27"> 27: </a><font color="#4169E1">my</font> $text_font   = <font color="#228B22">'@/usr/share/fonts/msttcorefonts/trebuc.ttf'</font>;
+<a name="line28"> 28: </a><font color="#4169E1">my</font> $text_colour = <font color="#228B22">'#0080'</font>;
+<a name="line29"> 29: </a><font color="#4169E1">my</font> $text_bg     = <font color="#228B22">'AliceBlue'</font>;
+<a name="line30"> 30: </a><font color="#4169E1">my</font> $text_size   = <font color="#228B22">'18'</font>;
+<a name="line31"> 31: </a>
+<a name="line32"> 32: </a><font color="#B22222"># Create temporary directory.</font>
+<a name="line33"> 33: </a><font color="#4169E1">my</font> $tmp_dir = $ENV{<font color="#228B22">'TMPDIR'</font>} || $ENV{<font color="#228B22">'TMP'</font>} || <font color="#228B22">'/tmp'</font>;
+<a name="line34"> 34: </a>$tmp_dir .= <font color="#228B22">'/dhyana-'</font> . int(rand(100_000)) . <font color="#228B22">'/'</font>;
+<a name="line35"> 35: </a>mkdir ($tmp_dir);
+<a name="line36"> 36: </a>
+<a name="line37"> 37: </a><font color="#B22222"># Info about the video.</font>
+<a name="line38"> 38: </a><font color="#4169E1">my</font> @info =<font color="#4169E1"> split</font> /\n/, `$path_midentify <font color="#228B22">'$file'</font>`;
+<a name="line39"> 39: </a><font color="#4169E1">my</font> %info;
+<a name="line40"> 40: </a><font color="#4169E1">foreach</font> (@info)
+<a name="line41"> 41: </a>{
+<a name="line42"> 42: </a><font color="#4169E1">        my</font> $k;
+<a name="line43"> 43: </a><font color="#4169E1">        my</font> $v;
+<a name="line44"> 44: </a>        chomp;
+<a name="line45"> 45: </a>        ($k, $v) =<font color="#4169E1"> split</font> /\=/;
+<a name="line46"> 46: </a>        $v =~ s/\\//g;
+<a name="line47"> 47: </a>        $info{$k} = $v;
+<a name="line48"> 48: </a>}
+<a name="line49"> 49: </a>@info = undef;
+<a name="line50"> 50: </a>
+<a name="line51"> 51: </a><font color="#B22222"># Create image annotation</font>
+<a name="line52"> 52: </a><font color="#4169E1">my</font> $annotation  = sprintf(<font color="#228B22">"Size: %.02f MB (</font>%d<font color="#228B22"> bytes)\n"</font>,
+<a name="line53"> 53: </a>                        (-s $file)/(1024*1024),
+<a name="line54"> 54: </a>                        (-s $file))
+<a name="line55"> 55: </a>                . sprintf(<font color="#228B22">"Length: </font>%d<font color="#228B22">:%02d:%02d\n"</font>,
+<a name="line56"> 56: </a><strong><font color="#FF0000">                        POSIX:</font></strong>:floor($info{<font color="#228B22">'ID_LENGTH'</font>}/3600),
+<a name="line57"> 57: </a><strong><font color="#FF0000">                        POSIX:</font></strong>:floor(($info{<font color="#228B22">'ID_LENGTH'</font>}%3600)/60),
+<a name="line58"> 58: </a><strong><font color="#FF0000">                        POSIX:</font></strong>:floor($info{<font color="#228B22">'ID_LENGTH'</font>}%60) 
+<a name="line59"> 59: </a>                        )
+<a name="line60"> 60: </a>                . <font color="#228B22">'Video: '</font>.$info{<font color="#228B22">'ID_VIDEO_WIDTH'</font>} . <font color="#228B22">'x'</font> . $info{<font color="#228B22">'ID_VIDEO_HEIGHT'</font>} 
+<a name="line61"> 61: </a>                . <font color="#228B22">' ('</font> . $info{<font color="#228B22">'ID_VIDEO_FORMAT'</font>} . <font color="#228B22">', '</font>
+<a name="line62"> 62: </a>                . int($info{<font color="#228B22">'ID_VIDEO_FPS'</font>}) . <font color="#228B22">' frames/sec, '</font>
+<a name="line63"> 63: </a>                . int($info{<font color="#228B22">'ID_VIDEO_BITRATE'</font>}/1000) . <font color="#228B22">" kb/sec)\n"</font>
+<a name="line64"> 64: </a>                . <font color="#228B22">'Audio: '</font>.$info{<font color="#228B22">'ID_AUDIO_NCH'</font>} . <font color="#228B22">' chan'</font>
+<a name="line65"> 65: </a>                . <font color="#228B22">' ('</font> . $info{<font color="#228B22">'ID_AUDIO_CODEC'</font>} . <font color="#228B22">', '</font>
+<a name="line66"> 66: </a>                . int($info{<font color="#228B22">'ID_AUDIO_RATE'</font>}/1000) . <font color="#228B22">' kHz, '</font>
+<a name="line67"> 67: </a>                . int($info{<font color="#228B22">'ID_AUDIO_BITRATE'</font>}/1000) . <font color="#228B22">" kb/sec)\n"</font>
+<a name="line68"> 68: </a>                ;
+<a name="line69"> 69: </a>
+<a name="line70"> 70: </a><font color="#B22222"># Find out how long the video is and thus when we need to capture frames.</font>
+<a name="line71"> 71: </a><font color="#4169E1">my</font> $n_frames = $rows * $cols;
+<a name="line72"> 72: </a><font color="#4169E1">my</font> $length = $info{<font color="#228B22">'ID_LENGTH'</font>};
+<a name="line73"> 73: </a><font color="#4169E1">my</font> $part_length = $length / ($n_frames - 1);
+<a name="line74"> 74: </a><font color="#4169E1">my</font> @times = (1);
+<a name="line75"> 75: </a><font color="#4169E1">for</font> (my $i=1; $i&lt;$n_frames; $i++)
+<a name="line76"> 76: </a>{
+<a name="line77"> 77: </a><font color="#4169E1">        push</font> @times, int($i * $part_length)-1;
+<a name="line78"> 78: </a>}
+<a name="line79"> 79: </a>
+<a name="line80"> 80: </a><font color="#B22222"># For each frame, capture it and save it to the temp directory.</font>
+<a name="line81"> 81: </a><font color="#4169E1">my</font> $i = 1;
+<a name="line82"> 82: </a><font color="#4169E1">foreach</font> (@times)
+<a name="line83"> 83: </a>{
+<a name="line84"> 84: </a>        &amp;debug(<font color="#228B22">"Capturing frame </font>$i<font color="#228B22">, at </font>$_<font color="#228B22"> seconds."</font>);
+<a name="line85"> 85: </a><font color="#4169E1">        if</font> ($is_mpeg)
+<a name="line86"> 86: </a>        {
+<a name="line87"> 87: </a>                &amp;debug(<font color="#228B22">"Using FFMPEG instead of MPLAYER. (Slow.)"</font>);
+<a name="line88"> 88: </a><font color="#4169E1">                my</font> $cmd = $path_ffmpeg . <font color="#228B22">" -i '</font>$file<font color="#228B22">'"</font>
+<a name="line89"> 89: </a>                        . <font color="#228B22">' -f image -img gif'</font>
+<a name="line90"> 90: </a>                        . <font color="#228B22">" -ss </font>$_<font color="#228B22"> -vframes 1"</font>
+<a name="line91"> 91: </a>                        . <font color="#228B22">" -y '%08d.gif'"</font>;
+<a name="line92"> 92: </a><font color="#4169E1">                my</font> $cmd_out = `$cmd 2&gt;&amp;1`;
+<a name="line93"> 93: </a><font color="#4169E1">                system</font>(sprintf(<font color="#228B22">"</font>$path_convert<font color="#228B22"> '00000001.gif' '</font>%s<font color="#228B22">/frame-%06d.png'"</font>,
+<a name="line94"> 94: </a>                        $tmp_dir, $_));
+<a name="line95"> 95: </a><font color="#4169E1">                system</font>(<font color="#228B22">"rm -f '00000001.gif'"</font>);
+<a name="line96"> 96: </a>        }
+<a name="line97"> 97: </a><font color="#4169E1">        else</font>
+<a name="line98"> 98: </a>        {
+<a name="line99"> 99: </a><font color="#4169E1">                my</font> $cmd = $path_mplayer . <font color="#228B22">' -really-quiet -nosound'</font>
+<a name="line100">100: </a>                        . <font color="#228B22">' -vo png:z=3 -frames 2'</font>
+<a name="line101">101: </a>                        . <font color="#228B22">" -ss </font>$_<font color="#228B22"> '</font>$file<font color="#228B22">'"</font>;
+<a name="line102">102: </a><font color="#4169E1">                my</font> $cmd_out = `$cmd 2&gt;&amp;1`;
+<a name="line103">103: </a><font color="#4169E1">                system</font>(sprintf(<font color="#228B22">"mv '00000002.png' '</font>%s<font color="#228B22">/frame-%06d.png'"</font>,
+<a name="line104">104: </a>                        $tmp_dir, $_));
+<a name="line105">105: </a><font color="#4169E1">                system</font>(<font color="#228B22">"rm -f '00000001.png' '00000002.png'"</font>);
+<a name="line106">106: </a>        }
+<a name="line107">107: </a>        $i++;
+<a name="line108">108: </a>}
+<a name="line109">109: </a>
+<a name="line110">110: </a><font color="#B22222"># Creating montage.</font>
+<a name="line111">111: </a>&amp;debug(<font color="#228B22">"Creating montage."</font>);
+<a name="line112">112: </a><font color="#4169E1">my</font> $cmd = $path_montage
+<a name="line113">113: </a>        . <font color="#228B22">" -geometry '</font>$geom<font color="#228B22">'"</font>
+<a name="line114">114: </a>        . <font color="#228B22">" -background '</font>$text_bg<font color="#228B22">'"</font>
+<a name="line115">115: </a>        . <font color="#228B22">" -fill '</font>$text_colour<font color="#228B22">'"</font>
+<a name="line116">116: </a>        . <font color="#228B22">" -tile '"</font>.$cols.<font color="#228B22">"</font>x<font color="#228B22">"</font>.$rows.<font color="#228B22">"'"</font>
+<a name="line117">117: </a>        . <font color="#228B22">" </font>$tmp_dir<font color="#228B22">/frame-*.png </font>$tmp_dir<font color="#228B22">/montage.png"</font>;
+<a name="line118">118: </a><font color="#4169E1">my</font> $cmd_out = `$cmd 2&gt;&amp;1`;
+<a name="line119">119: </a>die <font color="#228B22">"Error creating montage!\n"</font><font color="#4169E1"> unless</font> (-e <font color="#228B22">"</font>$tmp_dir<font color="#228B22">/montage.png"</font>);
+<a name="line120">120: </a>
+<a name="line121">121: </a><font color="#B22222"># Annotating montage</font>
+<a name="line122">122: </a>&amp;debug(<font color="#228B22">"Annotating montage."</font>);
+<a name="line123">123: </a><font color="#4169E1">my</font> $cmd = $path_convert
+<a name="line124">124: </a>        . <font color="#228B22">" -background '</font>$text_bg<font color="#228B22">'"</font>
+<a name="line125">125: </a>        . <font color="#228B22">" -fill '</font>$text_colour<font color="#228B22">'"</font>
+<a name="line126">126: </a>        . <font color="#228B22">" -font '</font>$text_font<font color="#228B22">'"</font>
+<a name="line127">127: </a>        . <font color="#228B22">" -pointsize '</font>$text_size<font color="#228B22">'"</font>
+<a name="line128">128: </a>        . <font color="#228B22">" -gravity North"</font>
+<a name="line129">129: </a>        . <font color="#228B22">" -trim +repage"</font>
+<a name="line130">130: </a>        . <font color="#228B22">" -bordercolor '</font>$text_bg<font color="#228B22">'"</font>
+<a name="line131">131: </a>        . <font color="#228B22">" -border 20x20"</font>
+<a name="line132">132: </a>        . <font color="#228B22">" text:- '</font>$tmp_dir<font color="#228B22">/annotation.png'"</font>;
+<a name="line133">133: </a><font color="#4169E1">open</font>(CONVERT, <font color="#228B22">"|</font>$cmd<font color="#228B22">"</font>);
+<a name="line134">134: </a>print CONVERT <font color="#228B22">"</font>$file<font color="#228B22">\n</font>$annotation<font color="#228B22">\n"</font>;
+<a name="line135">135: </a><font color="#4169E1">close</font>(CONVERT);
+<a name="line136">136: </a><font color="#4169E1">system</font>(<font color="#228B22">"</font>$path_convert<font color="#228B22"> -background '</font>$text_bg<font color="#228B22">' '</font>$tmp_dir<font color="#228B22">/annotation.png' '</font>$tmp_dir<font color="#228B22">/montage.png' -append '</font>$tmp_dir<font color="#228B22">/final.png'"</font>);
+<a name="line137">137: </a>
+<a name="line138">138: </a><font color="#B22222"># Finalising</font>
+<a name="line139">139: </a>&amp;debug(<font color="#228B22">"Saving final file."</font>);
+<a name="line140">140: </a><font color="#4169E1">my</font> $file_out = $file;
+<a name="line141">141: </a>$file_out =~ s/\.[^\.]+$/.jpeg/;
+<a name="line142">142: </a><font color="#4169E1">system</font>(<font color="#228B22">"</font>$path_convert<font color="#228B22"> -quality 90 '</font>$tmp_dir<font color="#228B22">/final.png' '</font>$file_out<font color="#228B22">'"</font>);
+<a name="line143">143: </a>&amp;debug(<font color="#228B22">"Cleaning up temporary files."</font>);
+<a name="line144">144: </a><font color="#4169E1">system</font>(<font color="#228B22">"rm -fr '</font>$tmp_dir<font color="#228B22">'"</font>);
+<a name="line145">145: </a>
+<a name="line146">146: </a><font color="#B22222"># Debugging function.</font>
+<a name="line147">147: </a><strong><font color="#4169E1">sub debug</font></strong>
+<a name="line148">148: </a>{
+<a name="line149">149: </a><font color="#4169E1">        my</font> $x = shift @_;
+<a name="line150">150: </a>        print <font color="#228B22">"debug: </font>$x<font color="#228B22">\n"</font>;
+<a name="line151">151: </a>}
+</pre>
+</body>
+
+</html>

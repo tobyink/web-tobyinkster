@@ -1,0 +1,20 @@
+<Files "embassy1">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "embassy1-small">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "embassy2">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "embassy2-small">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>

@@ -1,0 +1,5 @@
+<Files "Risotto">
+  SetHandler default-handler
+  ForceType "image/jpeg"
+  Header set "Content-Disposition" "inline"
+</Files>

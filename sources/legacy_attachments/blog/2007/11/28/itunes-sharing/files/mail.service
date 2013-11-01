@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+  <name replace-wildcards="yes">Outgoing Mail Server</name>
+  <service>
+    <type>_smtp._tcp</type>
+    <port>25</port>
+  </service>
+</service-group>
+<service-group>
+  <name replace-wildcards="yes">Incoming Mail Server</name>
+  <service>
+    <type>_imap._tcp</type>
+    <port>143</port>
+  </service>
+  <service>
+    <type>_imaps._tcp</type>
+    <port>993</port>
+  </service>
+  <service>
+    <type>_pop3._tcp</type>
+    <port>110</port>
+  </service>
+  <service>
+    <type>_pop3s._tcp</type>
+    <port>995</port>
+  </service>
+  <service>
+    <type>_pop3pw._tcp</type>
+    <port>106</port>
+  </service>
+  <service>
+    <type>_nntp._tcp</type>
+    <port>119</port>
+  </service>
+</service-group>

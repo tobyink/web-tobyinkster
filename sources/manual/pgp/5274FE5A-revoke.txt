@@ -1,0 +1,9 @@
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.0.7 (GNU/Linux)
+Comment: A revocation certificate should follow
+
+iG0EIBECAC0FAj0I/MAmHQFVcGdyYWRpbmcgdG8gYSBzYWZlciBzeXN0ZW0gb2Yg
+a2V5cy4ACgkQdS33bVJ0/lpr0ACgxj57C9qS5CePAm05S9DK7xPZtd0AoJBp3sjm
+7cXdiDQLTFDQnegyMA5f
+=SSZC
+-----END PGP PUBLIC KEY BLOCK-----

@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>css-compile.pl</title>
+<meta name="Generator" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	font-family: '!Bitstream Vera Sans';
+	color: #808080;
+	font-size: 9pt;
+}
+.S2 {
+	font-family: '!Bitstream Vera Serif';
+	color: #007F00;
+	font-size: 9pt;
+}
+.S4 {
+	color: #007F7F;
+}
+.S5 {
+	font-weight: bold;
+	color: #00007F;
+}
+.S6 {
+	font-family: '!Bitstream Vera Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+.S7 {
+	font-family: '!Bitstream Vera Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+.S10 {
+	font-weight: bold;
+	color: #000000;
+}
+.S11 {
+	color: #000000;
+}
+.S12 {
+	color: #000000;
+	background: #FFE0E0;
+	text-decoration: inherit;
+}
+.S13 {
+	color: #000000;
+	background: #FFFFE0;
+	text-decoration: inherit;
+}
+.S14 {
+	color: #000000;
+	background: #FFE0FF;
+	text-decoration: inherit;
+}
+.S17 {
+	color: #000000;
+	background: #A0FFA0;
+	text-decoration: inherit;
+}
+.S18 {
+	color: #000000;
+	background: #F0E080;
+	text-decoration: inherit;
+}
+.S21 {
+	color: #600000;
+	background: #FFF0D8;
+	text-decoration: inherit;
+}
+.S30 {
+	color: #000000;
+	background: #FFFFE0;
+	text-decoration: inherit;
+}
+span {
+	font-family: '!Bitstream Vera Sans';
+	color: #000000;
+	font-size: 9pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S2">#!/usr/bin/perl</span><br />
+<br />
+<span class="S2">#</span><br />
+<span class="S2"># css-compile.pl</span><br />
+<span class="S2">#</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$PACKAGE</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S7">'css-compile.pl'</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$VERSION</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S7">'0.11'</span><span class="S10">;</span><br />
+<br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$debugging</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S5">our</span><span class="S0"> </span><span class="S12">$show_version</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$stylesheet</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">undef</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Required packages.</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">CSS</span><span class="S10">::</span><span class="S11">Tiny</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">CSS</span><span class="S10">::</span><span class="S11">Tiny</span><span class="S10">::</span><span class="S11">Style</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Getopt</span><span class="S10">::</span><span class="S11">ArgvFile</span><span class="S0"> </span><span class="S30">qw(argvFile)</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Getopt</span><span class="S10">::</span><span class="S11">Long</span><span class="S0"> </span><span class="S30">qw(GetOptions)</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">HTML</span><span class="S10">::</span><span class="S11">Element</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">HTML</span><span class="S10">::</span><span class="S11">TreeBuilder</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">HTTP</span><span class="S10">::</span><span class="S11">Cookies</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">Pod</span><span class="S10">::</span><span class="S11">Usage</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">strict</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">URI</span><span class="S10">::</span><span class="S11">Escape</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Read options</span><br />
+<span class="S10">&amp;</span><span class="S11">argvFile</span><br />
+<span class="S10">(</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"home"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"current"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"resolveEnvVars"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"resolveRelativePathes"</span><span class="S0"> </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"startupFilename"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S6">".css-compile"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"fileOption"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S6">"--options"</span><br />
+<span class="S10">);</span><br />
+<span class="S10">&amp;</span><span class="S11">GetOptions</span><br />
+<span class="S10">(</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"style|css|c=s"</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$stylesheet</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"verbose!"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$debugging</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"quiet"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S5">sub</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S12">$debugging</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><span class="S0"> </span><span class="S10">},</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"help|usage|h"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S5">sub</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S11">pod2usage</span><span class="S10">(</span><span class="S4">1</span><span class="S10">);</span><span class="S0"> </span><span class="S10">},</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S6">"version|V"</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S12">$show_version</span><br />
+<span class="S10">);</span><br />
+<br />
+<span class="S5">die</span><span class="S0"> </span><span class="S6">"$PACKAGE/$VERSION\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$show_version</span><span class="S10">);</span><br />
+<br />
+<span class="S2"># Open input and output files -- default to STDIN and STDOUT.</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$infile</span><span class="S0"> &nbsp;</span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S7">'/dev/stdin'</span><span class="S10">;</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$outfile</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S0"> </span><span class="S13">@ARGV</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S7">'/dev/stdout'</span><span class="S10">;</span><br />
+<span class="S10">&amp;</span><span class="S11">Debug</span><span class="S10">(</span><span class="S6">"Input is from $infile."</span><span class="S10">);</span><br />
+<span class="S10">&amp;</span><span class="S11">Debug</span><span class="S10">(</span><span class="S6">"Output is to $outfile."</span><span class="S10">);</span><br />
+<span class="S5">open</span><span class="S0"> </span><span class="S11">INPUT</span><span class="S10">,</span><span class="S0"> &nbsp;</span><span class="S6">"&lt;:utf8"</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$infile</span><span class="S10">;</span><br />
+<span class="S5">open</span><span class="S0"> </span><span class="S11">OUTPUT</span><span class="S10">,</span><span class="S0"> </span><span class="S6">"&gt;:utf8"</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$outfile</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Get HTML input.</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S13">@html</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">&lt;INPUT&gt;</span><span class="S10">;</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$html</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">join</span><span class="S0"> </span><span class="S7">''</span><span class="S10">,</span><span class="S0"> </span><span class="S13">@html</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Parse HTML input.</span><br />
+<span class="S10">&amp;</span><span class="S11">Debug</span><span class="S10">(</span><span class="S6">"Parsing HTML."</span><span class="S10">);</span><br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$root</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">HTML</span><span class="S10">::</span><span class="S11">TreeBuilder</span><span class="S10">-&gt;</span><span class="S11">new</span><span class="S10">();</span><br />
+<span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">implicit_tags</span><span class="S10">(</span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">implicit_body_p_tag</span><span class="S10">(</span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">p_strict</span><span class="S10">(</span><span class="S4">1</span><span class="S10">);</span><br />
+<span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">parse_content</span><span class="S10">(</span><span class="S12">$html</span><span class="S10">);</span><br />
+<br />
+<span class="S2"># Apply stylesheet to document.</span><br />
+<span class="S12">$root</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">&amp;</span><span class="S11">Apply_Stylesheet</span><span class="S10">(</span><span class="S12">$root</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$stylesheet</span><span class="S10">);</span><br />
+<br />
+<span class="S2"># Output finished HTML.&nbsp;</span><br />
+<span class="S10">&amp;</span><span class="S11">Debug</span><span class="S10">(</span><span class="S6">"Generating output."</span><span class="S10">);</span><br />
+<span class="S12">$html</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">as_HTML</span><span class="S10">(</span><span class="S5">undef</span><span class="S10">,</span><span class="S0"> </span><span class="S6">"\t"</span><span class="S10">);</span><br />
+<span class="S5">print</span><span class="S0"> </span><span class="S11">OUTPUT</span><span class="S0"> </span><span class="S12">$html</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># Close files.</span><br />
+<span class="S5">close</span><span class="S0"> </span><span class="S11">INPUT</span><span class="S10">;</span><br />
+<span class="S5">close</span><span class="S0"> </span><span class="S11">OUTPUT</span><span class="S10">;</span><br />
+<br />
+<span class="S2"># All done!</span><br />
+<span class="S5">exit</span><span class="S10">;</span><br />
+<br />
+<br />
+<span class="S2">#######################################################################</span><br />
+<span class="S2">############################ &nbsp;Subroutines &nbsp;############################</span><br />
+<span class="S2">#######################################################################</span><br />
+<br />
+<span class="S2">#</span><br />
+<span class="S2"># Debug($msg)</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># Output nice debugging message.</span><br />
+<span class="S2">#</span><br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">Debug</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">print</span><span class="S0"> </span><span class="S11">STDERR</span><span class="S0"> </span><span class="S12">$_</span><span class="S10">[</span><span class="S4">0</span><span class="S10">].</span><span class="S6">"\n"</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$debugging</span><span class="S10">);</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">Apply_Stylesheet</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$root</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$stylesheet</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(!</span><span class="S5">defined</span><span class="S10">(</span><span class="S12">$stylesheet</span><span class="S10">)</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S10">!</span><span class="S5">length</span><span class="S10">(</span><span class="S12">$stylesheet</span><span class="S10">)</span><span class="S0"> </span><span class="S10">||</span><span class="S0"> </span><span class="S10">!</span><span class="S0"> </span><span class="S5">-s</span><span class="S0"> </span><span class="S12">$stylesheet</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$root</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">&amp;</span><span class="S11">Debug</span><span class="S10">(</span><span class="S6">"Applying stylesheet $stylesheet."</span><span class="S10">);</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Read stylesheet and retain internal order of rules.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$css</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">CSS</span><span class="S10">::</span><span class="S11">Tiny</span><span class="S10">-&gt;</span><span class="S11">read</span><span class="S10">(</span><span class="S12">$stylesheet</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">||</span><span class="S0"> </span><span class="S5">warn</span><span class="S0"> </span><span class="S6">"Stylesheet '$stylesheet' could not be processed.\n"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$i</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">for</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$st</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$css</span><span class="S10">-&gt;</span><span class="S11">styles</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$st</span><span class="S10">-&gt;{</span><span class="S7">'_internal_order'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$i</span><span class="S10">++;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># For each HTML element...</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">for</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$el</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$root</span><span class="S10">-&gt;</span><span class="S11">descendants</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Find stylesheet rules which apply and sort by specifificity.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@applied_styles</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">();</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">for</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$st</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$css</span><span class="S10">-&gt;</span><span class="S11">styles</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">push</span><span class="S0"> </span><span class="S13">@applied_styles</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$st</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S11">MY_match</span><span class="S10">(</span><span class="S12">$st</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$el</span><span class="S10">));</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">sort</span><span class="S0"> </span><span class="S11">Selector_Sort</span><span class="S0"> </span><span class="S13">@applied_styles</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Apply each stylesheet rule, over-writing older (less specific)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># values.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S14">%S</span><span class="S10">;</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$st</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@applied_styles</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$prop</span><span class="S0"> </span><span class="S10">(</span><span class="S5">keys</span><span class="S0"> </span><span class="S14">%</span><span class="S10">{</span><span class="S0"> </span><span class="S12">$st</span><span class="S0"> </span><span class="S10">})</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">next</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$prop</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S17">m/^\_/</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$S</span><span class="S10">{</span><span class="S5">lc</span><span class="S10">(</span><span class="S12">$prop</span><span class="S10">)}</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$st</span><span class="S10">-&gt;{</span><span class="S12">$prop</span><span class="S10">};</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Pay attention to the element's "style" attribute, which should</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># over-ride all the CSS rules.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S13">@internal_definitions</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">split</span><span class="S0"> </span><span class="S17">/\;/</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$el</span><span class="S10">-&gt;</span><span class="S11">attr</span><span class="S10">(</span><span class="S7">'style'</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$def</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@internal_definitions</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">next</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$def</span><span class="S0"> </span><span class="S10">!~</span><span class="S0"> </span><span class="S17">m/[a-z]/i</span><span class="S10">);</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$prop</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$val</span><span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">split</span><span class="S0"> </span><span class="S17">/\:/</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$def</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$prop</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/(^\s+)|(\s+$)//g</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$val</span><span class="S0"> &nbsp;</span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/(^\s+)|(\s+$)//g</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$S</span><span class="S10">{</span><span class="S5">lc</span><span class="S10">(</span><span class="S12">$prop</span><span class="S10">)}</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$val</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Stringify.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$style</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S7">''</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">foreach</span><span class="S0"> </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$prop</span><span class="S0"> </span><span class="S10">(</span><span class="S5">keys</span><span class="S0"> </span><span class="S14">%S</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$style</span><span class="S0"> </span><span class="S10">.=</span><span class="S0"> </span><span class="S6">"$prop: $S{$prop}; "</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># Write attribute back to element.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$style</span><span class="S0"> </span><span class="S10">=~</span><span class="S0"> </span><span class="S18">s/ $//</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$style</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">undef</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$style</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S6">""</span><span class="S10">);</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$el</span><span class="S10">-&gt;</span><span class="S11">attr</span><span class="S10">(</span><span class="S7">'style'</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$style</span><span class="S10">);</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># All the above is a lot smarter than the method</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2"># suggested in CSS::Tiny::Style's documentation.</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$root</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S2">#</span><br />
+<span class="S2"># Selector_Sort()</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># Used to sort CSS selectors by specificity.</span><br />
+<span class="S2">#</span><br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">Selector_Sort</span><br />
+<span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">my</span><span class="S0"> </span><span class="S12">$spec</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$a</span><span class="S10">-&gt;</span><span class="S11">specificity</span><span class="S0"> </span><span class="S10">&lt;=&gt;</span><span class="S0"> </span><span class="S12">$b</span><span class="S10">-&gt;</span><span class="S11">specificity</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$spec</span><span class="S0"> </span><span class="S5">unless</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$spec</span><span class="S0"> </span><span class="S10">==</span><span class="S0"> </span><span class="S4">0</span><span class="S10">);</span><span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">return</span><span class="S0"> </span><span class="S12">$a</span><span class="S10">-&gt;{</span><span class="S7">'_internal_order'</span><span class="S10">}</span><span class="S0"> </span><span class="S10">&lt;=&gt;</span><span class="S0"> </span><span class="S12">$b</span><span class="S10">-&gt;{</span><span class="S7">'_internal_order'</span><span class="S10">};</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S2">#</span><br />
+<span class="S2"># MY_match()</span><br />
+<span class="S2">#</span><br />
+<span class="S2"># Local fixed copy of buggy CSS::Tiny::Style-&gt;match().</span><br />
+<span class="S2">#</span><br />
+<span class="S5">sub</span><span class="S0"> </span><span class="S11">MY_match</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S12">$self</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><br />
+<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2"># the next argument is an element or a listref of elements</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S13">@el</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">shift</span><span class="S10">;</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S5">ref</span><span class="S0"> </span><span class="S12">$el</span><span class="S10">[</span><span class="S4">0</span><span class="S10">]</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S7">'ARRAY'</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S13">@el</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S13">@</span><span class="S10">{</span><span class="S12">$el</span><span class="S10">[</span><span class="S4">0</span><span class="S10">]}</span><span class="S0"> </span><span class="S10">};</span><br />
+<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$sel</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$rel</span><span class="S10">,</span><span class="S0"> </span><span class="S13">@sel</span><span class="S10">);</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@_</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  </span><span class="S12">$sel</span><span class="S10">,</span><span class="S0">&nbsp; </span><span class="S2"># the first selector</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  </span><span class="S12">$rel</span><span class="S10">,</span><span class="S0"> &nbsp;</span><span class="S2"># the relationship, i.e.: '&gt;' or '+' or ' '</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  </span><span class="S13">@sel</span><span class="S0">&nbsp; &nbsp;</span><span class="S2"># the remaining selector</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S13">@_</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><span class="S0"> </span><span class="S5">else</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">(</span><span class="S12">$sel</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$rel</span><span class="S10">,</span><span class="S0"> </span><span class="S13">@sel</span><span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$self</span><span class="S10">-&gt;</span><span class="S11">selector_array</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2">#+++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2"># 1) loop through elements</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2"># 2) check if one matches</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2"># 3) if it matches, loop through his relatives</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2"># 4) return true if one matches</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S2">#+++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br />
+<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S12">$match</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">for</span><span class="S0"> </span><span class="S10">(</span><span class="S13">@el</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$self</span><span class="S10">-&gt;</span><span class="S11">element_match</span><span class="S10">(</span><span class="S12">$_</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$sel</span><span class="S10">))</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;</span><span class="S2"># if element matches, check his relatives</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;</span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$rel</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S12">$rellist</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">();</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; </span><span class="S5">if</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$rel</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S7">'parent'</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S12">$rellist</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$_</span><span class="S10">-&gt;{</span><span class="S11">_parent</span><span class="S10">});</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">elsif</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$rel</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S7">'left'</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S5">warn</span><span class="S0"> </span><span class="S6">"CSS sibling selectors break things!\n"</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">elsif</span><span class="S0"> </span><span class="S10">(</span><span class="S12">$rel</span><span class="S0"> </span><span class="S5">eq</span><span class="S0"> </span><span class="S7">'lineage'</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S5">my</span><span class="S0"> </span><span class="S12">$x</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$_</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S5">while</span><span class="S0"> </span><span class="S10">(</span><span class="S5">defined</span><span class="S10">(</span><span class="S12">$x</span><span class="S10">-&gt;{</span><span class="S11">_parent</span><span class="S10">}))</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; </span><span class="S5">push</span><span class="S0"> </span><span class="S13">@</span><span class="S10">{</span><span class="S0"> </span><span class="S12">$rellist</span><span class="S0"> </span><span class="S10">},</span><span class="S0"> </span><span class="S12">$x</span><span class="S10">-&gt;{</span><span class="S11">_parent</span><span class="S10">};</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$x</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S12">$x</span><span class="S10">-&gt;{</span><span class="S11">_parent</span><span class="S10">};</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$match</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">MY_match</span><span class="S10">(</span><span class="S12">$self</span><span class="S10">,</span><span class="S0"> </span><span class="S12">$rellist</span><span class="S10">,</span><span class="S0"> </span><span class="S13">@sel</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><span class="S0"> </span><span class="S5">else</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S12">$match</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">1</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S10">}</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">last</span><span class="S0"> </span><span class="S5">if</span><span class="S0"> </span><span class="S12">$match</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">};</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">return</span><span class="S0"> </span><span class="S12">$match</span><span class="S10">;</span><br />
+<span class="S10">}</span><br />
+<br />
+<span class="S2">#######################################################################</span><br />
+<span class="S2">########################### &nbsp;Documentation &nbsp;###########################</span><br />
+<span class="S2">#######################################################################</span><br />
+<br />
+<span class="S21">__END__</span><br />
+<br />
+<span class="S21">=head1 NAME</span><br />
+<br />
+<span class="S21">css-compile.pl - Compile CSS and HTML file together.</span><br />
+<br />
+<span class="S21">=head1 SYNOPSIS</span><br />
+<br />
+<span class="S21">css-compile.pl [@optfile] [options] [infile] [outfile]</span><br />
+<br />
+<span class="S21">Options:</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;--css=FILE, -c FILE &nbsp;&nbsp;&nbsp;Apply CSS file F.</span><br />
+<span class="S21">&nbsp;&nbsp;</span><br />
+<span class="S21">&nbsp;&nbsp;--verbose &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable debugging messages.</span><br />
+<span class="S21">&nbsp;&nbsp;--noverbose, --quiet &nbsp;&nbsp;Disable debugging messages.</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;--options=OPTFILE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alternative syntax for options file.</span><br />
+<br />
+<span class="S21">&nbsp;&nbsp;--help, --usage, -h &nbsp;&nbsp;&nbsp;Show this help message.</span><br />
+<span class="S21">&nbsp;&nbsp;--version, -V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show version number.</span><br />
+<br />
+<span class="S21">Will read additional options from file optfile if specififed. By default</span><br />
+<span class="S21">files ~/.css-compile and ./.css-compile (if present) are inspected for</span><br />
+<span class="S21">options.</span><br />
+<br />
+<span class="S21">infile defaults to STDIN.</span><br />
+<span class="S21">outfile defaults to STDOUT.</span><br />
+<br />
+<span class="S21">=head1 OPTIONS</span><br />
+<br />
+<span class="S21">=over 8</span><br />
+<br />
+<span class="S21">=item B&lt;--css=FILE&gt;</span><br />
+<br />
+<span class="S21">Given the file name of a cascading style sheet, will apply the style</span><br />
+<span class="S21">sheet to the HTML tree, adding "style" attributes where appropriate.</span><br />
+<span class="S21">This is pretty nifty.</span><br />
+<br />
+<span class="S21">=item B&lt;--verbose&gt;, B&lt;--noverbose&gt;, B&lt;--quiet&gt;</span><br />
+<br />
+<span class="S21">Control verbosity.</span><br />
+<br />
+<span class="S21">=item B&lt;--options=OPTFILE&gt;</span><br />
+<br />
+<span class="S21">Read command-line options from option file.</span><br />
+<br />
+<span class="S21">=item B&lt;--help&gt;, B&lt;--usage&gt;, B&lt;--version&gt;</span><br />
+<br />
+<span class="S21">Show usage/version information. Does not process files.</span><br />
+<br />
+<span class="S21">=back</span><br />
+<br />
+<span class="S21">=head1 DESCRIPTION</span><br />
+<br />
+<span class="S21">The program takes CSS rules and applies them to an HTML file, producing a</span><br />
+<span class="S21">"compiled HTML file" which has the rules inserted into style attributes.</span><br />
+<br />
+<span class="S21">=head1 CSS SELECTORS</span><br />
+<br />
+<span class="S21">Supports the following selectors:</span><br />
+<br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * Element selector (e.g. div {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * Class selector (e.g. .warning {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * ID selector (e.g. #header {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * Descendent selector (e.g. div p {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S21">The following selectors should work, but may be buggy:</span><br />
+<br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * Child selector (e.g. div&gt;p {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; * Sibling selector (e.g. p+p {...})</span><br />
+<span class="S21">&nbsp; &nbsp; &nbsp; &nbsp; </span><br />
+<span class="S21">Pseudo-class selectors such as :hover and :visited do not work and may cause</span><br />
+<span class="S21">the script to hang or crash!</span><br />
+<br />
+<span class="S21">=head1 AUTHOR</span><br />
+<br />
+<span class="S21">Toby Inkster.</span><br />
+<br />
+<br />
+<span class="S21">=head1 LICENCE AND COPYRIGHT</span><br />
+<br />
+<span class="S21">Copyright (c) 2008, Toby Inkster. All rights reserved.</span><br />
+<br />
+<span class="S21">This module is free software; you can redistribute it and/or</span><br />
+<span class="S21">modify it under the same terms as Perl itself. See L&lt;perlartistic&gt;.</span><br />
+<br />
+<br />
+<span class="S21">=head1 DISCLAIMER OF WARRANTY</span><br />
+<br />
+<span class="S21">BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY</span><br />
+<span class="S21">FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN</span><br />
+<span class="S21">OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES</span><br />
+<span class="S21">PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER</span><br />
+<span class="S21">EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span><br />
+<span class="S21">WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE</span><br />
+<span class="S21">ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH</span><br />
+<span class="S21">YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL</span><br />
+<span class="S21">NECESSARY SERVICING, REPAIR, OR CORRECTION.</span><br />
+<br />
+<span class="S21">IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING</span><br />
+<span class="S21">WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR</span><br />
+<span class="S21">REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE</span><br />
+<span class="S21">LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,</span><br />
+<span class="S21">OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE</span><br />
+<span class="S21">THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING</span><br />
+<span class="S21">RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A</span><br />
+<span class="S21">FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF</span><br />
+<span class="S21">SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF</span><br />
+<span class="S21">SUCH DAMAGES.</span><br />
+<br />
+<span class="S21">=cut</span><br />
+<span class="S0"></span></span>
+</body>
+</html>

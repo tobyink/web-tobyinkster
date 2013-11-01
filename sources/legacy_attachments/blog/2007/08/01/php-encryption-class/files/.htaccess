@@ -1,0 +1,10 @@
+<Files "TrivialEncoder.class.html">
+  SetHandler default-handler
+  ForceType "text/html; charset=us-ascii"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "TrivialEncoder.class.php">
+  SetHandler default-handler
+  ForceType "application/x-httpd-php-source"
+  Header set "Content-Disposition" "attachment"
+</Files>

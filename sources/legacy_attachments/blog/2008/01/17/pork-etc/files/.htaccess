@@ -1,0 +1,20 @@
+<Files "pork_etc_large.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "pork_etc_large.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>
+<Files "pork_etc_small.png">
+  SetHandler default-handler
+  ForceType "image/png"
+  Header set "Content-Disposition" "inline"
+</Files>
+<Files "pork_etc_small.xcf">
+  SetHandler default-handler
+  ForceType "image/x-gimp"
+  Header set "Content-Disposition" "attachment"
+</Files>
