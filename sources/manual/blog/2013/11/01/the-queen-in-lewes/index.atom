@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>The Queen in Lewes</title>
+    <link rel="alternate" type="text/html" href="http://tobyinkster.co.uk/blog/2013/11/01/the-queen-in-lewes/"/>
+    <id>http://tobyinkster.co.uk/blog/2013/11/01/the-queen-in-lewes/</id>
+
+    <published>2013-11-01T02:00:00Z</published>
+    <updated>2013-11-01T02:00:00Z</updated>
+
+    <summary>The Queen came to Lewes today.</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="lewes" />
+    <category term="monarchy" />
+    
+    <content type="html" xml:lang="en"><![CDATA[
+
+<object type="application/x-shockwave-flash" data="http://tobyinkster.co.uk/Video/player_flv.swf" width="480" height="320">
+    <param name="movie" value="http://tobyinkster.co.uk/Video/player_flv.swf" />
+    <param name="allowFullScreen" value="true" />
+    <param name="FlashVars" value="flv=http%3A//tobyinkster.co.uk/Video/queen-in-lewes.flv&amp;title=The Queen in Lewes&amp;width=480&amp;height=320" />
+</object>
+
+    ]]></content>
+</entry>
