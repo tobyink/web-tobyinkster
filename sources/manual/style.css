@@ -26,6 +26,14 @@ article.feed li {
 	padding: 0 0 0.33em;
 }
 
+article.feed small {
+	font-size: 67%;
+}
+
+article.feed small a {
+	text-decoration: none;
+}
+
 article.feed cite {
 	font-style: normal;
 	padding: 0 0 0 0.67em;
