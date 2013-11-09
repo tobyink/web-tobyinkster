@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Introducing Kavorka</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/11/introducing-kavorka.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5319</id>
+
+    <published>2013-11-05T13:04:48Z</published>
+    <updated>2013-11-05T13:09:30Z</updated>
+
+    <summary>Kavorka is a function signatures module, along the lines of Function::Parameters, Method::Signatures, and MooseX::Method::Signatures. Its features include: Named, positional and slurpy parameters Required and optional parameters Defaults for optional parameters Type constraints and value constraints Type coercions Return types Method...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="kavorka" label="Kavorka" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p><a href="https://metacpan.org/module/Kavorka" class="podlinkpod">Kavorka</a> is a function signatures module,
+along the lines of <a href="https://metacpan.org/module/Function%3A%3AParameters" class="podlinkpod">Function::Parameters</a>,
+<a class="podlinkpod" href="https://metacpan.org/module/Method%3A%3ASignatures">Method::Signatures</a>,
+and <a href="https://metacpan.org/module/MooseX%3A%3AMethod%3A%3ASignatures" class="podlinkpod">MooseX::Method::Signatures</a>.</p>
+
+<div id="list_of_kavorka_features">
+<p>Its features include:</p>
+<ul>
+<li>Named, positional and slurpy parameters</li>
+<li>Required and optional parameters</li>
+<li>Defaults for optional parameters</li>
+<li>Type constraints and value constraints</li>
+<li>Type coercions</li>
+<li>Return types</li>
+<li>Method modifiers</li>
+<li>Multi subs and multi methods</li>
+<li>Lexical (private) methods</li>
+<li>An introspection API that can integrate with Moose's MOP</li>
+<li><a class="podlinkurl" href="https://metacpan.org/pod/release/TOBYINK/Kavorka-0.014/examples/benchmarks.pl#RESULTS">Speed</a></li>
+</ul>
+<p>It probably has every feature you want from in a function signatures module,
+unless you want minimalism.</p>
+</div>]]>
+        <![CDATA[<p>Here's how you might write a function with type checks on the incoming parameters and also the returned value:</p>
+
+<pre>   fun maxnum (Num @numbers → Num) {
+      my $max = shift @numbers;
+      for (@numbers) {
+         $max = $_ if $max &lt; $_;
+      }
+      return $max;
+   }</pre>
+
+<p>Kavorka is still not especially stable, but seems to work pretty well (except in some cases defining closures over variables outside the sub).</p>
+
+<p>Feedback welcome.</p>
+]]>
+    </content>
+</entry>
