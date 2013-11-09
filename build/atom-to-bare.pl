@@ -151,8 +151,9 @@ sub ProcessFeed
 			(map {
 				my $e   = $_;
 				my $dt  = $datetime->parse_datetime($e->published);
-				my ($l) = grep { $_->href !~ m{^http://tobyinkster.co.uk/} } $e->link;  # non-local
-				my ($L) = grep { $_->href =~ m{^http://tobyinkster.co.uk/} } $e->link;  # local
+				my @L   = grep { ;no warnings 'uninitialized'; $_->rel =~ /^(self|alternate|)$/ } $e->link;
+				my ($l) = grep { $_->href !~ m{^http://tobyinkster.co.uk/} } @L;  # non-local
+				my ($L) = grep { $_->href =~ m{^http://tobyinkster.co.uk/} } @L;  # local
 				$l ||= $L;
 				
 				$H->li(
