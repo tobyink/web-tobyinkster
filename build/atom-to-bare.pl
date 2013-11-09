@@ -149,9 +149,11 @@ sub ProcessFeed
 		$H->ol(
 			{ 'role' => 'main', 'rel' => 'atom:entry' },
 			(map {
-				my $e  = $_;
-				my $dt = $datetime->parse_datetime($e->published);
-				my $l  = $e->link;
+				my $e   = $_;
+				my $dt  = $datetime->parse_datetime($e->published);
+				my ($l) = grep { $_->href !~ m{^http://tobyinkster.co.uk/} } $e->link;  # non-local
+				my ($L) = grep { $_->href =~ m{^http://tobyinkster.co.uk/} } $e->link;  # local
+				$l ||= $L;
 				
 				$H->li(
 					{ 'typeof' => 'atom:Entry', property => 'atom:id', datatype => 'xsd:anyURI', property => $e->id },
@@ -161,6 +163,12 @@ sub ProcessFeed
 					),
 					q[ ],
 					$H->cite($H->a({ 'href' => $l->href }, $e->title)),
+					$L && ($L->href eq $l->href)
+						? ()
+						: (
+							q[ ],
+							$H->small('(', $H->a({ href => $L->href }, 'local copy'), ')'),
+						),
 				);
 			} $atom->entries),
 		),
