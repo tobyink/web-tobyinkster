@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Enable Travis-CI for a Github repository from the command line</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/11/enable-travis-ci-for-a-github-repository-from-the-command-line.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5349</id>
+
+    <published>2013-11-14T10:22:40Z</published>
+    <updated>2013-11-14T10:34:16Z</updated>
+
+    <summary>Travis-CI is a Really Useful Engine, but I've only enabled it for a handful of my GitHub repositories because navigating though GitHub's settings to do so is a bit of a pain. Seemed like this should be scriptable though -...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p><a href="http://travis-ci.org/">Travis-CI</a> is a Really Useful Engine, but I've only enabled it for a handful of <a href="https://github.com/tobyink">my GitHub repositories</a> because navigating though GitHub's settings to do so is a bit of a pain.</p>
+
+<p>Seemed like this should be scriptable though - turns out <a href="https://gist.github.com/tobyink/7464553">it is</a>! Edit that script to include your GitHub login details, and Travis-CI details, save it as <code>travis-status</code> somewhere in your $PATH, <code>chmod +x travis-status</code> and you're ready to go!</p>
+
+<p>Running <code>travis-status</code> in a project's root directory (and I'm assuming the project's root directory has the same name as the repository's slug) with no parameters will print out a list of all event hooks for the project (not just Travis ones). Running it and passing "1" or "0" as the parameter will enable or disable Travis for the project.</p>]]>
+        
+    </content>
+</entry>
