@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - November 2013</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/12/planet-moose---november-2013.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5387</id>
+
+    <published>2013-12-01T10:40:21Z</published>
+    <updated>2013-12-01T10:41:56Z</updated>
+
+    <summary> Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="p5mop" label="p5-mop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0">Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<div><h2><span id="Mouse_2.0.0">Mouse 2.0.0</span></h2>
+		<p>Mouse has rolled over to 2.0.0, and now 2.1.0. 2.0.0 introduced a potentially backwards-incompatible change with regards to role composition, and 2.1.0 drops support for Perl 5.6.x.</p></div>
+]]>
+        <![CDATA[		<div><h2><span id="p5-mop">p5-mop</span></h2>
+		<p>vti has created <a class="podlinkurl" href="http://github.com/vti/mopx-contracts">a mop extension for method contracts</a> and <a class="podlinkurl" href="http://showmetheco.de/articles/2013/11/contracts-in-mop.html">written about it</a>. This is somewhat more sophisticated than his earlier contract implementation <a class="podlinkpod" href="https://metacpan.org/module/Attribute%3A%3AContract">Attribute::Contract</a> as it cleverly respects inheritance and ensures that the contracts specified by subclasses are consistent with those of their superclasses.</p>
+		<p>Ovid has ported <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AClass">Test::Class</a> to mop, and has also <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2013/11/porting-testclass-to-the-p5-mop.html">written about it</a>... <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2013/11/testclassmop-now-has-an-is-testcase-trait.html">twice</a>!</p>
+		<p>Finally, Thomas Klausner has explained his <a class="podlinkurl" href="http://domm.plix.at/perl/2013_11_MOPfuscation.html">MOPfuscation</a>.</p></div>
+		<div><h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Sillymoose <a class="podlinkurl" href="http://blogs.perl.org/users/sillymoose/2013/11/are-roles-only-semantically-different-from-inheritance.html">asks the difference between roles and inheritance</a>.</li>
+			<li>The dance to update modules to avoid the deprecations warnings in Moose 2.11xx continues, with new releases of <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATraits">MooseX::Traits</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3AStructured">MooseX::Types::Structured</a>, <a class="podlinkpod" href="https://metacpan.org/module/Bread%3A%3ABoard">Bread::Board</a>, <a class="podlinkpod" href="https://metacpan.org/module/Data%3A%3ASerializable">Data::Serializable</a>, and <a class="podlinkpod" href="https://metacpan.org/module/XML%3A%3ARabbit">XML::Rabbit</a>, amongst others.</li>
+			<li>I've <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2013/11/introducing-kavorka.html">announced</a> <a class="podlinkpod" href="https://metacpan.org/module/Kavorka">Kavorka</a>, which is yet another method signatures implementation, suffering from <a class="podlinkurl" href="http://buzzword.org.uk/2013/featuritis.html">featuritis</a> and an <a class="podlinkurl" href="https://metacpan.org/pod/release/TOBYINK/Kavorka-0.014/examples/benchmarks.pl#RESULTS">addiction to speed</a>.</li>
+		</ul></div>
+]]>
+    </content>
+</entry>
