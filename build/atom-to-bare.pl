@@ -188,13 +188,16 @@ sub ProcessEntry
 	my $H = 'HTML::HTML5::Builder'->new;
 	
 	my @elements;
-	
+
+	my $title = $atom->title;
+	$title = RAW_CHUNK($title) if $title =~ /&/; # naive!
+
 	push @elements, $H->title(
 		{
 			'xmlns:dc' => 'http://purl.org/dc/terms/',
 			'property' => 'dc:title',
 		},
-		$atom->title,
+		$title,
 	);
 
 	push @elements, map {
@@ -238,7 +241,7 @@ sub ProcessEntry
 					'typeof'   => 'atom:TextContent',
 					'property' => 'atom:body',
 				},
-				$atom->title,
+				$title,
 			),
 		),
 		$H->dl(
