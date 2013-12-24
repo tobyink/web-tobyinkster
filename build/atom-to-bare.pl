@@ -6,7 +6,7 @@ use warnings;
 use Path::Tiny 'path';
 use Path::Iterator::Rule;
 use XML::Atom::Entry;
-use HTML::HTML5::Builder 'RAW_CHUNK';
+use HTML::HTML5::Builder qw(RAW_CHUNK CHUNK);
 use HTML::HTML5::Writer;
 use DateTime::Format::ISO8601;
 
@@ -156,6 +156,9 @@ sub ProcessFeed
 				my ($L) = grep { $_->href =~ m{^http://tobyinkster.co.uk/} } @L;  # local
 				$l ||= $L;
 				
+				my $title = $e->title;
+				$title = RAW_CHUNK($title) if $title =~ /&/; # naive!
+				
 				$H->li(
 					{ 'typeof' => 'atom:Entry', property => 'atom:id', datatype => 'xsd:anyURI', property => $e->id },
 					$H->time(
@@ -163,7 +166,7 @@ sub ProcessFeed
 						$dt->ymd,
 					),
 					q[ ],
-					$H->cite($H->a({ 'href' => $l->href }, $e->title)),
+					$H->cite($H->a({ 'href' => $l->href }, $title)),
 					$L && ($L->href eq $l->href)
 						? ()
 						: (
