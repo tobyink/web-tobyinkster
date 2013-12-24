@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Christmas Eve Obfu</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/12/christmas-eve-obfu.html"/>
+    <id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.5459</id>
+
+    <published>2013-12-24T13:19:57Z</published>
+    <updated>2013-12-24T22:16:39Z</updated>
+
+    <summary><![CDATA[use v5.14; use strict; use warnings FATAL => 'all'; our $days_until_christmas = 1 * map s([+] )( )gix &&printf( '%5s' .'%-4s' .'%s',$_, substr(~~~~ reverse,!$^C) =~y[/(] [\\)]r,$/ ),my@ xmas= qw 1 +.- _(+" (_++: /+' +(_/^ 1;1 ;1;...]]></summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<pre>use v5.14;
+use strict;
+use warnings FATAL => 'all';
+
+our $days_until_christmas = 1
+
+            <b style="color:#990">*</b>
+<span style="color:green">           map
+          s([<i style="font-weight:bold;color:#ccc">+</i>]
+         )<b style="color:red">( )</b>gix
+        &&printf(
+          '<b style="color:#990">%</b>5s'
+         .'<b style="color:#990">%</b>-4s'
+        .'<b style="color:#990">%</b>s',$_,
+       substr(<b style="color:#990">~~~~</b>
+      reverse,!$^C)
+         =~y[/(]
+        [\\)]r,$/
+       ),my<b style="color:red">@</b> xmas=
+      qw 1 +.- _(+"
+     (_++: /+' +(_/^</span>
+           <b style="background:brown;color:white">1;1</b>
+           <b style="background:brown;color:white">;1;</b></pre>]]>
+        
+    </content>
+</entry>
