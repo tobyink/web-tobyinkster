@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - December 2013</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/01/planet-moose---december-2013.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5481</id>
+
+    <published>2014-01-01T00:00:01Z</published>
+    <updated>2013-12-31T23:38:48Z</updated>
+
+    <summary> Happy new year, and welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Happy new year, and welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p></div>
+		<div><h2><span id="Perl_Advent_Calendar">Perl Advent Calendar</span></h2>
+		<p>There were a handful of Moose/Moo-related articles in the 2013 Perl Advent Calendar:</p>
+		<ul>
+			<li><a class="podlinkurl" href="http://www.perladvent.org/2013/2013-12-11.html">Toystore Story</a> covers <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AStorage">MooseX::Storage</a> and <a class="podlinkpod" href="https://metacpan.org/module/GitStore">GitStore</a>.</li>
+			<li><a class="podlinkurl" href="http://www.perladvent.org/2013/2013-12-16.html">Advent-based Programming</a>... oops <i>Event</i>-based programming... using <a class="podlinkpod" href="https://metacpan.org/module/Moo">Moo</a> and <a class="podlinkpod" href="https://metacpan.org/module/Beam%3A%3AEmitter">Beam::Emitter</a>.</li>
+			<li><a class="podlinkurl" href="http://www.perladvent.org/2013/2013-12-19.html">More Moose, More Discipline</a> covers type constraints and <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AStrictConstructor">MooseX::StrictConstructor</a>.</li>
+			<li><a class="podlinkurl" href="http://www.perladvent.org/2013/2013-12-22.html">Throw Now, Describe Later</a> discusses some extensions to <a class="podlinkpod" href="https://metacpan.org/module/Throwable">Throwable</a>, the exception role commonly used by Moose- and Moo-based projects.</li>
+		</ul></div>
+]]>
+        <![CDATA[		<h2><span id="Moo_1.004000">Moo 1.004000</span></h2>
+		<p>Moo 1.4.0 (a.k.a. 1.004000), and 1.4.1, and 1.4.2 have been released, with a variety of interesting changes over the 1.3.x line, including:</p>
+		<ul>
+			<li>It now uses Class::XSAccessor to accelerate predicate methods. (As does <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AXSAccessor">MooseX::XSAccessor</a>.)</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/strictures">strictures</a> is now properly applied to classes and roles using Moo. (This was always documented as happening, but it broke somewhere along the lines and nobody noticed for a while.)</li>
+			<li>Type constraint inflation (i.e. the process where type libraries written for Moo can integrate with the <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> meta object protocol if/when Moose gets loaded) now works in multi-threaded situations.</li>
+		</ul>
+		<p>The type constraint changes in 1.4.0 and 1.4.1 broke current stable releases of <a class="podlinkpod" href="https://metacpan.org/module/Type%3A%3ATiny">Type::Tiny</a> on threaded builds of Perl, but 1.4.2 fixes this. (And Type::Tiny 0.037_03 also includes a fix, and should work OK with Moo 1.4.0 and 1.4.1.)</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Buddy Burden has been writing a series <i>Perl and Me</i> which discusses Moose a bit. <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2013/12/perl-and-me-part-1-the-road-so-far.html">Part 1</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2013/12/perl-and-me-part-2-the-power-of-oop.html">part 2</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2013/12/perl-and-me-part-3-a-moose-once-bit-my-sister.html">part 3</a>, and <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2013/12/perl-and-me-part-4-a-worthy-program-exceedingly-well-read.html">part 4</a>.</li>
+			<li>Celogeek points out <a class="podlinkurl" href="http://blog.celogeek.com/201312/387/proper-usage-of-the-roles-in-perl/">an important caveat using Moo::Role</a>.</li>
+			<li>I've released a new version of <a class="podlinkpod" href="https://metacpan.org/module/Lexical%3A%3AAccessor">Lexical::Accessor</a> (which provides private attributes for Moo/Mouse/Moose objects), and integrated it into <a class="podlinkpod" href="https://metacpan.org/module/Moops">Moops</a>. There's an example of it being used in the <a class="podlinkurl" href="https://metacpan.org/pod/release/TOBYINK/Moops-0.028/lib/Moops/Manual/Objects101.pod">Moops tutorial</a>.</li>
+		</ul>
+]]>
+    </content>
+</entry>
