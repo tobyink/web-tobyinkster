@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>PAUSE is no longer paused</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/01/pause-is-no-longer-paused.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5525</id>
+
+    <published>2014-01-11T20:57:20Z</published>
+    <updated>2014-01-11T20:58:40Z</updated>
+
+    <summary>PAUSE was down. Now it's up. Yay! Well done, and thank you to everyone who helped restore, and indeed help with the day-to-day running of PAUSE....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p><a href="http://blogs.perl.org/users/ivan_bessarabov/2014/01/pausecpanorg-is-not-working-does-somebody-know-something.html#comments">PAUSE was down</a>. Now it's up. Yay!</p>
+<p>Well done, and thank you to everyone who helped restore, and indeed help with the day-to-day running of PAUSE.</p>]]>
+        
+    </content>
+</entry>

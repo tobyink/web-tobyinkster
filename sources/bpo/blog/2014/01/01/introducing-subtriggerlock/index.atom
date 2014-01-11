@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Introducing Sub::Trigger::Lock</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/01/introducing-subtriggerlock.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5487</id>
+
+    <published>2014-01-01T22:26:15Z</published>
+    <updated>2014-01-01T22:27:13Z</updated>
+
+    <summary><![CDATA[ Sub::Trigger::Lock is a workaround for the problem that Moose read-only attributes aren't really read-only; at least, not in the way that people might expect them to be. Here's an example: package Foo { use Moose; has bar =&gt; (is...]]></summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="subtriggerlock" label="Sub-Trigger-Lock" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/module/Sub%3A%3ATrigger%3A%3ALock">Sub::Trigger::Lock</a> is a workaround for the problem that <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> read-only attributes aren't really read-only; at least, not in the way that people might expect them to be. Here's an example:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      
+      <span class="word">has</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ArrayRef'</span><span class="structure">);</span>
+   <span class="structure">}</span>
+   
+   <span class="word">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">3</span><span class="structure">]</span> <span class="structure">);</span>
+   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">4</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># does not die!</span></pre>
+]]>
+        <![CDATA[		<p>A read-only attribute containing an arrayref of hashref cannot have the attribute changed to reference another array or hash. However, the contents of that array or hash are not magically read-only.</p>
+		<p>Sub::Trigger::Lock can make them magically read-only.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Sub::Trigger::Lock</span><span class="structure">;</span>
+      
+      <span class="word">has</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ArrayRef'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">trigger</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Lock</span><span class="structure">);</span>
+   <span class="structure">}</span>
+   
+   <span class="word">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">3</span><span class="structure">]</span> <span class="structure">);</span>
+   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">4</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># kablammo!</span></pre>
+		<p>Sub::Trigger::Lock also contains various utility functions for temporarily unlocking and re-locking the array, which allows the <code>Foo</code> method to provide its own API for altering the array:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Sub::Trigger::Lock</span> <span class="word">-all</span><span class="structure">;</span>
+      
+      <span class="word">has</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ArrayRef'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">trigger</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Lock</span><span class="structure">);</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">bar_append</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span>  <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$guard</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">unlock</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar</span><span class="structure">;</span>
+         <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="magic" style="color:#900;font-weight:bold">@_</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span>
+   
+   <span class="word">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span> <span class="word">bar</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span><span class="number" style="color:#39C">3</span><span class="structure">]</span> <span class="structure">);</span>
+   <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar_append</span><span class="structure">(</span><span class="number" style="color:#39C">4</span><span class="structure">);</span>      <span class="comment" style="color:#060;font-style:italic"># ok</span>
+   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">bar</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">5</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># kablammo!</span></pre>
+		<p>That's about it. Sub::Trigger::Lock allows you to stop people from altering your object's hashrefs and arrayrefs from underneath it. It forces them (or at least strongly encourages them) to use your API to alter your object's attributes.</p>
+]]>
+    </content>
+</entry>
