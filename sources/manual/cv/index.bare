@@ -199,9 +199,9 @@
 				<ul>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">Perl</li>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">PHP</li>
-					<li><span typeof="doac:ComputerSkill" property="rdfs:label">SQL</span> (Microsoft, PostgreSQL, MySQL)</li>
+					<li><span typeof="doac:ComputerSkill" property="rdfs:label">SQL</span> (Microsoft, PostgreSQL, MySQL, SQLite)</li>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">Javascript</li>
-					<li>Some experience in <span typeof="doac:ComputerSkill" property="rdfs:label">Java</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Python</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Intel Assembly</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Haskell</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Prolog</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">C</span>/<span typeof="doac:ComputerSkill" property="rdfs:label">C++</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">shell script</span>, and <span typeof="doac:ComputerSkill" property="rdfs:label">KiXtart</span>.</li>
+					<li>Some experience in <span typeof="doac:ComputerSkill" property="rdfs:label">Java</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Intel Assembly</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Haskell</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Prolog</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">C</span>/<span typeof="doac:ComputerSkill" property="rdfs:label">C++</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">shell script</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Ruby</span>, <span typeof="doac:ComputerSkill" property="rdfs:label">Python</span>, and <span typeof="doac:ComputerSkill" property="rdfs:label">KiXtart</span>.</li>
 				</ul>
 			</li>
 			<li>
@@ -209,10 +209,6 @@
 				<ul>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft Windows</li>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">Linux</li>
-					<li typeof="doac:ComputerSkill" property="rdfs:label">Cisco</li>
-					<li typeof="doac:ComputerSkill" property="rdfs:label">Mitel voice-over-IP (including 3300 ICP)</li>
-					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft Exchange Server</li>
-					<li typeof="doac:ComputerSkill" property="rdfs:label">Microsoft SQL Server</li>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">Apache HTTP Server</li>
 					<li typeof="doac:ComputerSkill" property="rdfs:label">PostgreSQL</li>
 				</ul>
@@ -247,12 +243,16 @@
 		<p>Publications include:</p>
 
 		<ul rel="doac:publication foaf:made :made" rev="foaf:maker dc:creator">
+			<li typeof="foaf:Document doac:Publication" about="http://programming.oreilly.com/2014/01/horizontal-reuse-an-alternative-to-inheritance.html">
+				<cite property="dc:title">Horizontal Reuse: An Alternative to Inheritance</cite> (<span property="dc:created" datatype="xsd:gYear">2014</span>) by Toby Inkster &#8212; <span property="dc:description">article on O'Reilly Programming blog</span>
+			</li>
 			<li typeof="foaf:Document doac:Publication" about="http://buzzword.org.uk/2009/cheese/paper.html">
 				<cite property="dc:title">Creating Distributed Social Networks with Linked Open Data and FOAF+SSL</cite> (<span property="dc:created" datatype="xsd:gYear">2009</span>) by Toby Inkster &#8212; <span property="dc:description">demonstration paper for Trust and Privacy on the Social and Semantic Web 2009 Workshop</span>.
 			</li>
 			<li typeof="foaf:Document doac:Publication" about="http://www.w3.org/2008/09/msnws/papers/foaf+ssl.html">
-				<cite property="dc:title">FOAF&SSL: Creating a Global Decentralised Authentication Protocol</cite> (<span property="dc:created" datatype="xsd:gYear">2008</span>) by Henry Story, Toby Inkster, Bruno Harbulot, Ian Jacobi and Melvin Carvalho -- <span property="dc:description">position paper for the W3C Workshop on the Future of Social Networking</span>.
+				<cite property="dc:title">FOAF&amp;SSL: Creating a Global Decentralised Authentication Protocol</cite> (<span property="dc:created" datatype="xsd:gYear">2008</span>) by Henry Story, Toby Inkster, Bruno Harbulot, Ian Jacobi and Melvin Carvalho -- <span property="dc:description">position paper for the W3C Workshop on the Future of Social Networking</span>.
 			</li>
+		</ul>
 
 	</section>		
 
@@ -281,7 +281,13 @@
 	<section>
 		<h3>Interests</h3>
 		<ul>
-			<li>I have strong interest in the Semantic Web (SemWeb), a set of technologies designed to allow the data on the World Wide Web (WWW) to be "understood" and "reasoned with" by computers. (But only to the extent that a computer can actually "understand" anything!) In particular I'm interested in looking at the cross-over between the SemWeb and human WWW -- using rich semantics to make the web more usable, making documents designed for humans available to machines, and documents designed for machines more accessible to humans. Details of my SemWeb activities can be found on tobyinkster.co.uk.</li>
+			<li>
+				Frequent contributor to open source software:
+				<ul>
+					<li>Primary author of two of the <a href="http://niceperl.blogspot.ca/2014/01/best-perl-distributions-created-at-2013.html">top 10 best Perl distributions of 2013</a> (as voted by users of metacpan.org) &#8212; <a href="https://metacpan.org/release/Type-Tiny">Type-Tiny</a> and <a href="https://metacpan.org/release/Moops">Moops</a> &#8212; and listed as a contributor to three others in the top 10.</li>
+					<li>See also <a href="https://github.com/tobyink">https://github.com/tobyink</a>.</li>
+				</ul>
+			</li>
 			<li>
 				Cookery and food:
 				<ul>
@@ -293,7 +299,7 @@
 				</ul>
 			</li>
 			<li>Home wine and cider making</li>
-			<li>Guitar</li>
+			<li>Badminton</li>
 		</ul>
 	</section>
 
