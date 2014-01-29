@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Horizontal Reuse: An Alternative to Inheritance</title>
+    <link rel="alternate" type="text/html" href="http://programming.oreilly.com/2014/01/horizontal-reuse-an-alternative-to-inheritance.html"/>
+    <id>http://programming.oreilly.com/2014/01/horizontal-reuse-an-alternative-to-inheritance.html</id>
+
+    <published>2014-01-23T13:00:00Z</published>
+    <updated>2014-01-23T13:00:00Z</updated>
+
+    <summary>In class-based object-oriented programming, when there are classes that appear to share some functionality, this is often a time when people will refactor them into two subclasses of a common base class, avoiding repetition.
+
+For example, in my farm model the Horse class and the Tractor class each implement a pull_plough method. (American readers might prefer pull_plow.) So this method is a candidate to split out into a Hitchable class for Horse and Tractor to each inherit from.
+
+This would have nice benefits for polymorphism. I'll be able to pass an object to my Farmer which will only need to check that the object inherits from Hitchable rather than having a hard-coded list of classes like Horse and Tractor that it knows are acceptable.</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="programming" />
+    
+    <content type="html" xml:lang="en"><![CDATA[
+
+		<p>In class-based object-oriented programming, when there are classes that appear to share some functionality, this is often a time when people will refactor them into two subclasses of a common base class, avoiding <a class="podlinkurl" href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">repetition</a>.</p>
+		<p>For example, in my farm model the <code>Horse</code> class and the <code>Tractor</code> class each implement a <code>pull_plough</code> method. (American readers might prefer <code>pull_plow</code>.) So this method is a candidate to split out into a <code>Hitchable</code> class for <code>Horse</code> and <code>Tractor</code> to each inherit from.</p>
+		<p>This would have nice benefits for polymorphism. I'll be able to pass an object to my <code>Farmer</code> which will only need to check that the object inherits from <code>Hitchable</code> rather than having a hard-coded list of classes like <code>Horse</code> and <code>Tractor</code> that it knows are acceptable.</p>
+		<p>However, <code>Horse</code> already inherits from <code>Animal</code>, and <code>Tractor</code> already inherits from <code>Vehicle</code>. Even in programming languages that support multiple inheritance (and not all do; Java and PHP are two prominent languages that do not), multiple inheritance is often seen as <a class="podlinkurl" href="http://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">problematic</a>.</p>
+		<p>So ruling out multiple inheritance, what other possibilities do we have? Well, perhaps <code>Animal</code> and <code>Vehicle</code> both inherit from a common <code>FarmAsset</code> class - we could add <code>pull_plough</code> to that. But a moment's reflection rules that out; chickens can't pull ploughs.</p>
+		<p>What we want is some way to package up the <code>pull_plough</code> behaviour in one place where the bundle of behaviour can be documented, and give it a name so code can check whether an object implements this bundle of behaviour.</p>
+		<h2><span id="Java">Java</span></h2>
+		<!-- for highlighter language=Java -->
+		<p>Java offers us interfaces for this purpose.</p>
+		<pre class="highlighting-java">   <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">interface</span> Vehicle
+   {
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="cast" style="color:#f00;font-weight:bold">void</span> <span class="function">go</span> ();
+   }
+   
+   <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">interface</span> Hitchable
+   {
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="cast" style="color:#f00;font-weight:bold">void</span> <span class="function">go</span> ();
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="cast" style="color:#f00;font-weight:bold">void</span> <span class="function">pull_plough</span> ();
+   }
+   
+   <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">class</span> Tractor <span class="keyword" style="color:#009;font-weight:bold">implements</span> Vehicle, Hitchable
+   {
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="cast" style="color:#f00;font-weight:bold">void</span> <span class="function">go</span> () {
+         System.<span class="function">out</span>.<span class="function">println</span>(<span class="single" style="color:#909">"Brrrrm!"</span>);
+      }
+      
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="cast" style="color:#f00;font-weight:bold">void</span> <span class="function">pull_plough</span> () {
+         System.<span class="function">out</span>.<span class="function">println</span>(<span class="single" style="color:#909">"Hitching plough"</span>);
+         <span class="keyword" style="color:#009;font-weight:bold">this</span>.<span class="function">go</span>();
+      }
+   }</pre>
+		<p>The <code>Hitchable</code> interface provides a name for this bundle of behaviour which we can check using Java's <code>instanceof</code> operator. However, interfaces are forbidden from including any method implementations, so we still need to copy and paste the body of the <code>pull_plough</code> method into the <code>Horse</code> class. The situation can be improved somewhat using <a class="podlinkurl" href="http://en.wikipedia.org/wiki/Delegation_pattern">delegation</a> to helper classes, which removes the need for duplicated code, but it is still rather more vebose and manual than would be ideal.</p>
+		<p>Java 8's new <a class="podlinkurl" href="http://cr.openjdk.java.net/~briangoetz/lambda/Defender%20Methods%20v4.pdf">defender methods</a> formalize and simplify the use of delegation to implement interfaces. (Java 8 will also finally give Java closures.) This is expected to be released in early 2014.</p>
+		<p>But now it is time to move on from Java.</p>
+		<h2><span id="Ruby">Ruby</span></h2>
+		<!-- for highlighter language=Ruby -->
+		<p>Ruby offers mixins as its solution to this sort of problem.</p>
+		<pre class="highlighting-ruby">   <span class="keyword" style="color:#009;font-weight:bold">module</span> <span class="cast" style="color:#f00;font-weight:bold">Vehicle</span>
+      <span class="keyword" style="color:#009;font-weight:bold">def</span> go
+         puts <span class="single" style="color:#909">"Brrrrm!"</span>
+      <span class="keyword" style="color:#009;font-weight:bold">end</span>
+   <span class="keyword" style="color:#009;font-weight:bold">end</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">module</span> <span class="cast" style="color:#f00;font-weight:bold">Hitchable</span>
+      <span class="keyword" style="color:#009;font-weight:bold">def</span> pull_plough
+         puts <span class="single" style="color:#909">"Hitching plough"</span>
+         <span class="number" style="color:#39C">self</span>.go
+      <span class="keyword" style="color:#009;font-weight:bold">end</span>
+   <span class="keyword" style="color:#009;font-weight:bold">end</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">class</span> <span class="cast" style="color:#f00;font-weight:bold">Tractor</span>
+      <span class="keyword" style="color:#009;font-weight:bold">include</span> <span class="cast" style="color:#f00;font-weight:bold">Vehicle</span>
+      <span class="keyword" style="color:#009;font-weight:bold">include</span> <span class="cast" style="color:#f00;font-weight:bold">Hitchable</span>
+   <span class="keyword" style="color:#009;font-weight:bold">end</span></pre>
+		<p>Once again this gives us a common name <code>Hitchable</code> for the plough pulling behaviour, but avoids the repetition of Java's interfaces. However, it does still have some drawbacks. <code>Hitchable</code> requires classes including it implement a <code>go</code> method, without which <code>pull_plough</code> won't work. <code>Tractor</code> inherits such a method from <code>Vehicle</code>, but <code>Horse</code> might not. This requirement is not declared anywhere in code (though it might be documented) so the Ruby interpreter can't warn us about a missing <code>go</code> method when the class is declared; only at run-time when the <code>pull_plough</code> method is called.</p>
+		<p>Another problem is that if future versions of the <code>Vehicle</code> and <code>Hitchable</code> mixins each implement a <code>check_secure</code> method with differing functionality, <code>Tractor</code> can only inherit one of them. The choice of which would be inherited would be made deterministically by Ruby (it would inherit the <code>Hitchable</code> one) but <b>silently</b>, so we might only notice that our tractors are not being made secure (in the vehicular sense) when subtle bugs started turning up.</p>
+		<p>The <a class="podlinkurl" href="http://rubygems.org/gems/traitor">traitor</a> gem provides some improvements in this area, but it seems to be at an early stage of development, and I personally have had difficulty making it work.</p>
+		<p>Let's move on again.</p>
+		<h2><span id="PHP">PHP</span></h2>
+		<!-- for highlighter language=PHP/PHP -->
+		<p>PHP's traits feature (introduced in PHP 5.4) offers ways around both of the above problems in the Ruby implementation.</p>
+		<pre class="highlighting-php/php">   <span class="keyword" style="color:#009;font-weight:bold">&lt;?php</span>
+   
+   trait Vehicle
+   {
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">function</span> go <span class="others">()</span> {
+         <span class="function">echo</span> <span class="single" style="color:#909">"Brrrrm!"</span><span class="others">,</span> <span class="single" style="color:#909">"</span><span class="bstring">\n</span><span class="single" style="color:#909">"</span><span class="others">;</span>
+      }
+   }
+   
+   trait Hitchable
+   {
+      <span class="keyword" style="color:#009;font-weight:bold">abstract</span> <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">function</span> go <span class="others">();</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">public</span> <span class="keyword" style="color:#009;font-weight:bold">function</span> pull_plough <span class="others">()</span> {
+         <span class="function">echo</span> <span class="single" style="color:#909">"Hitching plough"</span><span class="others">,</span> <span class="single" style="color:#909">"</span><span class="bstring">\n</span><span class="single" style="color:#909">"</span><span class="others">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$this</span>-&gt;go<span class="others">();</span>
+      }
+   }
+   
+   <span class="keyword" style="color:#009;font-weight:bold">class</span> Tractor
+   {
+      use Vehicle<span class="others">;</span>
+      use Hitchable<span class="others">;</span>
+   }</pre>
+		<p>If we added the <code>Hitchable</code> trait to <code>Horse</code> and forgot to implement <code>go</code>, we'd get an instant error message:</p>
+		<!-- for highlighter language=Text -->
+		<pre class="highlighting-text">   PHP Fatal error:  Class Horse contains 1 abstract method and
+   must therefore be declared abstract or implement the remaining
+   methods (Horse::go)</pre>
+		<p>And in the case of the <code>check_secure</code> method mentioned above, we'd get a similar fatal error:</p>
+		<!-- for highlighter language=Text -->
+		<pre class="highlighting-text">   PHP Fatal error:  Trait method check_secure has not been applied,
+   because there are collisions with other trait methods on Tractor</pre>
+		<p>To resolve this error, we'd need to provide a <code>check_secure</code> method in the <code>Tractor</code> class itself to override the conflicted methods in both traits with some sort of Tractor-specific notion of security which hopefully encompasses the semantics of both traits' methods.</p>
+		<p>The PHP trait mechanism is very good, but it's missing one thing that Java's interfaces and Ruby's mixins each provide. It has no simple programmatic way of determining whether a given object <code>$x</code> performs the <code>Hitchable</code> trait.</p>
+		<p><b>Nor should you want one</b> claim PHP's developers. PHP's traits are intended as "engine-level copy-and-paste" and nothing more. It seems a shame that the developers of this feature haven't been more ambitious with it.</p>
+		<p>(I'll note that the reflection API, <b>does</b> allow you to check whether an object uses a particular trait, but it's not very pretty.)</p>
+		<p>Let's continue our journey.</p>
+		<h2><span id="Perl">Perl</span></h2>
+		<!-- for highlighter language=Perl -->
+		<p>The <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> module for Perl offers good support for traits, though in Moose they're usually referred to as "roles". (Moose is not just an implementation of roles though, it provides many other features for writing concise and maintainable object-oriented Perl.)</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Vehicle</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose::Role</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">go</span> <span class="structure">{</span>
+         <span class="word">say</span> <span class="double" style="color:#909">"Brrrrm!"</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Hitchable</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose::Role</span><span class="structure">;</span>
+      <span class="word">requires</span> <span class="single" style="color:#909">'go'</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">pull_plough</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+         <span class="word">say</span> <span class="double" style="color:#909">"Hitching plough"</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">go</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Tractor</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="word">with</span> <span class="single" style="color:#909">'Vehicle'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="single" style="color:#909">'Hitchable'</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>Everything on our checklist is covered: we don't have to copy and paste code between classes; we have a name (<code>Hitchable</code>) for the common behaviour; the <code>Hitchable</code> role can specify a list of methods it requires consuming classes to implement; we get error messages for method conflicts; and if we have an object <code>$x</code> there's a simple way to check if it does the <code>Hitchable</code> role: <code>$x-&gt;DOES('Hitchable')</code> returns a boolean.</p>
+		<p>It should be noted that <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> is a third-party module, and is not bundled with Perl. There are a raft of other role implementations (compatible to various degrees with Moose) freely available, including <a class="podlinkpod" href="https://metacpan.org/module/Moo%3A%3ARole">Moo::Role</a> and <a class="podlinkpod" href="https://metacpan.org/module/Role%3A%3ATiny">Role::Tiny</a>.</p>
+		<p>However, things are afoot! Moose's original developer Steven Little is currently working on a light-weight object-oriented framework with role support, with the aim for it to be included in the Perl core, perhaps as soon as May 2015.</p>
+		<p>I've already said that in Perl, these packages of common behaviour are usually referred to as "roles" rather than "traits" - this is because the word "trait" is often used for a more particular meaning. With Moose it is possible to apply a roles to an individual object <b>at runtime</b>; it is these runtime-applied roles that are referred to as traits.</p>
+		<p>Runtime application of traits is an extremely powerful technique for applying plugins to an object based on, say, the contents of a configuration file, or a JSON response from a web service.</p>
+		<p>* * *</p>
+		<p>Moose is partly inspired by Steven's work on Perl 6, where roles are a native feature. Perl 6's concept of roles is largely based on the concept of traits available in some dialects of Smalltalk.</p>
+		<p>Scala has an excellent implementation of traits, also inspired by Smalltalk. And like Perl, it allows traits to be added to individual objects.</p>
+		<p><a class="podlinkurl" href="http://joose.it/">Joose</a> is a port of many of Moose's concepts to Javascript.</p>
+		<p>* * *</p>
+		<p>Horizontal code reuse offers advantages over inheritance in many situations, and could be considered an evolution of the exhortation to "favour composition over inheritance". However, some languages make horizontal code reuse easier than others.</p>
+		<p>Full runnable versions of the code samples shown in this article can be <a class="podlinkurl" href="https://github.com/tobyink/misc-farm">found on GitHub</a>. The repository also includes several other implementations of the code using other programming languages and role implementations.</p>
+
+
+    ]]></content>
+</entry>
