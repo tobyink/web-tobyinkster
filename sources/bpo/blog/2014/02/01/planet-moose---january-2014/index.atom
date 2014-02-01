@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - January 2014</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/02/planet-moose---january-2014.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5606</id>
+
+    <published>2014-02-01T21:12:18Z</published>
+    <updated>2014-02-01T21:14:20Z</updated>
+
+    <summary> Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="subtriggerlock" label="Sub-Trigger-Lock" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p>There have been a couple of minor releases of Moose this month (2.1201 and 2.1202) but nothing especially exciting.</p></div>
+]]>
+        <![CDATA[		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Buddy Burden has continued his <i>Perl and Me</i> series. <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/01/perl-and-me-part-5-speaking-with-the-speech-of-coders.html">Part 5</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/01/perl-and-me-part-6-perl-is-engineering-and-art.html">part 6</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/01/perl-and-me-part-7-the-most-powerful-weapon-which-you-can-use-to-change-the-world.html">part 7</a>, and <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/01/perl-and-me-part-8-endless-forms-most-beautiful-and-most-wonderful.html">part 8</a>.</li>
+			<li>byterock has also been writing a few interesting Moose-related blog posts, including <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/2014/01/am-i-a-covert.html">Am I a Convert???</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/2014/01/diamonds-are-a-mooses-best-friend.html">Diamonds are a Moose's Best Friend</a>, and <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/2014/01/out-of-the-barn-yard.html">Out of the Barn Yard</a>.</li>
+			<li>I published <a class="podlinkurl" href="http://programming.oreilly.com/2014/01/horizontal-reuse-an-alternative-to-inheritance.html">Horizontal Reuse: An Alternative to Inheritance</a> which compares Moose roles favourably to other mechanisms for horizontal code reuse.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AClass%3A%3AMoose">Test::Class::Moose</a> now supports running tests in parallel.</li>
+			<li>Various modules have been updated to work with newer versions of Moose and avoid deprecation warnings, including <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AApp">MooseX::App</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AAbstractFactory">MooseX::AbstractFactory</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATraits%3A%3APluggable">MooseX::Traits::Pluggable</a>, <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes%3A%3ASet%3A%3AObject">MooseX::Types::Set::Object</a>, and <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3AAttribute%3A%3AValidateWithException">MooseX::Attribute::ValidateWithException</a>.</li>
+			<li>I've released <a class="podlinkpod" href="https://metacpan.org/module/Sub%3A%3ATrigger%3A%3ALock">Sub::Trigger::Lock</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/01/introducing-subtriggerlock.html">blogged about it</a>.</li>
+		</ul>
+]]>
+    </content>
+</entry>
