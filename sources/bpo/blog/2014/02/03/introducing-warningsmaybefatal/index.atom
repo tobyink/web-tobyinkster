@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Introducing warnings::MaybeFatal</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/02/introducing-warningsmaybefatal.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5613</id>
+
+    <published>2014-02-03T21:48:21Z</published>
+    <updated>2014-02-03T21:58:13Z</updated>
+
+    <summary><![CDATA[OK, so you've written your module like this: package MyUtils; use strict; use warnings FATAL =&gt; qw( all ); sub frobnicate { ... } 1; It passes its test suite, and all is fine and dandy. You use the frobnicate...]]></summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="warnings" label="warnings" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="warningsmaybefatal" label="warnings-MaybeFatal" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>OK, so you've written your module like this:</p>
+
+<pre><code>package MyUtils;
+use strict;
+use warnings FATAL =&gt; qw( all );
+sub frobnicate { ... }
+1;
+</code></pre>
+
+<p>It passes its test suite, and all is fine and dandy. You use the <code>frobnicate</code> function in a long-running data processing script, and after the first 45 minutes it suddenly dies saying <strong>Use of uninitialized value $quux in addition at lib/MyUtils.pm line 13</strong>. D'oh!</p>
+]]>
+        <![CDATA[<p>This is where <a href="https://metacpan.org/pod/warnings::MaybeFatal">warnings::MaybeFatal</a> comes in.</p>
+
+<pre><code>package MyUtils;
+use strict;
+use warnings qw( all );
+use warnings::MaybeFatal;
+sub frobnicate { ... }
+1;
+</code></pre>
+
+<p>It fatalizes warnings, but <em>only at compile time</em>. So if a warning occurs while MyUtils.pm is compiling, it will immediately croak. However, if a warning occurs during a normal call to the <code>frobnicate()</code> function, it will simply output a warning to STDERR and carry on.</p>
+]]>
+    </content>
+</entry>
