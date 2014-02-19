@@ -116,7 +116,7 @@
 		<dt rel="foaf:account" rev="sioc:account_of">
 			<a about="[this:accounts/bitcoin]" typeof="foaf:OnlineAccount" rel="foaf:accountServiceHomepage" href="http://www.bitcoin.org/">Bitcoin</a>
 		</dt>
-		<dd about="[this:accounts/bitcoin]" property="foaf:accountName" xml:lang="">1CZirTMH1Pj5LGg6v4r9weMNmGwnWKK9mr</dd>
+		<dd about="[this:accounts/bitcoin]" property="foaf:accountName" xml:lang="">1NmFAMwYbyDNtnNXbGsSGtfzV7A2ZVCnTv</dd>
 	</dl>
 
 	<h2>Links</h2>
