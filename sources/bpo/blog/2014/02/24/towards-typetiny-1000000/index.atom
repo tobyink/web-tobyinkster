@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Towards Type::Tiny 1.000000</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/02/towards-typetiny-1000000.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5709</id>
+
+    <published>2014-02-24T10:54:57Z</published>
+    <updated>2014-02-24T11:27:46Z</updated>
+
+    <summary> Type::Tiny has been knocking around in some shape or another for almost a year now. It's certainly grown a lot since its first commit. The distribution probably no longer merits the "Tiny" name, though the lead module itself is...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="testing" label="Testing" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>Type::Tiny has been knocking around in some shape or another for almost a year now. It's certainly grown a lot since its <a class="podlinkurl" href="https://github.com/tobyink/p5-type-tiny/commit/48de330a10816ccd79c9331f821282254170d92d">first commit</a>. The distribution probably no longer merits the "Tiny" name, though the lead module itself is still fairly lean. There are <a class="podlinkurl" href="https://metacpan.org/requires/distribution/Type-Tiny">over 80 distributions that list it as a pre-requisite</a> in some way or another, and more still that depend on <i>those</i>.</p>
+		<p>So I think it's time to begin planning to stabalize the API. Right now, my plan is:</p>
+]]>
+        <![CDATA[		<ul>
+			<li>Achieve 100 reverse dependencies.</li>
+			<li>Complete the <a class="podlinkurl" href="https://metacpan.org/source/TOBYINK/Type-Tiny-0.039_07/t/TODO">testing TODO list</a>.</li>
+			<li>Finish documenting which parts of the API are considered unstable/experimental, and won't be covered by <a class="podlinkurl" href="https://metacpan.org/pod/release/TOBYINK/Type-Tiny-0.039_07/lib/Type/Tiny/Manual/Policies.pod#STABILITY">the stability policy</a>.</li>
+			<li>Close any remaining <a class="podlinkurl" href="https://rt.cpan.org/Dist/Display.html?Queue=Type-Tiny">RT tickets</a>.</li>
+		</ul>
+		<p>Not necessarily in that order.</p>
+		<p>So, why am I telling you all this?</p>
+		<p>Well, the primary use case for Type::Tiny is attribute validation in Moose-style class builders, but it can be used for other purposes too: sub parameter validation, switch-like statements, or tied arrays. If you've found a novel use for Type::Tiny, I'd like to hear about it. Together maybe we can add some code to the Type::Tiny test suite to make sure your use case is covered.</p>
+		<p>The stability policy is a guarantee that (with some small exceptions) any changes which would break Type::Tiny 1.000000's test suite will require an extensive notice period. The more use cases it covers, and the more obscure parts of the API get tested, the better that guarantee becomes.</p>
+]]>
+    </content>
+</entry>
