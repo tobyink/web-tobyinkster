@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - February 2014</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/03/planet-moose---february-2014.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5738</id>
+
+    <published>2014-03-03T10:30:00Z</published>
+    <updated>2014-03-03T10:38:15Z</updated>
+
+    <summary> Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="dbixclass" label="DBIx-Class" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="ruby" label="Ruby" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/module/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p>There have been a couple of minor releases of Moose this month (2.1203 and 2.1204) aimed at squelching a bug exposed by a recent update to <a class="podlinkpod" href="https://metacpan.org/module/Module%3A%3ARuntime">Module::Runtime</a>. (See <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2014/02/moose-dying-with-invalid-version-format-version-required.html">Ovid's blog post on the issue</a>.)</p></div>
+]]>
+        <![CDATA[		<h2><span id="Ruby">Ruby</span></h2>
+		<p>Technically <a class="podlinkurl" href="https://github.com/peczenyj/MooseX">the MooseX project</a> started on the last day of January, but it's too interesting to leave out of this round-up. It's a port of most of the ideas and syntax of Moose to Ruby. The project is still in its early days, but already a lot has been implemented.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Moose gets lots of mentions in <a class="podlinkurl" href="http://www.perl.com/pub/2014/02/perl-today-february-2014.html">Perl Today</a>.</li>
+			<li>Ovid has written about <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2014/02/use-dbix-class-via-delegation-instead-of-inheritance.html">writing Moose classes which delegate to DBIx::Class classes</a>.</li>
+			<li>John Napiorkowski is <a class="podlinkurl" href="http://jjnapiorkowski.typepad.com/modern-perl/2014/02/proposed-quests-for-perl-catalyst-ancona-open-for-comments.html">looking for propositions</a> for the next version of the Moose-based MVC framework <a class="podlinkpod" href="https://metacpan.org/module/Catalyst">Catalyst</a>.</li>
+			<li>Buddy Burden has continued his <i>Perl and Me</i> series. <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/02/perl-and-me-part-9-thats-why-i-failed-recess.html">Part 9</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/02/perl-and-me-part-10-what-we-talk-about-when-we-talk-about-dwim.html">part 10</a>, and <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/02/perl-and-me-part-11-please-mr-perl-will-you-dwim.html">part 11</a>.</li>
+			<li>byterock has also written many more Moose-related blog posts — too many for me to link to individually — but see <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/">http://blogs.perl.org/users/byterock/</a>.</li>
+			<li>I'm beginning to <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/02/towards-typetiny-1000000.html">stabilize the Type::Tiny API</a>.</li>
+		</ul>
+]]>
+    </content>
+</entry>

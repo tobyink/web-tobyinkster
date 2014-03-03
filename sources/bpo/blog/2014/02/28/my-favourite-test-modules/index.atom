@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>My Favourite Test::* Modules</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/02/my-favourite-test-modules.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5730</id>
+
+    <published>2014-02-28T14:04:37Z</published>
+    <updated>2014-02-28T14:16:29Z</updated>
+
+    <summary> If you don't test your code, what makes you think it works?! Here are some of my favourite modules for testing Perl code....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="testing" label="Testing" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><b>If you don't test your code, what makes you think it works?!</b></p>
+		<p>Here are some of my favourite modules for testing Perl code.</p>
+]]>
+        <![CDATA[		<h2><span id="General_Purpose_Testing">General Purpose Testing</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMore">Test::More</a> is the foundation of all my test scripts. Indeed, the majority of the test scripts use nothing beyond it. It provides the <code>is()</code> function useful for testing code that produces string and numeric output; <code>like()</code> is also very useful for testing strings; and <code>is_deeply()</code> is great for testing most nested data structures.</p>
+		<p>For many of my test suites, I rely on at least version 0.96 of Test::More. This was the first stable version after some important improvements to subtests, and it's nice to be able to rely on a good implementation of subtests. Every version of Perl since 5.13.4 has been bundled with a sufficiently recent Test::More, and it's usually a pretty simple upgrade on older Perls.</p>
+		<p>It's important to test your code behaves as documented under normal conditions, but it is equally important to test that it behaves as documented under abnormal circumstances, such as when it is passed bad input data. For this purpose, I strongly recommend <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AFatal">Test::Fatal</a> and <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AWarnings">Test::Warnings</a>. There are various other modules that do similar jobs, but these are two that seem to get the balance between features and complexity about right.</p>
+		<p>Sometimes you've written code that <i>can</i> interact with other modules. But your code doesn't rely on those modules, so you don't want to list it as a dependency. So you want to skip the tests for these features if those modules are not installed. This is easy enough to do by calling Test::More's <code>plan skip_all =&gt; $reason</code>, but easier still using <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ARequires">Test::Requires</a>.</p>
+		<p>Another useful testing module is <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ADeep">Test::Deep</a>. Test::Deep takes <code>is_deeply()</code> a step further, allowing you more flexibility in declaring whether two structures are equivalent. Perhaps you don't care whether a particular value in a hash exactly matches a certain string, but do care that it matches a certain regexp. Or perhaps some array deeply nested in your data structure should be treated as a set (i.e. you care what items are in it, but not what order they appear in). Test::Deep can handle all of that and more.</p>
+		<p>Finally for general purpose testing, I'll mention <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ALongString">Test::LongString</a> which provides equivalents of Test::More's <code>is()</code> and <code>like()</code> functions, but with more useful diagnostics, helping you track down the bytes where long strings differ.</p>
+		<h2><span id="Special_Purpose_Testing">Special Purpose Testing</span></h2>
+		<p>Depending on what you're doing, there are various special-purpose testing modules that might make your life easier.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMoose">Test::Moose</a> is useful for testing Moose classes, and its <code>with_immutable</code> function is very useful for testing MooseX::* modules too.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ARDF">Test::RDF</a> is good for testing RDF graphs, such as data from FOAF files, RSS 1.0 feeds, and the Facebook Open Graph Protocol.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AHTTP%3A%3AServer">Test::HTTP::Server</a> is not really a testing module, but a light-weight HTTP server, suitable for testing HTTP clients. It unfortunately doesn't support Windows machines, so you may need to skip tests based on <code>$^O</code>.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ATypeTiny">Test::TypeTiny</a> is useful for testing type constraint libraries. It is bundled with <a class="podlinkpod" href="https://metacpan.org/module/Type%3A%3ATiny">Type::Tiny</a>, but can also be used to test <a class="podlinkpod" href="https://metacpan.org/module/MooseX%3A%3ATypes">MooseX::Types</a> and <a class="podlinkpod" href="https://metacpan.org/module/MouseX%3A%3ATypes">MouseX::Types</a> constraints.</p>
+		<p>Finally, if you've written your own test module, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ATester">Test::Tester</a> is a great way to test it.</p>
+		<h2><span id="Quality_Assurance">Quality Assurance</span></h2>
+		<p>There are a lot of modules on CPAN which aren't so much concerned with testing that your code works, but instead test other aspects of the software development process. For example, they can test that your work complies with particular source code formatting policies, or is properly documented. I won't go into these in detail, but I routinely use <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3APod">Test::Pod</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3APod%3A%3ACoverage">Test::Pod::Coverage</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ASpellunker">Test::Spellunker</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ATabs">Test::Tabs</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AEOL">Test::EOL</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AHasVersion">Test::HasVersion</a>.</p>
+]]>
+    </content>
+</entry>
