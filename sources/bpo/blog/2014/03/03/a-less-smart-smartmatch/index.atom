@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>A Less Smart Smartmatch</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/03/a-less-smart-smartmatch.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5739</id>
+
+    <published>2014-03-03T20:42:42Z</published>
+    <updated>2014-03-03T20:47:45Z</updated>
+
+    <summary> The smartmatch operator (~~) introduced in Perl 5.10 (and borrowed from Perl 6) has been the subject of much criticism. Its behaviour changes based on the types of its arguments (arrays vs hashes vs numbers vs strings vs ...)....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="matchsimple" label="match-simple" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="matchsimplexs" label="match-simple-XS" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="smartmatch" label="smartmatch" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>The smartmatch operator (<code>~~</code>) introduced in Perl 5.10 (and borrowed from Perl 6) has been the subject of much criticism. Its behaviour changes based on the types of its arguments (arrays vs hashes vs numbers vs strings vs ...). <a class="podlinkpod" href="https://metacpan.org/module/perlop">perlop</a> lists over twenty different behaviours based on different combinations of arguments. Although the operator normally does what you want, what people would want from certain combinations (<code>%hash ~~ @arr</code> anybody?) is nor always clear.</p>
+		<p>(Aside: in Perl 6 which has a stronger type system, the behaviour of smartmatch is more predictable.)</p>
+		<p>For this reason, it has been proposed that the smartmatch operator be simplified, or perhaps even removed in a future version of Perl 5. To this end, Perl 5.18 has introduced some warnings about its experimental nature.</p>
+]]>
+        <![CDATA[		<p>Some seem to believe the smartmatch is fairly unnecessary: if you're matching against a number, use <code>==</code>; if you're matching against a string, use <code>eq</code>; if you're matching against a regexp, use <code>=~</code>; why do we need an "all of the above" operator?</p>
+		<p>I think the strength of smartmatch comes when you <i>don't know</i> what you're matching against. For example, in one of my projects there is an option to provide a filter of which tables in a database to skip processing. To handle this option, I used the smartmatch. This allows the caller to provide a regexp matching tables to skip, or a coderef which should return true to skip a table, or an arrayref of table names to skip, or some combination of the above. And I don't have to worry about it. I just document that they should pass a filter that will be used as the right-hand-side of a smartmatch against the table names.</p>
+		<p>So I like the idea of smartmatch. I don't think it can be easily replaced with other Perl operators. And I don't think it should be removed.</p>
+		<p>But I would welcome a simplified version. And because I don't like to wait, I've released a simplified implementation of smartmatch to the CPAN. It's called <a class="podlinkpod" href="https://metacpan.org/module/match%3A%3Asimple">match::simple</a>.</p>
+		<p>I didn't want to play crazy parsing games, so I could not override the actual <code>~~</code> operator. Instead I used <a class="podlinkurl" href="http://code.activestate.com/recipes/384122-infix-operators/">this pattern</a> to implement my own fake infix operator. Here's how it looks:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">match::simple</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$this</span> <span class="operator" style="color:#000;font-weight:bold">|</span><span class="word">M</span><span class="operator" style="color:#000;font-weight:bold">|</span> <span class="symbol" style="color:#333;background-color:#fcc">$that</span><span class="structure">)</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>Alternatively, if you don't want the infix stuff:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">match::simple</span> <span class="words" style="color:#333;background-color:#ffc">qw(match)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="word">match</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$this</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$that</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>The rules for match::simple are a lot simpler than smartmatch. They are always determined by the type of the operand on the right-hand side, which can be:</p>
+		<ul>
+			<li><code>undef</code> — then the match is only successful if the left-hand side is also <code>undef</code></li>
+			<li>a string — the operator acts like <code>eq</code></li>
+			<li>a regexp — the operator acts like <code>=~</code></li>
+			<li>a coderef — the operator passes the left-hand side to it as an argument</li>
+			<li>an object — the operator calls the <code>MATCH</code> operator on the object, or calls overloaded <code>~~</code></li>
+			<li>an arrayref — the operator recurses to each element in the array, and succeeds if the left-hand side matches any of them</li>
+		</ul>
+		<p>If the right-hand side is anything else (e.g. a filehandle, or a hashref) then it throws an exception.</p>
+		<p>Perhaps this is not everybody's favourite combination of matches, but it works for me.</p>
+		<p>match::simple has been on CPAN for about 10 months and is already being used in <a class="podlinkurl" href="https://metacpan.org/requires/distribution/match-simple">a few projects</a>. So why is this news?</p>
+		<p>Well, I've re-implemented it in XS. The result is <a class="podlinkpod" href="https://metacpan.org/module/match%3A%3Asimple%3A%3AXS">match::simple::XS</a>. match::simple itself remains a pure Perl implementation, but will automatically switch in the XS implementation if it detects that it is installed. This has resulted in a very fast implementation of matching; in some cases (such as matching a string within an arrayref of strings) faster than smartmatch itself.</p>
+]]>
+    </content>
+</entry>

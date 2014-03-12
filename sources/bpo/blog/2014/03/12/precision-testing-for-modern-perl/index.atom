@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Precision Testing for Modern Perl</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/03/precision-testing-for-modern-perl.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5785</id>
+
+    <published>2014-03-12T13:00:00Z</published>
+    <updated>2014-03-12T12:56:17Z</updated>
+
+    <summary> In a previous entry I discussed some of my favourite CPAN modules for testing Perl code. I got to thinking... there are all these little frameworks on the CPAN like GID, and Modern::Perl, and Defaults::Modern, and Bubblegum which are...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="testmodern" label="Test-Modern" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="testing" label="Testing" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<div>
+<p>In a <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/02/my-favourite-test-modules.html">previous entry</a> I discussed some of my favourite CPAN modules for testing Perl code.</p>
+		<p>I got to thinking... there are all these little frameworks on the CPAN like <a class="podlinkpod" href="https://metacpan.org/module/GID">GID</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Modern%3A%3APerl">Modern::Perl</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Defaults%3A%3AModern">Defaults::Modern</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Bubblegum">Bubblegum</a> which are basically little shims to load collections of "best practices" modules in a single line. For example:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Modern::Perl</span><span class="structure">;</span></pre>
+		<p>is basically a shortcut for:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">IO::File</span> <span class="words" style="color:#333;background-color:#ffc">qw()</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">IO::Handle</span> <span class="words" style="color:#333;background-color:#ffc">qw()</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">strict</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">warnings</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">feature</span> <span class="words" style="color:#333;background-color:#ffc">qw( :5.12 )</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">mro</span> <span class="words" style="color:#333;background-color:#ffc">qw( c3 )</span><span class="structure">;</span></pre>
+		<p>So why not do the same for test suites? Why not create a module that loads <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMore">Test::More</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AFatal">Test::Fatal</a>, and <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AWarnings">Test::Warnings</a>, and so on for me?</p>
+</div>]]>
+        <![CDATA[		<p>I know what you're thinking... <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMost">Test::Most</a> already exists. Test::Most is a good module, but it's been around a few years, and it shows. For example, it uses <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AException">Test::Exception</a> which is generally thought <a class="podlinkurl" href="http://rjbs.manxome.org/rubric/entry/1863">problematic</a> compared to the newer <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AFatal">Test::Fatal</a>; similarly Test::Most uses <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AWarn">Test::Warn</a> where <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AWarnings">Test::Warnings</a> might be a better choice. It's unlikely Ovid could ever change this situation without breaking a substantial number of <a class="podlinkurl" href="https://metacpan.org/requires/distribution/Test-Most">the over 300 distributions that depend on Test::Most</a>.</p>
+		<p>So I went and wrote <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AModern">Test::Modern</a> which combines <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMore">Test::More</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AFatal">Test::Fatal</a>, <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AWarnings">Test::Warnings</a>, and more. It automatically imports <a class="podlinkpod" href="https://metacpan.org/module/strict">strict</a> and <a class="podlinkpod" href="https://metacpan.org/module/warnings">warnings</a> for you, and enables Test::Warnings' <code>had_no_warnings</code> feature so that any unexpected warnings will cause your tests to fail. It provides the ability to mark test scripts as being author, release, or extended tests, and skip them based on the presence or absence of environment variables (like <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ADescribeMe">Test::DescribeMe</a>), or skip tests based on missing dependencies (like <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ARequires">Test::Requires</a>).</p>
+		<p>Because much modern Perl code is quite object-oriented, it provides an <code>object_ok</code> function combining Test::More's <code>isa_ok</code> and <code>can_ok</code>, a <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AMoose">Test::Moose</a>-inspired <code>does_ok</code>, a <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AAPI">Test::API</a>-powered <code>class_api_ok</code>, and a <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3ACleanNamespaces">Test::CleanNamespaces</a>-cribbed <code>namespaces_clean</code>.</p>
+		<p>Is it likely to be everything you need to test every project in one module? No. But of course using <a class="podlinkpod" href="https://metacpan.org/module/Test%3A%3AModern">Test::Modern</a> doesn't stop you from using other test modules too!</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Test::Modern</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Test::URI</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Person</span><span class="structure">;</span>
+   
+   <span class="word">object_ok</span><span class="structure">(</span>
+      <span class="word">MyApp::Person</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new_from_database</span><span class="structure">(</span><span class="word">id</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">42</span><span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ MyApp::Person Moose::Object /</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">does</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ MyApp::Role::Contact /</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">can</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ id name email website /</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">clean</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">more</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$object</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+         <span class="word">is</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$object</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">name</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"Bob"</span> <span class="structure">);</span>
+         <span class="word">uri_scheme_ok</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$object</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">website</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="single" style="color:#909">'http'</span> <span class="structure">);</span>
+      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span>
+   
+   <span class="word">done_testing</span><span class="structure">;</span></pre>]]>
+    </content>
+</entry>
