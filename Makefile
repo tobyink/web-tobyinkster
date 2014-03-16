@@ -1,4 +1,4 @@
-all: build
+all: load build
 
 merge-dirs:
 	./build/merge-dirs.pl
@@ -11,3 +11,11 @@ build-atom: build-feed
 
 build: build-atom
 	./build/bare-to-html.pl
+
+load-bpo:
+	./loaders/bpo.pl
+
+load-ilovecbeebies:
+	./loaders/ilovecbeebies.pl
+
+load: load-bpo load-ilovecbeebies
