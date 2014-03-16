@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>DOAPy Dist</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/03/doapy-dist.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5793</id>
+
+    <published>2014-03-14T15:09:26Z</published>
+    <updated>2014-03-14T14:20:54Z</updated>
+
+    <summary> So what's DOPE? No, not DOPE, DOAP... what's DOAP? Here's what Wikipedia has to say... DOAP (Description of a Project) is an RDF Schema and XML vocabulary to describe software projects, in particular free and open source software. It...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="distzilla" label="Dist-Zilla" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="doap" label="DOAP" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="semanticweb" label="SemanticWeb" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<div>
+<img src="http://buzzword.org.uk/2014/599933-dopey_large.jpg" alt="" style="float:left;margin:0 1em 1em 0;border:1px solid silver">
+<p>So what's DOPE? No, not DOPE, DOAP... what's DOAP?</p>
+<p>Here's what Wikipedia has to say...</p>
+<blockquote>
+<p>DOAP (Description of a Project) is an RDF Schema and XML vocabulary to describe software projects, in particular free and open source software.</p>
+<p>It was created and initially developed by Edd Dumbill to convey semantic information associated with open source software projects.</p>
+<p>It is currently used in the Mozilla Foundation's project page and in several other software repositories, notably the Python Package Index.</p>
+</blockquote>
+</div>
+]]>
+        <![CDATA[<p>Yesterday, I released <a href="https://metacpan.org/release/Dist-Zilla-Plugin-DOAP">Dist-Zilla-Plugin-DOAP</a> which makes it easy to include DOAP data in Dist::Zilla-based software distributions. Simply install the plugin (no heavy dependencies other than Dist::Zilla of course!), and add the following line to your <tt>dist.ini</tt> file:</p>
+<pre>
+[DOAP]
+</pre>
+<p>There, you're done! A small file called <tt>doap.xml</tt> will be generated at build time, and included in your released tarball.</p>]]>
+    </content>
+</entry>
