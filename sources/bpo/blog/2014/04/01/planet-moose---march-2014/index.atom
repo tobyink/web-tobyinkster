@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - March 2014</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/04/planet-moose---march-2014.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5875</id>
+
+    <published>2014-04-01T19:49:04Z</published>
+    <updated>2014-04-01T19:52:13Z</updated>
+
+    <summary> Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="testclassmoose" label="Test-Class-Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<h2><span id="Moo">Moo</span></h2>
+		<p>Although no new version of Moo has been released so far in 2014, there have been updates in March to a few of the modules it depends on:</p></div>
+]]>
+        <![CDATA[		<ul>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3ATiny">Role::Tiny 1.003003</a> fixes <a class="podlinkurl" href="https://rt.cpan.org/Ticket/Display.html?id=91054">RT#91054</a>, and brings method conflict handling closer to Moose and Mouse. (This is the same change that went into Mouse 2.0.0.) There have also been improvements with overload handling in roles.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Class%3A%3AMethod%3A%3AModifiers">Class::Method::Modifiers 2.10</a> improves the CMM installation experience on Perl 5.6. This is part of a plan to eventually have Moo running on Perl 5.6.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Import%3A%3AInto">Import::Into 1.002001</a> is a similar story.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/strictures">strictures 1.005004</a> ensures that its optional dependencies aren't listed as requirements in META.(yml|json). (Though CPAN clients should pick up dependencies from MYMETA.(yml|json) instead anyway.)</li>
+		</ul>
+		<h2><span id="Mouse">Mouse</span></h2>
+		<p>Mouse 2.1.1 includes a minor bug fix.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>John Napiorkowski has <a class="podlinkurl" href="http://jjnapiorkowski.typepad.com/modern-perl/2014/03/new-catalyst-development-branch-ancona-ready-for-commiters.html">started a new development branch</a> for the next version of the Moose-based MVC framework <a class="podlinkpod" href="https://metacpan.org/pod/Catalyst">Catalyst</a>.</li>
+			<li>Buddy Burden has finished his <i>Perl and Me</i> series. <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/03/perl-and-me-part-12-the-end-of-the-beginning.html">Part 12</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/buddy_burden/2014/03/perl-and-me-part-13-heres-to-future-days.html">part 13</a>.</li>
+			<li>byterock has also written many more Moose-related blog posts -- too many for me to link to individually -- but see <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/">http://blogs.perl.org/users/byterock/</a>.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny 0.040</a> was released on St Patrick's Day (17 March) containing all the bugfixes and improvements since the start of the year. The <a class="podlinkurl" href="https://metacpan.org/source/TOBYINK/Type-Tiny-0.040/NEWS">NEWS file</a> contains a warning about changes to the API for parameterized coercions and named coercions expected in the next stable version. The most visible change was the removal of the overloaded <code>+</code> operator in <a class="podlinkurl" href="https://metacpan.org/release/TOBYINK/Type-Tiny-0.041_01">0.041_01</a> released the same day.</li>
+			<li>There have been minor updates to <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AGetopt">MooseX::Getopt</a>, <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AApp">MooseX::App</a>, <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AStorage">MooseX::Storage</a>, <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3ATypes">MooseX::Types</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Reindeer">Reindeer</a>, and <a class="podlinkpod" href="https://metacpan.org/pod/Throwable">Throwable</a>.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Test%3A%3AClass%3A%3AMoose">Test::Class::Moose 0.50</a> a Moose-based testing framework (though not exclusively for testing Moose-based code) was a big update. It now detects which methods are considered test cases using sub attributes rather than based on what the methods are called.</li>
+		</ul>
+]]>
+    </content>
+</entry>

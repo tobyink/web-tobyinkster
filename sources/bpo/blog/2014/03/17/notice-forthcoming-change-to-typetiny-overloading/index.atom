@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Notice: forthcoming change to Type::Tiny overloading</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/03/notice-forthcoming-change-to-typetiny-overloading.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5818</id>
+
+    <published>2014-03-17T17:08:51Z</published>
+    <updated>2014-03-17T17:37:46Z</updated>
+
+    <summary>One of the features of Type::Tiny that differentiates it from Moose's built-in type constraint system is that it allows stand-alone coercions which can then be mixed with type constraints as required. So if you had a Split coercion which split...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>One of the features of Type::Tiny that differentiates it from Moose's built-in type constraint system is that it allows stand-alone coercions which can then be mixed with type constraints as required. So if you had a <code>Split</code> coercion which split a multi-line string into an arrayref of lines, you could do something like this:</p>
+
+<pre>
+use MyApp::Types qw( ArrayRef Split );
+ 
+has lines => (
+   is      => 'ro',
+   isa     => ArrayRef + Split,
+   coerce  => 1,
+);
+</pre>
+
+<p>This is one of several features designed to encourage people to combine coercions with type constraints at the point of use, rather than globally. We wouldn't want people adding coercions to the global definition of ArrayRef, because global stuff is bad, remember?</p>
+
+<p>Anyway, the current stable version of Type::Tiny (0.040) is going to be the final one to overload the <code>+</code> operator for this. From now on, you need to use:</p>
+
+<pre>
+use MyApp::Types qw( ArrayRef Split );
+ 
+has lines => (
+   is      => 'ro',
+   isa     => ArrayRef->plus_coercions(Split),
+   coerce  => 1,
+);
+</pre>
+
+<p>The <code>plus_coercions</code> method has existed for quite some time (pre-0.001); it's not new by any means. It's just that the alternative (overloading) is going away. So if you're using that, time to update your code.</p>
+
+<p>Sorry.</p>
+
+<p><a href="https://metacpan.org/release/TOBYINK/Type-Tiny-0.041_01">Development version 0.041_01</a> is on CPAN now, and includes this change, so you can test your code with that.</p>]]>
+        
+    </content>
+</entry>
