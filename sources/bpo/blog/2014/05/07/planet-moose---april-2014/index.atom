@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - April 2014</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/05/planet-moose---april-2014.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5981</id>
+
+    <published>2014-05-07T21:00:00Z</published>
+    <updated>2014-05-07T21:09:41Z</updated>
+
+    <summary> Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="roleinspector" label="Role-Inspector" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="testsimple" label="Test-Simple" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>Apologies for being a little late delivering the news this month. If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p>Version 2.1205 is a minor update containing a small bug fix and an improved test case. One interesting new addition is the <code>is_role</code> function in <a class="podlinkpod" href="https://metacpan.org/pod/Moose%3A%3AUtil">Moose::Util</a>.</p></div>
+]]>
+        <![CDATA[		<h2><span id="Moo">Moo</span></h2>
+		<p>Moo 1.004_003 has been released. This is a trial release and mostly consists of bug fixes, test case improvements, and packaging improvements, with no new user-visible features.</p>
+		<h2><span id="Mouse">Mouse</span></h2>
+		<p>Mouse 2.2.0 fixes inconsistent coercion/validation of Bool type.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Ovid's <a class="podlinkurl" href="http://blogs.perl.org/users/ovid/2014/04/the-hidden-benefit-of-data-driven-programming.html">The Hidden Benefit of Data-Driven Programming</a> shows an interesting design pattern for Moose attibutes.</li>
+			<li>David Golden has written that <a class="podlinkurl" href="http://www.dagolden.com/index.php/2374/the-next-testmore-might-break-fragile-test-modules/">the next Test::More might break fragile test modules</a>. If you maintain any <code>Test::*</code> modules, read this article. The last time a similar change was made to <a class="podlinkpod" href="https://metacpan.org/pod/Test%3A%3AMore">Test::More</a>, it broke <a class="podlinkpod" href="https://metacpan.org/pod/Test%3A%3AMoose%3A%3AMore">Test::Moose::More</a>'s install process.</li>
+			<li>Yuki Kimoto wrote about <a class="podlinkurl" href="http://blogs.perl.org/users/yuki_kimoto/2014/04/mop-problem-1---mop-cant-have-protected-attribute-variable.html">mop problem 1 - mop can't have protected attribute variable</a>.</li>
+			<li>byterock has also written many more Moose-related blog posts -- too many for me to link to individually -- but see <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/">http://blogs.perl.org/users/byterock/</a>.</li>
+			<li>There have been minor updates to <a class="podlinkpod" href="https://metacpan.org/pod/Try%3A%3ATiny">Try::Tiny</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Throwable">Throwable</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a>, <a class="podlinkpod" href="https://metacpan.org/pod/OX">OX</a>, <a class="podlinkpod" href="https://metacpan.org/pod/LittleORM">LittleORM</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Magpie">Magpie</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Bot%3A%3ABackbone">Bot::Backbone</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Stepford">Stepford</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Salvation">Salvation</a>, and <a class="podlinkpod" href="https://metacpan.org/pod/Chart%3A%3AClicker">Chart::Clicker</a>.</li>
+			<li>Some new type libraries have been released, including <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AURI">Types::URI</a> and <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ADateTime">Types::DateTime</a>. Some old ones have been updated, including <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AXSD%3A%3ALite">Types::XSD::Lite</a>, <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3ATypes%3A%3AStringlike">MooseX::Types::Stringlike</a>, and <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ALoadableClass">Types::LoadableClass</a>.</li>
+			<li>Some brand new modules to keep an eye on: <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AWhatTheTrig">MooseX::WhatTheTrig</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Machine%3A%3AState">Machine::State</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3AInspector">Role::Inspector</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Monjon">Monjon</a>, and <a class="podlinkpod" href="https://metacpan.org/pod/MooX%3A%3AObjectBuilder">MooX::ObjectBuilder</a>.</li>
+		</ul>
+]]>
+    </content>
+</entry>

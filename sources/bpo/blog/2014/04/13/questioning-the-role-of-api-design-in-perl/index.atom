@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Questioning the Role of API Design in Perl</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/04/questioning-the-role-of-api-design-in-perl.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.5911</id>
+
+    <published>2014-04-13T21:01:33Z</published>
+    <updated>2014-04-13T21:08:23Z</updated>
+
+    <summary> or Querying the Designated API of Perl Roles...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="p5mop" label="p5-mop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="rolebasic" label="Role-Basic" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="roleinspector" label="Role-Inspector" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="roletiny" label="Role-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><b>or <i>Querying the Designated API of Perl Roles</i></b></p>
+]]>
+        <![CDATA[		<p>If I have a role, say:</p>
+		<pre class="highlighting-perl">    <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Dumpable</span> <span class="structure">{</span>
+        <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="pragma" style="color:#009">autodie</span><span class="structure">;</span>
+        <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Role::Tiny</span><span class="structure">;</span>
+        
+        <span class="word">requires</span> <span class="words" style="color:#333;background-color:#ffc">qw( to_string )</span><span class="structure">;</span>
+        
+        <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">to_file</span> <span class="structure">{</span>
+            <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$filename</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$e</span><span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="magic" style="color:#900;font-weight:bold">@_</span><span class="structure">;</span>
+            <span class="symbol" style="color:#333;background-color:#fcc">$e</span> <span class="operator" style="color:#000;font-weight:bold">//=</span> <span class="double" style="color:#909">"utf8"</span><span class="structure">;</span>
+            <span class="word">open</span> <span class="word">my</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$fh</span><span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"&gt;:encoding($e)"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$filename</span><span class="structure">;</span>
+            <span class="word">print</span> <span class="structure">{</span><span class="symbol" style="color:#333;background-color:#fcc">$fh</span><span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">to_string</span><span class="structure">;</span>
+            <span class="word">close</span> <span class="symbol" style="color:#333;background-color:#fcc">$fh</span><span class="structure">;</span>
+        <span class="structure">}</span>
+    <span class="structure">}</span></pre>
+		<p>And if in another part of the code, I need to find out some information about that role, what should I do? Enter <a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3AInspector">Role::Inspector</a>&#8230;</p>
+		<pre class="highlighting-perl">    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Role::Inspector</span> <span class="words" style="color:#333;background-color:#ffc">qw(get_role_info)</span><span class="structure">;</span>
+    
+    <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$info</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">get_role_info</span><span class="structure">(</span><span class="single" style="color:#909">'Dumpable'</span><span class="structure">);</span>
+        
+    <span class="word">say</span> <span class="symbol" style="color:#333;background-color:#fcc">$info</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">type</span><span class="structure">};</span>       <span class="comment" style="color:#060;font-style:italic"># Role::Tiny</span>
+    <span class="word">say</span> <span class="word">for</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span><span class="symbol" style="color:#333;background-color:#fcc">$info</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="structure">{</span><span class="word">api</span><span class="structure">}}</span>  <span class="comment" style="color:#060;font-style:italic"># to_file</span>
+<span class="comment" style="color:#060;font-style:italic">                             # to_string</span></pre>
+		<p>Currently the information provided by <a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3AInspector">Role::Inspector</a> is pretty minimal compared to the information provided by, say, Moose's role introspection. But the key selling point is that it works across all the popular role implementations for Perl, including:</p>
+		<ul>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Moose%3A%3ARole">Moose::Role</a></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Mouse%3A%3ARole">Mouse::Role</a></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Moo%3A%3ARole">Moo::Role</a></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3ATiny">Role::Tiny</a></li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3ABasic">Role::Basic</a></li>
+			<li><a href="https://github.com/stevan/p5-mop-redux" class="podlinkurl">p5-mop-redux</a></li>
+		</ul>
+		<p>What other information about roles might it provide in the future?</p>
+		<p>Well, perhaps you might want to check whether a particular role is consumable by a particular class. For example, a Moo class can consume a Moose role, and a Moose class can consume a Moo role. But while a Moo class can consume a Mouse role, a Mouse class cannot consume a Moo role. Role::Inspector might be able to provide you with a programatic go/no-go.</p>
+		<p>Do you have any ideas?</p>
+]]>
+    </content>
+</entry>
