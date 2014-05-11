@@ -24,22 +24,22 @@
 	typeof="google:Person foaf:Person schema:Person"
 	>
 	
-	<header role="heading">
+	<header role="heading" class="jumbotron">
 		<h1 property="foaf:name google:name schema:name rdfs:label">Toby Inkster</h1>
-	</header>
-	
-	<span style="display:none" rel="foaf:img foaf:depiction schema:image" rev="foaf:depicts">
-		<img src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=128"
-		alt="" style="width:128px;height:128px;border:0" typeof="foaf:Image" />
-	</span>
-	
-	<p rel="google:address foaf:based_near schema:address">
-		<span about="[this:home_lewes]" typeof="google:Address schema:PostalAddress">
-			<span property="google:locality schema:addressLocality" datatype=""><span about="" property="ogp:locality">Lewes</span></span>,
-			<span property="google:region schema:addressRegion" datatype=""><span about="" property="ogp:region">East Sussex</span></span>,
-			<span property="google:country-name schema:addressCountry" datatype=""><span about="" property="ogp:country-name">UK</span></span>.
+		
+		<span style="display:none" rel="foaf:img foaf:depiction schema:image" rev="foaf:depicts">
+			<img src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=128"
+			alt="" style="width:128px;height:128px;border:0" typeof="foaf:Image" />
 		</span>
-	</p>
+		
+		<p rel="google:address foaf:based_near schema:address">
+			<span about="[this:home_lewes]" typeof="google:Address schema:PostalAddress">
+				<span property="google:locality schema:addressLocality" datatype=""><span about="" property="ogp:locality">Lewes</span></span>,
+				<span property="google:region schema:addressRegion" datatype=""><span about="" property="ogp:region">East Sussex</span></span>,
+				<span property="google:country-name schema:addressCountry" datatype=""><span about="" property="ogp:country-name">UK</span></span>.
+			</span>
+		</p>
+	</header>
 	
 	<dl class="dl-horizontal">
 		<dt>Web</dt>
