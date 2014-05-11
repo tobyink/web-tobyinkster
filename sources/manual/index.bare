@@ -41,7 +41,7 @@
 		</span>
 	</p>
 	
-	<dl class="expand">
+	<dl class="dl-horizontal">
 		<dt>Web</dt>
 		<dd>
 			<a href="http://tobyinkster.co.uk/" rev="foaf:primaryTopic foaf:maker dc:creator" rel="google:url foaf:homepage foaf:made schema:url">
@@ -63,7 +63,7 @@
 		<dd resource="tel:+44-7855-833657" rel="foaf:phone google:tel" property="schema:telephone" datatype=""><span about="" property="ogp:phone_number">+44 7855 833657</span></dd>
 		<dd><a href="sip:tobyink@ekiga.net" rel="foaf:phone google:tel" property="schema:telephone">sip:tobyink@ekiga.net</a></dd>
 		
-		<dt>Instant Messaging / Chat</dt>
+		<dt>IM / Chat</dt>
 		<dd content="tobyink@jabber.linux.it" property="foaf:jabberID"><i>XMPP:</i> <a href="xmpp:tobyink@jabber.linux.it">tobyink@jabber.linux.it</a> (preferred)</dd>
 		<dd rel="foaf:account"><i>IRC:</i> <span about="irc://irc.freenode.net/tobyink,isnick" typeof="foaf:OnlineChatAccount"><span property="foaf:accountName">tobyink</span> on <a href="http://freenode.net/" rel="foaf:accountServiceHomepage">freenode.net</a></span></dd>
 		<dd rel="foaf:account"><i>IRC:</i> <span about="irc://irc.perl.org/tobyink,isnick" typeof="foaf:OnlineChatAccount"><span property="foaf:accountName">tobyink</span> on <a href="http://irc.perl.org/" rel="foaf:accountServiceHomepage">irc.perl.org</a></span></dd>
@@ -90,7 +90,7 @@
 				<br/><span datatype="iso8601:timeInterval" content="P1Y/2010-02-03" property="dc:valid">[expires: 2010-02-03]</span>
 			</small>
 		</dd -->
-		<dt>X.509</dt>
+		<!-- dt>X.509</dt>
 		<dd style="margin-bottom:0.33em" rel="cert:key" rev="cert:identity">
 			<span about="[this:key_rsa_B025112EAF7811F968593BBCBC795CFF5A9158C0]" typeof="rsa:RSAPublicKey">
 				<a href="/pgp/X509_B0-25-11-2E-AF-78-11-F9-68-59-3B-BC-BC-79-5C-FF-5A-91-58-C0.pem" rev="cert:public_key"><span property="rdfs:label">B0:25:11:2E:AF:78:11:F9:68:59:3B:BC:BC:79:5C:FF:5A:91:58:C0</span></a><br/>
@@ -105,7 +105,7 @@
 				81db 781c c874 5c2f 31bf ac9d 960f c94f</tt></small><br/>
 				<small datatype="iso8601:timeInterval" content="P1Y/2013-06-22" property="dc:valid">[expires: 2013-06-26]</small>
 			</span>
-		</dd>
+		</dd -->
 		
 		<dt>OpenSSH</dt>
 		<dd>
@@ -121,7 +121,7 @@
 
 	<h2>Links</h2>
 	<p>More of me on the Web&#8230;</p>
-	<dl>
+	<dl class="dl-horizontal">
 		<dt>Social</dt>
 		<dd rel="foaf:account" rev="sioc:account_of">
 			<a about="http://identi.ca/user/36737#acct" typeof="sioc:UserAccount" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://identi.ca/tobyink">
@@ -135,13 +135,14 @@
 		</dd>
 		<dd>(There is a Toby Inkster on Facebook, but it is <em>not</em> me.)</dd>
 		<dt>Programming</dt>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/GitHub]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://github.com/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">GitHub: tobyink</span></a></dd>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/bitbucket]" rel="me foaf:accountProfilePage" href="https://bitbucket.org/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Bitbucket: tobyink</span></a></dd>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/CPAN]" rel="me foaf:accountProfilePage" href="https://metacpan.org/author/TOBYINK"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">CPAN: TOBYINK</span></a></dd>
-		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/ohloh]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://www.ohloh.net/accounts/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Ohloh: tobyink</span></a></dd>
-		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/GitHub]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://github.com/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">GitHub: tobyink</span></a></dd>
-		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/gitorious]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://gitorious.com/~tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">gitorious: tobyink</span></a></dd>
+		<dd rel="foaf:account" ref="sioc:account_of"><a about="[this:accounts/StackOverflow]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://stackoverflow.com/users/1990570/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Stack Overflow: tobyink</span></a></dd>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/PerlMonks]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://www.perlmonks.org/?node=tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">PerlMonks: tobyink</span></a></dd>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/SemanticOverflow]" property="foaf:accountName" content="588" rel="me foaf:accountProfilePage" href="http://answers.semanticweb.com/users/588/tobyink/"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">answers.semanticweb.com: Toby Inkster</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/gitorious]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://gitorious.com/~tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">gitorious: tobyink</span></a></dd>
+		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/ohloh]" property="foaf:accountName" content="tobyink" rel="me foaf:accountProfilePage" href="http://www.ohloh.net/accounts/tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Ohloh: tobyink</span></a></dd>
 		<dt>Wikis</dt>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/Wikipedia]" property="foaf:accountName" content="Tobyink" rel="me foaf:accountProfilePage" href="http://en.wikipedia.org/wiki/User:Tobyink"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">Wikipedia: Tobyink</span></a></dd>
 		<dd rel="foaf:account" rev="sioc:account_of"><a about="[this:accounts/W3C-Wiki-ESW]" property="foaf:accountName" content="Tinkster" rel="me foaf:accountProfilePage" href="http://esw.w3.org/User:Tinkster"><span rel="foaf:primaryTopic" rev="foaf:page" resource="[this:i]">W3C Wiki: Tinkster</span></a></dd>
@@ -160,15 +161,16 @@
 	</dl>
 	
 	<h2>Interests</h2>
-	<dl class="expand" rel="foaf:topic_interest">
+	<dl class="dl-horizontal" rel="foaf:topic_interest">
 		<dt>Technology</dt>
+		<dd content="Metaprogramming" about="http://dbpedia.org/resource/Metaprogramming" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Metaprogramming" href="http://en.wikipedia.org/wiki/Metaprogramming" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Metaprogramming</span></a></dd>
+		<dd content="Object-oriented programming" about="http://dbpedia.org/resource/Object-oriented_programming" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Object-oriented_programming" href="http://en.wikipedia.org/wiki/Object-oriented_programming" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Object-oriented programming</span></a></dd>
 		<dd content="Perl" about="http://dbpedia.org/resource/Perl" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Perl" href="http://en.wikipedia.org/wiki/Perl" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Perl</span></a></dd>
 		<dd content="PHP" about="http://dbpedia.org/resource/PHP" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/PHP" href="http://en.wikipedia.org/wiki/PHP" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">PHP</span></a></dd>
 		<dd content="JavaScript" about="http://dbpedia.org/resource/JavaScript" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/JavaScript" href="http://en.wikipedia.org/wiki/JavaScript" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">JavaScript</span></a></dd>
 		<dd content="Semantic Web" about="http://dbpedia.org/resource/Semantic_Web" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Semantic_Web" href="http://en.wikipedia.org/wiki/Semantic_Web" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Semantic Web</span></a></dd>
 		<dd content="The Social Web as a future network" about="http://dbpedia.org/resource/Social_web#The_Social_Web_as_a_future_network" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Social_web#The_Social_Web_as_a_future_network" href="http://en.wikipedia.org/wiki/Social_web#The_Social_Web_as_a_future_network" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Social Web &#8212; The Social Web as a Future Network</span></a></dd>
 		<dd content="W3C Standards" about="http://dbpedia.org/resource/W3C#Standards" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/W3C#Standards" href="http://en.wikipedia.org/wiki/W3C#Standards" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">W3C &#8212; Standards</span></a></dd>
-		<dd content="Metaprogramming" about="http://dbpedia.org/resource/Metaprogramming" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Metaprogramming" href="http://en.wikipedia.org/wiki/Metaprogramming" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Metaprogramming</span></a></dd>
 		<dt>Society</dt>
 		<dd content="Free software" about="http://dbpedia.org/resource/Free_software" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Free_software" href="http://en.wikipedia.org/wiki/Free_software" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Free software</span></a></dd>
 		<dd content="Humanism" about="http://dbpedia.org/resource/Humanism_(life_stance)" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Humanism_(life_stance)" href="http://en.wikipedia.org/wiki/Humanism_(life_stance)" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Humanism (life stance)</span></a></dd>

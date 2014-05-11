@@ -1,0 +1,80 @@
+@import url(bootstrap.min.css);
+
+#sidebar {
+	padding-top: 28px;
+	font-size: 85%;
+}
+
+#sidebar-top {
+	text-align: center;
+}
+
+#sidebar-top img {
+	border: 1px solid #999;
+}
+
+#sidebar aside h1 img {
+	vertical-align: middle;
+	float: right;
+}
+
+#sidebar aside li small {
+	font-size: normal;
+	display: block;
+}
+
+dl[role="contentinfo"] {
+	background-color: #2E3338;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-o-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.047);
+	border-bottom-color: rgba(0, 0, 0, 0.600);
+	border-left-color: rgba(0, 0, 0, 0.600);
+	border-right-color: rgba(0, 0, 0, 0.600);
+	border-top-color: rgba(0, 0, 0, 0.600);
+	width: 16em;
+	padding: 1em;
+	margin: 0.67em;
+	float: right;
+}
+
+dl[role="contentinfo"] dt {
+	font-weight: bold;
+}
+
+dl[role="contentinfo"] dd {
+	margin: 0;
+	padding: 0 0 0 1.33em;
+}
+
+footer.panel {
+	padding: 0.5em;
+	text-align: center;
+}
+
+article.feed ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+article.feed li {
+	margin: 0;
+	padding: 0 0 0.33em;
+}
+
+article.feed small {
+	font-size: 67%;
+}
+
+article.feed small a {
+	text-decoration: none;
+}
+
+article.feed cite {
+	font-style: normal;
+	padding: 0 0 0 0.67em;
+}

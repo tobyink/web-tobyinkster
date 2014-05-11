@@ -94,18 +94,18 @@
 				$.each(activity.data, function(index, event) {
 					if('limit' in params && index == params['limit']) {
 						return false
-					}
-					
+					}					
 					if(event.type in renderer) {
 						el.append(params.wrap($('<li>', {
-							html: renderer[event.type](event) + '<small>' + jQuery.timeago(new Date(event.created_at)) + '</small>'
+							html: renderer[event.type](event) + '<small class="text-muted">' + jQuery.timeago(new Date(event.created_at)) + '</small>'
 						})))
 					}
 					else {
 						console.log('No renderer for ' + event.type + ' implemented.');
 						console.log(event)
 					}
-				})
+				});
+				el.find("li").addClass("list-group-item");
 			}, "json")
 		})
 	}

@@ -245,7 +245,7 @@ sub ProcessEntry
 			),
 		),
 		$H->dl(
-			{ 'role' => 'contentinfo' },			
+			{ 'role' => 'contentinfo' },
 			(map {
 				my $person = $atom->$_;
 				
