@@ -1,2 +1,4 @@
 ^public_html/
 ^sources/misc_files
+^log/
+^store.sqlite
