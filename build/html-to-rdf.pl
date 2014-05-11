@@ -30,15 +30,18 @@ FILE: while (my $file = $iter->())
 {
 	my $orig = path($file);
 	my $new  = do { my $tmp = $file; $tmp =~ s/\.html\z/.nt/; path($tmp) };
+	my $bare = do { my $tmp = $file; $tmp =~ s/\.html\z/.bare/; path($tmp) };
 	
 	# this file changes frequently, and contains mostly redundant info
 	next if $new =~ m{public_html/blog/index.nt\z};
 	
-	if ($new->exists)
+	if ($bare->exists and $new->exists)
 	{
-		next FILE
-			if $new->stat->mtime >= $orig->stat->mtime
-			&& $new->stat->mtime >= $me;
+		next FILE if $new->stat->mtime >= $bare->stat->mtime;
+	}
+	elsif ($new->exists)
+	{
+		next FILE if $new->stat->mtime >= $orig->stat->mtime;
 	}
 	
 	print "Processing $orig into $new...\n";
