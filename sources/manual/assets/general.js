@@ -4,7 +4,7 @@ $(
 		$('article').removeClass('col-sm-12');
 		$('article').addClass('col-sm-9');
 		
-		var side = $('<div role="contentinfo" id="sidebar" class="col-sm-3">').insertBefore('article');
+		var side = $('<div role="contentinfo" id="sidebar" class="col-sm-3 hidden-xs">').insertAfter('article');
 		
 		side.append('<aside id="sidebar-top"><img class="img-responsive img-thumbnail" src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=192" alt="(tobyink)"><h1 class="h4">Toby Inkster</h1><p>Lewes, East Sussex, UK</p></aside>');
 		side.append('<aside id="brain-activity"><h1 class="h4">Thoughts <a href="http://tobyink.soup.io/rss/original"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>');
