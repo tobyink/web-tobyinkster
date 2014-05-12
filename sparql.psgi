@@ -34,8 +34,6 @@ use XML::LibXML::PrettyPrint ();
 		return sub {
 			my $req = Plack::Request->new(@_);
 			my $res = $self->handle_request($req);
-#			$res->content_type('text/plain')
-#				if $res->content_type =~ /xml/;
 			$res->finalize;
 		};
 	}
@@ -67,15 +65,16 @@ use XML::LibXML::PrettyPrint ();
 				$self->template->inject(q{
 					<!DOCTYPE html>
 					<title>SPARQL Endpoint</title>
-					<h1>SPARQL Endpoint</h1>
 					<article id="document_main">
-						<form action="" method="post">
-							<div>
-								<textarea cols="60" rows="12" name="query"></textarea><br>
-								<input type="submit">
+						<h1>SPARQL Endpoint</h1>
+						<p>See <a href="http://www.w3.org/TR/sparql11-query/">the SPARQL 1.1 specification</a> for query syntax.</p>
+						<form action="" method="post" role="form">
+							<div class="form-group">
+								<label for="query">SPARQL 1.1 Query</label>
+								<textarea cols="60" rows="6" name="query" class="form-control" id="query">DESCRIBE &lt;http://tobyinkster.co.uk/&gt;</textarea><br>
 							</div>
+							<button type="submit" class="btn btn-default">Submit Query</button>
 						</form>
-						<p>See <a href="http://www.w3.org/TR/sparql11-query/">SPARQL 1.1</a> for query syntax.</p>
 					</article>
 				})
 			);
