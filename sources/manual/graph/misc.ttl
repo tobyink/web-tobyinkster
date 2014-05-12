@@ -1,0 +1,253 @@
+#!./graph-loader.pl http://tobyinkster.co.uk/graph/misc misc-data.ttl 1
+
+@base <http://tobyinkster.co.uk/graph/misc.ttl> .
+
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix visit: <http://purl.org/net/vocab/2004/07/visit#> .
+@prefix pimc: <http://www.w3.org/2000/10/swap/pim/contact#> .
+@prefix airport: <http://www.daml.org/2001/10/html/airport-ont#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix content: <http://purl.org/rss/1.0/modules/content/> .
+@prefix moat: <http://moat-project.org/ns#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix bio: <http://vocab.org/bio/0.1/> .
+@prefix wn: <http://ontologi.es/WordNet/class/> .
+@prefix contact: <http://www.w3.org/2000/10/swap/pim/contact#> .
+@prefix u: <http://purl.org/NET/uri#> .
+@prefix s: <http://schema.org/> .
+
+<http://tobyinkster.co.uk/#i>
+	a foaf:Person , wn:Male , wn:Adult , wn:Programmer , wn:Cook , wn:Nonreligious_Person , wn:Right-Hander , wn:Australian , wn:Briton , wn:Geek , wn:Nonsmoker , wn:Carnivore ;
+	a <http://open.vocab.org/terms/NotAKillerGorilla> , s:Person ;
+	rdfs:label "Toby Inkster" ;
+	s:name "Toby Inkster" ;
+	s:url <http://tobyinkster.co.uk/> ;
+	s:gender "male" ;
+	s:nationality <http://ontologi.es/place/GB> , <http://ontologi.es/place/AU> ;
+	contact:preferredURI "http://tobyinkster.co.uk/#i"^^xs:anyURI ;
+	u:identifier [
+		a u:Permalink ;
+		rdfs:label     "Toby Inkster's Preferred URI"@en-gb ;
+		rdfs:comment   "The preferred URI for Toby Inkster is <http://tobyinkster.co.uk/#i>."@en-gb ;
+		u:literal      "http://tobyinkster.co.uk/#i"^^xs:anyURI ;
+		u:assigned_by  <http://tobyinkster.co.uk/#i> ;
+		u:managed_by   <http://tobyinkster.co.uk/#i> ;
+		u:preferred_by <http://tobyinkster.co.uk/#i>
+		] ;
+	foaf:geekcode "GCS/M/S d--(+) s:+ a- C++$ UBL++++$ P++++(+++)$ L+++$ E---- !W++$ N+ !o K w--$ !O- M+ !V PS+ PE-(--) !Y PGP++ !t !5 X+ !R tv+ b+>++ DI !D G e++>++++ h---- r+++ y++++" ;
+	foaf:myersBriggs "INTP" ;
+	foaf:dnaChecksum "355c72d4e221f9b79af13c7c98daf043ac84716b" ;
+	foaf:family_name "Inkster" ;
+	foaf:surname "Inkster" ;
+	s:familyName "Inkster" ;
+	foaf:givenname "Toby" ;
+	foaf:firstName "Toby" ;
+	s:givenName "Toby" ;
+	s:additionalName "Andrew" ;
+	rel:spouseOf <http://inkster.org.uk/anna#alci> ;
+	rel:parentOf <http://inkster.org.uk/isabel#iri>, <http://inkster.org.uk/elliott#edi> ;
+	s:children <http://inkster.org.uk/isabel#iri>, <http://inkster.org.uk/elliott#edi> ;
+	s:spouse <http://inkster.org.uk/anna#alci> ;
+	foaf:currentProject
+		<http://buzzword.org.uk/2009/mttlbot/#project> ,
+		<http://buzzword.org.uk/swignition/#swignition> ,
+		<http://demiblog.org/#project> ,
+		<http://tobyinkster.co.uk/article/projects/#cssc_perl> ,
+		<http://tobyinkster.co.uk/article/projects/#dhyana> ,
+		<http://tobyinkster.co.uk/article/projects/#foaf_ssl> ,
+		<http://search.cpan.org/dist/CGI-Auth-FOAF_SSL/#project> ,
+		<http://tobyinkster.co.uk/article/projects/#librefm> ,
+		<http://search.cpan.org/dist/RDF-RDFa-Parser/#project> ,
+		<http://search.cpan.org/dist/HTML-Microformats/#project> ,
+		<http://tobyinkster.co.uk/article/projects/#stegencode> ,
+		<http://tobyinkster.co.uk/article/projects/#trivialencoder> ,
+		<http://tobyinkster.co.uk/article/projects/#utf8_php> ;
+	visit:country 
+		<http://ontologi.es/place/AD>,
+		<http://ontologi.es/place/AU>, 
+		<http://ontologi.es/place/BE>, 
+		<http://ontologi.es/place/ES>,
+		<http://ontologi.es/place/FR>, 
+		<http://ontologi.es/place/GB>, 
+		<http://ontologi.es/place/IE>,
+		<http://ontologi.es/place/IT>, 
+		<http://ontologi.es/place/JP>, 
+		<http://ontologi.es/place/LU>,
+		<http://ontologi.es/place/LV>, 
+		<http://ontologi.es/place/NC>,
+		<http://ontologi.es/place/NO>,
+		<http://ontologi.es/place/PT>,
+		<http://ontologi.es/place/TN>, 
+		<http://ontologi.es/place/TR>, 
+		<http://ontologi.es/place/US>,
+		<http://ontologi.es/place/VA> ; 
+	pimc:nearestAirport <http://www.telegraphis.net/data/airports/EGKA#EGKA> ,
+		<http://www.telegraphis.net/data/airports/EGKK#EGKK> ;
+	pimc:motherTongue
+		<http://www.lingvoj.org/lang/en-gb> ;
+	foaf:schoolHomepage
+		<http://doc.ic.ac.uk/>,
+		<http://www.southcoogeepublic.com.au/>,
+		<http://www.sydneyboyshigh.com/>, 
+		<http://www.wbs.notts.sch.uk/> ;
+	foaf:workplaceHomepage <http://www.nct.org.uk/> ;
+	<http://ontologi.es/rail/vocab#home_station> <http://ontologi.es/rail/stations/gb/LWS> ;
+	foaf:based_near <http://sws.geonames.org/2644559/> ;
+	foaf:based_near _:homeplace ;
+	bio:event </#i.event.19800601.birth> ; 
+	s:birthDate "1980-06-01"^^xs:date ;
+	foaf:mbox
+		<mailto:mail@tobyinkster.co.uk> ,
+		<mailto:tobyink@cpan.org>,
+		<mailto:tai@g5n.co.uk> ,
+		<mailto:tai99@doc.ic.ac.uk> ;
+	foaf:mbox_sha1sum
+		"2f050266cdd7bf1d626d63323c66fd5e799272c5",
+		"dbd5e8c0226b36c1d607fa387440986553674e80",
+		"356a39b0efba7c2a399eb52c59eeb046aa9ea3c1",
+		"135d896a11587537feead2ba5642722643675765",
+		"fa041cd85d8d837ae869abf7553caebe13beb7f7",
+		"8e21de6a0668739462f5fd9437e1687685d471fd",
+		"bb56eaddef2399b8b07b94c19b4f9e7465b0859b",
+		"ab0747523f63017b0baceb7fd752a19f1e51df47";
+	rdfs:seeAlso
+		<http://data.assert.me/webid.php?value=http%3A%2F%2Ftobyinkster.co.uk%2F%23i> ;
+	foaf:made
+		<http://www.w3.org/2010/02/rdfa/wiki/Atom_plus_RDFa> ,
+		<http://www.w3.org/2010/02/rdfa/wiki/Subsets> ,
+		<http://esw.w3.org/SemanticInbox> .
+
+</#i.event.19800601.birth> a bio:Birth ;
+	bio:date "1980-06-01"^^xs:date .
+
+<http://www.w3.org/2010/02/rdfa/wiki/Atom_plus_RDFa>
+	dc:title "Atom + RDFa"@en ;
+	foaf:maker <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/2010/02/rdfa/wiki/Subsets>
+	dc:title "Atom + RDFa"@en ;
+	foaf:maker <http://tobyinkster.co.uk/#i> .
+<http://esw.w3.org/SemanticInbox>
+	dc:title "Safe Subsets of RDFa"@en ;
+	foaf:maker <http://tobyinkster.co.uk/#i> .
+
+<http://www.w3.org/2005/Incubator/socialweb/XGR-socialweb/>
+	dc:title "A Standards-based, Open and Privacy-aware Social Web"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/TR/rdfa-core/>
+	dc:title "RDFa Core 1.1"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/TR/xhtml-rdfa/>
+	dc:title "XHTML+RDFa 1.1"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/TR/rdfa-in-html/>
+	dc:title "HTML+RDFa 1.1"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/TR/rdfa-api/>
+	dc:title "RDFa API"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+<http://www.w3.org/TR/html5/>
+	dc:title "HTML5"@en ;
+	dc:contributor <http://tobyinkster.co.uk/#i> .
+
+<http://tobyinkster.co.uk/#home_lewes>
+	geo:location _:homeplace .
+_:homeplace a geo:SpatialThing ; geo:lat 50.873172 ; geo:long -0.000923 .
+
+<http://doc.ic.ac.uk/> a foaf:Document .
+<http://www.southcoogeepublic.com.au/> a foaf:Document .
+<http://www.sydneyboyshigh.com/> a foaf:Document .
+<http://www.wbs.notts.sch.uk/> a foaf:Document .
+<http://www.nct.org.uk/>  a foaf:Document .
+
+<http://dbpedia.org/resource/National_Childbirth_Trust> a foaf:Organization ;
+	foaf:homepage <http://www.nct.org.uk/> ;
+	foaf:name "The National Childbirth Trust"@en .
+
+<http://www.telegraphis.net/data/airports/EGKA#EGKA> 
+	rdfs:label "Shoreham Airport" ;
+	airport:iataCode "ESH" ;
+	airport:icaoCode "EGKA" .
+
+<http://www.telegraphis.net/data/airports/EGKK#EGKK>
+	rdfs:label "London Gatwick Airport" ;
+	airport:iataCode "LGW" ;
+	airport:icaoCode "EGKK" .
+
+<http://www.lingvoj.org/lang/en-gb>
+	rdfs:label "English (GB)"@en-gb ;
+	rdfs:comment "The English language, as spoken in the United Kingdom of Great Britain and Northern Ireland."@en-gb .
+
+<http://sws.geonames.org/2644559/>
+	<http://www.w3.org/2003/01/geo/wgs84_pos#lat> 50.873632150857 ;
+	<http://www.w3.org/2003/01/geo/wgs84_pos#long> 0.0113296508789062 ;
+	<http://www.geonames.org/ontology#parentFeature> <http://ontologi.es/place/GB-ESX> ;
+	<http://www.geonames.org/ontology#inCountry> <http://ontologi.es/place/GB> ;
+	foaf:page <http://en.wikipedia.org/wiki/Lewes> ;
+	rdfs:label "Lewes" .
+
+<http://en.wikipedia.org/wiki/Lewes> a foaf:Document .
+
+foaf:openid <http://purl.org/net/vocab/2004/03/label#inverseSingular> "is OpenID for"@en .
+
+@prefix pet: <http://purl.org/stuff/pets/> .
+
+<http://tobyinkster.co.uk/article/ChairmanMeow/>
+	a pet:PetProfileDocument ;
+	foaf:primaryTopic <http://tobyinkster.co.uk/article/ChairmanMeow/#me> ;
+	dc:title "Chairman Meow" .
+
+<http://tobyinkster.co.uk/article/ChairmanMeow/#me>
+	a foaf:Agent , pet:Pet , wn:Male ;
+	foaf:name "Chairman Meow" ;
+	pet:species pet:Cat ;
+	pet:primaryColor "black" ;
+	pet:likes "cheese" ;
+	pet:neutered true ;
+	pet:fedBy <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> ;
+	pet:livesWith <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> ,<http://inkster.org.uk/elliott#edi> ,
+		<http://inkster.org.uk/isabel#iri> , <http://tobyinkster.co.uk/article/MrDSilva/#me> ;
+	bio:event [ a bio:Birth ; bio:date "2006-09-08"^^xs:date ] ;
+	foaf:homepage <http://tobyinkster.co.uk/article/ChairmanMeow/> .		
+
+<http://tobyinkster.co.uk/article/MrDSilva/>
+	a pet:PetProfileDocument ;
+	foaf:primaryTopic <http://tobyinkster.co.uk/article/MrDSilva/#me> ;
+	dc:title "Mr d'Silva" .
+
+<http://tobyinkster.co.uk/article/MrDSilva/#me>
+	a foaf:Agent , pet:Pet , wn:Male  ;
+	foaf:name "Mr d'Silva" ;
+	pet:species pet:Cat ;
+	pet:primaryColor "black" ;
+	pet:secondaryColor "white" ;
+	pet:likes "bags" , "shoes" ;
+	pet:neutered true ;
+	pet:fedBy <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> ;
+	pet:livesWith <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> , <http://inkster.org.uk/elliott#edi> ,
+		<http://inkster.org.uk/isabel#iri> , <http://tobyinkster.co.uk/article/ChairmanMeow/#me> ;
+	bio:event [ a bio:Birth ; bio:date "2006-09-08"^^xs:date ] ;
+	foaf:homepage <http://tobyinkster.co.uk/article/MrDSilva/> .
+	
+<http://inkster.org.uk/isabel#iri>
+	a foaf:Person , wn:Female , wn:Child , wn:Toddler ;
+	rel:siblingOf <http://inkster.org.uk/elliott#edi> ;
+	rel:childOf <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> ;
+	bio:event [ a bio:Birth ; bio:date "2009-02-12"^^xs:date ] ;
+	foaf:name "Isabel Inkster" ;
+	foaf:homepage <http://inkster.org.uk/isabel> .
+
+<http://inkster.org.uk/elliott#edi>
+	a foaf:Person , wn:Male , wn:Child , wn:Baby ;
+	rel:siblingOf <http://inkster.org.uk/isabel#iri> ;
+	rel:childOf <http://tobyinkster.co.uk/#i> , <http://inkster.org.uk/anna#alci> ;
+	bio:event [ a bio:Birth ; bio:date "2010-10-24"^^xs:date ] ;
+	foaf:name "Elliott Inkster" .
+
+<http://inkster.org.uk/anna#alci>
+	a foaf:Person , wn:Female , wn:Adult  ;
+	rel:spouseOf <http://tobyinkster.co.uk/#i> ;
+	rel:parentOf <http://inkster.org.uk/isabel#iri>, <http://inkster.org.uk/elliott#edi> ;
+	foaf:name "Anna Inkster" .
