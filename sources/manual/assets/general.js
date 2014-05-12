@@ -1,6 +1,9 @@
 $(
 	function () {
 		
+		var url = window.location;
+		$('nav ul.nav li a').filter(function() { return this.href == url; }).parent().addClass('active');
+
 		$('article').removeClass('col-sm-12');
 		$('article').addClass('col-sm-9');
 		
