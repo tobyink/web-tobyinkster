@@ -1,11 +1,12 @@
 @import url(bootstrap.min.css);
+@import url(bootstrap-theme.min.css);
 
 html, body {
 	font-size: 100%;  /* silly bootstrap microfonts */
 }
 
 #sidebar {
-	font-size: 90%;
+	font-size: 80%;
 }
 
 #sidebar-top {

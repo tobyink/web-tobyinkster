@@ -2,3 +2,4 @@
 ^sources/misc_files
 ^log/
 ^store.sqlite
+^tmp/
