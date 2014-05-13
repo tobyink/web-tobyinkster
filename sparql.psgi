@@ -96,7 +96,10 @@ chdir dirname(__FILE__);
 		my $self = shift;
 		my ($req, $q) = @_;
 		
-		my $a = $q->execute($self->model);
+		my $model   = $self->model;
+		my @graphs  = $model->get_graphs->get_all;
+		my $dataset = $model->dataset_model(default => \@graphs, named => \@graphs);
+		my $a       = $q->execute($dataset);
 		
 		if ($a->is_graph) {
 			return $self->handle_results_graph($req, $q, $a);
@@ -109,10 +112,13 @@ chdir dirname(__FILE__);
 		my $self = shift;
 		my ($req, $q, $a) = @_;
 		
+		my $model = RDF::Trine::Model->new;
+		$model->add_iterator($a);
+		
 		my $r = Plack::Response->new(200);
 		$r->content_type('application/rdf+xml');
 		$r->body(
-			RDF::Trine::Serializer->new('RDFXML')->serialize_iterator_to_string($a),
+			RDF::Trine::Serializer->new('RDFXML')->serialize_model_to_string($model),
 		);
 		return $r;
 	}
