@@ -12,7 +12,7 @@ use Path::Tiny ();
 use Plack::Request ();
 use Plack::Response ();
 use RDF::NS ();
-use RDF::Query ();
+use RDF::QueryX::Lazy ();
 use RDF::Trine ();
 use XML::LibXML::PrettyPrint ();
 
@@ -24,6 +24,7 @@ chdir dirname(__FILE__);
 	use Moose;
 	use match::simple qw(match);
 	
+	has default_query    => (is => 'ro', default => '');
 	has store            => (is => 'ro', required => 1);
 	has model            => (is => 'ro', lazy_build => 1);
 	has app              => (is => 'ro', lazy_build => 1);
@@ -64,6 +65,8 @@ chdir dirname(__FILE__);
 			my %tmp = %{ $self->bindings_formats };
 			join "", map "<option>$_</option>", sort keys %tmp;
 		};
+		
+		my $default_query = HTML::HTML5::Entities::encode_entities($self->default_query);
 
 		my $form = HTML::HTML5::Sanity::fix_document(
 			$self->template->inject(qq{
@@ -75,7 +78,7 @@ chdir dirname(__FILE__);
 					<form action="" method="post" role="form">
 						<div class="form-group">
 							<label for="query">SPARQL 1.1 Query</label>
-							<textarea cols="60" rows="6" name="query" class="form-control" id="query">DESCRIBE &lt;http://tobyinkster.co.uk/&gt;</textarea>
+							<textarea cols="60" rows="6" name="query" class="form-control" id="query">$default_query</textarea>
 						</div>
 						<div class="form-group">
 							<label for="format">Result Format</label>
@@ -133,7 +136,7 @@ chdir dirname(__FILE__);
 		
 		if (match($req->method, [qw/ GET POST /]) and $req->param('query')) {
 			my $sparql = $req->param('query');
-			my $query  = RDF::Query->new($sparql, { lang => 'sparql11', update => !!0 });
+			my $query  = RDF::QueryX::Lazy->new($sparql, { lang => 'sparql11', update => !!0 });
 			return $self->handle_query($req, $query);
 		}
 		
@@ -244,5 +247,8 @@ my $store = RDF::Trine::Store->new_with_config({
 	password  => '',
 });
 
-my $endpoint = Endpoint->new(store => $store);
+my $endpoint = Endpoint->new(
+	store         => $store,
+	default_query => "SELECT ?name WHERE { <http://tobyinkster.co.uk/#i> foaf:name ?name . }\n",
+);
 $endpoint->app;
