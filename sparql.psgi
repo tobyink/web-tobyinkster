@@ -2,6 +2,7 @@
 
 use 5.010;
 use strictures;
+use lib qw(/opt/perl/lib/perl5/);  # path to recent Trine on live server
 
 use Encode ();
 use HTML::HTML5::Sanity ();

@@ -1,12 +1,14 @@
 use strict;
 use warnings;
 use lib qw(
-	/opt/perl/share/perl/5.10.1
 	/opt/perl/lib/perl/5.10.1
-	/opt/perl/share/perl/5.10
 	/opt/perl/lib/perl/5.10
 	/opt/perl/lib/perl5
+	/opt/perl/share/perl/5.10.1
+	/opt/perl/share/perl/5.10
 );
+
+BEGIN { $ENV{PATH} .= ":/opt/perl/bin/" };
 
 use Ubic::Service::Starman;
 return Ubic::Service::Starman->new({
