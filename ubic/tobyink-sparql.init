@@ -10,14 +10,21 @@
 # Description:          tobyink-sparql - SPARQL endpoint for tobyinkster.co.uk
 ### END INIT INFO
 
+my @LIBS;
+
 use strict;
 use warnings;
-use lib qw(
+use lib @LIBS = qw(
 	/opt/perl/lib/perl/5.10.1
 	/opt/perl/lib/perl/5.10
 	/opt/perl/lib/perl5
 	/opt/perl/share/perl/5.10.1
 	/opt/perl/share/perl/5.10
 );
+
+BEGIN {
+	$ENV{PERL5LIB} .= ":$_" for @LIBS;
+	$ENV{PERL5LIB} =~ s/^://;
+};
 
 use Ubic::Run qw(tobyink-sparql);
