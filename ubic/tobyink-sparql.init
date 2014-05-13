@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+
+### BEGIN INIT INFO
+# Provides:             tobyink-sparql
+# Required-Start:       
+# Required-Stop:        
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    tobyink-sparql - SPARQL endpoint
+# Description:          tobyink-sparql - SPARQL endpoint for tobyinkster.co.uk
+### END INIT INFO
+
+use strict;
+use warnings;
+use lib qw(
+	/opt/perl/share/perl/5.10.1
+	/opt/perl/lib/perl/5.10.1
+	/opt/perl/share/perl/5.10
+	/opt/perl/lib/perl/5.10
+	/opt/perl/lib/perl5
+);
+
+use Ubic::Run qw(tobyink-sparql);

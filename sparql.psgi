@@ -14,6 +14,9 @@ use RDF::Query ();
 use RDF::Trine ();
 use XML::LibXML::PrettyPrint ();
 
+use File::Basename qw(dirname);
+chdir dirname(__FILE__);
+
 {
 	package Endpoint;
 	use Moose;
@@ -108,7 +111,9 @@ use XML::LibXML::PrettyPrint ();
 		
 		my $r = Plack::Response->new(200);
 		$r->content_type('application/rdf+xml');
-		$r->body($a->as_xml);
+		$r->body(
+			RDF::Trine::Serializer->new('RDFXML')->serialize_iterator_to_string($a),
+		);
 		return $r;
 	}
 	

@@ -1,0 +1,18 @@
+use strict;
+use warnings;
+use lib qw(
+	/opt/perl/share/perl/5.10.1
+	/opt/perl/lib/perl/5.10.1
+	/opt/perl/share/perl/5.10
+	/opt/perl/lib/perl/5.10
+	/opt/perl/lib/perl5
+);
+
+use Ubic::Service::Starman;
+return Ubic::Service::Starman->new({
+	app         => "/home/tai/web-tobyinkster/sparql.psgi",
+	port        => 2909,
+	user        => "tai",
+	stdout      => "/home/tai/web-tobyinkster/log/sparql.log",
+	stderr      => "/home/tai/web-tobyinkster/log/sparql.err.log",
+});
