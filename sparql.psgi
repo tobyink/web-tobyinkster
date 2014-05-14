@@ -227,14 +227,16 @@ chdir dirname(__FILE__);
 		else {
 			require HTTP::Negotiate;
 			my $chosen = HTTP::Negotiate::choose([
-				[ XML  => 1.000, 'application/sparql-results+xml' ],
-				[ JSON => 0.900, 'application/sparql-results+json' ],
-				[ CSV  => 0.800, 'text/comma-separated-values' ],
-				[ Text => 0.500, 'text/plain' ],
-				[ XML  => 0.100, 'application/xml' ],
-				[ XML  => 0.100, 'text/xml' ],
-				[ JSON => 0.100, 'application/json' ],
-				[ JSON => 0.100, 'application/x-sparql-results+json' ],
+				[ HTML  => 1.000, 'text/html' ],
+				[ XHTML => 1.000, 'application/xhtml+xml' ],
+				[ XML   => 1.000, 'application/sparql-results+xml' ],
+				[ JSON  => 0.900, 'application/sparql-results+json' ],
+				[ CSV   => 0.800, 'text/comma-separated-values' ],
+				[ Text  => 0.500, 'text/plain' ],
+				[ XML   => 0.100, 'application/xml' ],
+				[ XML   => 0.100, 'text/xml' ],
+				[ JSON  => 0.100, 'application/json' ],
+				[ JSON  => 0.100, 'application/x-sparql-results+json' ],
 			], $req->headers) || 'XML';
 			
 			$fmt = $self->bindings_formats->{$chosen};
