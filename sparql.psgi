@@ -35,7 +35,7 @@ chdir dirname(__FILE__);
 		return '//xhtml:article';
 	}
 	
-	my $to_bytes = sub { Encode::encode(utf8 => @_) };
+	my $to_bytes = sub { Encode::encode(utf8 => $_[0]) };
 
 	sub serialize_model_to_string {
 		my ($proto, $model) = @_;
