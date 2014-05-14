@@ -23,6 +23,8 @@ chdir dirname(__FILE__);
 	package Endpoint;
 	use Moose;
 	use match::simple qw(match);
+	use HTML::HTML5::Entities qw(encode_entities);
+	use namespace::autoclean;
 	
 	has default_query    => (is => 'ro', default => '');
 	has store            => (is => 'ro', required => 1);
@@ -66,7 +68,7 @@ chdir dirname(__FILE__);
 			join "", map "<option>$_</option>", sort keys %tmp;
 		};
 		
-		my $default_query = HTML::HTML5::Entities::encode_entities($self->default_query);
+		my $default_query = encode_entities($self->default_query);
 
 		my $form = HTML::HTML5::Sanity::fix_document(
 			$self->template->inject(qq{
@@ -118,15 +120,26 @@ chdir dirname(__FILE__);
 	}
 	
 	sub _build_bindings_formats {
+		my $self = shift;
+		Scalar::Util::weaken($self);
+		
 		my $csv = sub {
 			require RDF::Trine::Exporter::CSV;
 			RDF::Trine::Exporter::CSV->new->serialize_iterator_to_string(@_);
 		};
+		
+		my $xhtml = sub {
+			my $iter = shift;
+			$self->serialize_iterator_to_xhtml($iter);
+		};
+		
 		+{
 			XML      => [ as_xml    => 'application/sparql-results+xml' ],
 			JSON     => [ as_json   => 'application/sparql-results+json' ],
 			Text     => [ as_string => 'text/plain' ],
 			CSV      => [ $csv      => 'text/comma-separated-values' ],
+			HTML     => [ $xhtml    => 'text/html' ],
+			XHTML    => [ $xhtml    => 'application/xhtml+xml' ],
 		}
 	}
 	
@@ -236,6 +249,59 @@ chdir dirname(__FILE__);
 		$r->content_type($ct);
 		$r->body($a->$ser);
 		return $r;
+	}
+	
+	sub serialize_iterator_to_xhtml {
+		my $self = shift;
+		my $iter = $_[0];
+		
+		my $count = 0;
+		my @names = $iter->binding_names;
+		
+		my $table = "<table class=\"sparql-bindings table table-striped table-responsive\">\n";
+		$table .= "<thead>\n";
+		$table .= "<tr>\n";
+		$table .= join("", map sprintf('<th>%s</th>', encode_entities($_)), @names) . "\n";
+		$table .= "</tr>\n";
+		$table .= "</thead>\n";
+		$table .= "<tbody>\n";
+		while (my $row = $iter->next)
+		{
+			++$count;
+			$table .= "<tr>\n";
+			$table .= join("", map {
+				!defined($_) ?
+					"<td><i>(nil)</i></td>"
+				: $_->is_nil ?
+					"<td><i>(nil)</i></td>"
+				: $_->is_resource ?
+					sprintf("<td><a href=\"%s\">%s</a></td>", (encode_entities($_->uri)) x 2)
+				: $_->is_blank ?
+					sprintf("<td><i>%s</i></td>", encode_entities($_->blank_identifier))
+				: $_->has_language ?
+					sprintf("<td>&quot;%s&quot; <i>\@%s</i></td>", encode_entities($_->literal_value), encode_entities($_->literal_value_language))
+				: $_->has_datatype ?
+					sprintf("<td>&quot;%s&quot; <i>^^&lt;%s&gt;</i></td>", encode_entities($_->literal_value), encode_entities($_->literal_datatype))
+				: sprintf("<td>&quot;%s&quot;</td>", encode_entities($_->literal_value));
+			} @{$row}{@names}) . "\n";
+			$table .= "</tr>\n";
+		}
+		$table .= "</tbody>\n";
+		$table .= "</table>\n";
+		
+		my $html = HTML::HTML5::Sanity::fix_document(
+			$self->template->inject(qq{
+				<!DOCTYPE html>
+				<title>SPARQL Query Results</title>
+				<article id="document_main">
+					<h1>SPARQL Query Results</h1>
+					$table
+				</article>
+			})
+		);
+		my $writer = HTML::HTML5::Writer->new(markup => "xhtml", polyglot => 1);
+		my $pp = ($count < 60) ? XML::LibXML::PrettyPrint->new_for_html : undef;
+		Encode::encode( utf8 => $writer->document($pp ? $pp->pretty_print($html) : $html) );
 	}
 }
 
