@@ -20,6 +20,45 @@ use File::Basename qw(dirname);
 chdir dirname(__FILE__);
 
 {
+	package Endpoint::RDFa;
+	use parent qw(RDF::RDFa::Generator::Pretty::HTML);
+	
+	my $html = HTML::HTML5::Writer->new(xhtml => 1, polyglot => 1);
+	
+	sub create_document {
+		my $self = shift;
+		my $html = $self->{app_object}->template->inject('<title>SPARQL Results Graph</title>');
+		$self->inject_document($html->toString, @_);
+	}
+	
+	sub injection_site {
+		return '//xhtml:article';
+	}
+	
+	sub serialize_model_to_string {
+		my ($proto, $model) = @_;
+		my $doc = $proto->create_document($model);
+		$html->document($doc);
+	}
+	
+	sub serialize_model_to_file {
+		my ($proto, $fh, $model) = @_;
+		my $doc = $proto->create_document($model);
+		print {$fh} $html->document($doc);
+	}
+}
+
+{
+	package Endpoint::RDFa::XHTML;
+	use parent -norequire, qw(Endoint::RDFa);
+}
+
+{
+	package Endpoint::RDFa::HTML;
+	use parent -norequire, qw(Endoint::RDFa);
+}
+
+{
 	package Endpoint;
 	use Moose;
 	use match::simple qw(match);
@@ -116,6 +155,8 @@ chdir dirname(__FILE__);
 			JSON     => ['RDF::Trine::Serializer::RDFJSON'   => 'application/rdf+json' ],
 			Turtle   => ['RDF::Trine::Serializer::Turtle'    => 'text/turtle'],
 			NTriples => ['RDF::Trine::Serializer::NTriples'  => 'text/plain'],
+			XHTML    => ['Endpoint::RDFa::XHTML'             => 'application/xhtml+xml' ],
+			HTML     => ['Endpoint::RDFa::HTML'              => 'text/html' ],
 		}
 	}
 	
@@ -189,7 +230,10 @@ chdir dirname(__FILE__);
 		my $model = RDF::Trine::Model->new;
 		$model->add_iterator($a);
 		
-		my %opts = ( namespaces => $self->prefixes );
+		my %opts = (
+			namespaces => $self->prefixes,
+			app_object => $self,
+		);
 		my ($ct, $ser);
 		if ($req->param('format')) {
 			my $fmt = $self->graph_formats->{$req->param('format')}
