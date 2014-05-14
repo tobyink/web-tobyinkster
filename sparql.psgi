@@ -27,7 +27,7 @@ chdir dirname(__FILE__);
 	
 	sub create_document {
 		my $self = shift;
-		my $html = $self->{app_object}->template->inject('<title>SPARQL Results Graph</title>');
+		my $html = $self->{app_object}->template->inject("<title>SPARQL Results Graph</title>\n");
 		$self->inject_document($html->toString, @_);
 	}
 	
@@ -35,27 +35,29 @@ chdir dirname(__FILE__);
 		return '//xhtml:article';
 	}
 	
+	my $to_bytes = sub { Encode::encode(utf8 => @_) };
+
 	sub serialize_model_to_string {
 		my ($proto, $model) = @_;
 		my $doc = $proto->create_document($model);
-		$html->document($doc);
+		return $html->document($doc)->$to_bytes;
 	}
 	
 	sub serialize_model_to_file {
 		my ($proto, $fh, $model) = @_;
 		my $doc = $proto->create_document($model);
-		print {$fh} $html->document($doc);
+		print {$fh} $html->document($doc)->$to_bytes;
 	}
 }
 
 {
 	package Endpoint::RDFa::XHTML;
-	use parent -norequire, qw(Endoint::RDFa);
+	use parent -norequire, qw(Endpoint::RDFa);
 }
 
 {
 	package Endpoint::RDFa::HTML;
-	use parent -norequire, qw(Endoint::RDFa);
+	use parent -norequire, qw(Endpoint::RDFa);
 }
 
 {
