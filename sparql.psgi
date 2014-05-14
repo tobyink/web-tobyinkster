@@ -21,7 +21,7 @@ chdir dirname(__FILE__);
 
 {
 	package Endpoint::RDFa;
-	use parent qw(RDF::RDFa::Generator::Pretty::HTML);
+	use parent qw(RDF::RDFa::Generator::HTML::Pretty);
 	
 	my $html = HTML::HTML5::Writer->new(xhtml => 1, polyglot => 1);
 	
