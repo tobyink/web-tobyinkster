@@ -10,8 +10,9 @@ use lib qw(
 
 BEGIN { $ENV{PATH} .= ":/opt/perl/bin/" };
 
-use Ubic::Service::Starman;
-return Ubic::Service::Starman->new({
+use Ubic::Service::Plack;
+return Ubic::Service::Plack->new({
+	server      => 'Standalone',
 	app         => "/home/tai/web-tobyinkster/sparql.psgi",
 	port        => 2909,
 	user        => "tai",
