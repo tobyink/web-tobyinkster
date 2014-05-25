@@ -11,7 +11,88 @@ use lib qw(
 BEGIN { $ENV{PATH} .= ":/opt/perl/bin/" };
 
 use Ubic::Service::Plack;
-return Ubic::Service::Plack->new({
+
+{
+	package Ubic::Role::Service::LimitedMemory;
+	
+	use List::Util qw(sum);
+	use Proc::ProcessTable ();
+	use Ubic::Daemon qw(check_daemon);
+	use Ubic::Result qw(result);
+	use Role::Tiny;
+	
+	sub _determine_memory
+	{
+		my ($table, $fields, $pid) = @_;
+		for my $proc (@$table) {
+			return $proc->size if $proc->pid eq $pid;
+		}
+		return -1;
+	}
+	
+	use namespace::clean;
+	
+	{
+		my $slot = __PACKAGE__ . ".memory_limit";
+		sub set_memory_limit   { my $self = shift; $self->{$slot} = $_[0] }
+		sub get_memory_limit   { my $self = shift; $self->{$slot} }
+		sub has_memory_limit   { my $self = shift; exists $self->{$slot} }
+		sub clear_memory_limit { my $self = shift; delete $self->{$slot} }
+	}
+	
+	around status_impl => sub
+	{
+		my $next = shift;
+		my $self = shift;
+		
+		my $result = $self->$next(@_);
+		
+		if ($result eq 'running')
+		{
+			my $mem = $self->get_total_memory;
+			
+			if ($self->has_memory_limit and $mem > $self->get_memory_limit)
+			{
+				my $errstr = sprintf(
+					"Memory usage %d above limit of %d",
+					$mem,
+					$self->get_memory_limit,
+				);
+				return result("broken", $errstr);
+			}
+		}
+		
+		return $result;
+	};
+
+	sub get_total_memory
+	{
+		my $self = shift;
+		
+		my $p      = 'Proc::ProcessTable'->new(enable_ttys => 0);
+		my @fields = $p->fields;
+		my $table  = $p->table;
+		
+		return sum(
+			0,
+			map(
+				_determine_memory($table, \@fields, $_),
+				$self->get_process_identifiers($table, \@fields),
+			),
+		);
+	}
+	
+	sub get_process_identifiers
+	{
+		my $self = shift;
+		my ($table, $fields) = @_;
+		
+		my $pid = check_daemon($self->pidfile)->pid;
+		return $pid;
+	}
+}
+
+my $svc = 'Ubic::Service::Plack'->new({
 	server      => 'Standalone',
 	app         => "/home/tai/web-tobyinkster/sparql.psgi",
 	port        => 2909,
@@ -19,3 +100,12 @@ return Ubic::Service::Plack->new({
 	stdout      => "/home/tai/web-tobyinkster/log/sparql.log",
 	stderr      => "/home/tai/web-tobyinkster/log/sparql.err.log",
 });
+
+'Role::Tiny'->apply_roles_to_object(
+	$svc,
+	'Ubic::Role::Service::LimitedMemory',
+);
+
+$svc->set_memory_limit(209_715_200); # 200 MB
+
+return $svc;
