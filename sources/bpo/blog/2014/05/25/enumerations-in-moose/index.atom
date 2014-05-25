@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Enumerations in Moose</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/05/enumerations-in-moose.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6049</id>
+
+    <published>2014-05-25T21:33:18Z</published>
+    <updated>2014-05-25T21:35:24Z</updated>
+
+    <summary> It's quite a common pattern in object-oriented programming to have an attribute which takes a string as its value, but which only has a small number of valid values. For example: package Shirt; use Moose; # "S", "M", "L",...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moosexenumeration" label="MooseX-Enumeration" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<div>		<p>It's quite a common pattern in object-oriented programming to have an attribute which takes a string as its value, but which only has a small number of valid values. For example:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Shirt</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+ 
+<span class="comment" style="color:#060;font-style:italic"> # "S", "M", "L", or "XL"
+</span> <span class="word">has</span> <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Str'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="structure">);</span></pre>
+		<p>This offers no protection against invalid string values.</p>
+		<pre class="highlighting-perl"><span class="comment" style="color:#060;font-style:italic"> # No exception is thrown
+</span> <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$shirt</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Shirt</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="double" style="color:#909">"LX"</span><span class="structure">);</span></pre>
+</div>]]>
+        <![CDATA[		<p>Moose can do some validation for you:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Shirt</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose::Util::TypeConstraints</span><span class="structure">;</span>
+ 
+ <span class="word">enum</span> <span class="word">ClothesSize</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ S M L XL /</span><span class="structure">];</span>
+ 
+ <span class="word">has</span> <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ClothesSize'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="structure">);</span></pre>
+		<p>That protects us from one class of error. Here's another:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$shirt</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"LX"</span> <span class="structure">)</span> <span class="structure">{</span>
+    <span class="symbol" style="color:#333;background-color:#fcc">$price</span> <span class="operator" style="color:#000;font-weight:bold">+=</span> <span class="float">2.50</span><span class="structure">;</span>
+ <span class="structure">}</span></pre>
+		<p>Oh dear, that conditional is never going to be true, is it? How can we protect against that sort of error?</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Shirt</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose::Util::TypeConstraints</span><span class="structure">;</span>
+ 
+ <span class="word">enum</span> <span class="word">ClothesSize</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ S M L XL /</span><span class="structure">];</span>
+ 
+ <span class="word">has</span> <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ClothesSize'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="structure">);</span>
+ 
+ <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">is_S</span>  <span class="structure">{</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"S"</span>  <span class="structure">}</span>
+ <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">is_M</span>  <span class="structure">{</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"M"</span>  <span class="structure">}</span>
+ <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">is_L</span>  <span class="structure">{</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"L"</span>  <span class="structure">}</span>
+ <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">is_XL</span> <span class="structure">{</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span class="double" style="color:#909">"XL"</span> <span class="structure">}</span></pre>
+		<p>Now our price calculation can be:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$shirt</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">is_LX</span> <span class="structure">)</span> <span class="structure">{</span>
+    <span class="symbol" style="color:#333;background-color:#fcc">$price</span> <span class="operator" style="color:#000;font-weight:bold">+=</span> <span class="float">2.50</span><span class="structure">;</span>
+ <span class="structure">}</span></pre>
+		<p>To err is human: we've still misspelt it, but at least an exception will be thrown.</p>
+		<p>Now our simple little string attribute has become a lot more complex. How can we bring it back under control?</p>
+		<h2><span id="MooseX::Enumeration">MooseX::Enumeration</span></h2>
+		<p>First, we install <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AEnumeration">MooseX::Enumeration</a>. Then we use it:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Shirt</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+ <span class="word">has</span> <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+    <span class="word">traits</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="single" style="color:#909">'Enumeration'</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">enum</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ S M L XL /</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">handles</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+ <span class="structure">);</span></pre>
+		<p>This does everything from the previous example, including defining <code>is_S</code>, <code>is_M</code>, <code>is_L</code>, and <code>is_XL</code> methods.</p>
+		<h2><span id="The_Bare_Necessities">The Bare Necessities</span></h2>
+		<p>Now, here's a trick. It may be that because of our wonderful new <code>is_*</code> methods, we never want to call <code>$shirt-&gt;size</code> again. In fact, it's possible to tell Moose to never create that accessor method:</p>
+		<pre class="highlighting-perl"> <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Shirt</span><span class="structure">;</span>
+ <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+ <span class="word">has</span> <span class="word">size</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+    <span class="word">traits</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="single" style="color:#909">'Enumeration'</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'bare'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">enum</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw/ S M L XL /</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">handles</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+ <span class="structure">);</span></pre>
+		<p>Now the shirt size can be set through the constructor as usual, but can only be queried via the <code>is_*</code> interface.</p>
+]]>
+    </content>
+</entry>

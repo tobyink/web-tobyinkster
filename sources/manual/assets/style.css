@@ -83,6 +83,14 @@ article.feed cite {
 	padding: 0 0 0 0.67em;
 }
 
+article dd.resource,
+article dd.blank,
+article dd.plain-literal,
+article dd.typed-literal {
+	margin: 0 0 0.67em 2em;
+}
+
+span.rdf-type { float: right }
 
 /* bootstrap normally makes this conditional on width */
   .navbar-nav {
