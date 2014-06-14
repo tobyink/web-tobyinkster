@@ -48,6 +48,7 @@
 <pre>
 <b>$</b> ffmpeg -r 15 -f image2 -s 1024x572 -i tmp%05d.jpeg -i MySong.mp3 -vcodec libx264 -acodec copy MySong.mp4
 </pre>
+<p>Notice that in steps one and three, the magic number 15 came up. This is the frames per second of the resulting video. You can use any number you like, but make sure you use the same in both places. Somewhere between 10 and 30 is probably best. I think 15 seems fine.</p>
 <p>Lastly, clean up the temporary files created:</p>
 <pre>
 <b>$</b> rm tmp*.jpeg
