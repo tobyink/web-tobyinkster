@@ -5,7 +5,7 @@
     <id>http://tobyinkster.co.uk/blog/2014/06/14/mp3-plus-g-to-mp4/</id>
 
     <published>2014-06-14T20:00:00Z</published>
-    <updated>2014-06-14T20:21:00Z</updated>
+    <updated>2014-06-14T20:32:00Z</updated>
 
     <summary>Let's convert an MP3 file with accompanying CDG to an MP4 video.</summary>
     <author>
@@ -21,6 +21,10 @@
 <p>MP3+G is a format for karaoke music. Each song comes as a <em>pair of files</em>; an MP3 file containing the audio, and a CDG file containing the lyrics. CDG is not a text-like format; it's more like a low-resolution video.</p>
 <p>This is reasonably easy to convert to a MP4 video which will play nicely on, say, an Android device or smart TV. You just need the right software.</p>
 
+<h2>Preparing the Ground</h2>
+<p>Firstly you want <a href="http://www.kibosh.org/pykaraoke/">PyKaraoke</a> which is already packaged for Debian/Ubuntu, so is easy enough to install with apt-get.</p>
+<p>Also you want <a href="http://www.ffmpeg.org/">ffmpeg</a>. Bear in mind that Debian and Ubuntu ship with <a href="http://libav.org/">libav</a>, which is a somewhat poor fork of the real ffmpeg. However, <a href="https://launchpad.net/~jon-severinsson/+archive/ffmpeg">Jon Severinsson's FFmpeg PPA</a> provides an easy way to install the real ffmpeg program. (The following instructions may indeed work with libav, but have only been tested with ffmpeg.)</p>
+
 <div class="jumbotron">
 <h2>Useful Resources</h2>
 <p>These are what I learned from&#8230;</p>
@@ -29,10 +33,6 @@
 <li><a href="http://hamelot.co.uk/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/">Using ffmpeg to convert a set of images into a video</a></li>
 </ul>
 </div>
-
-<h2>Preparing the Ground</h2>
-<p>Firstly you want <a href="http://www.kibosh.org/pykaraoke/">PyKaraoke</a> which is already packaged for Debian/Ubuntu, so is easy enough to install with apt-get.</p>
-<p>Also you want <a href="http://www.ffmpeg.org/">ffmpeg</a>. Bear in mind that Debian and Ubuntu ship with <a href="http://libav.org/">libav</a>, which is a somewhat poor fork of the real ffmpeg. However, <a href="https://launchpad.net/~jon-severinsson/+archive/ffmpeg">Jon Severinsson's FFmpeg PPA</a> provides an easy way to install the real ffmpeg program. (The following instructions may indeed work with libav, but have only been tested with ffmpeg.)</p>
 
 <h2>Step by Step</h2>
 <p>Step one; dump the frames of the CDG file as a series of JPEGs:</p>
