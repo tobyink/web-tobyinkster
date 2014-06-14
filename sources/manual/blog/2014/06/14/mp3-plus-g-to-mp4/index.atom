@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>MP3+G to MP4</title>
+    <link rel="alternate" type="text/html" href="http://tobyinkster.co.uk/blog/2014/06/14/mp3-plus-g-to-mp4/"/>
+    <id>http://tobyinkster.co.uk/blog/2014/06/14/mp3-plus-g-to-mp4/</id>
+
+    <published>2014-06-14T20:00:00Z</published>
+    <updated>2014-06-14T20:15:00Z</updated>
+
+    <summary>Let's convert an MP3 file with accompanying CDG to an MP4 video.</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="linux" />
+    
+    <content type="html" xml:lang="en"><![CDATA[
+
+<p>I suppose this is mostly a reminder to myself.</p>
+<p>MP3+G is a format for karaoke music. Each song comes as a <em>pair of files</em>; an MP3 file containing the audio, and a CDG file containing the lyrics. CDG is not a text-like format; it's more like a low-resolution video.</p>
+<p>This is reasonably easy to convert to a MP4 video which will play nicely on, say, an Android device or smart TV. You just need the right software.</p>
+<p>Firstly you want <a href="http://www.kibosh.org/pykaraoke/">PyKaraoke</a> which is already packaged for Debian/Ubuntu, so is easy enough to install with apt-get.</p>
+<p>Also you want <a href="http://www.ffmpeg.org/">ffmpeg</a>. Bear in mind that Debian and Ubuntu ship with <a href="http://libav.org/">libav</a>, which is a somewhat poor fork of the real ffmpeg. However, <a href="https://launchpad.net/~jon-severinsson/+archive/ffmpeg">Jon Severinsson's FFmpeg PPA</a> provides an easy way to install the real ffmpeg program. (The following instructions may indeed work with libav, but have only been tested with ffmpeg.)</p>
+<p>Step one; dump the frames of the CDG file as a series of JPEGs:</p>
+<pre>
+<b>$</b> python /usr/lib/python2.7/dist-packages/pycdg.py --dump=tmp#####.jpeg --dump-fps=15 MySong.cdg
+</pre>
+<p>(Yes, you really do want those hashes in the command.)</p>
+<p>Step two; find out the height and width of the frames in pixels. I'm going to use <tt>identify</tt> which is part of ImageMagick, but any other tool will do. All the files I've tried come out as 1024 by 572 pixels; perhaps PyKaraoke always uses those dimensions (?) but you should probably check!</p>
+<pre>
+<b>$</b> identify tmp00001.jpeg
+</pre>
+<p>Step three; use ffmpeg to combine the JPEG frames with the MP3:</p>
+<pre>
+<b>$</b> ffmpeg -r 15 -f image2 -s 1024x572 -i tmp%05d.jpeg -i MySong.mp3 -vcodec libx264 -acodec copy MySong.mp4
+</pre>
+<p>Lastly, clean up the temporary files created:</p>
+<pre>
+<b>$</b> rm tmp*.jpeg
+</pre>
+<p>Done!</p>
+
+    ]]></content>
+</entry>

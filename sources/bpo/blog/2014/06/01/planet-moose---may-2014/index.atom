@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Planet Moose - May 2014</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/06/planet-moose---may-2014.html"/>
+    <id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6071</id>
+
+    <published>2014-06-01T08:09:09Z</published>
+    <updated>2014-06-01T08:19:39Z</updated>
+
+    <summary>Welcome to Planet Moose, a brief write up on what's been happening in the world of Moose in the past month, for the benefit of those of you who don't have their eyes permanently glued to the #moose IRC channel,...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://tobyinkster.co.uk/</uri>
+    </author>
+    
+    <category term="book" label="Book" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moosexenumeration" label="MooseX-Enumeration" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxaliases" label="MooX-Aliases" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxtraits" label="MooX-Traits" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mouse" label="Mouse" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="p5mop" label="p5-mop" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a class="podlinkurl" href="https://github.com/tobyink/p5-planet-moose/wiki">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> 2.1206 and 2.1207 have been released; they don't contain any jaw-dropping new features. If you're running an earlier 2.12xx release, you should probably upgrade for bugfixyness, and you shouldn't have to deal with your code breaking because of Moose changes.</p></div>
+]]>
+        <![CDATA[		<h2><span id="Mouse">Mouse</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Mouse">Mouse</a> 2.3.0 has been released and fixes a memory leak. I don't know why that warrants the 2.2.x -&gt; 2.3.x version bump.</p>
+		<h2><span id="Moo">Moo</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a> 1.004_004, 1.004005, and 1.004006 have been released which include much of the bugfixing and improvements I wrote about last month. It's now <a class="podlinkurl" href="http://www.cpantesters.org/cpan/report/4b577e1e-e659-11e3-8de2-8cc28706f0e4">incredibly close to passing its test suite on Perl 5.6</a>.</p>
+		<h2><span id="p5-mop">p5-mop</span></h2>
+		<p>Stevan Little has <a class="podlinkurl" href="http://blogs.perl.org/users/stevan_little/2014/05/on-prototyping-in-public.html">blogged</a> <a class="podlinkurl" href="http://blogs.perl.org/users/stevan_little/2014/05/on-prototyping-in-public-part-duex.html">twice</a> about the p5-mop project's latest rewrite. The new version appears to be perhaps somewhat more ambitious than the previous one, including creating a new reference type for mop objects. I'm hopeful that it gets somewhere.</p>
+		<h2><span id="Perl_5.20.0">Perl 5.20.0</span></h2>
+		<p>Somebody's gone and uploaded something called <a class="podlinkurl" href="https://metacpan.org/release/RJBS/perl-5.20.0">Perl 5.20.0</a> to CPAN. I don't know if that's of interest to anybody...</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>I'm going to write a book on Object-Oriented Programming and publish it under a Creative Commons licence. It's now too late to officially <a class="podlinkurl" href="http://news.perlfoundation.org/2014/05/grant-proposal-modern-object-o.html">comment on the grant proposal</a>, but I'd still be interested in any feedback.</li>
+			<li><a class="podlinkurl" href="http://blogs.perl.org/users/samuel_kaufman/2014/05/validating-nested-json-hashes-with-moose.html">Validating Nested JSON Hashes with Moose</a> includes some ideas for auto-inflating a big pile of nested hashes returned by a web service into funky Perl objects that you can call methods on and stuff.</li>
+			<li>Yuki Kimoto has written <a class="podlinkurl" href="http://blogs.perl.org/users/yuki_kimoto/2014/05/mop-problem-2---cant-weaken-attribute-variable-from-outside.html">mop problem 2 - Can't weaken attribute variable from outside</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/yuki_kimoto/2014/05/mop-problem-3---class-extends-and-method-keyword-should-be-independent-from-mop.html">mop problem 3 - class, extends, and method keyword should be independent from mop</a>.</li>
+			<li>I've released <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AEnumeration">MooseX::Enumeration</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/05/enumerations-in-moose.html">blogged about it</a>.</li>
+			<li>I've also released <a class="podlinkpod" href="https://metacpan.org/pod/MooX%3A%3ATraits">MooX::Traits</a>, which (with <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3ATraits">MooseX::Traits</a> and <a class="podlinkpod" href="https://metacpan.org/pod/MouseX%3A%3ATraits">MouseX::Traits</a>) completes the traits triumvirate. MooX::Traits doesn't actually require <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>; getting by with <a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3ATiny">Role::Tiny</a>. I think it's the only one of the three to support <a class="podlinkpod" href="https://metacpan.org/pod/Package%3A%3AVariant">Package::Variant</a>-based roles.</li>
+			<li>Similarly, Graham Knop has released <a class="podlinkpod" href="https://metacpan.org/pod/MooX%3A%3AAliases">MooX::Aliases</a> which does the same job as <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3AAliases">MooseX::Aliases</a>. But where's MouseX::Aliases?! Enquiring minds want to know!</li>
+			<li>As usual, byterock has <a class="podlinkurl" href="http://blogs.perl.org/users/byterock/">written about Moose a lot</a>.</li>
+			<li>New release of <a class="podlinkpod" href="https://metacpan.org/pod/Bread%3A%3ABoard">Bread::Board</a>.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/SyForm">SyForm</a> looks interesting.</li>
+			<li>Is it just me, or does <a class="podlinkpod" href="https://metacpan.org/pod/HTML%3A%3AHiLiter">HTML::HiLiter</a> look like it's called "HTML::Hitler"?</li>
+			<li><a class="podlinkurl" href="http://www.cbc.ca/news/canada/calgary/baby-moose-mom-reunion-hopes-dashed-1.2659146">Awww... that's a shame</a>.</li>
+		</ul>
+]]>
+    </content>
+</entry>
