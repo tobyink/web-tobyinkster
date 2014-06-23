@@ -127,7 +127,7 @@ sub ProcessFeed
 							property => "atom:name",
 							rel      => "atom:uri",
 							href     => $person->uri,
-							(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri eq 'http://tobyinkster.co.uk/' ),
+							(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri =~ /toby\.?ink/ ),
 						},
 						$person->name,
 					),
@@ -152,8 +152,8 @@ sub ProcessFeed
 				my $e   = $_;
 				my $dt  = $datetime->parse_datetime($e->published);
 				my @L   = grep { ;no warnings 'uninitialized'; $_->rel =~ /^(self|alternate|)$/ } $e->link;
-				my ($l) = grep { $_->href !~ m{^http://tobyinkster.co.uk/} } @L;  # non-local
-				my ($L) = grep { $_->href =~ m{^http://tobyinkster.co.uk/} } @L;  # local
+				my ($l) = grep { $_->href !~ m{^http://toby\.?ink} } @L;  # non-local
+				my ($L) = grep { $_->href =~ m{^http://toby\.?ink} } @L;  # local
 				$l ||= $L;
 				
 				my $title = $e->title;
@@ -258,7 +258,7 @@ sub ProcessEntry
 							property => "atom:name",
 							rel      => "atom:uri",
 							href     => $person->uri,
-							(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri eq 'http://tobyinkster.co.uk/' ),
+							(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri =~ /toby\.?ink/ ),
 						},
 						$person->name,
 					),

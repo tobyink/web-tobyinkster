@@ -1,0 +1,44 @@
+<title>Hire Toby Inkster</title>
+
+<article id="document_main">
+	<h1>Hire Toby Inkster</h1>
+	<p class="subtitle">Freelance Data Munger</p>
+	
+	<div id="div1">
+		<h2>What does he do?</h2>
+		<ul>
+			<li>Extract, reprocess, cleanse and reformat big data.</li>
+			<li>Make websites and databases talk to each other.</li>
+			<li>Integrate data from multiple sources.</li>
+			<li>Develop web APIs for data access and manipulation.</li>
+			<li>Advise how to make your data available as <a href="http://www.w3.org/DesignIssues/LinkedData.html">Open Linked Data</a>.</li>
+			<li>Any general programming tasks, including ETL and web development.</li>
+		</ul>
+	</div>
+
+	<div id="div2">
+		<h2>What skills does he possess?</h2>
+		<ul>
+			<li>Development in <a href="https://metacpan.org/author/TOBYINK">Perl</a>, PHP, Javascript and other programming languages.</li>
+			<li>Understanding of RDF, SPARQL, OWL, SKOS and other semantic web technologies.</li>
+			<li>Expert knowledge of SQL (including Microsoft SQL Server, PostgreSQL and MySQL).</li>
+			<li>Experience processing XML, JSON, CSV and other formats like that.</li>
+			<li>Linux server admin experience; suppressed memories of Microsoft Windows too.</li>
+			<li>Good all round experience in HTTP, HTML, CSS, and other web technologies.</li>
+		</ul>
+	</div>
+
+	<div id="div3">
+		<h2>Why hire him?</h2>
+		<ul>
+			<li>He has a degree in this kind of stuff.</li>
+			<li>Nine years of experience munging big databases.</li>
+			<li>Invited expert on several <a href="http://www.w3.org/">W3C</a> groups.</li>
+			<li>He is available.</li>
+			<li>He writes things about himself in the third person&#8230; lots apparently.</li>
+		</ul>
+	</div>
+
+	<p>Available for small to medium projects.</p>
+
+</article>

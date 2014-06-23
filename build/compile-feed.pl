@@ -9,7 +9,7 @@ use DateTime;
 use XML::Atom::Entry;
 use XML::Atom::Feed;
 
-my $blogroot = 'http://tobyinkster.co.uk/blog/';
+my $blogroot = 'http://toby.ink/blog/';
 
 my $dir = path('public_html/blog')->absolute;
 my $rule = Path::Iterator::Rule->new->file->name('*.atom');
