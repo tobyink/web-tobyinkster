@@ -8,6 +8,9 @@ use Path::Iterator::Rule;
 use DateTime;
 use XML::Atom::Entry;
 use XML::Atom::Feed;
+use JSON qw(encode_json);
+use List::Util qw(min);
+use List::MoreUtils qw(part);
 
 my $blogroot = 'http://toby.ink/blog/';
 
@@ -54,3 +57,21 @@ $feed->updated( $entries[0]->published );
 $feed->add_entry($_) for @entries;
 
 $dir->child('index.atom')->spew_utf8( $feed->as_xml );
+
+my @summaries = map {
+	;my $e = $_
+	;my @link =
+		map  { ;sort(@{ $_ or [] }) }
+		part { ;m{^http://toby\.?ink} }
+		map  { ;$_->href }
+		grep { ;no warnings 'uninitialized' ;$_->rel =~ /^(self|alternate|)$/ }
+		$e->link
+	;+{
+		title     => $e->title,
+		published => $e->published,
+		link      => @link ? $link[0] : $e->id,
+	}
+} @entries;
+
+my $count = min(20, scalar(@summaries));
+$dir->child('index.json')->spew_raw( encode_json [ @summaries[0 .. $count-1] ] );
