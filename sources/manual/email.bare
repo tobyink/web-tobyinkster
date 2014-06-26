@@ -1,0 +1,45 @@
+<title>Contacting Toby Inkster</title>
+
+<article id="document_main">
+
+	<h1>Contacting Toby Inkster</h1>
+
+	<p>My primary contact address is
+	<a href="mailto:mail&#x40;tobyinkster.co.uk"
+	>mail&#x40;tobyinkster.co.uk</a>.</p>
+
+	<p>I do tend to receive an average of twenty
+	pieces of junk mail for every legitimate
+	communication&nbsp;&#8230;&nbsp;a very low
+	signal to noise ratio! So I do on occasion
+	completely fail to notice welcome messages in
+	the ever-growing pile of unwelcome crud.</p>
+
+	<p>To combat that, I have provided the form
+	below. If you contact me via this form, your
+	message will be marked as a priority, and I
+	will be much less likely to miss it.</p>
+
+	<form action="/email-form.cgi" method="post" role="form">
+		<div class="form-group">
+			<label for="form-from">Your e-mail address</label>
+			<input type="email" class="form-control" id="form-from" placeholder="you@example.com" name="from" required="required" />
+		</div>
+		<div class="form-group">
+			<label for="form-subject">Message subject</label>
+			<input type="text" class="form-control" id="form-subject" placeholder="Type the subject here" name="subject" required="required" />
+		</div>
+		<div class="form-group">
+			<label for="form-body">Message body</label>
+			<textarea id="form-body" name="body" class="form-control" rows="6" cols="60" required="required"></textarea>
+		</div>
+		<div class="form-group form-antispam">
+			<label form="form-to">My name</label>
+			<input type="text" class="form-control" id="form-to" placeholder="Type the word &quot;Toby&quot; here" name="to" />
+			<p><small>(This is for spam-reduction purposes. It's like a password, but I'm telling you what the correct password is. Spam-bots are too stupid to guess the answer. Just type my first name here&nbsp;&#8230;&nbsp;it's really that simple.)</small></p>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-default">Send</button>
+		</div>
+	</form>
+</article>
