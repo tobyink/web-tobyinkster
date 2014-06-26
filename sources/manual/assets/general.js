@@ -9,9 +9,17 @@ $(
 		
 		var side = $('<div role="contentinfo" id="sidebar" class="col-sm-3 hidden-xs">').insertAfter('article');
 		
-		side.append('<aside id="sidebar-top"><img class="img-responsive img-thumbnail" src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=192" alt="(tobyink)"><h1 class="h4">Toby Inkster</h1><p>Lewes, East Sussex, UK</p></aside>');
-		side.append('<aside id="brain-activity"><h1 class="h4">Thoughts <a href="http://tobyink.soup.io/rss/original"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>');
-		side.append('<aside id="gh-activity"><h1 class="h4">GitHub Activity <a href="http://github.com/tobyink.atom"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>');
+		side.append(
+			'<aside id="sidebar-top"><img class="img-responsive img-thumbnail" src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=192" alt="(tobyink)"><h1 class="h4">Toby Inkster</h1><p>Lewes, East Sussex, UK</p></aside>' +
+			'<ul class="nav nav-tabs">' +
+			'  <li class="active"><a href="#brain-activity" data-toggle="tab">Think</a></li>' +
+			'  <li><a href="#gh-activity" data-toggle="tab">Code</a></li>' +
+			'</ul>' +
+			'<div class="tab-content">' +
+			'  <aside class="tab-pane active" id="brain-activity"><h1 class="h4">Thoughts <a href="http://tobyink.soup.io/rss/original"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
+			'  <aside class="tab-pane" id="gh-activity"><h1 class="h4">GitHub Activity <a href="http://github.com/tobyink.atom"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
+			'</div>'
+		);
 		
 		$.getScript(
 			'/assets/jquery.timeago.js',
@@ -19,7 +27,7 @@ $(
 				$.getScript(
 					'/assets/jquery.github-activity.js',
 					function () {
-						$("#gh-activity ul").githubActivityFor("tobyink", { limit: 6 });
+						$("#gh-activity ul").githubActivityFor("tobyink", { limit: 14 });
 					}
 				);
 			}
@@ -33,7 +41,7 @@ $(
 				var count = 0;
 				$(items).each(function (i, e) {
 					count++;
-					if (count > 6) return;
+					if (count > 10) return;
 					thoughts.append('<li class="list-group-item">'
 						+ e.getElementsByTagName('description')[0].textContent
 						+ '<small class="text-muted">' 
