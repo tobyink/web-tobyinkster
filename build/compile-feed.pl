@@ -49,7 +49,7 @@ $feed->title("Toby Inkster's Blog");
 $feed->author(do {
 	my $me = XML::Atom::Person->new(Version => '1.0');
 	$me->name('Toby Inkster');
-	$me->uri('http://tobyinkster.co.uk/');
+	$me->uri('http://toby.ink/');
 	$me->email('mail@tobyinkster.co.uk');
 	$me;
 });

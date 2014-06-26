@@ -1,9 +1,21 @@
 $(
 	function () {
 		
+		/*
+		 * Menu
+		 */
 		var url = window.location;
-		$('nav ul.nav li a').filter(function() { return this.href == url; }).parent().addClass('active');
+		$('nav ul.nav a').filter(function() { return this.href == url; }).parent().addClass('active');
 
+		/*
+		 * Contact form
+		 */
+		$('.form-antispam input').val('Toby');
+		$('.form-antispam').hide();
+
+		/*
+		 * Sidebar
+		 */
 		$('article').removeClass('col-sm-12');
 		$('article').addClass('col-sm-9');
 		
