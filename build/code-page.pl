@@ -169,6 +169,7 @@ use version;
 		'misc'     => 'Misc',
 		'web'      => 'HTML, CSS, Javascript',
 		'vb'       => 'VB.NET',
+		'rdf'      => 'RDF',
 	);
 	
 	sub handle_bitbucket_data {
