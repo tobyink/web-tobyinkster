@@ -107,3 +107,8 @@ span.rdf-type { float: right }
   .navbar-nav.navbar-right:last-child {
     margin-right: -15px;
   }
+
+table > thead > tr > th.tablesorter-headerAsc,
+table > thead > tr > th.tablesorter-headerDesc {
+	border-bottom: 2px solid white;
+}

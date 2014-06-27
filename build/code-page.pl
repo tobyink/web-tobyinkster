@@ -2,6 +2,8 @@
 
 use strict;
 use warnings;
+use lib qw( /opt/perl/lib/lib/perl5/ );
+
 use JSON::PP;
 use Path::Tiny;
 use LWP::UserAgent;
@@ -353,13 +355,10 @@ use version;
 				$self->name,
 			);
 		}
-		$h .= "</th>\n";
 		if ($self->has_abstract) {
-			$h .= sprintf("<td property=\"doap:shortdesc\">%s</td>\n", $self->abstract);
+			$h .= sprintf("<br /><small property=\"doap:shortdesc\">%s</small>\n", $self->abstract);
 		}
-		else {
-			$h .= "<td></td>\n";
-		}
+		$h .= "</th>\n";
 		$h .= "<td>";
 		if ($self->has_latest_release) {
 			$h .= "<span rel=\"doap:release\">";
@@ -394,7 +393,7 @@ use version;
 			}
 			elsif ($self->has_latest_release and $self->latest_release lt $self->developer_release) {
 				++$do_it;
-				$h .= "; ";
+				$h .= "<br/>";
 			}
 			
 			if ($do_it) {
@@ -434,14 +433,13 @@ use version;
 			$h .= "<td property=\"doap:repository\">";
 			if ($self->has_github) {
 				$h .= sprintf(
-					"<a typeof=\"doap:GitRepository\" href=\"doap:browse\" href=\"%s\">GitHub</a>",
+					"<a typeof=\"doap:GitRepository\" rel=\"doap:browse\" href=\"%s\"><img src=\"/assets/gh\" alt=\"GitHub\"/></a>",
 					$self->github,
 				);
 			}
 			if ($self->has_bitbucket) {
-				$h .= "; " if $self->has_github;
 				$h .= sprintf(
-					"<a typeof=\"doap:HgRepository\" href=\"doap:browse\" href=\"%s\">Bitbucket</a>",
+					"<a typeof=\"doap:HgRepository\" rel=\"doap:browse\" href=\"%s\"><img src=\"/assets/bb\" alt=\"Bitbucket\" /></a>",
 					$self->bitbucket,
 				);
 			}
@@ -464,9 +462,8 @@ use version;
 		if ($self->has_coveralls) {
 			(my $img = $self->coveralls)
 				=~ s{https://coveralls.io/r/}{https://img.shields.io/coveralls/};
-			$img .= ".svg";
 			$h .= sprintf(
-				"<a href=\"%s?branch=%s\"><img src=\"%s.svg\" alt=\"Coverage: %s%%\" /></a>",
+				"<br><a href=\"%s?branch=%s\"><img src=\"%s.svg\" alt=\"Coverage: %s%%\" /></a>",
 				$self->coveralls,
 				$self->coverage_branch,
 				$img,
@@ -483,11 +480,38 @@ use version;
 my $cache    = path('tmp/cache/');
 my @projects = Project->get_all($cache);
 
-print "<table about=\"http://tobyinkster.co.uk/#i\">\n";
+@projects =
+	map $_->[1],
+	sort { $a->[0] cmp $b->[0] }
+	map [ $_->name, $_ ],
+	@projects;
+	
+
+select( path('public_html/code.bare')->openw_utf8 );
+
+print "<title>Toby Inkster's Coding Projects</title>\n";
+print <<STYLE;
+<style type="text/css">
+td small { white-space: nowrap }
+</style>
+STYLE
+print "<article id=\"document_main\"";
+print " xmlns:doap=\"http://usefulinc.com/ns/doap#\"";
+print " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"";
+print " xmlns:dc=\"http://purl.org/dc/elements/1.1/\"";
+print ">\n";
+print "<p>There follows a fairly comprehensive list of my open source projects.";
+print " These range from stable, useful libraries, to barely thought out ideas.</p>\n";
+print "<p>Note that test results and coverage information from continuous integration testing";
+print " is only available for a few of these projects as I've only recently started to get";
+print " myself organized with that sort of thing.</p>\n";
+print "<table about=\"http://tobyinkster.co.uk/#i\"";
+print " class=\"table table-striped table-condensed table-sortable\"";
+print " data-sortlist=\"[[0,0]]\" style=\"width:auto\"";
+print ">\n";
 print "<thead>\n";
 print "<tr>\n";
 print "<th>Project</th>\n";
-print "<th>Abstract</th>\n";
 print "<th>Latest Release</th>\n";
 print "<th>Language</th>\n";
 print "<th>Repository</th>\n";
@@ -500,3 +524,4 @@ for my $p (@projects) {
 }
 print "</tbody>\n\n";
 print "</table>\n";
+print "</article>\n";

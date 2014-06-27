@@ -12,6 +12,15 @@ $(
 		 */
 		$('.form-antispam input').val('Toby');
 		$('.form-antispam').hide();
+		
+		/*
+		 * Sortable tables
+		 */
+		$.getScript(
+			'/assets/jquery.tablesorter.min.js',
+			function () { $('.table-sortable').tablesorter(); }
+		);
+		
 
 		/*
 		 * Sidebar
@@ -54,7 +63,7 @@ $(
 								+ '</small></li>');
 						});
 					}, 'xml'
-				);				
+				);
 				$.getScript(
 					'/assets/jquery.github-activity.js',
 					function () {
