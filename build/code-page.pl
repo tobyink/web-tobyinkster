@@ -452,7 +452,7 @@ use version;
 		
 		# travis last_build_state last_build_id
 		# coveralls coverage coverage_branch		
-		$h .= "<td>";
+		$h .= "<td class=\"badgers\">";
 		$h .= sprintf(
 			"<a href=\"%s/builds/%s\"><img src=\"%s.svg\" alt=\"Status: %s\" /></a>",
 			$self->travis,
