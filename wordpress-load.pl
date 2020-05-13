@@ -7,6 +7,7 @@ use Data::Dumper;
 use Path::Tiny;
 use Path::Iterator::Rule;
 use DBI;
+use Encode;
 
 my $dbh    = DBI->connect('DBI:mysql:database=tobyinkwp', 'tobyinkwp', 'tobyinkwp');
 my $prefix = 'wp_';
@@ -102,6 +103,10 @@ while ( defined( my $_file = $iter->() ) ) {
 		$num_id = $row->[0];
 	}
 	
+	if ($slug eq 'mooxpression-now-much-faster') {
+		say $entry->title;
+	}
+
 	if ( defined $num_id ) {
 		$sth_post_update->execute(
 			$entry->published,
