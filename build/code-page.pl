@@ -37,7 +37,8 @@ use version;
 				: (Accept => 'application/json');
 			my $res = $ua->get($next, @hdrs);
 			
-			die $res->status_line
+			use Data::Dumper;
+			die Dumper($res)
 				unless $res->is_success;
 			
 			$file->spew_raw($res->content);
@@ -76,6 +77,8 @@ use version;
 					: ($in = $in->{$key});
 			}
 			
+			last if $file !~ /\%d/;
+			
 			push @all, @$in;
 			$i++;
 		}
@@ -103,12 +106,17 @@ use version;
 		cpan github bitbucket lang link
 		travis last_build_state last_build_id
 		coveralls coverage coverage_branch
+		is_archived
 	/] => (
 		is        => 'rw',
 		clearer   => 1,
 		predicate => 1,
 	);
-	sub BUILD { push our @ALL, shift }
+	sub BUILD {
+		my $self = shift;
+		$self->is_archived(0) unless $self->has_is_archived;
+		push our(@ALL), $self;
+	}
 	
 	sub handle_cpan_data {
 		my $self = shift;
@@ -206,6 +214,8 @@ use version;
 		my $self = shift;
 		my ($data) = @_;
 		
+		return unless defined $data->{last_build_id};
+		
 		$self->travis('https://travis-ci.org/'.$data->{slug});
 		$self->last_build_state($data->{last_build_state} or ());
 		$self->last_build_id($data->{last_build_id} or ());
@@ -237,7 +247,7 @@ use version;
 		my $json = 'JSON::PP'->new->utf8(1)->pretty(1)->canonical(1);
 
 		Utils::mirror($ua, $cache, @$_) for (
-			[ "http://api.metacpan.org/v0/release/_search?q=author:${\CPAN_IDENT}&size=5000&fields=name,resources,date,download_url,version,distribution,abstract" => 'cpan_%d.json' ],
+			[ "http://fastapi.metacpan.org/v1/release/_search?q=author:${\CPAN_IDENT}&size=5000" => 'cpan_%d.json' ],
 			[ "https://api.github.com/users/${\GITHUB_IDENT}/repos?per_page=100" => 'github_%d.json' ],
 			[ "https://api.bitbucket.org/1.0/users/${\BITBUCKET_IDENT}/" => 'bitbucket_%d.json' ],
 			[ "https://api.travis-ci.org/repos/${\TRAVIS_IDENT}" => 'travis_%d.json' ],
@@ -250,6 +260,8 @@ use version;
 			
 			for (@cpan) {
 				my $c = $_->{fields};
+				next if $c->{status} eq 'backpan';
+				
 				my $p = ($projects_by_cpan{ $c->{distribution} } ||= $class->new(name => $c->{distribution}));
 				$p->handle_cpan_data($c);
 				
@@ -307,6 +319,17 @@ use version;
 			}
 		}
 		
+		{
+			my @old = @{ $json->decode(Path::Tiny->new('config.json')->slurp_raw)->{code}{archived} };
+			my %tmp = map +($_->name, $_), @ALL;
+			for my $c (@old) {
+				$tmp{$c}
+					? $tmp{$c}->is_archived(1)
+					: Utils::yell("Huh? $c");
+			}
+			
+		}
+		
 		return @ALL;
 	}
 	
@@ -343,10 +366,11 @@ use version;
 		) if $self->cpan;
 		$h .= ">\n";
 		$h .= '<th>';
-		if ($self->link) {
+		my $link = $self->link || $self->github || $self->bitbucket;
+		if ($link) {
 			$h .= sprintf(
 				'<a href="%s" rel="doap:homepage" property="doap:name">%s</a>',
-				$self->link,
+				$link,
 				$self->name,
 			);
 		}
@@ -461,6 +485,7 @@ use version;
 			$self->last_build_state,
 		) if $self->has_travis;
 		if ($self->has_coveralls) {
+			no warnings;
 			(my $img = $self->coveralls)
 				=~ s{https://coveralls.io/r/}{https://img.shields.io/coveralls/};
 			$h .= sprintf(
@@ -521,6 +546,7 @@ print "</tr>\n";
 print "</thead>\n";
 print "<tbody rev=\"doap:developer\">\n\n";
 for my $p (@projects) {
+	next if $p->is_archived;
 	print $p->to_html;
 }
 print "</tbody>\n\n";

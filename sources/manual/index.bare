@@ -1,9 +1,8 @@
 <title>Toby Inkster</title>
-<link rel="openid.server" href="http://pip.verisignlabs.com/server" />
-<link rel="openid.delegate" href="http://tobyink.pip.verisignlabs.com" />
-<link rel="openid2.provider" href="http://pip.verisignlabs.com/server" />
-<link rel="openid2.local_id" href="http://tobyink.pip.verisignlabs.com" />
-<meta http-equiv="X-XRDS-Location" content="http://pip.verisignlabs.com/user/tobyink/yadisxrds" />
+<link rel="openid.server" href="http://openid.org.cn/server" />
+<link rel="openid.delegate" href="http://tobyink.openid.org.cn/" />
+<link rel="openid2.provider" href="http://openid.org.cn/server" />
+<link rel="openid2.local_id" href="http://tobyink.openid.org.cn/" />
 
 <article id="document_main"
 	xmlns:cert="http://www.w3.org/ns/auth/cert#"
@@ -33,9 +32,9 @@
 		</span>
 		
 		<p rel="google:address foaf:based_near schema:address">
-			<span about="[this:home_lewes]" typeof="google:Address schema:PostalAddress">
-				<span property="google:locality schema:addressLocality" datatype=""><span about="" property="ogp:locality">Lewes</span></span>,
-				<span property="google:region schema:addressRegion" datatype=""><span about="" property="ogp:region">East Sussex</span></span>,
+			<span about="[this:home_darlington]" typeof="google:Address schema:PostalAddress">
+				<span property="google:locality schema:addressLocality" datatype=""><span about="" property="ogp:locality">Darlington</span></span>,
+				<span property="google:region schema:addressRegion" datatype=""><span about="" property="ogp:region">Co Durham</span></span>,
 				<span property="google:country-name schema:addressCountry" datatype=""><span about="" property="ogp:country-name">UK</span></span>.
 			</span>
 		</p>
@@ -61,7 +60,7 @@
 		</dd>
 		
 		<dt>E-mail</dt>
-		<dd><a href="mailto:mail@tobyinkster.co.uk" rel="foaf:mbox schema:email"><span about="" property="ogp:email">mail@tobyinkster.co.uk</span></a></dd>
+		<dd><a href="mailto:me&#x40;toby.ink" rel="foaf:mbox schema:email"><span about="" property="ogp:email">me&#x40;toby.ink</span></a></dd>
 		
 		<!-- dt>RESTful HTTP Mailbox</dt>
 		<dd><a href="https://tobyinkster.co.uk/mbox" rel="seminbox:mbox">https://tobyinkster.co.uk/mbox</a></dd>
@@ -189,9 +188,6 @@
 		<dd content="British cuisine" about="http://dbpedia.org/resource/British_cuisine" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/British_cuisine" href="http://en.wikipedia.org/wiki/British_cuisine" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">British cuisine</span></a></dd>
 		<dd content="Italian cuisine" about="http://dbpedia.org/resource/Italian_cuisine" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Italian_cuisine" href="http://en.wikipedia.org/wiki/Italian_cuisine" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Italian cuisine</span></a></dd>
 		<dd content="Slow Food" about="http://dbpedia.org/resource/Slow_Food" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Slow_Food" href="http://en.wikipedia.org/wiki/Slow_Food" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Slow Food</span></a> (though I disagree with their stance on genetic engineering).</dd>
-		<dt>Local</dt>
-		<dd content="East Sussex" about="http://dbpedia.org/resource/East_Sussex" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/East_Sussex" href="http://en.wikipedia.org/wiki/East_Sussex" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">East Sussex</span></a></dd>
-		<dd content="Lewes" about="http://dbpedia.org/resource/Lewes" property="rdfs:label" rev="foaf:primaryTopic" rel="foaf:page foaf:isPrimaryTopicOf"><a about="http://en.wikipedia.org/wiki/Lewes" href="http://en.wikipedia.org/wiki/Lewes" typeof="foaf:Document"><span rev="foaf:interest" property="dc:title" resource="[this:i]">Lewes</span></a></dd>
 	</dl>
 	
 	<!-- Various equivalencies, etc -->

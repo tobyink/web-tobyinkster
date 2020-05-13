@@ -31,15 +31,15 @@ $(
 		var side = $('<div role="contentinfo" id="sidebar" class="col-sm-3 hidden-xs">').insertAfter('article');
 		
 		side.append(
-			'<aside id="sidebar-top"><img class="img-responsive img-thumbnail" src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=192" alt="(tobyink)"><h1 class="h4">Toby Inkster</h1><p>Lewes, East Sussex, UK</p></aside>' +
+			'<aside id="sidebar-top"><img class="img-responsive img-thumbnail" src="http://www.gravatar.com/avatar/c42f5f533d5e2032aae76abe2eb3584b?s=192" alt="(tobyink)"><h1 class="h4">Toby Inkster</h1><p>Darlington, Co Durham, UK</p></aside>' +
 			'<ul class="nav nav-tabs">' +
-			'  <li class="active"><a href="#brain-activity" data-toggle="tab">Think</a></li>' +
-			'  <li><a href="#gh-activity" data-toggle="tab">Code</a></li>' +
-			'  <li><a href="#blog-activity" data-toggle="tab">Write</a></li>' +
+			// '  <!-- li class="active"><a href="#brain-activity" data-toggle="tab">Think</a></li -->' +
+			'  <li class="active"><a href="#gh-activity" data-toggle="tab">Code</a></li>' +
+			'  <li><a href="#blog-activity" data-toggle="tab">Writing</a></li>' +
 			'</ul>' +
 			'<div class="tab-content">' +
-			'  <aside class="tab-pane active" id="brain-activity"><h1 class="h4">Thoughts <a href="http://tobyink.soup.io/rss/original"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
-			'  <aside class="tab-pane" id="gh-activity"><h1 class="h4">GitHub Activity <a href="http://github.com/tobyink.atom"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
+			// '  <-- aside class="tab-pane active" id="brain-activity"><h1 class="h4">Thoughts <a href="http://tobyink.soup.io/rss/original"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside -->' +
+			'  <aside class="tab-pane active" id="gh-activity"><h1 class="h4">GitHub Activity <a href="http://github.com/tobyink.atom"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
 			'  <aside class="tab-pane" id="blog-activity"><h1 class="h4">Blog <a href="http://toby.ink/blog/index.atom"><img src="/assets/feed-icon-14x14.png" alt="(feed)"></a></h1><ul class="list-group"></ul></aside>' +
 			'</div>'
 		);

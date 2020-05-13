@@ -12,20 +12,20 @@
 	
 	<header role="heading">
 		<h1>Curriculum Vitae</h1>
-		<p property="doac:summary" datatype=""><i>I am currently <a href="http://hire.tobyinkster.co.uk/">available for hire</a>.</i></p>
+		<p property="doac:summary" datatype=""><i>I am currently <a href="http://toby.ink/hire">available for hire</a>.</i></p>
 		<h2 property="v:fn foaf:name">Toby Inkster</h2>
 	</header>
 
-	<div><strong class="inline-heading">Email:</strong> <a href="mailto:mail@tobyinkster.co.uk" rel="foaf:mbox v:email">mail@tobyinkster.co.uk</a>.</div>
+	<div><strong class="inline-heading">Email:</strong> <a href="mailto:enquiries@toby.ink" rel="foaf:mbox v:email">enquiries@toby.ink</a>.</div>
 
 	<div><strong class="inline-heading">Phone:</strong> <span rel="v:tel" resource="tel:+447855833657">+44 (0)7855 833 657</span>.</div>
 
 	<div rel="v:adr foaf:based_near">
 		<strong class="inline-heading">Postal Address:</strong>
 		<span about="http://tobyinkster.co.uk/#home_lewes" typeof="v:Address">
-			<span property="v:street-address">87 Western Road</span>,
-			<span property="v:locality">Lewes</span>,
-			<span property="v:region">East Sussex</span>,
+			(Ask for street address),
+			<span property="v:locality">Darlington</span>,
+			<span property="v:region">Co Durham</span>,
 			<span property="v:country-name">England</span>.
 		</span>
 	</div>
@@ -36,11 +36,11 @@
 
 		<div about="#experience-8" typeof="doac:Experience">
 			<h4>
-				<strong property="doac:position">Freelance Developer</strong>
+				<strong property="doac:position">Freelance Programmer</strong>
 				(<span property="doac:date-starts" content="2011-09" datatype="xsd:gYearMonth">September 2011</span>, ongoing)
 			</h4>
 			
-			<p property="doac:activity">See <a href="http://hire.tobyinkster.co.uk/">hire.tobyinkster.co.uk</a> for details.</p>
+			<p property="doac:activity">I am currently a freelance programmer specializing in web/database integration, though also dabbling in web design and more general programming. I have worked for small businesses, schools, and charities. See <a href="http://toby.ink/hire">toby.ink/hire</a> for further information about my services, and contact me if you have any questions.</p>
 		</div>
 		
 		<div about="#experience-7" typeof="doac:Experience">

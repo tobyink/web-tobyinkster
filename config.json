@@ -1,0 +1,40 @@
+{
+	"code": {
+		"archived": [
+			"p5-acme-about-tobyink",
+			"p5-all-your-base-are-belong-to",
+			"p5-any-mo",
+			"p5-app-reprove",
+			"p5-authority-shared",
+			"p5-between",
+			"p5-catalyst-authentication-webid",
+			"p5-cgi-auth-foaf-ssl",
+			"p5-data-dumper-declare",
+			"p5-exporter-everything",
+			"p5-io-detect",
+			"p5-json-jom",
+			"p5-json-jom-plugins-jsonpath",
+			"p5-json-jom-plugins-jsont",
+			"p5-json-jom-plugins-yaml",
+			"p5-moan",
+			"p5-object-authority",
+			"p5-object-does",
+			"p5-object-role",
+			"p5-object-tap",
+			"p5-perl5-tobyink",
+			"p5-rdf-everywhere",
+			"p5-rdf-rdfa-parser-redland",
+			"p5-rdf-shortcuts",
+			"p5-rdf-sparul-redland",
+			"p5-rdf-trine-serializer-ntriples-canonical",
+			"p5-rdf-trineshortcuts",
+			"p5-rdf-trinex",
+			"p5-rdf-vcard-babelfish",
+			"p5-task-belike-tobyink",
+			"p5-task-json",
+			"p5-tobyink-perlx-a",
+			"p5-type-params",
+			"p5-web-magic"
+		]
+	}
+}
