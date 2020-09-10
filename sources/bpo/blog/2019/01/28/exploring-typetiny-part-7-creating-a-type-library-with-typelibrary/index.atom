@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Exploring Type::Tiny Part 7: Creating a Type Library with Type::Library</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2019/01/exploring-typetiny-part-7-creating-a-type-library-with-typelibrary.html"/>
+    <id>tag:blogs.perl.org,2019:/users/toby_inkster//1019.9139</id>
+
+    <published>2019-01-28T14:40:07Z</published>
+    <updated>2019-01-29T16:34:33Z</updated>
+
+    <summary> Type::Tiny is probably best known as a way of having Moose-like type constraints in Moo, but it can be used for so much more. This is the seventh in a series of posts showing other things you can use...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a href="https://metacpan.org/pod/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a> is probably best known as a way of having Moose-like type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, but it can be used for so much more. This is the seventh in a series of posts showing other things you can use Type::Tiny for. This article along with the earlier ones in the series can be found on <a href="http://blogs.perl.org/users/toby_inkster/" class="podlinkurl">my blog</a> and in the <a class="podlinkurl" href="https://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl">Cool Uses for Perl section of PerlMonks</a>.</p>
+		<p>For small projects, the type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AStandard">Types::Standard</a> and other CPAN type libraries are probably enough to satisfy your needs. You can do things like:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Common::Numeric</span> <span class="words" style="color:#333;background-color:#ffc">qw(PositiveInt)</span><span class="structure">;</span>
+   
+   <span class="word">has</span> <span class="word">user_id</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">PositiveInt</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span></pre>
+		<p>However for larger apps, say you need to check user identity numbers in an handful of places throughout your code and you use <code>PositiveInt</code> everywhere, then if you ever feel the need to change the constraint for them, you'll need to hunt through your code to look for every use of <code>PositiveInt</code>, make sure it's not being used for some other reason (like to check an age or a counter), and update it.</p>
+		<p>So it is helpful to make your own application-specific type library. You can define your own <code>UserId</code> type constraint, and use that everywhere. If the format of your identifiers ever changes, you only need to change the definition of the type constraint.</p>
+]]>
+        <![CDATA[		<h2><span id="Moose-Like_Syntax">Moose-Like Syntax</span></h2>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp::Types</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Library</span>
+         <span class="word">-base</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">-declare</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="words" style="color:#333;background-color:#ffc">qw(
+            UserId
+            UserIdList
+         )</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Utils</span> <span class="word">-all</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">BEGIN</span> <span class="structure">{</span>
+         <span class="word">extends</span> <span class="words" style="color:#333;background-color:#ffc">qw(
+            Types::Standard
+            Types::Common::Numeric
+            Types::Common::String
+         )</span><span class="structure">;</span>
+      <span class="structure">};</span>
+      
+      <span class="word">declare</span> <span class="word">UserId</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">as</span> <span class="word">PositiveInt</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">where</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="operator" style="color:#000;font-weight:bold">&gt;</span> <span class="number" style="color:#39C">1000</span> <span class="structure">};</span>
+      
+      <span class="word">declare</span> <span class="word">UserIdList</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">as</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">UserId</span><span class="structure">];</span>
+      
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>Using <code>-base</code> from <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ALibrary">Type::Library</a> sets your package up as an exporter that inherits from Type::Library. Using <code>-declare</code> allows the type constraints there to be written as barewords in the rest of the package. Importing from <a href="https://metacpan.org/pod/Type%3A%3AUtils" class="podlinkpod">Type::Utils</a> gives you a bunch of helpful keywords that can be useful for defining your type constraints. (These keywords will be pretty familiar to people who have defined their own type constraints in Moose or MooseX::Types, but personally I prefer not to use them. I'll show you how to write this type library without the keywords from Type::Utils later.)</p>
+		<p>The <code>extends</code> statement imports all the type constraints from the given type libraries, so all those types are added to this library. Putting it in a <code>BEGIN</code> block allows them to be written as barewords too.</p>
+		<p>And then we define a couple of type constraints. Hopefully that part is pretty self-explanatory. The <code>declare</code>, <code>as</code>, and <code>where</code> keywords are some of the things exported by Type::Utils.</p>
+		<p>Now your application code can just do:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Types</span> <span class="words" style="color:#333;background-color:#ffc">qw( UserId UserIdList HashRef NonEmptyStr )</span><span class="structure">;</span></pre>
+		<p>Your type library is also the perfect place to define any application-wide type coercions. For example:</p>
+		<pre class="highlighting-perl">   <span class="word">declare</span> <span class="word">User</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">as</span> <span class="word">InstanceOf</span><span class="structure">[</span><span class="single" style="color:#909">'MyApp::User'</span><span class="structure">];</span>
+   
+   <span class="word">coerce</span> <span class="word">User</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">from</span> <span class="word">UserId</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">via</span> <span class="structure">{</span> <span class="word">MyApp::Utils::find_user_by_id</span><span class="structure">(</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">)</span> <span class="structure">};</span>
+   
+   <span class="word">coerce</span> <span class="word">UserId</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">from</span> <span class="word">User</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">via</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">user_id</span> <span class="structure">};</span></pre>
+		<h2><span id="Bare_Bones_Syntax">Bare Bones Syntax</span></h2>
+		<p>Although Type::Tiny supports this Moose-like syntax for defining type constraints, I personally find the Type::Utils DSL a little unnecessary. Here's another way you can write the same type library:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp::Types</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Library</span> <span class="word">-base</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Utils</span> <span class="structure">();</span> <span class="comment" style="color:#060;font-style:italic"># don't import any keywords</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">BEGIN</span> <span class="structure">{</span>
+<span class="comment" style="color:#060;font-style:italic">         # Type::Utils is still the easiest way to do this part!
+</span>         <span class="word">Type::Utils::extends</span><span class="structure">(</span><span class="words" style="color:#333;background-color:#ffc">qw(
+            Types::Standard
+            Types::Common::Numeric
+            Types::Common::String
+         )</span><span class="structure">);</span>
+      <span class="structure">};</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$userid</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type</span><span class="structure">({</span>
+         <span class="word">name</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'UserId'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">parent</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">PositiveInt</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">constraint</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'$_ &gt; 1000'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">});</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$user</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type</span><span class="structure">({</span>
+         <span class="word">name</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'User'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">parent</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">InstanceOf</span><span class="structure">[</span><span class="single" style="color:#909">'MyApp::User'</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">});</span>
+      
+      <span class="symbol" style="color:#333;background-color:#fcc">$userid</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">coercion</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type_coercions</span><span class="structure">(</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$user</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'$_-&gt;user_id'</span>
+      <span class="structure">);</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">$user</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">coercion</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type_coercions</span><span class="structure">(</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$userid</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'MyApp::Utils::find_user_by_id($_)'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      
+      <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type</span><span class="structure">({</span>
+         <span class="word">name</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'UserIdList'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">parent</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="symbol" style="color:#333;background-color:#fcc">$userid</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">coercion</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">});</span>     
+      
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+      
+      <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>Defining types this way exposes some parts of Type::Tiny which are subtly different from Moose. For example, coercions and contraints can be expressed as strings of Perl code. This allows Type::Tiny to optimize some of the Perl code it generates, avoiding the overhead of a function call. Notice also the <code>coercion =&gt; 1</code> when defining <code>UserIdList</code>. This allows <code>UserIdList</code> to inherit ArrayRef's automatic ability to coerce one level deep.</p>
+		<p>Calling <code>make_immutable</code> on the package allows Type::Coercion to further optimize coercions for all the types in the library and prevents code outside the library from changing the global coercions you've defined.</p>
+		<pre class="highlighting-perl"><span class="comment" style="color:#060;font-style:italic">   # Imagine this is some code in a class...
+   #
+</span>   
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Types</span> <span class="words" style="color:#333;background-color:#ffc">qw( UserId Str )</span><span class="structure">;</span>
+   
+<span class="comment" style="color:#060;font-style:italic">   # This will die because UserId is immutable now.
+</span>   <span class="word">UserId</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">coercion</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">add_type_coercions</span><span class="structure">(</span><span class="word">Str</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="operator" style="color:#000;font-weight:bold">...</span> <span class="structure">});</span>
+   
+<span class="comment" style="color:#060;font-style:italic">   # This will work, and only affect this one attribute.
+</span>   <span class="word">has</span> <span class="word">user_id</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">UserId</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span><span class="word">Str</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="operator" style="color:#000;font-weight:bold">...</span> <span class="structure">})</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span></pre>
+		<p>So this method of defining type libraries might look a little less clean, but it has advantages. And as I said, it's how I prefer to do things.</p>
+		<h2><span id="Defining_Utility_Functions">Defining Utility Functions</span></h2>
+		<p>All Type::Library-based type libraries automatically inherit from <a class="podlinkpod" href="https://metacpan.org/pod/Exporter%3A%3ATiny">Exporter::Tiny</a> and can also be used to define utility functions. Just define a normal Perl sub in the package and add:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">our</span> <span class="symbol" style="color:#333;background-color:#fcc">@EXPORT_OK</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="words" style="color:#333;background-color:#ffc">qw( my_function_name )</span><span class="structure">;</span></pre>
+		<p>I recommend using lower-case function names with underscores to separate words to make them visually distinct from camel-case type constraint names.</p>
+		<p>To avoid creating a confusing package with a mishmash of unrelated functions, this feature should probably only be used to export functions which are vaguely related to types — validation functions, coercion functions, etc.</p>
+]]>
+    </content>
+</entry>

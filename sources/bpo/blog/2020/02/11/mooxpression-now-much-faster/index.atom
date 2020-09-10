@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>MooX::Pression — now much faster</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/02/mooxpression-now-much-faster.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9657</id>
+
+    <published>2020-02-11T00:14:26Z</published>
+    <updated>2020-02-11T00:36:32Z</updated>
+
+    <summary>The test suite for MooX::Pression used to run in 79 seconds on my laptop. Now it's at 10 seconds. And no, I didn't cut out any tests — I switched from using Keyword::Declare to a combination of Keyword::Simple and PPR....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="roles" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpress" label="MooX-Press" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpression" label="MooX-Pression" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>The test suite for MooX::Pression used to run in 79 seconds on my laptop. Now it's at 10 seconds.</p>
+<p>And no, I didn't cut out any tests — I switched from using Keyword::Declare to a combination of Keyword::Simple and PPR. (Keyword::Declare is a wrapper around Keyword::Simple and PPR, but I found out by using them directly, I could massively improve compile-time speed.)</p>
+<p>MooX::Pression allows you to build classes and roles with multimethods, types, method signatures, and sweet, sweet, sugary syntax…</p>]]>
+        <![CDATA[<style type="text/css">
+div.scitecode .S0 {
+	font-family: 'DejaVu Sans Mono';
+	color: #808080;
+	font-size: 9pt;
+}
+div.scitecode .S4 {
+	color: #007F7F;
+	font-size: 10pt;
+}
+div.scitecode .S5 {
+	font-weight: bold;
+	color: #00007F;
+	font-size: 10pt;
+}
+div.scitecode .S6 {
+	font-family: 'DejaVu Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+div.scitecode .S7 {
+	font-family: 'DejaVu Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+div.scitecode .S10 {
+	font-weight: bold;
+	color: #000000;
+	font-size: 10pt;
+}
+div.scitecode .S11 {
+	color: #000000;
+	font-size: 10pt;
+}
+div.scitecode .S12 {
+	color: #000000;
+	background: #FFE0E0;
+	text-decoration: inherit;
+	font-size: 10pt;
+}
+div.scitecode .S13 {
+	color: #000000;
+	background: #FFFFE0;
+	text-decoration: inherit;
+	font-size: 10pt;
+}
+div.scitecode .S14 {
+	color: #000000;
+	background: #FFE0FF;
+	text-decoration: inherit;
+	font-size: 10pt;
+}
+div.scitecode .S26 {
+	font-family: 'DejaVu Sans Mono';
+	color: #7F007F;
+	font-size: 9pt;
+}
+div.scitecode span {
+	font-family: 'DejaVu Sans Mono';
+	color: #000000;
+	font-size: 9pt;
+}
+</style>
+<div class="scitecode">
+<span><span class="S5">use</span><span class="S0"> </span><span class="S6">v5.18</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">strict</span><span class="S10">;</span><br />
+<span class="S5">use</span><span class="S0"> </span><span class="S11">warnings</span><span class="S10">;</span><br />
+<br />
+<span class="S5">my</span><span class="S0"> </span><span class="S12">$json</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S11">MyApp</span><span class="S10">-&gt;</span><span class="S11">new_json_encoder</span><span class="S10">;</span><br />
+<br />
+<span class="S5">say</span><span class="S0"> </span><span class="S12">$json</span><span class="S10">-&gt;</span><span class="S11">stringify</span><span class="S10">({</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S11">foo</span><span class="S0"> &nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">123</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S11">bar</span><span class="S0"> &nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">[</span><span class="S4">1</span><span class="S10">,</span><span class="S4">2</span><span class="S10">,</span><span class="S4">3</span><span class="S10">],</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S11">baz</span><span class="S0"> &nbsp;</span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">\</span><span class="S4">1</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S11">quux</span><span class="S0"> </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S11">xyzzy</span><span class="S0"> </span><span class="S10">=&gt;</span><span class="S0"> </span><span class="S4">666</span><span class="S0"> </span><span class="S10">},</span><br />
+<span class="S10">});</span><br />
+<br />
+<span class="S5">package</span><span class="S0"> </span><span class="S11">MyApp</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S5">use</span><span class="S0"> </span><span class="S11">MooX</span><span class="S10">::</span><span class="S11">Pression</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S5">class</span><span class="S0"> </span><span class="S11">JSON</span><span class="S10">::</span><span class="S11">Encoder</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">(</span><span class="S11">Undef</span><span class="S0"> </span><span class="S12">$value</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S7">'null'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">(</span><span class="S11">ScalarRef</span><span class="S10">[</span><span class="S11">Bool</span><span class="S10">]</span><span class="S0"> </span><span class="S12">$value</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S12">$$value</span><span class="S0"> </span><span class="S10">?</span><span class="S0"> </span><span class="S7">'true'</span><span class="S0"> </span><span class="S10">:</span><span class="S0"> </span><span class="S7">'false'</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">(</span><span class="S11">Num</span><span class="S0"> </span><span class="S12">$value</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S12">$value</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">:</span><span class="S11">alias</span><span class="S10">(</span><span class="S11">quote_str</span><span class="S10">)</span><span class="S0"> </span><span class="S10">(</span><span class="S11">Str</span><span class="S0"> </span><span class="S12">$value</span><span class="S10">)</span><span class="S0"> &nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">sprintf</span><span class="S10">(</span><span class="S26">q&lt;"%s"&gt;</span><span class="S10">,</span><span class="S0"> </span><span class="S5">quotemeta</span><span class="S0"> </span><span class="S12">$value</span><span class="S10">);</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">(</span><span class="S11">ArrayRef</span><span class="S0"> </span><span class="S12">$arr</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">sprintf</span><span class="S10">(</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S26">q&lt;[%s]&gt;</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">join</span><span class="S10">(</span><span class="S26">q&lt;,&gt;</span><span class="S10">,</span><span class="S0"> </span><span class="S5">map</span><span class="S10">(</span><span class="S12">$self</span><span class="S10">-&gt;</span><span class="S11">stringify</span><span class="S10">(</span><span class="S12">$_</span><span class="S10">),</span><span class="S0"> </span><span class="S13">@$arr</span><span class="S10">))</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">);</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">multi</span><span class="S0"> </span><span class="S5">method</span><span class="S0"> </span><span class="S11">stringify</span><span class="S0"> </span><span class="S10">(</span><span class="S11">HashRef</span><span class="S0"> </span><span class="S12">$hash</span><span class="S10">)</span><span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">sprintf</span><span class="S10">(</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S26">q&lt;{%s}&gt;</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">join</span><span class="S10">(</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S26">q&lt;,&gt;</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">map</span><span class="S0"> </span><span class="S5">sprintf</span><span class="S10">(</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S26">q&lt;%s:%s&gt;</span><span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S12">$self</span><span class="S10">-&gt;</span><span class="S11">quote_str</span><span class="S10">(</span><span class="S12">$_</span><span class="S10">),</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S12">$self</span><span class="S10">-&gt;</span><span class="S11">stringify</span><span class="S10">(</span><span class="S12">$hash</span><span class="S10">-&gt;{</span><span class="S12">$_</span><span class="S10">}),</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">),</span><span class="S0"> </span><span class="S5">sort</span><span class="S0"> </span><span class="S5">keys</span><span class="S0"> </span><span class="S14">%$hash</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">),</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">);</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S10">}</span><br />
+<span class="S0"></span></span>
+</div>
+<p>&nbsp;</p>]]>
+    </content>
+</entry>

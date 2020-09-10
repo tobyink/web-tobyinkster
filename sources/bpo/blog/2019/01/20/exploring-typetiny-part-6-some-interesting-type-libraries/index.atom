@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Exploring Type::Tiny Part 6: Some Interesting Type Libraries</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2019/01/exploring-typetiny-part-6-some-interesting-type-libraries.html"/>
+    <id>tag:blogs.perl.org,2019:/users/toby_inkster//1019.9135</id>
+
+    <published>2019-01-20T13:35:20Z</published>
+    <updated>2019-01-20T19:58:23Z</updated>
+
+    <summary> Type::Tiny is probably best known as a way of having Moose-like type constraints in Moo, but it can be used for so much more. This is the sixth in a series of posts showing other things you can use...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a> is probably best known as a way of having Moose-like type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, but it can be used for so much more. This is the sixth in a series of posts showing other things you can use Type::Tiny for. This article along with the earlier ones in the series can be found on <a href="http://blogs.perl.org/users/toby_inkster/" class="podlinkurl">my blog</a> and in the <a href="https://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl" class="podlinkurl">Cool Uses for Perl section of PerlMonks</a>.</p>
+		<p>While <a href="https://metacpan.org/pod/Types%3A%3AStandard" class="podlinkpod">Types::Standard</a> provides all the type constraints Moose users will be familiar with (and a few more) there are other type libraries you can use instead of or as well as Types::Standard.</p>
+]]>
+        <![CDATA[		<h2><span id="Types::Path::Tiny">Types::Path::Tiny</span></h2>
+		<p>If your attribute or parameter needs to accept a file or directory name, I'd strongly recommend using <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3APath%3A%3ATiny">Types::Path::Tiny</a>. It provides <code>Path</code>, <code>File</code>, and <code>Dir</code> types, plus <code>Abs*</code> versions of them which coerce given filenames into absolute paths. The <a class="podlinkpod" href="https://metacpan.org/pod/Path%3A%3ATiny">Path::Tiny</a> objects it coerces strings into provide a bunch of helpful methods for manipulating files.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp::Config</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Path::Tiny</span> <span class="words" style="color:#333;background-color:#ffc">qw(AbsFile)</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">JSON::MaybeXS</span> <span class="words" style="color:#333;background-color:#ffc">qw(decode_json)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">config_file</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">AbsFile</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">where</span><span class="structure">(</span><span class="literal" style="color:#909">q{ $_-&gt;basename =~ q/\.json$/ }</span><span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">coerce</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">get_hash</span> <span class="structure">{</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+         <span class="word">decode_json</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">config_file</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">slurp_utf8</span> <span class="structure">);</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span></pre>
+		<p>Nice? <a href="https://metacpan.org/pod/Types%3A%3APath%3A%3ATiny" class="podlinkpod">Types::Path::Tiny</a> is my personal favourite third-party type library. If you're writing an application that needs to deal with files, use it.</p>
+		<h2><span id="Types::Common::String_and_Types::Common::Numeric">Types::Common::String and Types::Common::Numeric</span></h2>
+		<p><a href="https://metacpan.org/pod/Types%3A%3ACommon%3A%3AString" class="podlinkpod">Types::Common::String</a> provides a bunch of type constraints more specific than the standard <code>Str</code> type. If you have indicated that an attribute or parameter should be a string, it's pretty rare that you really want to allow <i>any</i> string. You might want to constrain it more. This type library has types like <code>NonEmptyStr</code> and <code>UpperCaseStr</code>.</p>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ACommon%3A%3ANumeric">Types::Common::Numeric</a> does the same for numbers, giving you type constraints like <code>PositiveInt</code> and <code>IntRange[1,10]</code>.</p>
+		<p>Both of these libraries come bundled with <a href="https://metacpan.org/pod/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a>, so if you're already using Types::Standard, won't add any extra dependencies to your code.</p>
+		<h2><span id="Types::TypeTiny">Types::TypeTiny</span></h2>
+		<p>This is a type library created for Type::Tiny's internal use and gives you types like <code>ArrayLike</code>, <code>HashLike</code>, and <code>CodeLike</code> which allow overloaded objects.</p>
+		<p>Again it's bundled with Type::Tiny, so won't add any extra dependencies.</p>
+		<h2><span id="Types::DateTime">Types::DateTime</span></h2>
+		<p>A type library for <a class="podlinkpod" href="https://metacpan.org/pod/DateTime">DateTime</a> objects, allowing them to be coerced from strings.</p>
+		<pre class="highlighting-perl">   <span class="word">has</span> <span class="word">start_date</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">DateTimeUTC</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span></pre>
+		<p>The above will not only coerce the attribute to a DateTime object, but coerce it to the correct timezone.</p>
+]]>
+    </content>
+</entry>

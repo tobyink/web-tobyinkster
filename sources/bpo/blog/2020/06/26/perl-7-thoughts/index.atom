@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Perl 7 Thoughts</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/06/perl-7-thoughts.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9800</id>
+
+    <published>2020-06-26T10:44:32Z</published>
+    <updated>2020-06-26T11:25:13Z</updated>
+
+    <summary>Overall, I think the Perl 7 announcement is great news. I only have one small objection:...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="future" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="perl7" label="perl7" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Overall, I think the <a href="https://www.perl.com/article/announcing-perl-7/">Perl 7</a> announcement is great news.</p>
+
+<p>I only have one small objection:</p>
+]]>
+        <![CDATA[<p>One of the proposed changes is to remove</p>
+
+<blockquote><p><i>Perl 4-style prototype definitions (use <code>:prototype()</code> instead)</i></p></blockquote>
+
+<p>My objection to this is that <code>:prototype</code> was only introduced in Perl 5.20. Code using it won't work as expected on older versions of Perl.</p>
+
+<p>The wording of this proposed change mischaracterizes the older sub prototype syntax as something Perl-4-specific, whereas the reality is that up until Perl 5.20, it was <em>the way</em> to declare prototypes.</p>
+
+<p>This means that if I want my code to support Perl 7, I <em>need</em> to abandon Perl 5.18 and below, or jump through some fairly ugly hoops.</p>
+
+<p>I don't like that.</p>]]>
+    </content>
+</entry>

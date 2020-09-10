@@ -9,6 +9,14 @@ use Path::Iterator::Rule;
 use DBI;
 use Encode;
 
+sub dt {
+	my $str = shift;
+	$str =~ s/T/ /;
+	$str =~ s/Z//;
+	$str =~ s/[+].*//;
+	$str;
+}
+
 my $dbh    = DBI->connect('DBI:mysql:database=tobyinkwp', 'tobyinkwp', 'tobyinkwp');
 my $prefix = 'wp_';
 
@@ -50,9 +58,12 @@ INSERT INTO ${prefix}posts (
 	comment_count,
 	comment_status,
 	ping_status,
-	guid
+	guid,
+	to_ping,
+	pinged,
+	post_content_filtered
 )
-VALUES ( 1, ?, ?, ?, ?, ?, 'publish', ?, ?, ?, 'post', 0, 'closed', 'closed', ? )
+VALUES ( 1, ?, ?, ?, ?, ?, 'publish', ?, ?, ?, 'post', 0, 'closed', 'closed', ?, '', '', '' )
 SQL
 
 my %tags;
@@ -103,20 +114,16 @@ while ( defined( my $_file = $iter->() ) ) {
 		$num_id = $row->[0];
 	}
 	
-	if ($slug eq 'mooxpression-now-much-faster') {
-		say $entry->title;
-	}
-
 	if ( defined $num_id ) {
 		$sth_post_update->execute(
-			$entry->published,
-			$entry->published,
+			dt($entry->published),
+			dt($entry->published),
 			$entry->content->body,
 			$entry->title,
 			$entry->summary // '',
 			$slug,
-			$entry->updated,
-			$entry->updated,
+			dt($entry->updated),
+			dt($entry->updated),
 			$entry->id
 		);
 		
@@ -124,14 +131,14 @@ while ( defined( my $_file = $iter->() ) ) {
 	}
 	else {
 		$sth_post_insert->execute(
-			$entry->published,
-			$entry->published,
+			dt($entry->published),
+			dt($entry->published),
 			$entry->content->body,
 			$entry->title,
 			$entry->summary // '',
 			$slug,
-			$entry->updated,
-			$entry->updated,
+			dt($entry->updated),
+			dt($entry->updated),
 			$entry->id
 		);
 		$sth_post_select->execute( $entry->id );
@@ -140,10 +147,9 @@ while ( defined( my $_file = $iter->() ) ) {
 		}
 		
 		say "INSERTED POST $num_id ENTRY ", $entry->id;
-		say $entry->link;
 	}
 	
-	my @tags;
+	my @tags = map { $_->label or $_->term } $entry->categories;
 	do {
 		my $kind = 5;
 		if ( $entry->id =~ /ilovecbeebies/ ) {
@@ -152,8 +158,11 @@ while ( defined( my $_file = $iter->() ) ) {
 		elsif ( $entry->id =~ /blogs.perl.org/ ) {
 			push @tags, 'perl';
 			$kind = 3;
-		}	
-		$dbh->do("DELETE FROM ${prefix}term_relationships WHERE object_id=${num_id} AND term_taxonomy_id IN (3,4,5)");
+		}
+		elsif ( "@tags" =~ /recipes/i ) {
+			$kind = 313;
+		}
+		$dbh->do("DELETE FROM ${prefix}term_relationships WHERE object_id=${num_id} AND term_taxonomy_id IN (3,4,5,313)");
 		$dbh->do("INSERT INTO ${prefix}term_relationships VALUES (${num_id}, ${kind}, 0)");
 		say " - updated category";
 	};
@@ -175,8 +184,6 @@ while ( defined( my $_file = $iter->() ) ) {
 			say sprintf(" - %s link to %s", $is_update ? 'updated' : 'inserted', $links[0]->href );
 		}
 	}
-	
-	push @tags, map { $_->label or $_->term } $entry->categories;
 	
 	if (@tags) {
 		my $sth_tag_select = $dbh->prepare("SELECT * FROM ${prefix}term_relationships WHERE object_id=? AND term_taxonomy_id=?");

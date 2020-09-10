@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Feedback sought</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2019/11/feedback-sought.html"/>
+    <id>tag:blogs.perl.org,2019:/users/toby_inkster//1019.9539</id>
+
+    <published>2019-11-24T11:22:21Z</published>
+    <updated>2019-11-24T11:23:06Z</updated>
+
+    <summary>I've been trying to update the docs for Type::Tiny and want feedback. Is there anything that's hard to understand, or needs explaining more? New version Old version In particular, it's Type::Tiny::Manual and the other pod pages in that namespace that...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="pod" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>I've been trying to update the docs for Type::Tiny and want feedback. Is there anything that's hard to understand, or needs explaining more?</p>
+
+<ul>
+<li><a href="https://metacpan.org/release/TOBYINK/Type-Tiny-1.007_001">New version</a></li>
+<li><a href="https://metacpan.org/release/TOBYINK/Type-Tiny-1.006000">Old version</a></li>
+</ul>
+
+<p>In particular, it's Type::Tiny::Manual and the other pod pages in that namespace that I'm working on.</p> ]]>
+        
+    </content>
+</entry>

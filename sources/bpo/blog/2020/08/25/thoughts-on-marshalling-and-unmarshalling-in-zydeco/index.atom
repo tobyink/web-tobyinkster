@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Thoughts on Marshalling and Unmarshalling in Zydeco</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/08/thoughts-on-marshalling-and-unmarshalling-in-zydeco.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9859</id>
+
+    <published>2020-08-25T19:35:40Z</published>
+    <updated>2020-08-25T20:01:10Z</updated>
+
+    <summary>Prompted by a recent question on PerlMonks, I've been thinking a bit recently on marshalling and unmarshalling Perl objects. If you're happy using Data::Dumper's format, then it's trivial, but today we're looking at JSON. If you just want to encode...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="JSON" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Zydeco" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="json" label="JSON" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="zydeco" label="Zydeco" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Prompted by a <a href="https://www.perlmonks.org/?node_id=11120920">recent question on PerlMonks</a>, I've been thinking a bit recently on <a href="https://en.wikipedia.org/wiki/Marshalling_(computer_science)">marshalling and unmarshalling</a> Perl objects. If you're happy using Data::Dumper's format, then it's trivial, but today we're looking at JSON.</p>
+
+<p>If you just want to encode your objects as JSON, that's very easy. Just add a <code>TO_JSON</code> method to all your classes. This can be done in a role to eliminate duplication, and in most cases can be as simple as:</p>
+
+<script src="https://gist.github.com/tobyink/7ea39e266d4d78410ffff0b167c97a02.js"></script>
+
+<p>The difficulty comes in going the other direction.</p>
+]]>
+        <![CDATA[<p>Here's a quick example using Zydeco to encode a basic object with a couple of nested objects in JSON and fail at decoding it:</p>
+
+<script src="https://gist.github.com/tobyink/0779d230469d23cf5ce61be580e4eaca.js"></script>
+
+<p>The script output is shown in the <code>__END__</code> section.</p>
+
+<p>So what goes wrong? When we attempt to decode the JSON, the <b>Farm</b> class complains that for the <b>fields</b> attribute, you're passing it an arrayref of hashrefs instead of an arrayref of <b>Field</b> objects.</p>
+
+<p>This is pretty easy to solve. We just need to define a coercion from <b>ArrayRef[HashRef]</b> to <b>ArrayRef[Field]</b>. Because Types::Standard is somewhat smart about coercions, it is sufficient to define a coercion from <b>HashRef</b> to <b>Field</b> and let Types::Standard worry about the rest.</p>
+
+<script src="https://gist.github.com/tobyink/6284dd65465c6020bf05cbc1706ca440.js"></script>
+
+<p>Hooray! It works!</p>
+
+<p>Here's a final example showing some more advanced features for object creation, coercion, marshalling, and unmarshalling.</p>
+
+<script src="https://gist.github.com/tobyink/3938d34843bee2e9058d4f730b85b5d3.js"></script>]]>
+    </content>
+</entry>

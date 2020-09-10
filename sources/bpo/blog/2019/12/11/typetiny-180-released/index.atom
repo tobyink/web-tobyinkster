@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Type::Tiny 1.8.0 released</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2019/12/typetiny-180-released.html"/>
+    <id>tag:blogs.perl.org,2019:/users/toby_inkster//1019.9564</id>
+
+    <published>2019-12-11T08:14:22Z</published>
+    <updated>2020-04-11T07:59:34Z</updated>
+
+    <summary>Type::Tiny 1.8.0 (1.008000) was released today. Type::Tiny 1.8.0 on MetaCPAN Type::Tiny website (NEW!) The new features are pretty minor. Most of the improvements are in documentation and testing. Totally rewritten manual/tutorial. Every issue on RT has been handled. Bigger test...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Type::Tiny 1.8.0 (1.008000) was released today.</p>
+<ul>
+<li><a href="https://metacpan.org/release/TOBYINK/Type-Tiny-1.008000">Type::Tiny 1.8.0 on MetaCPAN</a></li>
+<li><a href="http://typetiny.toby.ink/">Type::Tiny website</a> (NEW!)</li>
+</ul>
+
+<p>The new features are pretty minor. Most of the improvements are in documentation and testing.</p>
+<ul>
+<li><p>Totally rewritten manual/tutorial.</p></li>
+<li><p>Every issue on RT has been handled.</p></li>
+<li><p>Bigger test suite. The exact number of tests run varies based on the availability of optional dependencies, but I just ran the test suite with EXTENDED_TESTING set to false and most of the optional dependencies installed, and it was nearly 7500 tests, compared to just over 2700 for Type::Tiny 1.6.0. With EXTENDED_TESTING true, there are nearly 13900 tests.</p><p>This includes <a href="https://github.com/tobyink/p5-type-tiny/tree/master/t/21-types">a set of tests for each built-in type</a> which are intended to function both as test cases and advanced documentation.</p></li>
+</ul>]]>
+        
+    </content>
+</entry>

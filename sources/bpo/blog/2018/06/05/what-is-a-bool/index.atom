@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>What is a Bool?</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2018/06/what-is-a-bool.html"/>
+    <id>tag:blogs.perl.org,2018:/users/toby_inkster//1019.8724</id>
+
+    <published>2018-06-05T11:28:11Z</published>
+    <updated>2018-06-07T09:16:20Z</updated>
+
+    <summary>Perl allows pretty much any value to be evaluated in a boolean context: if ($something) { ... } No matter what $something is, it will safely evaluate to either true or false. (With the exceptions of a few edge cases...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Perl allows pretty much any value to be evaluated in a boolean context:</p>
+
+<pre><code>if ($something) {
+   ...
+}</code></pre>
+
+<p>No matter what <code>$something</code> is, it will safely evaluate to either true or false. (With the exceptions of a few edge cases like blessed objects which are overloaded to throw an error when evaluated as booleans.)</p>
+
+<p>So when a Moose class does something like this, what does it mean?</p>
+
+<pre><code>has something => (
+   is  => 'ro',
+   isa => 'Bool',
+);</code></pre>
+]]>
+        <![CDATA[<p>If absolutely any value could work when <code>$self->something</code> was accessed in boolean context, then what need is there to check what value is passed to the constructor? Should <code>Bool</code> basically be the same as <code>Any</code>, just spelled differently for documentation purposes?</p>
+
+<p>So what does Moose do? The documentation says:</p>
+<blockquote><p>Bool accepts 1 for true, and undef, 0, or the empty string as false.</p></blockquote>
+<p>However, that's not the full story. Blessed objects which overload stringification are accepted, but only if the stringification returns the strings "0", "1", or the empty string <em>at the time the type constraint is checked</em>. If the object stringifies to something else, but also overloads boolification sensibly, then too bad. Of course when you write <code>if ($self->something)</code> it's the boolification overloading which matters, but Moose only checks the stringification overloading.</p>
+<p>Moose's support for objects that overload stringification as booleans is not explicitly documented, nor is it covered at all by the Moose test suite.</p>
+
+<p>What does Mouse do? Well, that's even weirder. It mostly follows Moose's <em>documented</em> behaviour. It accepts "1" for true, and "0", undef, and the empty string for false. But also, it accepts objects overloading boolification <strong>for false</strong>. Yes, that's right — if you overload boolification to return true, it will fail the type check. Overload it to return false, and you're golden!</p>
+
+<p>So where does this leave my module Types::Standard? Well, the pure Perl implementation follows what Moose does, and the (optional) XS implementation is forked from Mouse.</p>
+
+<p>For the latest release of the XS version, I've dropped support for objects which overload boolification to return false, bringing it in line with Moose's documented behaviour. I plan for the pure Perl implementation to also follow suit, dropping support for objects which overload stringification to return a boolean value.</p>
+
+<p>If you need support for objects overloading boolification, a quick workaround is this:</p>
+<pre><code>has something => (
+   is  => 'ro',
+   isa => 'Any', # Bool
+);</code></pre>
+
+<p>Or use coercions (example uses Types::Standard):</p>
+
+<pre><code>has something => (
+   is     => 'ro',
+   isa    => Bool->plus_coercions(Any, q{ !!$_ }),
+   coerce => 1,
+);</code></pre>
+
+<p>In the case of read-only attributes, I happen to believe accepting a blessed object as a boolean value could be harmful. The contents of the object could later change, changing the value from true to false, or vice versa, despite its read-onlyness.</p>]]>
+    </content>
+</entry>

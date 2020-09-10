@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Announcing MooX::Pression</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/01/announcing-mooxpression.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9641</id>
+
+    <published>2020-01-25T10:01:24Z</published>
+    <updated>2020-01-25T11:01:23Z</updated>
+
+    <summary>Kind of like Moops but with less hacky parsing....</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Kind of like Moops but with less hacky parsing.</p>
+<script src="https://gist.github.com/tobyink/869df8f4f5a7da75e36703611b612984.js"></script>]]>
+        <![CDATA[<p>Alternative implementation for the Geometry example:</p>
+<script src="https://gist.github.com/tobyink/a344036f559b4336ceca0f30aacc281c.js"></script>]]>
+    </content>
+</entry>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Announcing MooX::Press</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2019/10/announcing-mooxpress.html"/>
+    <id>tag:blogs.perl.org,2019:/users/toby_inkster//1019.9481</id>
+
+    <published>2019-10-25T12:30:13Z</published>
+    <updated>2019-10-25T12:32:32Z</updated>
+
+    <summary><![CDATA[ MooX::Press is a quick way of building a bunch of Moo roles and classes in one use statement. The most basic example would be: package MyApp { use MooX::Press class =&gt; ['Foo', 'Bar']; } my $thing1 = MyApp::Foo-&gt;new(); my...]]></summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="roles" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moose" label="Moose" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpress" label="MooX-Press" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p>MooX::Press is a quick way of building a bunch of Moo roles and classes in one <code>use</code> statement.</p>
+		<p>The most basic example would be:</p>
+		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp</span> <span class="structure">{</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooX::Press</span> <span class="word">class</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="single" style="color:#909">'Foo'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="single" style="color:#909">'Bar'</span><span class="structure">];</span>
+  <span class="structure">}</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$thing1</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">MyApp::Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">();</span>
+  <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$thing2</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">MyApp</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new_foo</span><span class="structure">();</span>   <span class="comment" style="color:#060;font-style:italic"># alternative constructor</span></pre>
+		<p>But do-nothing classes with a constructor and nothing else aren't very exciting. Let's define a class with some subclasses which have attributes and roles and methods and stuff.</p>
+]]>
+        <![CDATA[		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp::Zoo</span><span class="structure">;</span>
+  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooX::Press</span> <span class="structure">(</span>
+    <span class="word">role</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+      <span class="single" style="color:#909">'Aquatic'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+        <span class="word">can</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+          <span class="word">swim</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="word">print</span> <span class="double" style="color:#909">"swimming\n"</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="single" style="color:#909">'Flight'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="word">class</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+      <span class="single" style="color:#909">'Animal'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+        <span class="word">has</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw( $name $colour $age )</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="word">subclass</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+          <span class="single" style="color:#909">'Fish'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+            <span class="word">with</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Aquatic'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+            <span class="word">subclass</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="words" style="color:#333;background-color:#ffc">qw( Shark Ray )</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="single" style="color:#909">'Bird'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="word">with</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Flight'</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="single" style="color:#909">'Mammal'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span>
+            <span class="word">subclass</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span>
+              <span class="words" style="color:#333;background-color:#ffc">qw( Panda Goat )</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+              <span class="single" style="color:#909">'Kangaroo'</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="word">can</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span> <span class="word">jump</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="operator" style="color:#000;font-weight:bold">...</span> <span class="structure">}</span> <span class="structure">]</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+              <span class="single" style="color:#909">'Dolphin'</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="word">with</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Aquatic'</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+              <span class="single" style="color:#909">'Bat'</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">{</span> <span class="word">with</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Flight'</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+            <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+          <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+        <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+  <span class="structure">);</span></pre>
+		<p>The above code just defined the following roles:</p>
+		<ul>
+			<li>MyApp::Zoo::Aquatic</li>
+			<li>MyApp::Zoo::Flight</li>
+		</ul>
+		<p>And the following classes:</p>
+		<ul>
+			<li>MyApp::Zoo::Animal</li>
+			<li>MyApp::Zoo::Fish</li>
+			<li>MyApp::Zoo::Shark</li>
+			<li>MyApp::Zoo::Ray</li>
+			<li>MyApp::Zoo::Bird</li>
+			<li>MyApp::Zoo::Mammal</li>
+			<li>MyApp::Zoo::Panda</li>
+			<li>MyApp::Zoo::Goat</li>
+			<li>MyApp::Zoo::Kangaroo</li>
+			<li>MyApp::Zoo::Dolphin</li>
+			<li>MyApp::Zoo::Bat</li>
+		</ul>
+		<p>All with the appropriate attributes and roles applied to them.</p>
+		<p>Also, it defined a package called MyApp::Zoo::Types with class and role type constraints already set up.</p>
+		<p>So you can do:</p>
+		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Zoo::Types</span> <span class="words" style="color:#333;background-color:#ffc">qw(Kangaroo)</span><span class="structure">;</span>
+  
+  <span class="word">has</span> <span class="word">mascot</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span><span class="word">is</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Kangaroo</span><span class="structure">);</span></pre>
+		<p>Or:</p>
+		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Zoo::Types</span> <span class="words" style="color:#333;background-color:#ffc">qw(is_Kangaroo)</span><span class="structure">;</span>
+  
+  <span class="symbol" style="color:#333;background-color:#fcc">$thing</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">jump</span> <span class="word">if</span> <span class="word">is_Kangaroo</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$thing</span><span class="structure">);</span></pre>
+		<p>Here's some more code using our zoo classes...</p>
+		<pre class="highlighting-perl">  <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Zoo</span> <span class="structure">();</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">MyApp::Zoo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new_shark</span><span class="structure">(</span><span class="word">name</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'Lenny'</span><span class="structure">);</span>
+  <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">isa</span><span class="structure">(</span><span class="single" style="color:#909">'MyApp::Zoo::Shark'</span><span class="structure">);</span>    <span class="comment" style="color:#060;font-style:italic"># true</span>
+  <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">isa</span><span class="structure">(</span><span class="single" style="color:#909">'MyApp::Zoo::Fish'</span><span class="structure">);</span>     <span class="comment" style="color:#060;font-style:italic"># true</span>
+  <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">isa</span><span class="structure">(</span><span class="single" style="color:#909">'MyApp::Zoo::Animal'</span><span class="structure">);</span>   <span class="comment" style="color:#060;font-style:italic"># true</span>
+  <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">does</span><span class="structure">(</span><span class="single" style="color:#909">'MyApp::Zoo::Aquatic'</span><span class="structure">);</span> <span class="comment" style="color:#060;font-style:italic"># true</span>
+  <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">can</span><span class="structure">(</span><span class="single" style="color:#909">'swim'</span><span class="structure">);</span>                 <span class="comment" style="color:#060;font-style:italic"># true</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyApp::Zoo::Enclosure::Tank</span> <span class="structure">{</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef)</span><span class="structure">;</span>
+    <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MyApp::Zoo::Types</span> <span class="words" style="color:#333;background-color:#ffc">qw(Aquatic)</span><span class="structure">;</span>
+    <span class="word">has</span> <span class="word">animals</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'rw'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Aquatic</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+    <span class="structure">);</span>
+  <span class="structure">}</span>
+  
+  <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$tank</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">MyApp::Zoo::Enclosure::Tank</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span>
+    <span class="word">animals</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span> <span class="symbol" style="color:#333;background-color:#fcc">$lenny</span> <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+  <span class="structure">);</span></pre>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/MooX%3A%3APress">MooX::Press</a> is on CPAN.</p>
+]]>
+    </content>
+</entry>

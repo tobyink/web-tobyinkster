@@ -26,4 +26,4 @@ load-bpo:
 load-ilovecbeebies:
 	./loaders/ilovecbeebies.pl
 
-load: load-bpo load-ilovecbeebies
+load: load-bpo

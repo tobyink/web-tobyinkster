@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Exploring Type::Tiny Part 3: Using Type::Tie</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-3-using-typetie.html"/>
+    <id>tag:blogs.perl.org,2018:/users/toby_inkster//1019.8853</id>
+
+    <published>2018-08-08T16:54:19Z</published>
+    <updated>2018-08-08T16:59:49Z</updated>
+
+    <summary> Type::Tiny is probably best known as a way of having Moose-like type constraints in Moo, but it can be used for so much more. This is the third in a series of posts showing other things you can use...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetie" label="Type-Tie" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a> is probably best known as a way of having Moose-like type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, but it can be used for so much more. This is the third in a series of posts showing other things you can use Type::Tiny for. This article along with <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/07/exploring-typetiny-part-1-using-typeparams-for-validating-function-parameters.html">part 1</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-2-using-typetiny-with-moose.html">part 2</a> can be found on <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/">my blog</a> and in the <a class="podlinkurl" href="https://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl">Cool Uses for Perl section of PerlMonks</a>.</p>
+		<p>This works:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   
+   <span class="word">tie</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Int</span><span class="structure">);</span>
+   
+   <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">3</span><span class="structure">;</span>     <span class="comment" style="color:#060;font-style:italic"># ok</span>
+   <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"four"</span><span class="structure">;</span>      <span class="comment" style="color:#060;font-style:italic"># dies</span></pre>
+		<p>Well, if you try it, you may find it complains about not being able to load <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATie">Type::Tie</a>.</p>
+		<p>Type::Tie is an add-on for Type::Tiny distributed separately. It's an optional dependency, so if you want to use this feature, you'll need to make sure it's installed.</p>]]>
+        <![CDATA[
+		<h2><span id="Coercions">Coercions</span></h2>
+		<p>This tie feature automatically supports coercions.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int Num)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$RoundedInt</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Int</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span> <span class="word">Num</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="single" style="color:#909">'int $_'</span> <span class="structure">);</span> 
+   <span class="word">tie</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$RoundedInt</span><span class="structure">);</span>
+   
+   <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">3</span><span class="structure">;</span>     <span class="comment" style="color:#060;font-style:italic"># ok</span>
+   <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="float">4.2</span><span class="structure">;</span>         <span class="comment" style="color:#060;font-style:italic"># rounded to 4</span>
+   <span class="word">push</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"five"</span><span class="structure">;</span>      <span class="comment" style="color:#060;font-style:italic"># dies</span></pre>
+		<h2><span id="More_about_Type::Tie">More about Type::Tie</span></h2>
+		<p>Type::Tie is designed to be pretty independent of Type::Tiny. You can use it with <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3ATypes">MooseX::Types</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Mouse%3A%3ATypes">Mouse::Types</a>, and <a class="podlinkpod" href="https://metacpan.org/pod/Specio">Specio</a>, and it also bundles its own nanoscale type constraint library <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ANano">Type::Nano</a>.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Tie</span> <span class="words" style="color:#333;background-color:#ffc">qw()</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooseX::Types::Moose</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   
+   <span class="word">tie</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"Type::Tie::ARRAY"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Int</span><span class="structure">);</span></pre>
+		<p>To save yourself typing "Type::Tie::ARRAY", "Type::Tie::HASH", and "Type::Tie::SCALAR" all the time, Type::Tie offers a convenience function <code>ttie</code>:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Tie</span> <span class="words" style="color:#333;background-color:#ffc">qw(ttie)</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooseX::Types::Moose</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   
+   <span class="word">ttie</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@numbers</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Int</span><span class="structure">);</span></pre>
+		<h2><span id="Use_in_Attributes">Use in Attributes</span></h2>
+		<p>Perl has a type checking hole thanks to references:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.16</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef Int)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">3</span><span class="structure">]</span> <span class="structure">);</span>
+   
+   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">numbers</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"hi"</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># this is allowed</span></pre>
+		<p>The type constraint is only checked in the constructor and in writers/accessors.</p>
+		<p>Tying the array allows you to perform type checks and coercions on any new elements added to the array. It's a use for <code>trigger</code> that doesn't suck!</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.16</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Foo</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moo</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef Int)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">required</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">trigger</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="word">tie</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="structure">]}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Int</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">new</span><span class="structure">(</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">2</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="number" style="color:#39C">3</span><span class="structure">]</span> <span class="structure">);</span>
+   
+   <span class="word">push</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$foo</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">numbers</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="double" style="color:#909">"hi"</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># dies</span></pre>
+		<p>With a little bit of work (okay, a lot!) it should be possible to even check deeply nested structures.</p>
+		<h2><span id="Performance">Performance</span></h2>
+		<p>While effort has been made to optimize Type::Tie, tied variables are necessarily slower than untied ones.</p>
+		<p>If you have an array you want to make sure only contains integers, but you don't want to compromise on performance, you could enable the tie only when you run your test suite, and trust that your test suite will be enough to trigger any potential errors.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Devel::StrictMode</span> <span class="words" style="color:#333;background-color:#ffc">qw(STRICT)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">@array_of_ints</span><span class="structure">;</span>
+   <span class="word">tie</span> <span class="symbol" style="color:#333;background-color:#fcc">@array_of_ints</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">Int</span> <span class="word">if</span> <span class="word">STRICT</span><span class="structure">;</span>
+   
+   <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>   <span class="comment" style="color:#060;font-style:italic"># do stuff here</span></pre>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Devel%3A%3AStrictMode">Devel::StrictMode</a> is a module which exports a constant called <code>STRICT</code> which will be true if the PERL_STRICT, EXTENDED_TESTING, RELEASE_TESTING, or AUTHOR_TESTING environment variables is true, and false otherwise.</p>
+]]>
+    </content>
+</entry>

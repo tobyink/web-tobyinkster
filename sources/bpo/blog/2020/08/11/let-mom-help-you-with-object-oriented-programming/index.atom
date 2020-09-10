@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Let Mom Help You With Object-Oriented Programming</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/08/let-mom-help-you-with-object-oriented-programming.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9847</id>
+
+    <published>2020-08-11T18:07:16Z</published>
+    <updated>2020-08-11T18:19:14Z</updated>
+
+    <summary>Mom is a shortcut for creating Moo classes (and roles). It allows you to define a Moo class with the brevity of Class::Tiny. (In fact, Mom is even briefer.) A simple example:...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="classtiny" label="Class-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="moo" label="Moo" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpress" label="MooX-Press" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="oop" label="OOP" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p><a href="https://metacpan.org/release/Mom">Mom</a> is a shortcut for creating <a href="https://metacpan.org/release/Moo">Moo</a> classes (and roles). It allows you to define a Moo class with the brevity of <a href="https://metacpan.org/release/Class-Tiny">Class::Tiny</a>. (In fact, Mom is even briefer.)</p>
+
+<p>A simple example:</p>
+
+<script src="https://gist.github.com/tobyink/290173a852426572dced6e4f3324d313.js"></script>]]>
+        <![CDATA[<p>Mom allows you to use Moo features beyond simply declaring Class::Tiny-like attributes though. You can choose whether attributes are read-only, read-write, or read-write-private, whether they're required or optional, specify type constraints, defaults, etc.</p>
+
+<p>An example using just some of these features:</p>
+
+<script src="https://gist.github.com/tobyink/e8b45e4a59693273fa73b6950f953f4c.js"></script>
+
+<p>If even that isn't enough, Mom exports all the standard Moo <code>has</code>, <code>with</code>, etc keywords, so there's no need to choose between Mom and Moo.</p>]]>
+    </content>
+</entry>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Increasing Perl's Visibility</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/02/increasing-perls-visibility.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9652</id>
+
+    <published>2020-02-07T16:41:55Z</published>
+    <updated>2020-02-07T17:09:35Z</updated>
+
+    <summary>Perl has some really great community websites. But a drawback to this is that the Perl community is centred around a few domain names, which means that it isn't as visible as some other languages. Most projects use github for...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Perl has some really great community websites. But a drawback to this is that the Perl community is centred around a few domain names, which means that it isn't as visible as some other languages. Most projects use github for development and CPAN for distribution, and outside those sites, they don't have much online presence.</p>
+<p>One thing I think might help spread Perl around the web would be if different Perl projects had their own websites.</p>
+]]>
+        <![CDATA[<p>I've started one for Type::Tiny. It's here:</p>
+
+<p><a href="http://typetiny.toby.ink/">http://typetiny.toby.ink/</a></p>
+
+<p>It's basically just the Type::Tiny documentation, presented nicely, and in a better reading order than MetaCPAN presents. Wasn't a whole lot of work to put together.</p>
+
+<p>Now, this is hardly the first Perl project to have its own website. Mojolicious has one. (A really good one!) So does Plack, Dancer, DBI, and Dist::Zilla. Catalyst has one, though the "copyright 2012" at the bottom probably doesn't inspire confidence in people looking for a modern web framework. Moose used to have a website but it currently redirects to MetaCPAN.</p>
+
+<p>But it would be nice if some more of the popular Perl projects got their own websites. Smaller projects too!</p>
+
+<p>If you like the idea but you're feeling lazy, feel free to use <a href="https://github.com/tobyink/web-typetiny">the Type::Tiny website's repo</a> as a starting off point. But, you know...</p>
+
+<img alt="change it up a bit so it doesn't look too obvious" src="http://blogs.perl.org/users/toby_inkster/1525c075bebb758357758301380.jpg" style="width:100%;height:auto" />]]>
+    </content>
+</entry>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Exploring Type::Tiny Part 4: Using Types::Standard as a Ref::Util-Like Library</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-4-using-typesstandard-as-a-refutil-like-library.html"/>
+    <id>tag:blogs.perl.org,2018:/users/toby_inkster//1019.8862</id>
+
+    <published>2018-08-12T15:01:45Z</published>
+    <updated>2018-08-12T15:03:11Z</updated>
+
+    <summary> Type::Tiny is probably best known as a way of having Moose-like type constraints in Moo, but it can be used for so much more. This is the third in a series of posts showing other things you can use...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a> is probably best known as a way of having Moose-like type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, but it can be used for so much more. This is the third in a series of posts showing other things you can use Type::Tiny for. This article along with <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/07/exploring-typetiny-part-1-using-typeparams-for-validating-function-parameters.html">part 1</a>, <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-2-using-typetiny-with-moose.html">part 2</a>, and <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-3-using-typetie.html">part 3</a> can be found on <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/">my blog</a> and in the <a class="podlinkurl" href="https://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl">Cool Uses for Perl section of PerlMonks</a>.</p>
+		<p>Even if you read the documentation of <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AStandard">Types::Standard</a> pretty thoroughly, you'd probably miss that you can do things like this:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(is_ArrayRef is_HashRef)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="word">is_ArrayRef</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   <span class="keyword" style="color:#009;font-weight:bold">elsif</span> <span class="structure">(</span><span class="word">is_HashRef</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>It is documented that Types::Standard exports functions called <code>ArrayRef</code> and <code>HashRef</code>, which are constant-like functions returning Moose/Moo-compatible type constraint objects, but where did these <code>is_ArrayRef</code> and <code>is_HashRef</code> functions come from?</p>
+]]>
+        <![CDATA[		<p>Well, their existence is documented in <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ALibrary">Type::Library</a>, the type library base class used by Types::Standard. Any type library built with it will offer <code>is_*</code> variants of type constraints. These functions check their argument and return a boolean indicating whether it passes the type constraint.</p>
+		<p>The object-oriented way of writing these checks is like this:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef HashRef)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="word">ArrayRef</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">check</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   <span class="keyword" style="color:#009;font-weight:bold">elsif</span> <span class="structure">(</span><span class="word">HashRef</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">check</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>Though the object-oriented way is a little slower because it will result in at least three sub calls (including a method call).</p>
+		<p>The <code>is_*</code> functions should be pretty darn fast, especially if <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny%3A%3AXS">Type::Tiny::XS</a> is installed. <a class="podlinkpod" href="https://metacpan.org/pod/Ref%3A%3AUtil%3A%3AXS">Ref::Util::XS</a> is faster, and <a class="podlinkpod" href="https://metacpan.org/pod/Params%3A%3AUtil">Params::Util</a> is <i>sometimes</i> faster, but using Type::Library-based type libraries (such as <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AStandard">Types::Standard</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ACommon%3A%3ANumeric">Types::Common::Numeric</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ACommon%3A%3AString">Types::Common::String</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3APath%3A%3ATiny">Types::Path::Tiny</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AXSD">Types::XSD</a>, etc) will give you a richer selection of types that you can check.</p>
+		<h2><span id="Assertions">Assertions</span></h2>
+		<p>A common use for type checking functions is to do something like:</p>
+		<pre class="highlighting-perl">   <span class="word">is_ArrayRef</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">or</span> <span class="word">die</span><span class="structure">(</span><span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">);</span></pre>
+		<p>Type::Library-based type libraries offer a shortcut for this:</p>
+		<pre class="highlighting-perl">   <span class="word">assert_ArrayRef</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">);</span></pre>
+		<p>The return value of the <code>assert_*</code> functions (if they don't die) is the parameter you passed to them, which makes it convenient to do things like:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(assert_Object assert_ArrayRef)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">process_data</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span>  <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">assert_Object</span><span class="structure">(</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">0</span><span class="structure">]</span> <span class="structure">);</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$data</span>  <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">assert_ArrayRef</span><span class="structure">(</span> <span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">[</span><span class="number" style="color:#39C">1</span><span class="structure">]</span> <span class="structure">);</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>The object-oriented equivalent of <code>assert_Object($thing)</code> is <code>Object-&gt;assert_return($thing)</code>. Due to overloading <code>Object-&gt;($thing)</code> will also work.</p>
+		<h2><span id="Coercions">Coercions</span></h2>
+		<p>If a type constraint has coercions (like <code>Path</code> from <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3APath%3A%3ATiny">Types::Path::Tiny</a>), there's also a <code>to_*</code> function:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Path::Tiny</span> <span class="words" style="color:#333;background-color:#ffc">qw( to_Path )</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$path</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">to_Path</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$thing</span><span class="structure">);</span></pre>
+		<p>Note that if a coercion fails, there is no exception thrown, and the original value is passed through unaltered. If you want to make sure coercion succeeded:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Path::Tiny</span> <span class="words" style="color:#333;background-color:#ffc">qw( assert_Path to_Path )</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$path</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">assert_Path</span><span class="structure">(</span> <span class="word">to_Path</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$thing</span><span class="structure">)</span> <span class="structure">);</span></pre>
+		<p>The object-oriented equivalent of <code>to_Path($thing)</code> is <code>Path-&gt;coerce($thing)</code>. The object-oriented equivalent of <code>assert_Path(to_Path($thing))</code> is <code>Path-&gt;assert_coerce($thing)</code>.</p>
+		<h2><span id="Parameterized_Types">Parameterized Types</span></h2>
+		<p>It would be pretty cool if you could do:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="word">is_ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">](</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<p>But that wouldn't be syntactically valid Perl.</p>
+		<p>You can do this though:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef Int)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">BEGIN</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">ArrayRef</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">of</span><span class="structure">(</span><span class="word">Int</span><span class="structure">);</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">*is_ArrayRef_of_Int</span>     <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">compiled_check</span><span class="structure">;</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">*assert_ArrayRef_of_Int</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="cast" style="color:#f00;font-weight:bold">\&amp;</span><span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span> <span class="structure">};</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">*to_ArrayRef_of_Int</span>     <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">coerce</span><span class="structure">(</span><span class="magic" style="color:#900;font-weight:bold">@_</span><span class="structure">)</span> <span class="structure">};</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">if</span> <span class="structure">(</span><span class="word">is_ArrayRef_of_Int</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$var</span><span class="structure">))</span> <span class="structure">{</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span></pre>
+		<h2><span id="Exporting_Tricks">Exporting Tricks</span></h2>
+		<p>To export just <code>Object</code>:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Object)</span><span class="structure">;</span></pre>
+		<p>To export just <code>is_Object</code>:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(is_Object)</span><span class="structure">;</span></pre>
+		<p>To export <code>Object</code> and <code>is_Object</code>:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Object is_Object)</span><span class="structure">;</span></pre>
+		<p>To export <code>Object</code> and all related functions (<code>is_Object</code>, <code>assert_Object</code>, and <code>to_Object</code>):</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(+Object)</span><span class="structure">;</span></pre>
+		<p>To export <code>Object</code>, <code>ArrayRef</code>, and all the other types:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(:types)</span><span class="structure">;</span></pre>
+		<p>To export <code>Object</code>, <code>ArrayRef</code>, all the other types, and the related <code>is_*</code> functions:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(:types :is)</span><span class="structure">;</span></pre>
+		<p>To export <code>Object</code>, <code>ArrayRef</code>, all the other types, and the related <code>is_*</code>, <code>assert_*</code>, and <code>to_*</code> functions:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(:types :is :assert :to)</span><span class="structure">;</span></pre>
+]]>
+    </content>
+</entry>

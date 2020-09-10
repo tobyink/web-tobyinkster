@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Exploring Type::Tiny Part 2: Using Type::Tiny with Moose</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2018/08/exploring-typetiny-part-2-using-typetiny-with-moose.html"/>
+    <id>tag:blogs.perl.org,2018:/users/toby_inkster//1019.8848</id>
+
+    <published>2018-08-04T14:01:45Z</published>
+    <updated>2018-08-06T07:42:31Z</updated>
+
+    <summary> Type::Tiny is probably best known as a way of having Moose-like type constraints in Moo, but it can be used for so much more. This is the second in a series of posts showing other things you can use...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="typetiny" label="Type-Tiny" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[		<p><a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a> is probably best known as a way of having Moose-like type constraints in <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, but it can be used for so much more. This is the second in a series of posts showing other things you can use Type::Tiny for. You can refer back to <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/07/exploring-typetiny-part-1-using-typeparams-for-validating-function-parameters.html">part 1</a>.</p>
+		<p>Type::Tiny is often used in Moo classes and roles as a drop-in replacement for Moose's built-in type system. But the original reason I wrote it was as a response to the growing number of <a class="podlinkpod" href="https://metacpan.org/pod/MooseX%3A%3ATypes">MooseX::Types</a> and <a class="podlinkpod" href="https://metacpan.org/pod/MouseX%3A%3ATypes">MouseX::Types</a> modules on CPAN. I thought "wouldn't it be good if you could write a type library once, and use it for Moose, Mouse, and maybe even Moo?" In the very early version, you needed to import types like this:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Standard</span> <span class="word">-moose</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Standard</span> <span class="word">-mouse</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Standard</span> <span class="word">-moo</span><span class="operator" style="color:#000;font-weight:bold">,</span>   <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span></pre>
+		<p>Specifying which object system you were using allowed the type library to export different blessed type constraint objects for different object frameworks. Eventually this need was eliminated by having Type::Tiny's objects better mock the Moose and Mouse native APIs, so the frameworks didn't even notice you weren't using their built-in type constraints.</p>
+		<p>(While no longer documented, the <code>-moose</code>, etc import flags still work in all Type::Library-based type libraries.)</p>
+		<p>Anyway, so now you know Type::Tiny types <i>can</i> work with Moose, what are the reasons to use them over Moose's built-in type constraints?</p>
+]]>
+        <![CDATA[		<h2><span id="Type::Tiny_is_Faster">Type::Tiny is Faster</span></h2>
+		<p>In almost all cases, Type::Tiny checks and coercions run faster than the built-in Moose ones.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.16</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Benchmark</span> <span class="words" style="color:#333;background-color:#ffc">qw(cmpthese)</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">BEGIN</span> <span class="structure">{</span>
+      <span class="symbol" style="color:#333;background-color:#fcc">$ENV</span><span class="structure">{</span><span class="word">PERL_TYPE_TINY_XS</span><span class="structure">}</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="number" style="color:#39C">0</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Example::Native</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'rw'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ArrayRef[Str]'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">meta</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Example::TT</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef Str)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'rw'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Str</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">meta</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   
+   <span class="word">cmpthese</span> <span class="number" style="color:#39C">-1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="structure">{</span>
+      <span class="word">native</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="literal" style="color:#909">q{
+         my $obj = Example::Native-&gt;new(numbers =&gt; []);
+         $obj-&gt;numbers([0 .. $_]) for 1 .. 50;
+      }</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">tt</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="literal" style="color:#909">q{
+         my $obj = Example::TT-&gt;new(numbers =&gt; []);
+         $obj-&gt;numbers([0 .. $_]) for 1 .. 50;
+      }</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">};</span>
+   
+   <span class="separator">__END__</span>
+<span class="end">            Rate native     tt
+   native 2511/s     --   -45%
+   tt     4525/s    80%     --</span></pre>
+		<p>Note that even without XS, the Type::Tiny checks run 80% faster than Moose's native ones. If <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny%3A%3AXS">Type::Tiny::XS</a> is available, it's about 400% faster. (Yeah, I could have tested <code>ArrayRef[Int]</code> but sadly the <code>Int</code> type is one of the slower type checks in <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AStandard">Types::Standard</a>, no faster than Moose.)</p>
+		<h2><span id="Type::Tiny_has_a_Better_Coercion_Paradigm">Type::Tiny has a Better Coercion Paradigm</span></h2>
+		<p>In Moose, if you want to, say, coerce an arrayref of strings into a single string, then the usual way to do it is something like this:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose::Util::TypeConstraints</span><span class="structure">;</span>
+   
+   <span class="word">coerce</span> <span class="single" style="color:#909">'Str'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">from</span> <span class="single" style="color:#909">'ArrayRef'</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="word">via</span> <span class="structure">{</span> <span class="word">join</span> <span class="double" style="color:#909">"\n"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="structure">};</span></pre>
+		<p>However, this has a <i>global effect</i>. It doesn't just apply to string attributes in your class, but any string attributes which have coercion enabled for them.</p>
+		<p>While <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny">Type::Tiny</a> does support globally defined coercions for Moose compatibility, the practice above, of adding your own coercions to types in standard libraries is strongly discouraged.</p>
+		<p>Instead, two routes to coercions are recommended.</p>
+		<p>Firstly, if you're making your own type library, feel free to define any useful coercions to the types in that library. Some of the type libraries bundled with Type::Tiny do include a few standard coercions. For example <a class="podlinkpod" href="https://metacpan.org/pod/LowerCaseStr">LowerCaseStr</a> in <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3ACommon%3A%3AString">Types::Common::String</a> defines a coercion from non-empty strings (passing the string to Perl's <code>lc</code> function).</p>
+		<p>Secondly, if you're consuming types from a library (importing them into your role or class for use), <i>don't add your own coercions to them</i>. Instead, use the <code>plus_coercions</code> method.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyClass</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef Str)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">data</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Str</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span><span class="word">ArrayRef</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="word">join</span> <span class="double" style="color:#909">"\n"</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="cast" style="color:#f00;font-weight:bold">@</span><span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="structure">})</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span></pre>
+		<p>What does this do? Instead of adding coercions to the global definition of <code>Str</code>, it transparently creates a subtype of <code>Str</code> and adds your coercions to that.</p>
+		<p>There's also <code>plus_fallback_coercions</code> (which does the same thing but gives priority to any existing coercions the type constraint already has), <code>minus_coercions</code> (to remove particular existing coercions from a type), and <code>no_coercions</code> (to give you a blank slate).</p>
+		<p>Coercions can also be defined using strings of Perl code:</p>
+		<pre class="highlighting-perl">   <span class="word">Str</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span><span class="word">ArrayRef</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="literal" style="color:#909">q{ join "\n", @$_ }</span><span class="structure">)</span></pre>
+		<p>This allows them to be better optimized.</p>
+		<h2><span id="Type::Tiny_Makes_Subtyping_a_Breeze">Type::Tiny Makes Subtyping a Breeze</span></h2>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyClass</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">even_number</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">where</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="operator" style="color:#000;font-weight:bold">%</span> <span class="number" style="color:#39C">2</span> <span class="operator" style="color:#000;font-weight:bold">==</span> <span class="number" style="color:#39C">0</span> <span class="structure">})</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span></pre>
+		<p>Need I say more?</p>
+		<p>Probably not.</p>
+		<p>But I'll add that again, you can use a string of Perl code to get slightly better performance.</p>
+		<h2><span id="Type::Tiny_and_MooseX::Types_Interoperate_Fine">Type::Tiny and MooseX::Types Interoperate Fine</span></h2>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyClass</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(ArrayRef)</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooseX::Types::Moose</span> <span class="words" style="color:#333;background-color:#ffc">qw(Int)</span><span class="structure">;</span>
+      <span class="word">has</span> <span class="word">will_this_work</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span></pre>
+		<p>Yeah, it works.</p>
+		<h2><span id="Validate_Method_Parameters">Validate Method Parameters</span></h2>
+		<p>In <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2018/07/exploring-typetiny-part-1-using-typeparams-for-validating-function-parameters.html">part 1 of this series</a> I described how you can use Type::Tiny type constraints to validate data passed to functions. If you're checking incoming data to your accessors and constructors, why not check parameters passed to method calls as well? <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3AParams">Type::Params</a> lets you use the same types and coercions you're familiar with from defining attributes to validate method parameters.</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="version">v5.16</span><span class="structure">;</span>
+   
+   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">MyClass</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Moose</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="words" style="color:#333;background-color:#ffc">qw(Object Int)</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Type::Params</span> <span class="words" style="color:#333;background-color:#ffc">qw(compile)</span><span class="structure">;</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$EvenInt</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">Int</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">where</span><span class="structure">(</span><span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="magic" style="color:#900;font-weight:bold">$_</span> <span class="operator" style="color:#000;font-weight:bold">%</span> <span class="number" style="color:#39C">2</span> <span class="operator" style="color:#000;font-weight:bold">==</span> <span class="number" style="color:#39C">0</span> <span class="structure">});</span>
+      
+      <span class="word">has</span> <span class="word">even_number</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'ro'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>    <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="symbol" style="color:#333;background-color:#fcc">$EvenInt</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">writer</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="single" style="color:#909">'_set_even_number'</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+      
+      <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">add_another_even</span> <span class="structure">{</span>
+         <span class="word">state</span> <span class="symbol" style="color:#333;background-color:#fcc">$check</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="word">compile</span><span class="structure">(</span><span class="word">Object</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$EvenInt</span><span class="structure">);</span>
+         <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span class="symbol" style="color:#333;background-color:#fcc">$n</span><span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="cast" style="color:#f00;font-weight:bold">&amp;</span><span class="symbol" style="color:#333;background-color:#fcc">$check</span><span class="structure">;</span>
+         <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_set_even_number</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">even_number</span> <span class="operator" style="color:#000;font-weight:bold">+</span> <span class="symbol" style="color:#333;background-color:#fcc">$n</span> <span class="structure">);</span>
+         <span class="keyword" style="color:#009;font-weight:bold">return</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span><span class="structure">;</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span></pre>
+]]>
+    </content>
+</entry>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Announcing Zydeco</title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/02/announcing-zydeco.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9663</id>
+
+    <published>2020-02-16T13:03:58Z</published>
+    <updated>2020-02-16T13:13:42Z</updated>
+
+    <summary>Technically, I already announced it, but now I've renamed it. MooX::Pression is now called Zydeco. Moops had a memorable name, and I think the naming really helped it gain a following. MooX::Pression was just meh. So now it's Zydeco. Zydeco...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Moose" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Zydeco" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="moops" label="Moops" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpress" label="MooX-Press" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="mooxpression" label="MooX-Pression" scheme="http://www.sixapart.com/ns/types#tag"/>
+    <category term="zydeco" label="Zydeco" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>Technically, I already announced it, but now I've renamed it. MooX::Pression is now called <a href="https://metacpan.org/release/Zydeco"><b>Zydeco</b>.</p>
+
+<p><a href="https://metacpan.org/release/Moops">Moops</a> had a memorable name, and I think the naming really helped it gain a following. MooX::Pression was just meh. So now it's Zydeco. Zydeco is a fun word and pretty short to type. It's a musical genre that blends jazz, blues, and Louisiana French Creole, and it just seemed like a good fit for a module that takes what I feel are some of the coolest features of Perl programming, and blends them together under one syntax.</p>
+
+<p>Also, practising <a href="http://blogs.perl.org/users/toby_inkster/2020/02/increasing-perls-visibility.html">what I preach</a>, Zydeco now has its own website.</p>
+
+<p><a href="http://zydeco.toby.ink/"><b>http://zydeco.toby.ink/</b></a></p>]]>
+        
+    </content>
+</entry>
