@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Method Privacy in Perl</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/07/method-privacy-in-perl.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6249</id>
+<published>2014-07-31T14:14:00</published>
+<updated>2014-07-31T14:14:00</updated>
+<summary> This is a slightly expanded version of a comment I posted a couple of days ago on NEILB&#x26;apos;s blog. Neil was mostly talking about private functions, while I&#x26;apos;ll be talking mostly about private methods (i.e. object-oriented programming), but I...</summary>
+<category term=".NET" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="OOP" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>This is a slightly expanded version of a comment I posted a couple of days ago on <a href="http://neilb.org/2014/07/24/private-functions.html" class="podlinkurl">NEILB's blog</a>.</p>
+		<p>Neil was mostly talking about private <i>functions</i>, while I'll be talking mostly about private <i>methods</i> (i.e. object-oriented programming), but I think there's probably a good deal of overlap between the two concepts.</p>
+		<p>The traditional way of indicating a method is private is to name it with a leading underscore:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="word">_secret_sauce</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span style="color:#333;background-color:#fcc" class="symbol">$self</span> <span style="color:#000;font-weight:bold" class="operator">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   
+   <span style="color:#333;background-color:#fcc" class="symbol">$self</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_secret_sauce</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">@args</span><span class="structure">);</span></pre>
+		<p>The assumption is even baked into the Perl development and testing toolchain in a few places. For example <a class="podlinkpod" href="https://metacpan.org/pod/Pod%3A%3ACoverage">Pod::Coverage</a> won't complain about missing documentation for a sub if that sub happens to be named with a leading underscore.</p>
+		<p>I used to think the underscore convention was good enough. But partly because of <a href="http://news.perlfoundation.org/2014/05/grant-proposal-modern-object-o.html" class="podlinkurl">this upcoming project</a> and partly because of problems I've encountered working on various codebases, I've been forced to re-evaluate my thinking, and have come to the conclusion that the underscore convention is insufficient.</p>
+</div>
+                            		<p>Recently I was writing a subclass of somebody else's class and noticed it suddenly started behaving strangely. After an embarrassing amount of time spent debugging I discovered that one of my underscore methods happened to have the same name as one of the superclass' underscore methods (actually two levels up inheritance), so was getting called by the superclass when I hadn't expected it to be.</p>
+		<p>Of course, if the underscore method in the superclass had been documented, the name collision could have been easily avoided - I could have just called my underscore method something else (which I did in the end). But nobody bloody documents the underscore methods! (Cheers, <a class="podlinkpod" href="https://metacpan.org/pod/Pod%3A%3ACoverage">Pod::Coverage</a>!)</p>
+		<p>As an aside: no, roles do not <i>completely</i> solve this problem.</p>
+		<p>There's a famous Larry Wall quote that Perl <i>"would prefer that you stayed out of its living room because you weren't invited, not because it has a shotgun."</i> Perhaps I'm stretching the analogy a little, but if there are no walls around anybody's living room, it's quite easily to accidentally cross into somebody else's living room. By the time you have noticed this, you might have already started furnishing it.</p>
+		<p>Having studied .NET a bit recently, I've come to be a big fan of the four levels of method privacy it offers:</p>
+		<ul>
+			<li><b>Private</b> methods may be called within their own class, and cannot be overridden by subclasses.</li>
+			<li><b>Family</b> (a.k.a. <b>Protected</b>) methods may be called by their own class and any subclasses or superclasses, and may be overridden by subclasses.</li>
+			<li><b>Friend</b> (a.k.a. <b>Internal</b>) methods may be called anywhere within the same assembly, and may be overridden by subclasses within the same assembly. (What's an assembly? Probably the nearest analogy in the Perl world would be a CPAN distribution; i.e. a collection of related modules all maintained by the same person/team. In .NET it has a more formal meaning, and variables, functions, etc can be scoped by assembly.)</li>
+			<li><b>Public</b> methods may be called by anyone, of course, and may be overridden by subclasses.</li>
+		</ul>
+		<p>.NET also supports sort of <b>Friend Or Family</b> and <b>Friend And Family</b> levels of privacy, though not all .NET programming languages expose those features of the underlying runtime. (C# for example supports <b>Friend Or Family</b>, but not <b>Friend And Family</b>.)</p>
+		<p>Back to Perl. How and why can we apply these ideas to Perl classes and roles?</p>
+		<ul>
+			<li>
+				<b>Private</b> methods can be emulated with coderefs stashed in lexical variables:
+				<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$_secret_sauce</span> <span style="color:#000;font-weight:bold" class="operator">=</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span>
+      <span style="color:#009;font-weight:bold" class="keyword">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$self</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span class="core" style="color:#009;font-weight:bold">shift</span><span class="structure">;</span>
+      <span style="color:#000;font-weight:bold" class="operator">...</span><span class="structure">;</span>
+   <span class="structure">};</span>
+   
+   <span style="color:#333;background-color:#fcc" class="symbol">$self</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span style="color:#333;background-color:#fcc" class="symbol">$_secret_sauce</span><span class="structure">(</span><span style="color:#333;background-color:#fcc" class="symbol">@args</span><span class="structure">);</span></pre>
+				<p>Assuming you define one package per file, or at least put some curly braces around each package definition, this method will not be accessible outside your package. In fact, you can even carefully scope it to be visible only to certain parts of your package, though for smallish classes that's overkill.</p>
+				<p>If I write private methods this way, I can be confident I'm not going to acidentally overwrite a method in a superclass, and no subclass will accidentally overwrite mine either.</p>
+			</li>
+			<li><p><b>Family</b> methods are those that you don't want to make part of the public API, but could be useful for subclasses to be able to call, or override. For these stick with the underscore convention, but try to make an effort for these methods to be documented, and preferably as stable as your public API.</p><p>They don't need to clutter up the main documentation - you could write a separate "advice for subclassers" bit of documentation. Just a list of the names of these methods is probably sufficient - it will give subclassers a hint for what subs to search for in your source code.</p></li>
+			<li>
+				<p><b>Friend</b> methods are more interesting. I'm going to propose a brand new convention for these. Say you're working on a project called "Aardwolf", then pick a related prefix name, such as <code class="prettyprint">"_aardwolf_"</code> and use that prefix on all these methods:</p>
+				<pre class="highlighting-perl">   <span style="color:#009;font-weight:bold" class="keyword">sub</span> <span class="word">_aardwolf_secret_sauce</span> <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">my</span> <span style="color:#333;background-color:#fcc" class="symbol">$self</span> <span style="color:#000;font-weight:bold" class="operator">=</span> <span style="color:#009;font-weight:bold" class="core">shift</span><span class="structure">;</span>
+      <span class="operator" style="color:#000;font-weight:bold">...</span><span class="structure">;</span>
+   <span class="structure">}</span>
+   
+   <span class="symbol" style="color:#333;background-color:#fcc">$obj</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">_aardwolf_secret_sauce</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">@args</span><span class="structure">);</span></pre>
+				<p>They don't need to be documented. Rather, they need to be urinated on to mark your territory. A note like this, either in your pod, or as a source code comment should clarify their status:</p>
+				<pre class="highlighting-perl"><span class="comment" style="color:#060;font-style:italic">   # All methods with the "_aardwolf_" prefix are not part of the public
+   # API, are not documented, and should not be considered stable. They
+   # may change at any time with zero notice period. If you are not me,
+   # do not override them, and do not call them. They are mine! Not yours!</span></pre>
+				<p>You can call these methods from outside your class - from entirely different parts of your project. You can do that safe in the knowledge that the entire thing is one big project, and if you need to change one of these methods, then you will also be able to fix up all the places which call that method. (Because they're all in the same source code repository, and maintained by the same person/people, and released according to the same schedule, etc, etc.)</p>
+				<p>If somebody else is working on a different project - the RobotPet project - and wants to subclass your Aardwolf class as Robot::Aardwolf, then they're "allowed" to call and override your public API (of course), as well as your <b>Family</b> (single underscore convention) methods. But they're "not allowed" to call or override your <b>Friend</b> ("_aardwolf_") methods.</p>
+				<p>Of course, they can define <i>their own</i> <b>Friend</b> ("_robotpet_") methods, and the naming convention guarantees that they will never interfere with each other!</p>
+				<p>Another aside: "allowed", "not allowed" - this is where the living room analogy comes back into play.</p>
+			</li>
+			<li><p><b>Public</b> methods I don't think I need to go into. You know this already.</p>
+<p>Document them of course. Otherwise how is everybody supposed to know how to use your objects?</p></li>
+		</ul>
+		<p>Careful class design seems to make <b>Friend</b> and <b>Family</b> methods rarely necessary - it's often possible to promote or demote them to <b>Public</b> or <b>Private</b> methods.</p>
+		<p>So anyway, think about these ideas when you're next writing object-oriented code. Even if you don't adopt the conventioned I've described above, clarifying in your own mind who should be "allowed" to call and override your methods can lead you to a better class design, and better documentation.</p>
+
+                        ]]></content>
+</entry>

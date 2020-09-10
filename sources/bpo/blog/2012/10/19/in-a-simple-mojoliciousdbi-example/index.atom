@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>A Simple Plack/DBI Example</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/10/in-a-simple-mojoliciousdbi-example.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3971</id>
+<published>2012-10-19T20:05:00</published>
+<updated>2012-10-19T20:05:00</updated>
+<summary>In A Simple Mojolicious/DBI Example Joel Berger demonstrates how to build a very simple CRUD web app (well, a CR one anyway) using Mojolicious and DBI. I was impressed at how concise it was, and wondered how my preferred technology...</summary>
+<category term="HTTP" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="PSGI" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Plack" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="PSGI" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>In <a href="http://blogs.perl.org/users/joel_berger/2012/10/a-simple-mojoliciousdbi-example.html">A Simple Mojolicious/DBI Example</a> Joel Berger demonstrates how to build a very simple CRUD web app (well, a CR one anyway) using Mojolicious and DBI. I was impressed at how concise it was, and wondered how my preferred technology stack would compare.</p>
+
+<p>I'm not a fan of template languages, preferring DOM manipulation. And rather than Mojo, I'm using Plack here. Anyway, this is what I came up with...</p>
+
+                            <pre><code class="prettyprint">#!/usr/bin/env plackup
+
+use v5.14;
+use DBI;
+use HTML::HTML5::Parser;
+use HTML::HTML5::Writer;
+use Plack::Request;
+use Plack::Response;
+
+# connect to database
+my $dbh = 'DBI'-&gt;connect("dbi:SQLite:database.db","","") or die "Could not connect";
+my ($insert, $select);
+
+while (1) {
+   # create insert and select statements
+   $insert = eval { $dbh-&gt;prepare('INSERT INTO people VALUES (?,?)') };
+   $select = eval { $dbh-&gt;prepare('SELECT * FROM people') };
+   # break out of loop if statements prepared
+   last if $insert &amp;&amp; $select;
+
+   # if statements didn't prepare, assume its because the table doesn't exist
+   warn "Creating table 'people'\n";
+   $dbh-&gt;do('CREATE TABLE people (name varchar(255), age int);');
+}
+
+my $template = 'HTML::HTML5::Parser'-&gt;load_html(IO =&gt; \*DATA);
+my $writer   = 'HTML::HTML5::Writer'-&gt;new(markup =&gt; 'html', polyglot =&gt; 1);
+
+# the PSGI app itself
+my $app = sub {
+   my $req = 'Plack::Request'-&gt;new(shift);
+   my $res = 'Plack::Response'-&gt;new(200);
+
+   if ($req-&gt;method eq 'POST') {
+      $insert-&gt;execute(map $req-&gt;parameters-&gt;{$_}, qw( name age ));
+      $res-&gt;redirect( $req-&gt;base );
+   }   
+   else {
+      my $page  = $template-&gt;cloneNode(1);
+      my $table = $page-&gt;getElementsByTagName('table')-&gt;get_node(1);
+      $select-&gt;execute;
+      while (my @row = $select-&gt;fetchrow_array) {
+         my $tr = $table-&gt;addNewChild($table-&gt;namespaceURI, 'tr');
+         $tr-&gt;appendTextChild(td =&gt; $_) for @row;
+      }
+      $res-&gt;body( $writer-&gt;document($page) );
+   }
+
+   $res-&gt;finalize;
+};
+
+__DATA__
+&lt;!DOCTYPE html&gt;
+&lt;title&gt;People&lt;/title&gt;
+&lt;form action="insert" method="post"&gt;
+   Name: &lt;input type="text" name="name"&gt; 
+   Age: &lt;input type="text" name="age"&gt;
+   &lt;input type="submit" value="Add"&gt;
+&lt;/form&gt;
+&lt;br&gt;
+Data: &lt;br&gt;
+&lt;table border="1"&gt;
+   &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Age&lt;/th&gt;
+   &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+
+                        ]]></content>
+</entry>

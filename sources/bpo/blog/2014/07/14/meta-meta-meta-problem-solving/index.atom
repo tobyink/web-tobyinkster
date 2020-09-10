@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Meta-Meta-Meta Problem Solving</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/07/meta-meta-meta-problem-solving.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6218</id>
+<published>2014-07-14T09:04:00</published>
+<updated>2014-07-14T09:04:00</updated>
+<summary> OK, so I&#x26;apos;m working on a project and some unexpected bug crops up. It turns out to be a bug in a dependency. I could work around it, but... I happen to maintain the dependency, so better to fix...</summary>
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>
+<p>OK, so I'm working on a project and some unexpected bug crops up. It turns out to be a bug in a dependency. I could work around it, but...</p>
+<p>I happen to maintain the dependency, so better to fix it at source. Done. Let's set up Travis testing for this dependency too...</p>
+<p>Oh no, build fails. <a href="https://metacpan.org/pod/Test::Modern">Test::Modern</a> won't install on all the versions of Perl I'd hoped it would. (In particular, Perl 5.6.) Why? Turns out some of Test::Modern's dependencies use <a href="https://metacpan.org/pod/Module::Build">Module::Build</a> and <a href="https://metacpan.org/pod/Module::Build::Tiny">Module::Build::Tiny</a>, and they require Perl 5.8.</p>
+<p>So let's try out Ingy's <a href="https://metacpan.org/pod/Alt">Alt</a> concept and release alternative distributions of these dependencies which will install cleanly on Perl 5.6. Hence <a href="https://metacpan.org/pod/release/TOBYINK/Alt-Test-Warnings-ButEUMM-0.001/lib/Alt/Test/Warnings/ButEUMM.pm">Alt::Test::Warnings::ButEUMM</a> (which led to <a href="https://metacpan.org/source/ETHER/Test-Warnings-0.016/Changes#L8">this</a>) and <a href="https://metacpan.org/pod/Alt::Module::Runtime::ButEUMM">Alt::Module::Runtime::ButEUMM</a>.</p>
+</div>
+
+                            <p>But it doesn't stop there because of course I want to <a href="https://github.com/tobyink/p5-alt-misc">automate the process</a> of producing these alternative distributions.</p>
+<p>And that needs improvements to my <a href="https://metacpan.org/release/Dist-Inkt">packaging tool</a>.</p>
+<p>So anyway, it's funny how fixing a small bug can lead you to making improvements to all kinds of unrelated things.</p>
+                        ]]></content>
+</entry>

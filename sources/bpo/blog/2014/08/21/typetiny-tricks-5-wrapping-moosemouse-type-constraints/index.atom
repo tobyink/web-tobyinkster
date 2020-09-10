@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny Tricks #5: Wrapping Moose/Mouse Type Constraints</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-tricks-5-wrapping-moosemouse-type-constraints.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6324</id>
+<published>2014-08-21T19:00:00</published>
+<updated>2014-08-21T19:00:00</updated>
+<summary> So you have this Moo class, and it turns out what you really need for it is the StrictVersionStr type constraint defined in MooseX::Types::Perl. You could switch the class to Moose, but long term you want to stick with...</summary>
+<category term="acmeoop" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="tricks" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>So you have this <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a> class, and it turns out what you really need for it is the <a class="podlinkurl" href="https://metacpan.org/pod/MooseX::Types::Perl#StrictVersionStr">StrictVersionStr type constraint defined in MooseX::Types::Perl</a>. You could switch the class to <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a>, but long term you want to stick with Moo.</p>
+		<p>Eventually you'll steal what you need from MooseX::Types::Perl, so you don't have the Moose dependency, but for now what you really want is to be able to use a <em>Moose</em> type constraint within a <em>Moo</em> class! What a predicament you've gotten yourself into! Type::Tiny to the rescue!</p>
+		<pre class="highlighting-perl">   <span class="structure">{</span>
+      <span style="color:#009;font-weight:bold" class="keyword">package</span> <span class="word">Local::Eg5</span><span class="structure">;</span>
+      <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Moo</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">MooseX::Types::Perl</span> <span style="color:#333;background-color:#ffc" class="words">qw( StrictVersionStr )</span><span class="structure">;</span>
+      <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Types::TypeTiny</span> <span class="words" style="color:#333;background-color:#ffc">qw( to_TypeTiny )</span><span class="structure">;</span>
+      
+      <span class="word">has</span> <span class="word">version_number</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+         <span class="word">isa</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">to_TypeTiny</span><span class="structure">(</span> <span class="word">StrictVersionStr</span> <span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span></pre></div>
+
+                            		<p><code class="prettyprint">to_TypeTiny</code> converts a MooseX::Types type constraint, or a MouseX::Types type constraint into a Type::Tiny one, making it safe to use in Moose, Mouse, Moo, or anywhere else that accepts Type::Tiny objects. It converts any coercions attached to the type; it even handles inlining.</p>
+		<p><code class="prettyprint">to_TypeTiny</code> is also able to convert a coderef to a Type::Tiny object. The coderef is expected to return true if the value passes the type constraint, and either return false or die with a helpful error message if it fails.</p>
+		<pre class="highlighting-perl">   <span class="word">to_TypeTiny</span><span class="structure">(</span><span style="color:#009;font-weight:bold" class="keyword">sub</span> <span class="structure">{</span> <span style="color:#900;font-weight:bold" class="magic">$_</span> <span style="color:#000;font-weight:bold" class="operator">%</span> <span style="color:#39C" class="number">2</span> <span style="color:#000;font-weight:bold" class="operator">==</span> <span style="color:#39C" class="number">0</span> <span class="operator" style="color:#000;font-weight:bold">or</span> <span class="word">die</span> <span style="color:#909" class="double">"not even!"</span> <span class="structure">})</span></pre>
+		<p><code class="prettyprint">to_TypeTiny</code> is used internally by Type::Tiny pretty much everywhere a type constraint would be accepted. So, for example, the <a class="podlinkpod" href="https://metacpan.org/pod/Types%3A%3AStandard">Types::Standard</a> <code class="prettyprint">ArrayRef</code> type constraint can be parameterized with the MooseX::Types-based <code class="prettyprint">StrictVersionStr</code> type:</p>
+		<pre class="highlighting-perl">   <span class="structure">{</span>
+      <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Local::Eg5</span>
+      <span class="word">use</span> <span class="word">Moo</span><span class="structure">;</span>
+      <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">MooseX::Types::Perl</span> <span class="words" style="color:#333;background-color:#ffc">qw( StrictVersionStr )</span><span class="structure">;</span>
+      <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span style="color:#333;background-color:#ffc" class="words">qw( ArrayRef )</span><span class="structure">;</span>
+      
+      <span class="word">has</span> <span class="word">version_numbers</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+         <span class="word">is</span>   <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+         <span class="word">isa</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">StrictVersionStr</span><span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="structure">);</span>
+   <span class="structure">}</span></pre>
+		<p>Similarly, a union type like <code class="prettyprint">HashRef|StrictVersionStr</code> should "just work".</p>
+
+                        ]]></content>
+</entry>

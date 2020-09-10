@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny Tricks #4: Inlined Type Constraints</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-tricks-4-inlined-type-constraints.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6323</id>
+<published>2014-08-20T20:00:00</published>
+<updated>2014-08-20T20:00:00</updated>
+<summary>&#x3C;![CDATA[ If ever you&#x27;re unsure of how a type constraint has been defined, you can examine the string of Perl code used to implement it. For example, does an ArrayRef[Int] accept an empty arrayref? my $type = ArrayRef[Int]; print $type-&#x26;gt;inline_check(&#x27;$X&#x27;);...]]&#x3E;</summary>
+<category term="tricks" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>If ever you're unsure of how a type constraint has been defined, you can examine the string of Perl code used to implement it. For example, does an <code class="prettyprint">ArrayRef[Int]</code> accept an empty arrayref?</p>
+		<pre class="highlighting-perl">   <span style="color:#009;font-weight:bold" class="keyword">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span> <span style="color:#000;font-weight:bold" class="operator">=</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">];</span>
+   <span class="word">print</span> <span class="symbol" style="color:#333;background-color:#fcc">$type</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">inline_check</span><span class="structure">(</span><span style="color:#909" class="single">'$X'</span><span class="structure">);</span></pre></div>
+
+                            		<p>That will print something like the following. (I've added whitespace for clarity.)</p>
+		<pre class="highlighting-perl">   <span class="word">do</span> <span class="structure">{</span>
+      <span class="word">ref</span><span class="structure">(</span><span style="color:#333;background-color:#fcc" class="symbol">$X</span><span class="structure">)</span> <span class="operator" style="color:#000;font-weight:bold">eq</span> <span style="color:#909" class="single">'ARRAY'</span>
+      <span style="color:#000;font-weight:bold" class="operator">and</span> <span class="word">do</span> <span class="structure">{</span>
+         <span style="color:#009;font-weight:bold" class="keyword">my</span> <span style="color:#333;background-color:#fcc" class="symbol">$ok</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span style="color:#39C" class="number">1</span><span class="structure">;</span>
+         <span style="color:#009;font-weight:bold" class="keyword">for</span> <span style="color:#009;font-weight:bold" class="keyword">my</span> <span class="symbol" style="color:#333;background-color:#fcc">$i</span> <span class="structure">(</span><span style="color:#f00;font-weight:bold" class="cast">@</span><span class="structure">{</span><span class="symbol" style="color:#333;background-color:#fcc">$X</span><span class="structure">})</span> <span class="structure">{</span>
+            <span style="color:#333;background-color:#fcc" class="symbol">$ok</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span style="color:#39C" class="number">0</span> <span class="operator" style="color:#000;font-weight:bold">&amp;&amp;</span> <span class="word">last</span>
+               <span class="word">unless</span> <span class="structure">(</span><span class="core" style="color:#009;font-weight:bold">defined</span> <span class="symbol" style="color:#333;background-color:#fcc">$i</span> <span class="operator" style="color:#000;font-weight:bold">and</span> <span class="symbol" style="color:#333;background-color:#fcc">$i</span> <span class="operator" style="color:#000;font-weight:bold">=~</span> <span class="match" style="color:#333;background-color:#9f9">/\A-?[0-9]+\z/</span><span class="structure">)</span>
+         <span class="structure">};</span>
+         <span style="color:#333;background-color:#fcc" class="symbol">$ok</span>
+      <span class="structure">}</span>
+   <span class="structure">}</span></pre>
+		<p>If you don't see something like that, it might be because you have <a class="podlinkpod" href="https://metacpan.org/pod/Type%3A%3ATiny%3A%3AXS">Type::Tiny::XS</a> loaded and Type::Tiny has been able to find a more efficient way to do the same check. Set the <code class="prettyprint">PERL_TYPE_TINY_XS</code> environment variable to false and try again.</p>
+		<p>The code generated might be a little uglier than hand-crafted code would be, but should be reasonably efficient, and should at least give you an idea how the check has been implemented.</p>
+		<p>Not all type constraints can be inlined. (All the built-in ones can.) Those than cannot be inlined will throw an exception if you try. Types which can be inlined generally lead to faster code being injected into Moose/Moo constructors, accessors, and so on. So it is worth checking that your type constraints may be inlined.</p>
+		<p>See <a href="https://metacpan.org/pod/Type%3A%3ATiny%3A%3AManual%3A%3AOptimization" class="podlinkpod">Type::Tiny::Manual::Optimization</a> for more information on inlining your type constraints.</p>
+
+                        ]]></content>
+</entry>

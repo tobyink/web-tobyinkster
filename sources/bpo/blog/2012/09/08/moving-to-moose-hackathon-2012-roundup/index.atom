@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Moving to Moose Hackathon 2012 Roundup</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/09/moving-to-moose-hackathon-2012-roundup.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3802</id>
+<published>2012-09-08T12:47:00</published>
+<updated>2012-09-08T12:47:00</updated>
+<summary>OK, so another MTMH 2012 blog post. I&#x26;apos;m trailing far behind everyone else, but better late than never. MTMH 2012 was a joint hackathon between the people working on p5-mop (a project to get a Moose-lite metaobject system into the...</summary>
+<category term="semantic web" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="SemanticWeb" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Web" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>OK, so another <a href="act.yapc.eu/mtmh2012/">MTMH 2012</a> blog post. I'm <a href="http://ruben.verborgh.org/blog/2012/08/30/perl-and-the-preikestolen/">trailing</a> <a href="http://kasei.us/archives/2012/08/30/movingtomoose">far</a> <a href="http://sartak.org/2012/08/moving-to-moose-hackathon.html">behind</a> <a href="http://marcus.nordaaker.com/moving-to-moose-hackathon-2013/">everyone</a> <a href="http://blogs.perl.org/users/kba/2012/09/moving-to-moose-roundup.html">else</a>, but better late than never.</p>
+
+<p>MTMH 2012 was a joint hackathon between the people working on <a href="http://github.com/stevan/p5-mop">p5-mop</a> (a project to get a Moose-lite metaobject system into the Perl 5 core) and the Perl RDF toolkit, with a few <a href="http://perl6.org/">Rakudo</a> people thrown in too, ostensibly for convergence between the p5-mop and Perl 6 metaobject systems when possible. As somebody in the RDF camp, though with a toe in the Moose water, I decided to get a better feel for Moose by playing around with a few MooseX projects. (The results include <a href="https://metacpan.org/release/MooseX-DeclareX">MooseX-DeclareX</a> and <a href="https://metacpan.org/release/MooseX-Interface">MooseX-Interface</a>.) There's really a lot of cool stuff behind <code class="prettyprint">$self-&gt;meta</code>. If you've never gone behind <code class="prettyprint">has</code>, <code class="prettyprint">extends</code> and <code class="prettyprint">with</code> when using Moose, you really should.</p>
+
+<p>Transport to the venue was fairly uneventful, which is always a good thing. I was on the same physical aeroplane for the Gatwick-Oslo and Oslo-Stavanger flights, yet at Oslo I had to get off, go through passport control, customs, airport security, etc, which was quite a challenge in 45 minutes. Apparently four people (not on the hackathon) doing the same dance didn't quite make it in time and missed the flight. It was a wise decision to only bring hand luggage. In-flight reading was <a href="http://csarven.ca/statistical-linked-dataspaces">Statistical Linked Dataspaces</a>. Had a good meal at the lodge and an interesting talk about RDF with <a href="https://metacpan.org/author/GWILLIAMS">Greg</a> and <a href="https://metacpan.org/author/STEVAN">Stevan</a>.</p>
+
+<p>Day one was the hike up <a href="http://en.wikipedia.org/wiki/Preikestolen">Preikestolen</a> where I discovered that <a href="https://metacpan.org/author/NPEREZ">Nick Perez</a> is some kind of secret mountain goat in disguise. The trip probably hit hacking productivity quite hard as most of us just wanted a nap when we got back.</p>
+
+<p>The next day was Monday, and we had a couple of interesting talks, and discussed the Moosification of <a href="https://metacpan.org/release/RDF-Trine">RDF-Trine</a> in very general terms. I managed to push out a couple of Moose-related CPAN releases; one was a first public version of the <a href="https://metacpan.org/release/MooseX-RoleFor">MooseX-RoleFor</a> distribution that had been sitting half-formed as a development version on CPAN for many months.</p>
+
+<p>Eventually we came up with a concrete plan for RDF-Trine. Greg took on refactoring the RDF store API using Moose roles; <a href="https://metacpan.org/author/KJETILK">Kjetil</a> looked at namespace handling; <a href="https://metacpan.org/author/KBA">Konstantin</a> worked on getting us a solid type constraint library (mostly ported from his  <a href="https://metacpan.org/release/MooseX-Semantic">MooseX-Semantic</a>; and I handled nodes and statements (the building blocks of RDF data). I'm also pencilled in for iterators, but that's a big task that I've barely scratched the surface of so far. <a href="https://metacpan.org/author/PERIGRIN">Chris</a> advised on various Moosification issues, including the invaluable idea to name Moose roles something with "::API" in them.</p>
+
+<p><a href="http://ruben.verborgh.org/">Ruben</a> meanwhile (with help from <a href="https://metacpan.org/author/SARTAK">Shawn Artak</a>) managed to improve RDF-Trine's Turtle parser's performance by not one, but two orders of magnitude, so that we were in the somewhat bizarre situation of having faster <a href="http://en.wikipedia.org/wiki/Turtle_%28syntax%29">Turtle</a> than <a href="http://en.wikipedia.org/wiki/N-Triples">N-Triples</a> parsing. (He later turned his attention to the N-Triples and N-Quads parsers.) Not bad for somebody who only started learning Perl in July!</p>
+
+<p>On Wednesday, Konstantin and I got some pretty solid hacking on the RDF-Trine parser and serializer APIs done. The main change is to introduce objects representing file formats. Parsers and serializers are then subservient to those. Though there are convenience constructor methods for parsers and serializers that allow you to use them without knowing anything about format objects and the format registry. The format registry also provides a convenient place for other file-format-specific processors to hook into - syntax highlighters, linters, etc.</p>
+
+<p>Our constant companions during the hackathon were some small insects the Norwegians refer to as <a href="http://members.virtualtourist.com/m/6ed8c/6f/8/?o=3">knott</a>... effectively micro-mosquitoes. I've only just stopped itching.</p>
+
+<p>The hackathon was extremely well-organised: there was a mini-bus to ferry people to and from the venue; all the accommodation and food was taken care of; we even had a <a href="http://act.yapc.eu/mtmh2012/user/8544">trained paramedic</a> on hand. There were some minor issues (wifi coverage was patchy at times; the vegetarian options at dinner were often somewhat uninspiring) but overall the event was enjoyable, educational and productive.</p>
+
+<p>The Perl community really needs more of this kind of event - practical get-togethers with focussed topics. Oslo.pm did a fantastic job of arranging sponsorship and organising the hackathon. I hope other groups can follow their example. <a href="https://github.com/sjn">Salve</a> apparently gave a talk at YAPC::EU on running a Perl Mongers group and organising events. (Anybody have a link to slides or notes?)</p>
+
+<p>Future hackathons I'd like to see happen:</p>
+
+<ul>
+<li><p>An event focussed on closing the gap between Perl 5 and Perl 6. While Perl 5 clearly still has a long future ahead of it, Perl 6 needs to be taken more seriously as the direction Perl is heading. If practical, we should be looking at backporting features from Perl 6 to Perl 5, not just because it has an awesome feature set, but to help ease transition.</p>
+<p>More importantly Rakudo and Niecza need to be able to run Perl 5 code. Perl 5's biggest selling point is not its syntax, or its object model or even its regular expression engine. Perl 5's big selling point is CPAN. 80% of your application is already written. Until Perl 6 can offer that, Perl 5 is going to seem like a more attactive proposition to most people.</p></li>
+<li><p>Another Perl RDF hackathon would be great. We've had two now, but there's still so much that could be done. Perl is said to be a multi-paradigm language allowing object-oriented, functional and procedural programming techniques to be mixed with ease. The one paradigm it hasn't really delivered on is logic programming (think: Prolog). A fast OWL reasoning engine would be a great boon to Perl. Particularly if something like MooseX-Semantic were able to bridge the gap between Moose objects (i.e. instances) and OWL ontologies. But we're still a long way off that.</p></li>
+<li><p>A BioPerl / scientific Perl hackathon would also be an interesting topic. (RDF is also widely used in the life sciences world so it might be good to colocate that with Perl RDF.)</p></li>
+</ul>
+
+<p>We had some really great developers at MTMH 2012, partly down to the careful scheduling (the hackathon started a couple of days after YAPC::EU). If you're willing to organise an event such as this, it can be a productive and enjoyable endevour. As Jim told Wayne, if you book them, they will come.</p>
+
+<p><i>This article was originally published at <a href="http://tobyinkster.co.uk/blog/2012/09/08/mtmh/">http://tobyinkster.co.uk/blog/2012/09/08/mtmh/</a>.</i></p>
+
+                            
+
+                        ]]></content>
+</entry>

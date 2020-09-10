@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Object::Util</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/09/objectutil.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6405</id>
+<published>2014-09-17T00:48:00</published>
+<updated>2014-09-17T00:48:00</updated>
+<summary>I&#x26;apos;ve recently released a new module called Object::Util to CPAN. This is a set of handy methods for working with classes and objects in Perl. It is inspired by Safe::Isa, a module which takes advantage of the fact that coderefs...</summary>
+<category term="Object-Util" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="OOP" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>I've recently released a new module called <a href="https://metacpan.org/pod/Object%3A%3AUtil" class="podlinkpod">Object::Util</a> to CPAN. This is a set of handy methods for working with classes and objects in Perl. It is inspired by <a href="https://metacpan.org/pod/Safe%3A%3AIsa" class="podlinkpod">Safe::Isa</a>, a module which takes advantage of the fact that coderefs may be called as methods on Perl objects:</p>
+		<pre class="highlighting-perl">   <span style="color:#009;font-weight:bold" class="keyword">my</span> <span style="color:#333;background-color:#fcc" class="symbol">$method</span> <span style="color:#000;font-weight:bold" class="operator">=</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span style="color:#000;font-weight:bold" class="operator">...</span> <span class="structure">};</span>
+   <span class="symbol" style="color:#333;background-color:#fcc">$object</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="symbol" style="color:#333;background-color:#fcc">$method</span><span class="structure">(</span><span class="symbol" style="color:#333;background-color:#fcc">@args</span><span class="structure">);</span></pre>
+		<p>Object::Util gives you a set of coderef utility methods that are applicable to a wide range of classes and objects.</p>
+                            		<ul>
+			<li><p><code class="prettyprint">$class-&gt;$_new(%args)</code> is the same as <code class="prettyprint">$class-&gt;new(%args)</code> except that it automatically loads $class if it's not already loaded, and allows <code class="prettyprint">$class</code> to be a coderef instead of a class name (in which case it just passes <code class="prettyprint">%args</code> to the coderef).</p><p>It is intended for dependency injection, where you have been passed a class or coderef and are expected to use that to generate objects.</p></li>
+			<li><p><code class="prettyprint">$object-&gt;$_clone()</code> clones an object. It delegates to the object's <code class="prettyprint">clone()</code> method (if it has one), and otherwise tries a bunch of fallback techniques.</p><p><code class="prettyprint">$object-&gt;$_clone(%args)</code> clones an object, but passes some extra arguments to the constructor.</p></li>
+			<li><p><code class="prettyprint">$class-&gt;$_with_traits(@traits)</code> is inspired by <a href="https://metacpan.org/pod/MooseX%3A%3ATraits" class="podlinkpod">MooseX::Traits</a>, but should work equally well with <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Mouse">Mouse</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, or <a class="podlinkpod" href="https://metacpan.org/pod/Role%3A%3ATiny">Role::Tiny</a>.</p></li>
+			<li><p><code class="prettyprint">$object-&gt;$_extend(\%methods)</code> is inspired by <a class="podlinkpod" href="https://metacpan.org/pod/Object%3A%3AExtend">Object::Extend</a> and prototype-based programming.</p></li>
+			<li><p><code class="prettyprint">$_isa</code>, <code class="prettyprint">$_can</code>, <code class="prettyprint">$_does</code>, <code class="prettyprint">$_DOES</code>, and <code class="prettyprint">$_call_if_object</code> are stolen from <a href="https://metacpan.org/pod/Safe%3A%3AIsa" class="podlinkpod">Safe::Isa</a>.</p></li>
+			<li><p><code class="prettyprint">$object-&gt;$_try($method =&gt; @args)</code> will call the method, but catch and ignore any exceptions thrown.</p></li>
+			<li><p><code class="prettyprint">$object-&gt;$_tap($method =&gt; @args)</code> is stolen from <a href="https://metacpan.org/pod/Object%3A%3ATap" class="podlinkpod">Object::Tap</a>.</p></li>
+			<li><p><code class="prettyprint">$object-&gt;$_dump()</code> dumps the guts of an object.</p></li>
+		</ul>
+		<p>Although designed to work nicely with <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Mouse">Mouse</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a>, and <a href="https://metacpan.org/pod/Class%3A%3ATiny" class="podlinkpod">Class::Tiny</a>, Object::Util doesn't require any of those. It's a reasonably light-weight module.</p>
+
+                        ]]></content>
+</entry>

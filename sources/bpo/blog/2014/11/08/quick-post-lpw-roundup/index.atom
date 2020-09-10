@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Quick post-LPW roundup</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/11/quick-post-lpw-roundup.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6504</id>
+<published>2014-11-08T22:08:00</published>
+<updated>2014-11-08T22:08:00</updated>
+<summary>I&#x26;apos;ve just arrived back from the London Perl Workshop. Lots of very interesting stuff. A big thank you to the organizers! I especially liked: Extending Syntax - Functional Programming meets Macros by LanX; The Internet of Personification by Matt S...</summary>
+<category term="Book" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="LPW2014" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><p>I've just arrived back from the <a href="http://act.yapc.eu/lpw2014/">London Perl Workshop</a>. Lots of very interesting stuff. A big <b>thank you</b> to the organizers! I especially liked:</p>
+<ul>
+<li><a href="http://act.yapc.eu/lpw2014/talk/5804">Extending Syntax - Functional Programming meets Macros</a> by <a href="https://metacpan.org/author/LANX">LanX</a>;</li>
+<li><a href="http://act.yapc.eu/lpw2014/talk/5860">The Internet of Personification</a> by <a href="https://metacpan.org/author/MSTROUT">Matt S Trout</a>; and</li>
+<li><a href="http://act.yapc.eu/lpw2014/talk/5753">Rewriting the Apocalypse</a> by <a href="https://metacpan.org/author/OSFAMERON">osfameron</a>.</li>
+</ul>
+</div>
+
+<div><p>There were some good lightning talks too. I liked:</p>
+<ul>
+<li><a href="http://act.yapc.eu/lpw2014/talk/5839">IRC as glue for things</a> by <a href="https://metacpan.org/author/DGL">David Leadbeater</a>; and</li>
+<li><a href="http://act.yapc.eu/lpw2014/talk/5867">I am Developer</a> by <a href="https://metacpan.org/author/PJCJ">Paul Johnson</a>.</li>
+</ul>
+</div>
+
+<p>For those of you who wanted a copy of my slides, they are <a href="https://github.com/tobyink/docs-modern-oop/blob/master/talks/three-weird-tricks/presentation.odp?raw=true">on github</a>.</p>
+                            
+                        ]]></content>
+</entry>

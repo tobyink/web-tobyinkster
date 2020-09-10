@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Moo, how do you annoy me? Let me count the ways...</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/12/moo-how-do-you-annoy-me-let-me-count-the-ways.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.4106</id>
+<published>2012-12-06T17:11:00</published>
+<updated>2012-12-06T17:11:00</updated>
+<summary>OK, Moo is actually a rather nice little OO framework. It&#x26;apos;s inspired by Moose but not a clone of it. When Moo detects Moose has been loaded, it &#x26;quot;inflates&#x26;quot; all Moo classes and roles into Moose classes and roles, so...</summary>
+<category term="DSL" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Moo" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p><span class="caps">OK, </span><a href="https://metacpan.org/release/Moo">Moo</a> is actually a rather nice little OO framework. It's inspired by <a href="https://metacpan.org/release/Moose">Moose</a> but not a clone of it.</p>
+
+<p>When Moo detects Moose has been loaded, it "inflates" all Moo classes and roles into Moose classes and roles, so Moo code integrates with Moose code perfectly. Because of this, and Moo's very light memory and <span class="caps">CPU </span>footprint, many Moose-based projects are migrating to Moo. High profile migrations include <a href="https://metacpan.org/release/Throwable">Throwable</a>, <a href="https://metacpan.org/release/Message-Passing">Message-Passing</a> and <a href="https://metacpan.org/release/MooseX-Role-Loggable">MooseX-Role-Loggable</a>.</p>
+
+<p>Not all Moose-based projects are easy to port to Moo. Some require a high level of introspection and meta-hackery that only Moose can provide. But if Moo does seem to be a good fit for your project, switching to Moo is not as simple as dropping the "<code class="prettyprint">se</code>" from your "<code class="prettyprint">use Moose</code>" lines. There are a number of incompatibilities between the declarative syntaxes of Moo and Moose.</p>
+
+<p>I've recently released <a href="https://metacpan.org/release/MooX-late">MooX-late</a> to help smooth over the differences and translate Moose code to Moo. Currently it handles:</p>
+
+
+<ul>
+<li>stringy type constraints, like <code class="prettyprint">isa =&gt; "Str"</code></li>
+<li>non-reference defaults, like <code class="prettyprint">default =&gt; 1</code></li>
+<li>Moose's <code class="prettyprint">lazy_build</code> shortcut</li>
+<li>Exporting the <code class="prettyprint">blessed</code> and <code class="prettyprint">confess</code> functions like Moose does</li>
+</ul>
+
+
+
+<p>But I'd love to hear what other people think are the Moo annoyances. What is preventing you from porting simple classes and roles to Moo? What does Moose do for you that Moo does not? What features should I add to MooX-late?</p>
+                            
+                        ]]></content>
+</entry>

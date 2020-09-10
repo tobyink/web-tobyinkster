@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Sugar for MooseX::Traits</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/08/sugar-for-moosextraits.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3735</id>
+<published>2012-08-24T14:49:00</published>
+<updated>2012-08-24T14:49:00</updated>
+<summary>Tomorrow morning I&#x26;apos;ll be needing to get up in the wee small hours of the morning to travel to the Moving to Moose Hackathon 2012. In the mean time, here&#x26;apos;s some sugar for the awesome MooseX::Traits... package traits; use MooseX::Role::Parameterized;...</summary>
+<category term="DSL" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Tomorrow morning I'll be needing to get up in the wee small hours of the morning to travel to the <a href="http://act.yapc.eu/mtmh2012/">Moving to Moose Hackathon 2012</a>. In the mean time, here's some sugar for the awesome <a href="https://metacpan.org/module/MooseX::Traits">MooseX::Traits</a>...</p>
+
+<pre><code class="prettyprint">package traits;
+use MooseX::Role::Parameterized;
+parameter namespace =&gt; (
+    isa     =&gt; 'Str',
+    default =&gt; '',
+);
+role {
+    with 'MooseX::Traits';
+    has '_trait_namespace' =&gt; (is =&gt; 'ro', default =&gt; shift-&gt;namespace);
+};
+1
+</code></pre>
+
+<p>Instead of this:</p>
+
+<pre><code class="prettyprint">package MyProject::MyClass;
+use Moose;
+with 'MooseX::Traits';
+has '+_trait_namespace' =&gt; ( default =&gt; 'MyProject' );
+</code></pre>
+
+<p>You can now just write:</p>
+
+<pre><code class="prettyprint">package MyProject::MyClass;
+use Moose;
+with traits =&gt; { namespace =&gt; 'MyProject' };
+</code></pre>
+
+<p>It would be better perhaps if MooseX::Traits and the 'with traits =&gt; {}' pattern could be integrated into Moose itself, avoiding the need for a top-level traits.pm module.</p>
+
+                            
+
+                        ]]></content>
+</entry>

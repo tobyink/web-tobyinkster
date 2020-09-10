@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Book Report - September 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/09/book-report---september-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6424</id>
+<published>2014-09-25T23:23:00</published>
+<updated>2014-09-25T23:23:00</updated>
+<summary>As you may be aware, I&#x26;apos;m writing a book which will eventually become a free e-book. (Oh how I&#x26;apos;m beginning to hate the e- prefix on everything vaguely related to computers. Or should I call them e-machines?) This is my...</summary>
+<category term="Book" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="OOP" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>As you may be aware, I'm <a href="http://news.perlfoundation.org/2014/05/grant-proposal-modern-object-o.html">writing a book</a> which will eventually become a free e-book. (Oh how I'm beginning to hate the <em>e-</em> prefix on everything vaguely related to computers. Or should I call them e-machines?) This is my initial report on how I'm getting along.</p>
+                            <p>I took a short holiday in August, and brought with me the Kindle edition of Ovid's wonderful <a href="http://www.amazon.com/Beginning-Perl-Curtis-Poe/dp/1118013840"><i>Beginning Perl</i></a>. Why? Because if you're writing a book aimed at intermediate programmers, it's a good idea to know what point the literature aimed at beginners takes them to. You don't want to leave a "knowledge gap" that readers will struggle to cross over. I can report that <i>Beginning Perl</i> is a delight to read, and promotes some pretty good practices including erring in favour of immutable objects (which I'm a big fan of).</p>
+
+<p>If you found his earlier work <a href="http://en.wikipedia.org/wiki/Metamorphoses"><i>Metamorphoses</i></a> a little hard to digest, then perhaps <i>Beginning Perl</i> is more your thing. (Sorry, little joke there.)</p>
+
+<p>I'm already fairly familiar with chromatic's also wonderful <a href="http://onyxneon.com/books/modern_perl/"><i>Modern Perl</i></a>, having read it a couple of years back, but will probably need to re-familiarise myself with the OO parts of it at some point, especially because there have been a couple of new editions since then.</p>
+
+<p>September has been busier than I'd expected, so I haven't had as much time to work on writing as I'd hoped. However, I've gotten myself organized and set up a repository for my work which is mirrored on <a href="https://github.com/tobyink/docs-modern-oop">GitHub</a> and <a href="https://bitbucket.org/tobyink/docs-modern-oop">BitBucket</a>. (If anybody notices them become out of sync, please let me know. The hg-git plugin can be a little temperamental at times.)</p>
+
+<p>I've started work on Chapter 2 of the book, which is on namespaces. Yes, I realise that Chapter 1 might be a more obvious place to start, except that Chapter 1 is supposed to serve as an introduction, and it's a good idea to know exactly what you're going to introduce before writing an introduction. Chapter 2 is likely to be fairly uncontroversial in its recommendations. So far, I've outlined the reasons why it's a good idea to pick a namespace for your code, and some conventions to avoid collisions with modules from CPAN. I'll soon provide more specific advice on good ways to name roles, classes, and other modules. The kind of conventions I was thinking of are stuff like:</p>
+
+<ul>
+<li>Prefer singular nouns for class names.</li>
+<li>Name classes like <tt>MyProject::<i>Noun</i></tt> - this keeps the names short.</li>
+<li>Prefer adjectives for role names.</li>
+<li>Name most roles like <tt>MyProject::API::<i>Adjective</i></tt> - a little longer, but these are probably things you don't need to type out as much anyway. (Alternatively <tt>MyProject::Role::<i>Adjective</i></tt>.)</li>
+<li>For roles that are intended to be used as traits for a particular class - that is, composed onto individual instances of the class at runtime, name them like <tt>MyProject::TraitFor::<i>Noun</i>::<i>Adjective</i></tt>.</li>
+<li>Libraries of non-OO functions can live in <tt>MyProject::Util::<i>Something</i></tt>, or if there's just one such library, or a main one, call it <tt>MyProject::Util</tt>.</li>
+</ul>
+
+<p>(To clarify, the <tt>MyProject::</tt> part in the above is a place-holder for a not-necessarily-top-level namespace for the project.)</p>
+
+<p>Do these guidelines make sense to you? What do you use? Comment below if you have ideas. ↓ ↓ ↓</p>
+
+<p>I've also proposed a talk for the London Perl Workshop called <i>Object-Oriented Programming: Why You're Doing It Wrong</i>, which I describe as "three weird tricks to make your object-oriented code more encapsulated, more reusable, and more maintainable." What are those tricks? You'll have to wait and see. (Or just take a look at my preliminary notes on GitHub.)</p>
+
+<p>Anyway, that's about all I have to say for September. Another report coming next month!</p>
+                        ]]></content>
+</entry>

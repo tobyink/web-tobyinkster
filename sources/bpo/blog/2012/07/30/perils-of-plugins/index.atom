@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Perils of Plugins</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/07/perils-of-plugins.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3631</id>
+<published>2012-07-30T10:07:00</published>
+<updated>2012-07-30T10:07:00</updated>
+<summary>Plugin-based architectures can be a bad idea. Not always. In user-facing applications, where the list of installed and enabled plugins is clear, then plugins are often a good thing. This article is concerned not with end-user facing applications, but with...</summary>
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="plugins" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Plugin-based architectures can be a bad idea.</p>
+
+<p>Not always. In user-facing applications, where the list of installed and enabled plugins is clear, then plugins are often a good thing. This article is concerned not with end-user facing applications, but with libraries. Libraries that allow their functionality to be extended through plugins. In particular, libraries that automatically detect and load all installed plugins.</p>
+
+<p>Plugins aren't always obviously plugins. In this article, I'm defining a plugin as a software module that adds additional functionality or modifies the externally observable behaviour of the existing functionality of the core piece of software. Call it a "plugin" or an "optional dependency" - it's the same thing.</p>
+
+<p>Here's a simple hypothetical example:</p>
+
+
+
+<pre>package Postcode;
+
+our $AUTHORITY = 'local:ALICE';
+our $VERSION   = '1.0';
+
+use Modern::Perl;
+use Carp qw( confess );
+use Class::Load qw( try_load_class is_class_loaded );
+
+use constant {
+	IDX_COUNTRY     =&gt; 0,
+	IDX_POSTAL_CODE =&gt; 1,
+	NEXT_IDX        =&gt; 2,
+};
+
+sub new
+{
+	my ($class, $country, $postal_code) = @_;
+	
+	# $country should be an upper-case ISO 3166 alpha-2 code
+	$country = uc $country;	
+	confess "$country not a valid country identifier"
+		unless $country =~ /^[A-Z]{2}$/;
+	
+	unless ($class =~ /::[A-Z]{2}$/)
+	{
+		my $specific_class = join '::' =&gt; ($class, $country);
+		try_load_class($specific_class);
+		return $specific_class-&gt;new($country, $postal_code)
+			if is_class_loaded($specific_class);
+	}
+	
+	return bless [$country, $postal_code] =&gt; $class;
+}
+
+sub country
+{
+	my $self = shift;
+	$self-&gt;[ $self-&gt;IDX_COUNTRY ];
+}
+
+sub postal_code
+{
+	my $self = shift;
+	uc $self-&gt;[ $self-&gt;IDX_POSTAL_CODE ];
+}
+
+1;
+</pre>
+
+
+
+<p>Hopefully what the above code does should be immediately apparent. You can construct postcode objects like this:</p>
+
+
+
+<pre>my $beverley_hills    = Postcode::-&gt;new(US =&gt; 90210);
+my $buckingham_palace = Postcode::-&gt;new(GB =&gt; "SW1A 1AA");
+</pre>
+
+
+
+<p>If the modules <code class="prettyprint">Postcode::US</code> or <code class="prettyprint">Postcode::GB</code> are installed, then locale-specific objects will be constructed which may provide extra functionality like <code class="prettyprint">$beverley_hills-&gt;get_state</code>; otherwise generic <code class="prettyprint">Postcode</code> objects will be constructed. Here's an example locale-specific plugin...</p>
+
+
+
+<pre>package Postcode::GB;
+
+our $AUTHORITY = 'local:ALICE';
+our $VERSION   = '1.0';
+
+use Modern::Perl;
+use Carp qw( confess );
+use base 'Postcode';
+
+sub new
+{
+	my $self = shift-&gt;SUPER::new(@_);
+	
+	# Canonicalise whitespace
+	$self-&gt;[ $self-&gt;IDX_POSTAL_CODE ] =~ s{\s}{}g;
+	$self-&gt;[ $self-&gt;IDX_POSTAL_CODE ] =~ s{(^.+)(...)$}{$1 $2}g;
+	
+	return $self;
+}
+
+# XXX: this regexp doesn't cover some overseas territories
+# (Falklands, Pitcairn, etc) and doesn't cover BFPO codes.
+#
+my $regexp = qr {
+	^
+	([A-Z]{1,2})
+	([0-9]{1,2} | [0-9]{1}[A-Z]{1})
+	\s
+	([0-9]{1})
+	([A-Z]{2})
+	$
+}x;
+
+sub postcode_area     { shift-&gt;postcode =~ $regexp and "$1" }
+sub postcode_district { shift-&gt;postcode =~ $regexp and "$1$2" }
+sub postcode_sector   { shift-&gt;postcode =~ $regexp and "$1$2 $3" }
+sub postcode_unit     { shift-&gt;postcode =~ $regexp and "$1$2 $3$4" }
+
+1;
+</pre>
+
+
+
+<p>Perhaps some of those locale-specific modules will be distributed alongside the base Postcode distribution; others may be written by third parties interested in dealing with addresses in specific geographic regions. Sounds like a good plan - if Alice is maintaining the <code class="prettyprint">Postcode</code> distribution, she might be happy to maintain the British and Irish modules, but have no interest in maintaining modules covering China or Vietnam. (Ireland would be especially easy to implement - it is, as far as I'm aware, the only European state to not use postal codes.) Somebody else might be happy to maintain those though.</p>
+
+<p>But what's wrong with this?</p>
+
+<p>Bob decides to write an <code class="prettyprint">Address</code> module that makes use of <code class="prettyprint">Postcode</code>. Here's some of the methods:</p>
+
+
+
+<pre>package Address;
+
+use Postcode;
+...;
+
+sub get_country_iso3166
+{
+	my $self = shift;
+	return uc(...);
+}
+
+sub get_postcode
+{
+	my $self   = shift;
+	my $pc_str = ...;
+	return Postcode::-&gt;new($self-&gt;get_country_iso3166, $pc_str);
+}
+
+sub get_state
+{
+	my $self  = shift;
+	my $state = ...;
+	
+	# For the USA, if the state is missing, can infer it
+	# from postal code.
+	#
+	$state //= $self-&gt;get_postcode-&gt;get_state
+		if $self-&gt;get_country_iso3166 eq 'US';
+	
+	return $state;
+}
+
+...;
+1;
+</pre>
+
+
+
+<p>Everything looks fine, but what happens if the <code class="prettyprint">Address</code> package gets run on a machine without <code class="prettyprint">Postcode::US</code> installed? Then there will be no <code class="prettyprint">$self-&gt;get_postcode-&gt;get_state</code> method and the code will croak.</p>
+
+<p><span class="caps">OK, </span>so Bob should explicitly declare a dependency on Postcode::US, but there are any number of reasons why he might not, including:</p>
+
+
+<ul>
+<li><code class="prettyprint">Postcode::US</code> might be distributed as part of the core <code class="prettyprint">Postcode</code> distribution. (But the fact that it is now, doesn't mean it won't be split out into a separate distribution in the future.)</li>
+<li>Bob might be generating his dependency list automatically using some script that scans his source code looking for package names, but <code class="prettyprint">Postcode::US</code> isn't mentioned explicitly in his code.</li>
+<li>Bob might have simply assumed that because the <code class="prettyprint">get_state</code> method is available on his own machine, it will always be available everywhere.</li>
+</ul>
+
+
+
+<p>And this does happen in real life. Few were prepared when <span class="caps">HTTPS </span>support was split out from libwww-perl.</p>
+
+<p>Another more subtle issue would be if the <code class="prettyprint">Address</code> package relied on <code class="prettyprint">Postcode::-&gt;new(GB =&gt; $postcode)</code> performing the whitespace canonicalisation found in <code class="prettyprint">Postcode::GB</code>. This variety of problem is particularly hard to debug.</p>
+
+<p>A related issue is that the <code class="prettyprint">Address</code> package and the <code class="prettyprint">GeoLocator</code> package might require different sets of plugins to be loaded. <code class="prettyprint">Address</code> may be relying on <code class="prettyprint">Postcode::GB</code> being installed, but <code class="prettyprint">GeoLocator</code> may be relying on it <em>not</em> being installed.</p>
+
+<p><span class="caps">OK, </span>so now we understand the problems, what are the solutions?</p>
+
+<p>One resolution is to eschew plugins entirely. However plugin based architectures do provide certain benefits, such as the convenience of being able to split different non-overlapping areas of functionality (locales in the <code class="prettyprint">Postcode</code> example) between maintainers; or to make particular high-cost pieces of functionality (high <span class="caps">CPU </span>or memory usage; lots of <span class="caps">CPAN </span>dependencies; etc) more optional.</p>
+
+<p>So let's assume we want to be able to write pluggable software libraries. One simple solution is to simply stop automatically loading all plugins found on disk. Make your library's caller explicitly load the plugins they need. Don't do the <code class="prettyprint">try_load_class</code> thing on your caller's behalf.</p>
+
+
+
+<pre>package Address;
+
+use Postcode;
+use Postcode::AU;
+use Postcode::GB;
+use Postcode::US;
+...;
+</pre>
+
+
+
+<p>You could even provide a little syntactic sugar:</p>
+
+
+
+<pre>package Address;
+
+use Postcode -locales =&gt; [qw/au gb us/];
+...;
+</pre>
+
+
+
+<p>The key part to providing this sugar is that the <code class="prettyprint">Postcode</code> must attempt to load the three plugins and croak (or at least carp) if any of them is not available. If it silently ignores missing locale plugins then it's not doing its job.</p>
+
+<p>This precaution solves many of the issues we've looked at, but not the issue where within the lifetime of a single process we want to <em>sometimes</em> use the <code class="prettyprint">Postcode::GB</code> plugin, but at other times use plain old <code class="prettyprint">Postcode</code>.</p>
+
+<p>This is really a problem of <a href="http://programmers.stackexchange.com/questions/148108/why-is-global-state-so-evil">global state</a> - the decision of whether to use the plugin or not, all basically comes down to the contents of the <code class="prettyprint">%INC</code> hash, Perl's global variable which tracks which modules have been loaded. If <code class="prettyprint">Postcode::GB</code> is loaded, then it will always be used for British postcodes; if it's not loaded, then it will never be used.</p>
+
+<p>So the solution is to use local state. Determine the list of plugins in use on an object-by-object basis. Let's see how this can be applied to <code class="prettyprint">Postcode</code>:</p>
+
+
+
+<pre>package Postcode;
+
+...;
+
+sub new
+{
+	my ($class, $country, $postal_code) = @_;
+	
+	# $country should be an upper-case ISO 3166 alpha-2 code
+	$country = uc $country;	
+	confess "$country not a valid country identifier"
+		unless $country =~ /^[A-Z]{2}$/;
+		
+	return bless [$country, $postal_code] =&gt; $class;
+}
+
+sub new_using_plugin
+{
+	my ($class, $country, $postal_code) = @_;
+	
+	# $country should be an upper-case ISO 3166 alpha-2 code
+	$country = uc $country;	
+	confess "$country not a valid country identifier"
+		unless $country =~ /^[A-Z]{2}$/;
+	
+	confess "call new_using_plugin on the base 'Postcode' class"
+		if $class =~ /::[A-Z]{2}$/;
+	
+	my $specific_class = join '::' =&gt; ($class, $country);
+	try_load_class($specific_class);
+	confess "Could not load class $specific_class"
+		unless is_class_loaded($specific_class)
+	return $specific_class-&gt;new($country, $postal_code);
+}
+
+...;
+1;
+</pre>
+
+
+
+<p>With those two constructors, the caller is forced to make a choice between using the base <code class="prettyprint">Postcode</code> class, or using the plugin (but croaking if the plugin is unavailable). If they really don't care, then they can always do this:</p>
+
+
+
+<pre>my $beverley_hills =
+	eval { Postcode::-&gt;new_using_plugin(US =&gt; 90210) }
+	||do { Postcode::-&gt;new(US =&gt; 90210) };
+</pre>
+
+
+
+<p>For more complex cases where you wish to allow plugins on an object-by-object basis, then consider writing the plugin as <a href="https://metacpan.org/module/Moose::Role">Moose roles</a> and using <a href="https://metacpan.org/module/MooseX::Traits">MooseX::Traits</a> to allow your caller to construct objects using a combination of those roles.</p>
+
+<p>Plugins can be a very powerful tool, if used carefully. Avoid unpredictable loading; avoid global state.</p>
+
+<p><i>This article was originally published at <a href="http://tobyinkster.co.uk/blog/2012/07/30/plugins/">http://tobyinkster.co.uk/blog/2012/07/30/plugins/</a>.</i></p>
+                            
+                        ]]></content>
+</entry>

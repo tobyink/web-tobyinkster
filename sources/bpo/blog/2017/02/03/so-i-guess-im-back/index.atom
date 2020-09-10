@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>So I Guess I&#x27;m Back</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2017/02/so-i-guess-im-back.html" />
+<id>tag:blogs.perl.org,2017:/users/toby_inkster//1019.7915</id>
+<published>2017-02-03T01:59:00</published>
+<updated>2017-02-03T01:59:00</updated>
+<summary>Hi&#xE2;&#x80;&#xA6; remember me? Been away a while, and now I have a whole heap of bug reports to get through. But you, dear reader, I&#x26;apos;m giving the inside track. If there&#x26;apos;s a bug in one of my modules and you...</summary>
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Hi… remember me?</p>
+
+<p>Been away a while, and now I have a whole heap of bug reports to get through. But you, dear reader, I'm giving the inside track. If there's a bug in one of my modules and you want me to prioritize it, comment below.</p>
+
+<p>Also, how are you doing?</p>
+
+<p>I'm good.</p>
+
+<p>c:</p>
+                            
+                        ]]></content>
+</entry>

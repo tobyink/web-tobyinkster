@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Exporter::Tiny nearing 1.000000</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/10/exportertiny-nearing-1000000.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6442</id>
+<published>2014-10-04T18:52:00</published>
+<updated>2014-10-04T18:52:00</updated>
+<summary>Yes, in my warped mathematics, 0.042 is nearly 1.000000. Exporter::Tiny is a module I split out of the Type::Tiny distribution. It&#x26;apos;s an exporter, offering roughly the same capabilities as Sub::Exporter, but with a lighter footprint. I&#x26;apos;ve not massively promoted it,...</summary>
+<category term="Exporter-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Yes, in my warped mathematics, <a href="https://metacpan.org/release/TOBYINK/Exporter-Tiny-0.042">0.042</a> is nearly 1.000000.</p>
+<p><a href="https://metacpan.org/pod/release/TOBYINK/Exporter-Tiny-0.042/lib/Exporter/Tiny.pm">Exporter::Tiny</a> is a module I split out of the Type::Tiny distribution. It's an exporter, offering roughly the same capabilities as <a href="https://metacpan.org/pod/Sub::Exporter">Sub::Exporter</a>, but with a lighter footprint. I've not massively promoted it, but have been using it in a bunch of my other modules, and <a href="https://metacpan.org/requires/distribution/Exporter-Tiny">other people seem to have picked up on it and started using it too</a>.</p>
+<p>The documentation requires a bit of work, but from my perspective the implementation is effectively complete. If you're using it, then I'd appreciate any feedback you have before it's "stable" and thus too late to change.</p>
+                            
+                        ]]></content>
+</entry>

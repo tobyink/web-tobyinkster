@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Thought for the day: Perl 5 is English; Perl 6 is Esperanto.</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2013/04/thought-for-the-day-perl-5-is-english-perl-6-is-esperanto.html" />
+<id>tag:blogs.perl.org,2013:/users/toby_inkster//1019.4591</id>
+<published>2013-04-20T00:04:00</published>
+<updated>2013-04-20T00:04:00</updated>
+<summary>Esperanto may be a saner language than English in every way. But English is the language of Shakespeare, of Milton, of Byron, of Dylan Thomas; the language of Arthur Conan-Doyle and Agatha Christie; the language of Tolkien and C S...</summary>
+<category term="CPAN" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Esperanto may be a saner language than English in every way.</p>
+
+<p>But English is the language of Shakespeare, of Milton, of Byron, of Dylan Thomas; the language of Arthur Conan-Doyle and Agatha Christie; the language of Tolkien and C S Lewis; of Lewis Carroll and Beatrix Potter. It's the language of Stoker and Shelley.</p>
+
+<p>Wikipedia notes that <a href="http://en.wikipedia.org/wiki/Esperanto_literature">over 100 original novels have been published in Esperanto</a>. Big woop-dee-doo(!)</p>
+
+<p>I want to be able to use Perl 6 day to day, but not if that involves missing out on Perl 5's literature (i.e. <span class="caps">CPAN</span>).</p>
+                            
+                        ]]></content>
+</entry>

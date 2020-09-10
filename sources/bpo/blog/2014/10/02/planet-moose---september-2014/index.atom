@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Planet Moose - September 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/10/planet-moose---september-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6436</id>
+<published>2014-10-02T00:50:00</published>
+<updated>2014-10-02T00:50:00</updated>
+<summary> Welcome to Planet Moose, a brief write up on what&#x26;apos;s been happening in the world of Moose in the past month, for the benefit of those of you who don&#x26;apos;t have their eyes permanently glued to the #moose IRC...</summary>
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Mouse" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Object-Util" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><img alt="" style="float:left; margin: 0 1em 0.33em 0" src="http://buzzword.org.uk/2013/Planet_Moose.png"/>
+		<p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a href="https://github.com/tobyink/p5-planet-moose/wiki" class="podlinkurl">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p><a href="https://metacpan.org/pod/Moose" class="podlinkpod">Moose</a> 2.1212 fixes some warnings under the Perl 5.21 development branch. (See also <a href="https://rt.perl.org/Public/Bug/Display.html?id=121638" class="podlinkurl">perl RT#121638</a>.) Moose 2.1213 fixes a memory leak throwing exceptions. If you're already using Moose 2.11xx or 2.12xx, then it's probably worth upgrading to Moose 2.1213. If you're on an older version of Moose, then also consider upgrading but first test that your stuff works with a newer Moose.</p>
+</div>
+                            		<p>The same fixes have also been applied to the Moose 2.13xx development branch.</p>
+		<h2><span id="Mouse">Mouse</span></h2>
+		<p><a href="https://metacpan.org/pod/Mouse" class="podlinkpod">Mouse</a> v2.4.0 and 2.4.1 have been released which fix some build issues. I don't know why that warrants a version bump from 2.3.x to 2.4.x.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>There's a new <a class="podlinkpod" href="https://metacpan.org/pod/Mo">Mo</a> out.</li>
+			<li>The latest <a href="https://metacpan.org/pod/namespace%3A%3Aautoclean" class="podlinkpod">namespace::autoclean</a> works better with archaic versions of Moose.</li>
+			<li>vytas <a class="podlinkurl" href="http://blogs.perl.org/users/vytas/2014/09/i-hate-unpacking-sub-calls-with-shift.html">hates unpacking @_</a>. He ought to use <a href="https://metacpan.org/pod/Function%3A%3AParameters" class="podlinkpod">Function::Parameters</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Kavorka">Kavorka</a>, or <a class="podlinkpod" href="https://metacpan.org/pod/Method%3A%3ASignatures">Method::Signatures</a>.</li>
+			<li>I <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/09/objectutil.html">blogged about</a> <a class="podlinkpod" href="https://metacpan.org/pod/Object%3A%3AUtil">Object::Util</a>.</li>
+			<li>Here's my <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/09/book-report---september-2014.html">grant report</a> for the <a href="http://news.perlfoundation.org/2014/05/grant-proposal-modern-object-o.html" class="podlinkurl">OO book</a>.</li>
+			<li><a href="http://www.huffingtonpost.com/2014/09/28/drunk-moose-sweden-not-drunk_n_5895882.html" class="podlinkurl">Sober Moose-related reading</a>.</li>
+		</ul>
+
+                        ]]></content>
+</entry>

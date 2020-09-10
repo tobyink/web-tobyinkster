@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny 1.2 Coming Soon</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2017/05/typetiny-12-coming-soon.html" />
+<id>tag:blogs.perl.org,2017:/users/toby_inkster//1019.8034</id>
+<published>2017-05-05T10:16:00</published>
+<updated>2017-05-05T10:16:00</updated>
+<summary>Or 1.002000, because it uses Moo-like versioning. The Type::Tiny 1.1 (1.001_00x) development cycle has been going on since September 2014. Apparently I&#x26;apos;m either very concerned about stability or very lazy. You can make up your own minds about that. But...</summary>
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Or 1.002000, because it uses Moo-like versioning.</p>
+
+<p>The Type::Tiny 1.1 <small>(1.001_00x)</small> development cycle has been going on since September 2014. Apparently I'm either very concerned about stability or very lazy. You can make up your own minds about that.</p>
+
+<p>But Type::Tiny 1.2 should be released in a few weeks. If your application uses Type::Tiny, you may want to download the latest development release and check that nothing breaks. (It shouldn't, but you never know until you try.)</p>
+
+<p>The headline changes are:</p>
+
+<ul>
+<li>Type::Params now has <code class="prettyprint">compile_named</code> and <code class="prettyprint">validate_named</code>.</li>
+<li>Type::Tiny's <code class="prettyprint">constraint</code> parameter may be a string of code.</li>
+<li>Fixed bug where Types::Standard::Int would <em>sometimes</em> accept an overloaded object. (It never should.)</li>
+<li>Various performance enhancements and bug fixes.</li>
+</ul>
+
+<p>I'll explain the first two in more detail, because they're interesting.</p>
+                            <h2>compile_named</h2>
+
+<p>Type::Params is a module for type-checking the parameters to functions. For example, specifying that the <code class="prettyprint">$quantity</code> parameter should be an integer. It was mostly written with positional parameters in mind, like <code class="prettyprint">eat_apples(2, "red")</code>.</p>
+
+<p>Named parameters like <code class="prettyprint">eat_apples( quantity=&gt;2, colour=&gt;"red" )</code> could be made to work, but it was a bit of a hack. The Type::Tiny 1.1 development versions introduced a better way of doing this. It's not only neater, but it provides better error messages and it benchmarks a lot faster. Below is some code showing the old way and the new way.</p>
+
+<script src="https://gist.github.com/tobyink/97fb6bef8d06e5c46eed596a27b90e67.js"/>
+
+<h2>String Constraints</h2>
+
+<p>Normally when creating a type constraint, you'd provide a coderef which checks the variable <code class="prettyprint">$_</code> to see if it should pass the constraint. Recently the development versions of Type::Tiny have started accepting a string of Perl code instead. This can not only lead to very concise code, but is an easy way to allow Type::Tiny to optimize its checks. (You can manually optimize them even better by telling Type::Tiny how to inline type checks, but that requires a little bit of extra effort.)</p>
+
+<script src="https://gist.github.com/tobyink/747cab91e84eee7fa3f58a7dd8d909db.js"/>
+                        ]]></content>
+</entry>

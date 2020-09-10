@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Because Sometimes Lightspeed is Too Slow</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/07/because-sometimes-lightspeed-is-too-slow.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6215</id>
+<published>2014-07-11T21:53:00</published>
+<updated>2014-07-11T21:53:00</updated>
+<summary> I&#x26;apos;ve pushed Type::Tiny 0.045_03 to CPAN this afternoon. Initial results from CPAN testers seem promising, but if you&#x26;apos;ve got a distribution that uses Type::Tiny it might be worth trying it out with the new version to see if anything...</summary>
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="XS" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><img width="360" height="192" alt="Spaceballs: Lightspeed is too slow. We'll have to go right to ludicrous speed." style="float:right;margin:0 0 0.67em 1em;border:1px solid black" src="http://blogs.perl.org/users/toby_inkster/spaceballs_ludicrous_speed.jpg"/>
+<p>I've pushed <a href="https://metacpan.org/release/TOBYINK/Type-Tiny-0.045_03/">Type::Tiny 0.045_03</a> to CPAN this afternoon. Initial results from CPAN testers seem promising, but if you've got a distribution that uses Type::Tiny it might be worth trying it out with the new version to see if anything breaks. (I don't <em>think</em> anything should!)</p>
+<p>The big change in this release is that it adds support for an optional XS backend, which massively boosts the speed of many type constraint checks — especially parameterized types like <code class="prettyprint">ArrayRef[InstanceOf["HTTP::Response"]]</code>. The XS backend is a fork of Mouse's type constraints, and needs to be installed separately. It's called <a href="https://metacpan.org/release/Type-Tiny-XS">Type::Tiny::XS</a>. (OK; not a very creative name.)</p>
+</div>
+                            <p>The API for Type::Tiny::XS is kinda rubbishy, but that's OK because it's not designed for end-users. It's designed for frameworks like Type::Tiny to hook into. Because it's standalone, with no non-core dependencies, it should also be suitable for other validation frameworks to make use of too.</p>
+<p>The speed up is impressive. Without XS, Type::Tiny can <a href="https://metacpan.org/pod/release/TOBYINK/Type-Tiny-0.045_03/examples/benchmark-constraints.pl">boost the speed of Moose constructors</a> by about 30%; with XS that's over 300%. <a href="https://metacpan.org/pod/release/TOBYINK/Type-Tiny-0.045_03/examples/benchmark-coercions.pl">Coercions benefit too</a>; <a href="https://metacpan.org/pod/release/TOBYINK/Type-Tiny-0.045_03/examples/benchmark-param-validation.pl">as does parameter validation</a>.</p>
+<p>I'll add that I'm not usually much of a C programmer, so the fact that I was able to do this in very little time is a testament to the clarity and well-organizedness of <a href="https://metacpan.org/author/GFUJI">GFUJI's</a> XS code for <a href="https://metacpan.org/pod/Mouse::XS">Mouse::XS</a>. It was mostly just a case of pulling out the files I wanted, and a bit of search-and-replace to adjust the namespaces. I had a few minor difficulties with EUMM, but thanks very much to <a href="https://metacpan.org/author/WOLFSAGE">alh</a> and the rest of <i>#xs</i> on IRC, those were quickly sorted out.</p>
+<p>So really the "lightspeed is too slow" comment applies not just to the Type::Tiny::XS, but also to the tools and community that have built up around Perl and the CPAN. They make it possible to build something like this implausibly quickly. (Even if it's implemented in C!)</p>
+                        ]]></content>
+</entry>

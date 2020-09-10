@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Data::Dumper Debugging</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/datadumper-debugging.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6353</id>
+<published>2014-08-31T13:41:00</published>
+<updated>2014-08-31T13:41:00</updated>
+<summary>I&#x26;apos;ve never really used the Perl debugger much (maybe I should learn?) and usually resort to lots of use Data::Dumper; print Dumper($somevar); statements to help me understand what&#x26;apos;s going wrong with a piece of code. However, what I often find...</summary>
+<category term="Pry" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Reply" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><p>I've never really used the Perl debugger much (maybe I should learn?) and usually resort to lots of <code class="prettyprint">use Data::Dumper; print Dumper($somevar);</code> statements to help me understand what's going wrong with a piece of code.</p>
+<p>However, what I often find is that <code class="prettyprint">$somevar</code> contains exactly the data I expected it to contain. So the problem must be another variable? Or maybe there's a function which isn't returning what I expected it to? Or maybe one of my <code class="prettyprint">if</code> statement has jumbled logic? So I need to change my <code class="prettyprint">print Dumper(...)</code> statement and re-run the script.</p>
+<p>Anyway, sick of that, and inspired by <a href="http://stackoverflow.com/questions/25575601/what-is-perls-equivalent-to-rubys-pry">a question on StackOverflow</a> I've released <a href="https://metacpan.org/pod/Pry">Pry</a>, a really tiny wrapper around DOY's <a href="https://metacpan.org/release/Reply">Reply</a> REPL. Using Pry, you can run your script, and drop into a REPL at the point where you suspect things are going wrong. Once in the REPL you can inspect any lexical variables which are in scope (thanks, <a href="https://metacpan.org/pod/PadWalker">PadWalker</a>!), or peek at the call stack (thanks, <a href="https://metacpan.org/pod/Devel::StackTrace">Devel::StackTrace</a>!); you can even call functions and methods to see what's going on.</p>
+<p>So if you, like me, have never managed to figure out breakpoints, and watches, and whatever other thingies a proper debugger has to offer, but are getting frustrated by the limitations of Data::Dumper-based debugging, give Pry a try!</p></div>
+                            
+                        ]]></content>
+</entry>

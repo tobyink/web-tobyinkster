@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny Tricks #3: One-off Coercions</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-tricks-3-one-off-coercions.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6322</id>
+<published>2014-08-19T21:00:00</published>
+<updated>2014-08-19T21:00:00</updated>
+<summary>&#x3C;![CDATA[ Here&#x27;s a quick way to create an attribute that coerces to an integer from any other number: package Local::Eg3; use Moose; use Types::Standard -types; has foo =&#x26;gt; ( is =&#x26;gt; &#x22;ro&#x22;, isa =&#x26;gt; Int-&#x26;gt;plus_coercions( Num, sub{int($_)} ), coerce =&#x26;gt;...]]&#x3E;</summary>
+<category term="tricks" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>Here's a quick way to create an attribute that coerces to an integer from any other number:</p>
+		<pre class="highlighting-perl">   <span style="color:#009;font-weight:bold" class="keyword">package</span> <span class="word">Local::Eg3</span><span class="structure">;</span>
+   <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Moose</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="word">-types</span><span class="structure">;</span>
+   
+   <span class="word">has</span> <span class="word">foo</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+      <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span> <span class="word">Num</span><span style="color:#000;font-weight:bold" class="operator">,</span> <span style="color:#009;font-weight:bold" class="keyword">sub</span><span class="structure">{</span><span class="word">int</span><span class="structure">(</span><span style="color:#900;font-weight:bold" class="magic">$_</span><span class="structure">)}</span> <span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="number" style="color:#39C">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span>
+   
+   <span class="word">__PACKAGE__</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">meta</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span></pre></div>
+                            		<p>You can express the coercion as a string of Perl code, which will in some circumstances help Type::Tiny optimize things.</p>
+		<pre class="highlighting-perl">   <span class="word">has</span> <span class="word">foo</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>      <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span> <span class="word">Num</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span style="color:#909" class="single">'int($_)'</span> <span class="structure">)</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#39C" class="number">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span></pre>
+		<h2><span id="Caveats">Caveats</span></h2>
+		<p>Don't forget the <code class="prettyprint">coerce =&gt; 1</code> bit. It's very easy to forget.</p>
+		<p>If you're supplying multiple coercions, it might seem clearer to use a fat comma:</p>
+		<pre class="highlighting-perl">   <span class="word">Int</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">plus_coercions</span><span class="structure">(</span>
+      <span class="word">Num</span>       <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span class="word">int</span><span class="structure">(</span><span class="magic" style="color:#900;font-weight:bold">$_</span><span class="structure">)</span> <span class="structure">}</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+      <span class="word">ArrayRef</span>  <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span style="color:#009;font-weight:bold" class="keyword">sub</span> <span class="structure">{</span> <span class="word">scalar</span><span class="structure">(</span><span style="color:#f00;font-weight:bold" class="cast">@</span><span style="color:#900;font-weight:bold" class="magic">$_</span><span class="structure">)</span> <span class="structure">}</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">Undef</span>     <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span style="color:#39C" class="number">0</span> <span class="structure">}</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+   <span class="structure">)</span></pre>
+		<p>This <strong>will not work</strong> because of the auto-quoting powers of <code class="prettyprint">=&gt;</code>. Take a look at the winking fat comma in <a class="podlinkpod" href="https://metacpan.org/pod/perlsecret">perlsecret</a> though.</p>
+
+                        ]]></content>
+</entry>

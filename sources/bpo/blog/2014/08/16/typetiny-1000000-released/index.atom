@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny 1.000000 Released</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-1000000-released.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6313</id>
+<published>2014-08-16T19:30:00</published>
+<updated>2014-08-16T19:30:00</updated>
+<summary>It&#x26;apos;s been almost 17 months, and over 160 releases to get there, but Type-Tiny 1.000000 has been released on CPAN Day 2014. Type-Tiny is a framework for type constraints and coercions. It can be used for isa checks in Moose,...</summary>
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>It's been almost 17 months, and over 160 releases to get there, but <a href="https://metacpan.org/release/TOBYINK/Type-Tiny-1.000000">Type-Tiny 1.000000</a> has been released on CPAN Day 2014.</p>
+<p>Type-Tiny is a framework for type constraints and coercions. It can be used for <code class="prettyprint">isa</code> checks in Moose, Mouse, and Moo attributes, function parameter checking, and so on. It's already used by <a href="https://metacpan.org/requires/distribution/Type-Tiny">over a hundred CPAN distributions</a>.</p>
+<p>Over the next few days I'll be posting some tips and tricks explaining some Type-Tiny features that you may find useful.</p>
+                            
+                        ]]></content>
+</entry>

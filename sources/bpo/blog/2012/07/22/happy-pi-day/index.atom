@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Happy Pi Day!</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/07/happy-pi-day.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3593</id>
+<published>2012-07-22T01:00:00</published>
+<updated>2012-07-22T01:00:00</updated>
+<summary>&#x3C;![CDATA[Did you know that 22/7 is actually a better approximation of pi than 3.14 is? use DateTime; use Math::Trig qw(pi); use Test::More tests =&#x26;gt; 1; my $today = DateTime::-&#x26;gt;now; my $dm = sprintf &#x27;%d/%d&#x27; =&#x26;gt; ($today-&#x26;gt;day, $today-&#x26;gt;month); cmp_ok( abs( eval($dm)...]]&#x3E;</summary>
+<category term="DateTime" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Did you know that 22/7 is actually a better approximation of pi than 3.14 is?</p>
+
+
+
+<pre>use DateTime;
+use Math::Trig qw(pi);
+use Test::More tests =&gt; 1;
+
+my $today = DateTime::-&gt;now;
+my $dm    = sprintf '%d/%d' =&gt; ($today-&gt;day, $today-&gt;month);
+
+cmp_ok(
+	abs( eval($dm) - pi ),
+	'&lt;',
+	0.0015,
+)
+or diag("this test only passes on 22/7")
+</pre>
+                            
+                        ]]></content>
+</entry>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Planet Moose - July 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/planet-moose---july-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6253</id>
+<published>2014-08-01T23:37:00</published>
+<updated>2014-08-01T23:37:00</updated>
+<summary>Welcome to Planet Moose, a brief write up on what&#x26;apos;s been happening in the world of Moose in the past month, for the benefit of those of you who don&#x26;apos;t have their eyes permanently glued to the #moose IRC channel,...</summary>
+<category term="Mite" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" style="float:left; margin: 0 1em 0.33em 0" alt=""/><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a href="https://metacpan.org/pod/Moose" class="podlinkpod">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a href="https://github.com/tobyink/p5-planet-moose/wiki" class="podlinkurl">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> 2.1210 has been released containing some updates to the test suite, and documentation improvements.</p></div>
+
+                            		<h2><span id="Mite">Mite</span></h2>
+		<p><a href="https://metacpan.org/pod/Mite" class="podlinkpod">Mite</a> v0.0.1 has been released by Michael Schwern. This is a preview of a Moose-like OO framework that compiles to a string of Perl code so that your modules don't have any dependencies on it. It's early days, but this mite (sorry!) turn out to be an interesting project.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>Caleb Cushing has written about <a href="http://www.xenoterracide.com/2014/07/writing-deprecation-notices-in-perl.html" class="podlinkurl">writing deprecation notices in perl, optionally with Moose</a>.</li>
+			<li>I've written about <a class="podlinkurl" href="http://blogs.perl.org/users/toby_inkster/2014/07/method-privacy-in-perl.html">method privacy</a>, inspired by Neil Bowers' article on <a class="podlinkurl" href="http://neilb.org/2014/07/24/private-functions.html">private functions</a>.</li>
+			<li>I've released <a href="https://metacpan.org/pod/Type::Tiny::XS" class="podlinkurl">Type::Tiny::XS</a> which provides fast C implementations for many <a class="podlinkurl" href="https://metacpan.org/pod/Types::Standard">Types::Standard</a> type constraints.</li>
+			<li>Peter Karman has been porting much of his Dezi search platform to Moose. See, for example <a class="podlinkurl" href="https://metacpan.org/release/Dezi-App">Dezi-App</a>.</li>
+			<li><a class="podlinkurl" href="http://www.smithsonianmag.com/smart-news/moose-spit-antifungal-180952154/?no-ist">Moose spit is antifungal</a>.</li>
+			<li><a href="http://comicbook.com/blog/2014/07/29/kevin-smith-to-make-moose-jaws-movie-where-a-moose-eats-a-little/" class="podlinkurl">Interesting</a>.</li>
+		</ul>
+
+                        ]]></content>
+</entry>

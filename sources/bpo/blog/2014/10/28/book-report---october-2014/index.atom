@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Book Report - October 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/10/book-report---october-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6487</id>
+<published>2014-10-28T20:34:00</published>
+<updated>2014-10-28T20:34:00</updated>
+<summary>This month has been quite a busy one for me, so I haven&#x26;apos;t had much chance to work on my (in-progress) book. However, I have had some time to start work on a short talk for London Perl Workshop 2014...</summary>
+<category term="Book" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="OOP" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>This month has been quite a busy one for me, so I haven't had much chance to work on <a href="https://github.com/tobyink/docs-modern-oop">my (in-progress) book</a>. However, I have had some time to start work on a short talk for <a href="http://act.yapc.eu/lpw2014/">London Perl Workshop 2014</a> which will cover some of the OO best practices followed in the book. (At the time of writing, I've not yet heard whether the talk has been accepted/scheduled.)</p>
+                            <p>I've been debating whether I should make the presentation available now, or if that would be too much of a "spoiler". In the end I decided that I'm trying to do as much of this book stuff as openly as possible, so I've added <a href="https://github.com/tobyink/docs-modern-oop/tree/master/talks/three-weird-tricks">what I've done on the presentation so far</a> to GitHub. If you're planning on going to LPW, and don't want to know what's in the presentation, don't click that link.</p>
+<p>In the next few weeks I hope to have some more time for working on the book. I hope to complete the chapter on namespaces, and start on the chapter about encapsulation and accessors.</p>
+                        ]]></content>
+</entry>

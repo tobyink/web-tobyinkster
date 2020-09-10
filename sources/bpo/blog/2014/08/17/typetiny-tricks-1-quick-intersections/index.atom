@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny Tricks #1: Quick Intersections</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-tricks-1-quick-intersections.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6318</id>
+<published>2014-08-17T23:00:00</published>
+<updated>2014-08-17T23:00:00</updated>
+<summary>&#x3C;![CDATA[ Type::Tiny objects overload the &#x26;amp; (bitwise and) operator to build a type constraint intersection. For example: package Local::Eg1; use Moose; use Types::Standard -types; has foo =&#x26;gt; ( is =&#x26;gt; &#x22;ro&#x22;, isa =&#x26;gt; ArrayRef[Int] &#x26;amp; HashRef[Int], ); __PACKAGE__-&#x26;gt;meta-&#x26;gt;make_immutable; Though that...]]&#x3E;</summary>
+<category term="tricks" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>Type::Tiny objects overload the <code class="prettyprint">&amp;</code> (bitwise and) operator to build a type constraint intersection. For example:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Local::Eg1</span><span class="structure">;</span>
+   <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Moose</span><span class="structure">;</span>
+   <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Types::Standard</span> <span class="word">-types</span><span class="structure">;</span>
+   
+   <span class="word">has</span> <span class="word">foo</span> <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>  <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ArrayRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">]</span> <span class="operator" style="color:#000;font-weight:bold">&amp;</span> <span class="word">HashRef</span><span class="structure">[</span><span class="word">Int</span><span class="structure">]</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+   <span class="structure">);</span>
+   
+   <span class="word">__PACKAGE__</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">meta</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span></pre>
+		<p>Though that example isn't especially useful. Do you remember Venn diagrammes? Intersections are that small overlapping section in the middle. So the value for <code class="prettyprint">foo</code> needs to be something that is simultaneously an arrayref and a hashref. (Which no value could satisfy.)</p>
+		<p>But there are ways intersections can be used more usefully.</p>
+</div>
+                            <p>Perhaps you want a class name that matches a certain regexp:</p>
+		<pre class="highlighting-perl">   <span class="word">has</span> <span class="word">formatter</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>  <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span class="double" style="color:#909">"ro"</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+      <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">ClassName</span> <span class="operator" style="color:#000;font-weight:bold">&amp;</span> <span class="word">StrMatch</span><span class="structure">[</span> <span class="regexp">qr/^DateTime::Format::/</span> <span class="structure">]</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span></pre>
+		<p>Type::Tiny is able to coerce certain things such as coderefs into Type::Tiny objects. Combining that ability with intersections allows for a very lightweight method of creating subtypes:</p>
+		<pre class="highlighting-perl">   <span class="word">has</span> <span class="word">even_number</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#909" class="double">"ro"</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">isa</span> <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span> <span class="operator" style="color:#000;font-weight:bold">&amp;</span> <span class="keyword" style="color:#009;font-weight:bold">sub</span> <span class="structure">{</span> <span style="color:#900;font-weight:bold" class="magic">$_</span> <span class="operator" style="color:#000;font-weight:bold">%</span> <span style="color:#39C" class="number">2</span> <span class="operator" style="color:#000;font-weight:bold">==</span> <span class="number" style="color:#39C">0</span> <span class="structure">}</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+   <span class="structure">);</span></pre>
+		<h2><span id="Caveats">Caveats</span></h2>
+		<p>The <code class="prettyprint">&amp;</code> character in Perl is not just the bitwise and operator, but is also used in Perl-4-style subroutine calls:</p>
+		<pre class="highlighting-perl">   <span class="symbol" style="color:#333;background-color:#fcc">$sum</span> <span class="operator" style="color:#000;font-weight:bold">=</span> <span style="color:#333;background-color:#fcc" class="symbol">&amp;add_nums</span><span class="structure">(</span><span style="color:#39C" class="number">1</span><span class="operator" style="color:#000;font-weight:bold">,</span> <span style="color:#39C" class="number">2</span><span style="color:#000;font-weight:bold" class="operator">,</span> <span class="number" style="color:#39C">3</span><span class="structure">);</span></pre>
+		<p>Because of this, the Perl parser uses some heuristics to figure out what you meant by <code class="prettyprint">&amp;</code>. Sometimes it gets things wrong. One example I've found is: <code class="prettyprint">ArrayRef &amp; HashRef</code> which Perl interprets as meaning <code class="prettyprint">ArrayRef( &amp;HashRef )</code>. This can usually be solved by adding extra parentheses: <code class="prettyprint">ArrayRef() &amp; HashRef</code>.</p>
+
+                        ]]></content>
+</entry>

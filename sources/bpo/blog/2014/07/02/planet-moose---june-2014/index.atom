@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Planet Moose - June 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/07/planet-moose---june-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6184</id>
+<published>2014-07-02T12:00:00</published>
+<updated>2014-07-02T12:00:00</updated>
+<summary>Welcome to Planet Moose, a brief write up on what&#x26;apos;s been happening in the world of Moose in the past month, for the benefit of those of you who don&#x26;apos;t have their eyes permanently glued to the #moose IRC channel,...</summary>
+<category term="Moo" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Moose" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div><img src="http://buzzword.org.uk/2013/Planet_Moose.png" alt="" style="float:left; margin: 0 1em 0.33em 0"/><p>Welcome to Planet Moose, a brief write up on what's been happening in the world of <a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> in the past month, for the benefit of those of you who don't have their eyes permanently glued to the <i>#moose</i> IRC channel, or the MetaCPAN recent uploads page.</p>
+		<p>If you'd like to contribute some news for next month's issue, you can do so on <a href="https://github.com/tobyink/p5-planet-moose/wiki" class="podlinkurl">the wiki</a>.</p>
+		<h2><span id="Moose">Moose</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Moose">Moose</a> 2.1208 and 2.1209 have been released containing some minor bugfixes.</p></div>
+
+                            		<h2><span id="Moo">Moo</span></h2>
+		<p><a class="podlinkpod" href="https://metacpan.org/pod/Moo">Moo</a> 1.005000 has been released, introducing <code class="prettyprint">qsub</code>, a prototyped shortcut for <code class="prettyprint">quote_sub</code>.</p>
+		<p>Moo now <a class="podlinkurl" href="http://matrix.cpantesters.org/?dist=Moo+1.005000">tests cleanly on Perl 5.6 through to blead</a>.</p>
+		<h2><span id="In_other_news...">In other news...</span></h2>
+		<ul>
+			<li>byterock has <a href="http://blogs.perl.org/users/byterock/" class="podlinkurl">blogged lots more</a> about Moose, and his efforts releasing <a class="podlinkurl" href="https://metacpan.org/release/BYTEROCK/MooseX-AuthorizedMethodRoles-0.00.05">MooseX::AuthorizedMethodRoles</a>.</li>
+			<li>There's a <a href="https://www.kickstarter.com/projects/2083389021/create-perl-competition-to-the-php-content-managem" class="podlinkurl">Kickstarter project aiming at funding WebGUI 8</a>, which includes porting WebGUI to Moose and Plack. I don't know much about WebGUI, though I agree with the principle that Perl ought to have a high quality, extensible, general-purpose CMS.</li>
+			<li>Yuki Kimoto has written <a class="podlinkurl" href="http://blogs.perl.org/users/yuki_kimoto/2014/06/mop-problem-4---mop-is-misleading-name.html">mop problem 4 - mop is misleading name</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/yuki_kimoto/2014/07/mop-problem-5---role-and-c3-searching-is-not-always-necessary.html">mop problem 5 - Role and C3 searching is not always necessary</a>.</li>
+			<li>Pierre Masci kicked off discussions on <a href="http://blogs.perl.org/users/mascip/2014/06/immutability-with-moose.html" class="podlinkurl">good ways to implement immutable objects</a> and <a class="podlinkurl" href="http://blogs.perl.org/users/mascip/2014/06/functional-core-imperative-shell-oo-design-and-isolated-tests-without-mocks.html">ways of structuring your application to make unit testing (without mocking) easier</a>. (Plus <a href="http://blogs.perl.org/users/mascip/2014/06/functional-core-imperative-shell-explanation-with-code.html" class="podlinkurl">examples</a>.)</li>
+			<li>Samuel Kaufman talks about <a class="podlinkurl" href="http://blogs.perl.org/users/samuel_kaufman/2014/06/moose-monkeypatching-with-a-mock-useragent.html">using Moose method modifiers for monkey patching</a>.</li>
+			<li>Peter Karman has ported <a class="podlinkpod" href="https://metacpan.org/pod/Dezi">Dezi</a> to Moose.</li>
+			<li><a class="podlinkpod" href="https://metacpan.org/pod/namespace%3A%3Aautoclean">namespace::autoclean</a> has seen some release activity recently.</li>
+			<li><a href="https://metacpan.org/pod/Bread%3A%3ABoard" class="podlinkpod">Bread::Board</a>, <a class="podlinkpod" href="https://metacpan.org/pod/Catalyst%3A%3ARuntime">Catalyst::Runtime</a>, and <a href="https://metacpan.org/pod/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a> have also had new releases, but nothing ground-breaking there.</li>
+			<li>People on IRC have been noting that Mouse's <a class="podlinkurl" href="https://github.com/gfx/p5-Mouse/blob/master/lib/Mouse/Meta/Module.pm#L77-88">technique for differentiating between class methods and imported helper subs</a> is pretty poor. Perhaps somebody will submit a patch?</li>
+		</ul>
+                        ]]></content>
+</entry>

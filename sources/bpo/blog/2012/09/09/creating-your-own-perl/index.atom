@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Creating Your Own Perl</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/09/creating-your-own-perl.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3807</id>
+<published>2012-09-09T18:54:00</published>
+<updated>2012-09-09T18:54:00</updated>
+<summary>Perl modules are not like dynamically loaded libraries in other programming languages. Thanks to the import function, sub prototypes, symbol table hacking, parser hooks, magic like Devel-Declare, ties and other voodoo, Perl modules can shape and craft the flavour of...</summary>
+<category term="DSL" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Perl modules are not like dynamically loaded libraries in other programming languages. Thanks to the <code class="prettyprint">import</code> function, sub prototypes, symbol table hacking, parser hooks, magic like <a href="https://metacpan.org/release/Devel-Declare">Devel-Declare</a>, ties and other voodoo, Perl modules can shape and craft the flavour of Perl that is available to their caller. A practical example: Perl's exception handling via <code class="prettyprint">eval</code> and <code class="prettyprint">$@</code> is weird, clunky and error-prone. But by loading <a href="https://metacpan.org/module/TryCatch">TryCatch</a> or <a href="https://metacpan.org/module/Try::Tiny">Try::Tiny</a> you get a clean syntax for catching exceptions that Just Works. You're not just loading a library and using it at arm's length; you're changing the very syntax of Perl - locally, within your module.</p>
+
+<p>(Aside: there are of course plenty of modules that don't do any of this - say those that are designed to be used in an object-oriented fashion. Those are great too of course - different approaches are appropriate for solving different problems.)</p>
+
+<p>Exception handling is not the only example. <a href="https://metacpan.org/module/List::Util">List::Util</a>, <a href="https://metacpan.org/module/Plack::Builder">Plack::Builder</a>, <a href="https://metacpan.org/module/Moose">Moose</a>, <a href="https://metacpan.org/module/MooseX::Method::Signatures">MooseX::Method::Signatures</a>, <a href="https://metacpan.org/module/syntax">syntax</a> (with its friends) and pretty much every module that uses <a href="https://metacpan.org/module/Exporter">Exporter</a> or similar all fall into this broad category of modules that shape the flavour of Perl being used.</p>
+
+<p>When starting a new script, or a new module, this is what we do. We add a bunch of <code class="prettyprint">use</code> statements to the top of the file to tweak Perl's flavour to our liking. We make Perl a more suitable language for getting the job done; we turn a general purpose programming language into a domain-specific language suitable for our exact task. This will often begin with something like <code class="prettyprint">use 5.010; use strict; use warnings;</code>, but if you're writing anything non-trivial, it's likely that a bunch of other <code class="prettyprint">use</code> statements will join them.</p>
+
+<p>Which brings me to <b>Syntax::Collector</b>. The idea of Syntax::Collector is that in a large project which spans multiple Perl modules and scripts, there are certain flavour of Perl that we wish to apply across all files. That might be <code class="prettyprint">use strict</code> and <code class="prettyprint">use warnings</code> to ensure good practice is followed, and might also include <code class="prettyprint">use Scalar::Util qw(blessed)</code> or <code class="prettyprint">use List::Util qw(first reduce)</code> or <code class="prettyprint">use Try::Tiny</code>. Syntax::Collector helps you capture that flavour in one module, and use that module in each script you write. Here's an example:</p>
+
+<pre><code class="prettyprint">package MyProject::Syntax;
+our $VERSION = 1;
+use Syntax::Collector -collect =&gt; '
+use strict 0;
+use warnings 0;
+use true 0;
+use feature 0 qw(say state switch);
+no warnings 0 qw(void once uninitialized)
+use Scalar::Util 1.23 qw(blessed);
+use List::Util 0 qw(first reduce);
+use Carp 0 qw(croak);
+use Try::Tiny 0;
+';</code></pre>
+
+<p>(Aside: you might be horrified that Syntax::Collector's list of modules to import is a simple quoted string. Don't worry; we don't <code class="prettyprint">eval</code> it. It's parsed and handled fairly sensibly. The purpose of using the Perl-like syntax within the string is to be friendly to people grepping through source code for <code class="prettyprint">use Some::Module</code>.)</p>
+
+<p>Then in each file of the project, we just <code class="prettyprint">use MyProject::Syntax 1</code> and all the rest of that stuff is automatically imported. This not only has the advantage of reducing boiler-plate code, it can change the way you write Perl. Let's imagine that we're trying to find a parser that can handle HTML input:</p>
+
+<pre><code class="prettyprint">my ($htmlparser) = grep { $_-&gt;does_accept('text/html') } @parsers;</code></pre>
+
+<p>That looks fine, and we might be happy with it, but if <code class="prettyprint">@parsers</code> is a long list, then it's potentially pretty inefficient. After we've found the first HTML parser, we don't want to keep grepping through the list. The <code class="prettyprint">first</code> function from List::Util would be much better:</p>
+
+<pre><code class="prettyprint">my $htmlparser = first { $_-&gt;does_accept('text/html') } @parsers;</code></pre>
+
+<p>But if we're working on a module, and this is the only time we need <code class="prettyprint">first</code> then we might sigh, ho hum, <code class="prettyprint">grep</code> will do. We'll <code class="prettyprint">die</code> when we really should <code class="prettyprint">croak</code>. We'll check <code class="prettyprint">defined ref</code> instead of <code class="prettyprint">blessed</code>. But with Syntax::Collector, and all these functions loaded up-front, we're encouraged to use the right tool for the job.</p>
+
+<p>Another advantage of Syntax::Collector is that it gives us a single place to declare all the project's dependencies. Later on, if we want to reduce dependencies, we have a single place to peruse the list. If you notice that the only part if List::MoreUtils that you're using is <code class="prettyprint">uniq</code> then you can write your own <code class="prettyprint">uniq</code> implementation (it's a one-liner) and use that instead. And you don't need to go through all your source files replacing references to List::MoreUtils, because the only reference is in your syntax module.</p>
+
+<p><a href="https://metacpan.org/module/Syntax::Collector">Syntax::Collector 0.004</a> is on CPAN.</p>
+                            
+                        ]]></content>
+</entry>

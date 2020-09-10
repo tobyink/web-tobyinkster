@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Because CPAN Needs More Templating Modules</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2017/06/because-cpan-needs-more-templating-modules.html" />
+<id>tag:blogs.perl.org,2017:/users/toby_inkster//1019.8123</id>
+<published>2017-06-24T16:37:00</published>
+<updated>2017-06-24T16:37:00</updated>
+<summary>Why learn a whole new language for templating when you already know a perfectly good one? This isn&#x26;apos;t the first module that allows you to embed Perl in your templates, but it&#x26;apos;s yet another one. Template::Compiled on MetaCPAN....</summary>
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>Why learn a whole new language for templating when you already know a perfectly good one? This isn't the first module that allows you to embed Perl in your templates, but it's yet another one.</p>
+<script src="https://gist.github.com/tobyink/dacfc58851706bc693d739e76f72d6ba.js"/>
+<p><a href="https://metacpan.org/release/Template-Compiled">Template::Compiled on MetaCPAN</a>.</p>
+                            
+                        ]]></content>
+</entry>

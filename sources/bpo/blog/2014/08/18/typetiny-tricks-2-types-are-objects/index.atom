@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny Tricks #2: Types Are Objects</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/08/typetiny-tricks-2-types-are-objects.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6321</id>
+<published>2014-08-18T22:00:00</published>
+<updated>2014-08-18T22:00:00</updated>
+<summary>&#x3C;![CDATA[ When you use code like this: package Local::Eg2; use Moose; use Types::Standard -types; has foo =&#x26;gt; ( is =&#x26;gt; &#x22;ro&#x22;, isa =&#x26;gt; Int, coerce =&#x26;gt; 1, ); __PACKAGE__-&#x26;gt;meta-&#x26;gt;make_immutable; Perhaps you don&#x27;t think very much about what that bareword Int...]]&#x3E;</summary>
+<category term="tricks" scheme="http://www.sixapart.com/ns/types#category" />
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <div>		<p>When you use code like this:</p>
+		<pre class="highlighting-perl">   <span class="keyword" style="color:#009;font-weight:bold">package</span> <span class="word">Local::Eg2</span><span class="structure">;</span>
+   <span style="color:#009;font-weight:bold" class="keyword">use</span> <span class="word">Moose</span><span class="structure">;</span>
+   <span class="keyword" style="color:#009;font-weight:bold">use</span> <span class="word">Types::Standard</span> <span class="word">-types</span><span class="structure">;</span>
+   
+   <span class="word">has</span> <span class="word">foo</span> <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span class="structure">(</span>
+      <span class="word">is</span>      <span style="color:#000;font-weight:bold" class="operator">=&gt;</span> <span class="double" style="color:#909">"ro"</span><span style="color:#000;font-weight:bold" class="operator">,</span>
+      <span class="word">isa</span>     <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span class="word">Int</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+      <span class="word">coerce</span>  <span class="operator" style="color:#000;font-weight:bold">=&gt;</span> <span style="color:#39C" class="number">1</span><span class="operator" style="color:#000;font-weight:bold">,</span>
+   <span class="structure">);</span>
+   
+   <span class="word">__PACKAGE__</span><span class="operator" style="color:#000;font-weight:bold">-&gt;</span><span class="word">meta</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">make_immutable</span><span class="structure">;</span></pre>
+		<p>Perhaps you don't think very much about what that bareword <code class="prettyprint">Int</code> is actually doing. Well, it's a function that returns a blessed object. This object is used by Moose to check whether values are integers. Yes, Moose uses the object, and you can use it too!</p></div>
+
+                            		<p>The object returned by <code class="prettyprint">Int</code> is a type constraint object, blessed into the <a href="https://metacpan.org/pod/Type%3A%3ATiny" class="podlinkpod">Type::Tiny</a> class which offers various useful methods. Here's an example:</p>
+		<pre class="highlighting-perl">   <span class="word">Int</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">assert_valid</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$counter</span> <span class="structure">);</span></pre>
+		<p>The <code class="prettyprint">assert_valid</code> method will throw an exception if <code class="prettyprint">$counter</code> is not an integer. If you'd rather return a boolean instead of throwing an exception, use:</p>
+		<pre class="highlighting-perl">   <span class="word">Int</span><span style="color:#000;font-weight:bold" class="operator">-&gt;</span><span class="word">check</span><span class="structure">(</span> <span class="symbol" style="color:#333;background-color:#fcc">$counter</span> <span class="structure">)</span></pre>
+		<p>And so you see, type constraints are not just useful for using with your OO framework's <code class="prettyprint">has</code> keyword - you can use them for plenty of other things too! You could use them perhaps for validating arguments to a function. Or use them for checking each row of a CSV file conforms to your expectations.</p>
+
+                        ]]></content>
+</entry>

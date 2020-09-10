@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Type::Tiny 1.2.0 Released</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2017/06/typetiny-120-released.html" />
+<id>tag:blogs.perl.org,2017:/users/toby_inkster//1019.8093</id>
+<published>2017-06-01T11:12:00</published>
+<updated>2017-06-01T11:12:00</updated>
+<summary>So, Type::Tiny 1.2.0 (a.k.a. 1.002000 using Perlish decimals) is now available on CPAN. Highlights since 1.0.0:...</summary>
+<category term="Type-Tiny" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>So, Type::Tiny 1.2.0 <small>(a.k.a. 1.002000 using Perlish decimals)</small> is now available on CPAN.</p>
+<p>Highlights since 1.0.0:</p>
+
+                            <ul>
+<li><p>Type::Params now has <code class="prettyprint">compile_named</code> and <code class="prettyprint">validate_named</code>.</p>
+<p>This allows for:</p>
+<pre>sub add_pet {
+  state $check = compile_named(
+    name    =&gt; Str,
+    species =&gt; Str,
+    age     =&gt; Optional[Int],
+  );
+  my $args = $check-&gt;(@_);
+
+  ...; # do stuff with $args hashref
+}</pre>
+<p>It's faster than the old <code class="prettyprint">compile slurpy Dict</code> hack.</p></li>
+<li><p>Type::Tiny's <code class="prettyprint">constraint</code> parameter may be a string of code.</p>
+<pre>isa =&gt; Int-&gt;where('$_ % 2 == 0')  # even numbers only</pre></li>
+<li><p>Types::Standard::CycleTuple added.</p>
+<pre>my $type = CycleTuple[Str, ArrayRef, Int];
+$type-&gt;assert_valid( [ "foo", [], 42, "bar", [], 21 ] );  # ok
+$type-&gt;assert_valid( [ "foo", [], 42, "bar", [], 2.1 ] ); # throws exception</pre></li>
+<li><p>Types::Standard::RegexpRef now accepts blessed objects where <code class="prettyprint">$object-&gt;isa('Regexp')</code>. This plays better with re::engine::* pragmas.</p></li>
+<li><p>Fixed bug where Types::Standard::Int would <strong>sometimes</strong> accept an overloaded object. (It never should.)</p></li>
+<li><p>Various performance enhancements and bug fixes.</p></li>
+</ul>
+                        ]]></content>
+</entry>

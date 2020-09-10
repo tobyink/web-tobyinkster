@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Book Report - December 2014</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2014/12/book-report---december-2014.html" />
+<id>tag:blogs.perl.org,2014:/users/toby_inkster//1019.6619</id>
+<published>2014-12-31T23:20:00</published>
+<updated>2014-12-31T23:20:00</updated>
+<summary>As you may be aware, I&#x26;apos;m writing a book which will eventually become a free e-book. This is my third report on how I&#x26;apos;m getting along....</summary>
+<category term="Book" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p>As you may be aware, I'm <a href="http://news.perlfoundation.org/2014/05/grant-proposal-modern-object-o.html">writing a book</a> which will eventually become a free e-book. This is my third report on how I'm getting along.</p>
+                            <p>If you've been paying attention, you might have noticed a <a href="https://metacpan.org/author/TOBYINK">distinct lack of CPAN activity from me lately</a>. Well I had a cold for a while, and a few other things that put me behind on a bunch of other projects which had to take priority over open source stuff. I hope to be back with a bang in January 2015!</p>
+
+<p>In the mean time I have started work on the book chapters which introduce <em>objects</em> and <em>classes</em> which I'm sure you'll agree are two fairly vital topics for object-oriented programming.</p>
+
+<p>One slightly novel approach I'm trying to take is to emphasise the <em>object-oriented</em> part of object-oriented programming. Objects are the main topic, not classes. Conceptually you can create and use objects without bothering much with classes - for example, by composing a bunch of roles and then instantiating an object from that. OK, so internally what Moose/Moo is doing underneath is creating a class which does all those roles, but from the programmer's perspective Moose/Moo enables quite classless object-oriented programming.</p>
+
+<p>Which is not to say that classes are unimportant, and will not be covered. Of course they'll be covered. But I'm trying to introduce objects first. How they are passed by reference; how methods are called; and so forth. All that before I cover writing classes, and before I cover writing roles.</p>
+
+<p>Right now I am writing examples like:</p>
+
+<pre><code class="prettyprint">my $A   = get_some_object();
+my $B   = $A;
+ 
+$A-&gt;set_value(20);
+ 
+say $B-&gt;get_value();</code></pre>
+
+<p>... which yes, covers the concepts I want to cover, but feels quite contrived. It's hard to cover these ideas without having to also mention, say, constructors, which I don't want to introduce until the next chapter. I'm thinking of using <a href="https://metacpan.org/pod/Time::Piece">Time::Piece</a> in some examples because it can produce objects without visible calls to a constructor, plus it's a core module.</p>
+
+<p>What do people think? Any problems with this approach? Any other good object-oriented modules I can use to illustrate concepts like method calls, without discussing classes?</p>
+                        ]]></content>
+</entry>

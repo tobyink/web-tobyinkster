@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+<title>Ooh, pretty!</title>
+<link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2012/09/ooh-pretty.html" />
+<id>tag:blogs.perl.org,2012:/users/toby_inkster//1019.3855</id>
+<published>2012-09-20T22:37:00</published>
+<updated>2012-09-20T22:37:00</updated>
+<summary>CPAN Ratings has had a face lift....</summary>
+<category term="CPAN" scheme="http://www.sixapart.com/ns/types#category" />
+<content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/"><![CDATA[
+                            <p><a href="http://cpanratings.perl.org/">CPAN Ratings</a> has had a face lift.</p>
+                            
+                        ]]></content>
+</entry>
