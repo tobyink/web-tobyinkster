@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <title>Web Scraping with Zydeco </title>
+    <link rel="alternate" type="text/html" href="http://blogs.perl.org/users/toby_inkster/2020/09/web-scraping-with-zydeco.html"/>
+    <id>tag:blogs.perl.org,2020:/users/toby_inkster//1019.9874</id>
+
+    <published>2020-09-11T10:52:33Z</published>
+    <updated>2020-09-11T11:00:04Z</updated>
+
+    <summary>So I like to keep local copies of my blogs.perl.org blog posts as Atom entries, but noticed yesterday that I had a few gaps in my collection. The Atom feeds offered by blogs.perl.org only have the most recent articles though,...</summary>
+    <author>
+        <name>Toby Inkster</name>
+        <uri>http://toby.ink/</uri>
+    </author>
+    
+        <category term="DateTime" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="HTML" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Moo" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="Zydeco" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+        <category term="roles" scheme="http://www.sixapart.com/ns/types#category"/>
+    
+    <category term="oop" label="OOP" scheme="http://www.sixapart.com/ns/types#tag"/>
+    
+    <content type="html" xml:lang="en" xml:base="http://blogs.perl.org/users/toby_inkster/">
+        <![CDATA[<p>So I like to keep local copies of my blogs.perl.org blog posts as Atom entries, but noticed yesterday that I had a few gaps in my collection. The Atom feeds offered by blogs.perl.org only have the most recent articles though, so I decided to write a quick script to scrape the posts. Luckily, I managed to get a table containing the URLs for each post I needed, so I didn't need to bother with following links to <em>find</em> the pages; I just needed to grab the content from them.</p>
+
+<p>I thought some people might find the code interesting especially for its use of lazy attributes. This is one of those "it only needs to be used once, so making the code maintainable isn't important" kinds of projects, do bear that in mind. I've cleaned up the whitespace and added comments for this blog post, but other than that, it's just a quickly hacked together script.</p>]]>
+        <![CDATA[<script src="https://gist.github.com/tobyink/92eac64a71095e19917ab3912cde2f59.js"></script>]]>
+    </content>
+</entry>

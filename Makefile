@@ -1,4 +1,4 @@
-all: load build
+all: load build wp
 
 merge-dirs:
 	./build/merge-dirs.pl
@@ -27,3 +27,6 @@ load-ilovecbeebies:
 	./loaders/ilovecbeebies.pl
 
 load: load-bpo
+
+wp:
+	perl wordpress-load.pl

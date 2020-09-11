@@ -249,20 +249,22 @@ sub ProcessEntry
 			(map {
 				my $person = $atom->$_;
 				
-				$H->dt(ucfirst $_),
-				$H->dd(
-					{ rel => "atom:$_" },
-					$H->a(
-						{
-							typeof   => "atom:Person",
-							property => "atom:name",
-							rel      => "atom:uri",
-							href     => $person->uri,
-							(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri =~ /toby\.?ink/ ),
-						},
-						$person->name,
-					),
-				),
+				$person ? (
+					$H->dt(ucfirst $_),
+					$H->dd(
+						{ rel => "atom:$_" },
+						$H->a(
+							{
+								typeof   => "atom:Person",
+								property => "atom:name",
+								rel      => "atom:uri",
+								href     => $person->uri,
+								(about => 'http://tobyinkster.co.uk/#i')x!!( $person->uri =~ /toby\.?ink/ ),
+							},
+							$person->name,
+						),
+					)
+				) : ();
 			} qw/ author /),
 			(map {
 				my $dt = $datetime->parse_datetime($atom->$_);
